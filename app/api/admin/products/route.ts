@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
+import { saveProductToHostingerDb, deleteProductFromHostingerDb, loadProductsFromHostingerDb } from '@/lib/hostinger-db';
 
 export const dynamic = 'force-dynamic';
 
@@ -242,6 +243,9 @@ export async function POST(request: Request) {
 
     saveFileCache(updatedList);
 
+    // Persist directly to Hostinger MySQL Database
+    saveProductToHostingerDb(body).catch((err) => console.warn('Could not save to Hostinger DB:', err));
+
     // Forward to backends asynchronously
     for (const url of getBackendUrls()) {
       try {
@@ -278,6 +282,16 @@ export async function DELETE(request: Request) {
     }
 
     saveFileCache(current);
+
+    // Delete from Hostinger MySQL
+    if (id) {
+      deleteProductFromHostingerDb(id).catch(() => {});
+    } else if (ids) {
+      const idList = ids.split(',').map((x) => x.trim());
+      for (const singleId of idList) {
+        deleteProductFromHostingerDb(singleId).catch(() => {});
+      }
+    }
 
     for (const u of getBackendUrls()) {
       try {

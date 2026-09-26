@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { saveLeadToHostingerDb } from '@/lib/hostinger-db';
 
 export const dynamic = 'force-dynamic';
 
@@ -49,6 +50,13 @@ export async function POST(request: NextRequest) {
     ];
 
     let saved = false;
+
+    // 1. Always persist to Hostinger MySQL Database
+    saveLeadToHostingerDb(lead).then((ok) => {
+      if (ok) saved = true;
+    }).catch((err) => console.warn('Could not save lead to Hostinger DB:', err));
+
+    // 2. Also forward to CRM/API endpoints
     for (const url of candidateUrls) {
       try {
         const controller = new AbortController();
