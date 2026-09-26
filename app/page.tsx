@@ -364,6 +364,7 @@ const fastSupplyConsumablesList = [
 
 const categoryPills = [
   { id: 'all', label: 'All Products' },
+  { id: 'recent', label: 'Recently Added' },
   { id: 'icu', label: 'ICU & Monitoring' },
   { id: 'furniture', label: 'Hospital Furniture' },
   { id: 'consumables', label: 'Consumables & PPE' },
@@ -508,44 +509,88 @@ export default function HomePage() {
   });
   const [isCategoryLoading, setIsCategoryLoading] = useState(false);
 
-  // Dynamic tab product loader from catalog API
+  // Preload all category tabs on mount so tab switching is instantaneous
   useEffect(() => {
     let isMounted = true;
-    async function loadTabProducts() {
-      if (categoryCache[selectedCategory] && categoryCache[selectedCategory].length > 0) {
-        return;
-      }
-
-      setIsCategoryLoading(true);
+    async function preloadAllTabs() {
       try {
-        const url =
-          selectedCategory === 'all'
-            ? '/api/catalog?limit=24'
-            : `/api/catalog?tab=${selectedCategory}&limit=16`;
-        const res = await fetch(url);
-        if (res.ok) {
-          const data = await res.json();
-          if (isMounted && data?.success && Array.isArray(data.products) && data.products.length > 0) {
-            setCategoryCache(prev => ({
-              ...prev,
-              [selectedCategory]: data.products
-            }));
-            if (selectedCategory === 'all') {
-              setProducts(data.products);
+        const tabs = ['all', 'recent', 'icu', 'furniture', 'consumables', 'diagnostic'];
+        const responses = await Promise.all(
+          tabs.map(async tabId => {
+            const url =
+              tabId === 'all'
+                ? '/api/catalog?limit=24'
+                : `/api/catalog?tab=${tabId}&limit=16`;
+            try {
+              const res = await fetch(url);
+              if (res.ok) {
+                const data = await res.json();
+                if (data?.success && Array.isArray(data.products) && data.products.length > 0) {
+                  return { tabId, products: data.products };
+                }
+              }
+            } catch {
+              // Ignore single tab fetch error
             }
+            return { tabId, products: null };
+          })
+        );
+
+        if (isMounted) {
+          setCategoryCache(prev => {
+            const next = { ...prev };
+            responses.forEach(item => {
+              if (item.products && item.products.length > 0) {
+                next[item.tabId] = item.products;
+              }
+            });
+            return next;
+          });
+          const allRes = responses.find(r => r.tabId === 'all');
+          if (allRes?.products && allRes.products.length > 0) {
+            setProducts(allRes.products);
           }
         }
       } catch (err) {
-        console.warn('Failed to load category products:', err);
-      } finally {
-        if (isMounted) setIsCategoryLoading(false);
+        console.warn('Preload categories failed:', err);
       }
     }
-    loadTabProducts();
+    preloadAllTabs();
     return () => {
       isMounted = false;
     };
-  }, [selectedCategory, categoryCache]);
+  }, []);
+
+  const handleCategorySelect = async (catId: string) => {
+    setSelectedCategory(catId);
+    if (categoryCache[catId] && categoryCache[catId].length > 0) {
+      return;
+    }
+    setIsCategoryLoading(true);
+    try {
+      const url =
+        catId === 'all'
+          ? '/api/catalog?limit=24'
+          : `/api/catalog?tab=${catId}&limit=16`;
+      const res = await fetch(url);
+      if (res.ok) {
+        const data = await res.json();
+        if (data?.success && Array.isArray(data.products) && data.products.length > 0) {
+          setCategoryCache(prev => ({
+            ...prev,
+            [catId]: data.products
+          }));
+          if (catId === 'all') {
+            setProducts(data.products);
+          }
+        }
+      }
+    } catch (err) {
+      console.warn('Category fetch error:', err);
+    } finally {
+      setIsCategoryLoading(false);
+    }
+  };
 
   const handleAddToCart = (product: Product) => {
     addToCart(product, 1);
@@ -568,8 +613,8 @@ export default function HomePage() {
   const activeCategoryProducts =
     categoryCache[selectedCategory] && categoryCache[selectedCategory].length > 0
       ? categoryCache[selectedCategory]
-      : initialBentoProducts.filter(p => {
-          if (selectedCategory === 'all') return true;
+      : (categoryCache['all'] && categoryCache['all'].length > 0 ? categoryCache['all'] : initialBentoProducts).filter(p => {
+          if (selectedCategory === 'all' || selectedCategory === 'recent') return true;
           const text = `${p.name} ${p.category}`.toLowerCase();
           if (selectedCategory === 'icu')
             return (
@@ -579,7 +624,13 @@ export default function HomePage() {
               text.includes('oxygen')
             );
           if (selectedCategory === 'furniture')
-            return text.includes('furniture') || text.includes('chair') || text.includes('bed');
+            return (
+              text.includes('furniture') ||
+              text.includes('chair') ||
+              text.includes('bed') ||
+              text.includes('stretcher') ||
+              text.includes('trolley')
+            );
           if (selectedCategory === 'consumables')
             return (
               text.includes('consumables') ||
@@ -1551,14 +1602,14 @@ export default function HomePage() {
       </section>
 
       {/* SECTION 7: INTERACTIVE PRODUCT CATALOG (Browse & Order) */}
-      <section style={{ backgroundColor: '#fafcfa', padding: '70px 0 80px', borderTop: '1px solid #f1f5f9', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+      <section style={{ backgroundColor: '#f1f5f9', padding: '74px 0 84px', borderTop: '1px solid #e2e8f0', borderBottom: '1px solid #e2e8f0', fontFamily: 'Arial, Helvetica, sans-serif' }}>
         <div className="container" style={{ maxWidth: '1240px', margin: '0 auto', padding: '0 20px' }}>
           <div
             style={{
               display: 'flex',
               alignItems: 'flex-end',
               justifyContent: 'space-between',
-              marginBottom: '28px',
+              marginBottom: '32px',
               flexWrap: 'wrap',
               gap: '16px'
             }}
@@ -1601,12 +1652,13 @@ export default function HomePage() {
                 display: 'inline-flex',
                 alignItems: 'center',
                 backgroundColor: '#ffffff',
-                padding: '4px',
+                padding: '5px',
                 borderRadius: '999px',
-                border: '1px solid #e2e8f0',
+                border: '1px solid #cbd5e1',
                 gap: '4px',
                 overflowX: 'auto',
                 maxWidth: '100%',
+                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
                 fontFamily: 'Arial, Helvetica, sans-serif'
               }}
             >
@@ -1615,18 +1667,20 @@ export default function HomePage() {
                 return (
                   <button
                     key={cat.id}
-                    onClick={() => setSelectedCategory(cat.id)}
+                    type="button"
+                    onClick={() => handleCategorySelect(cat.id)}
                     style={{
                       backgroundColor: isSelected ? '#00875a' : 'transparent',
                       color: isSelected ? '#ffffff' : '#475569',
                       border: 'none',
-                      padding: '7px 16px',
+                      padding: '8px 16px',
                       borderRadius: '999px',
-                      fontSize: '0.8rem',
+                      fontSize: '0.82rem',
                       fontWeight: 700,
                       cursor: 'pointer',
                       transition: 'all 0.2s ease',
                       whiteSpace: 'nowrap',
+                      boxShadow: isSelected ? '0 2px 8px rgba(0, 135, 90, 0.28)' : 'none',
                       fontFamily: 'Arial, Helvetica, sans-serif'
                     }}
                   >
@@ -1643,8 +1697,8 @@ export default function HomePage() {
             style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(4, 1fr)',
-              gap: '20px',
-              opacity: isCategoryLoading ? 0.65 : 1,
+              gap: '22px',
+              opacity: isCategoryLoading ? 0.7 : 1,
               transition: 'opacity 0.2s ease'
             }}
           >
@@ -1659,14 +1713,14 @@ export default function HomePage() {
                   key={product.id}
                   style={{
                     backgroundColor: '#ffffff',
-                    borderRadius: '14px',
+                    borderRadius: '16px',
                     overflow: 'hidden',
-                    border: '1px solid #f1f5f9',
+                    border: '1px solid #e2e8f0',
                     display: 'flex',
                     flexDirection: 'column',
                     transition: 'all 0.25s ease',
                     position: 'relative',
-                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.02)',
+                    boxShadow: '0 3px 12px rgba(0, 0, 0, 0.04)',
                     fontFamily: 'Arial, Helvetica, sans-serif'
                   }}
                   className="product-card-modern"
@@ -1682,10 +1736,11 @@ export default function HomePage() {
                         color: '#ffffff',
                         fontSize: '0.7rem',
                         fontWeight: 800,
-                        padding: '3px 8px',
+                        padding: '4px 9px',
                         borderRadius: '999px',
                         zIndex: 3,
-                        fontFamily: 'Arial, Helvetica, sans-serif'
+                        fontFamily: 'Arial, Helvetica, sans-serif',
+                        boxShadow: '0 2px 6px rgba(0, 135, 90, 0.25)'
                       }}
                     >
                       -{discountPct}%
@@ -1694,40 +1749,42 @@ export default function HomePage() {
 
                   {/* Wishlist Button */}
                   <button
+                    type="button"
                     onClick={() => toggleWishlist(product.id)}
                     style={{
                       position: 'absolute',
                       top: '12px',
                       right: '12px',
                       backgroundColor: '#ffffff',
-                      border: '1px solid #f1f5f9',
-                      width: '32px',
-                      height: '32px',
+                      border: '1px solid #e2e8f0',
+                      width: '34px',
+                      height: '34px',
                       borderRadius: '50%',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       cursor: 'pointer',
-                      zIndex: 3
+                      zIndex: 3,
+                      boxShadow: '0 2px 6px rgba(0, 0, 0, 0.06)'
                     }}
                     aria-label="Wishlist"
                   >
                     <Heart size={15} color={isFav ? '#ef4444' : '#94a3b8'} fill={isFav ? '#ef4444' : 'none'} />
                   </button>
 
-                  {/* Product Image Link */}
+                  {/* Product Image Link - Pure White Background for seamless product image blending */}
                   <Link
                     href={`/product/${product.slug}`}
                     className="product-img-box"
                     style={{
-                      backgroundColor: '#f8fafc',
-                      borderRadius: '10px',
-                      margin: '10px 10px 0',
-                      height: '180px',
+                      backgroundColor: '#ffffff',
+                      borderRadius: '12px',
+                      margin: '12px 12px 0',
+                      height: '190px',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      padding: '16px',
+                      padding: '14px',
                       textDecoration: 'none'
                     }}
                   >
@@ -1747,7 +1804,7 @@ export default function HomePage() {
                   {/* Product Info */}
                   <div
                     style={{
-                      padding: '14px',
+                      padding: '16px',
                       display: 'flex',
                       flexDirection: 'column',
                       flex: 1,
@@ -1771,7 +1828,7 @@ export default function HomePage() {
                     <Link
                       href={`/product/${product.slug}`}
                       style={{
-                        fontSize: '0.9rem',
+                        fontSize: '0.92rem',
                         fontWeight: 700,
                         color: '#0f172a',
                         lineHeight: 1.35,
@@ -1795,14 +1852,14 @@ export default function HomePage() {
                         alignItems: 'center',
                         justifyContent: 'space-between',
                         marginTop: 'auto',
-                        paddingTop: '10px',
+                        paddingTop: '12px',
                         borderTop: '1px solid #f1f5f9'
                       }}
                     >
                       <div>
                         {price > 0 ? (
                           <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px' }}>
-                            <span style={{ fontSize: '1.02rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                            <span style={{ fontSize: '1.05rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Arial, Helvetica, sans-serif' }}>
                               AED {price.toLocaleString()}
                             </span>
                             {hasDiscount && (
@@ -1819,6 +1876,7 @@ export default function HomePage() {
                       </div>
 
                       <button
+                        type="button"
                         onClick={() => handleAddToCart(product)}
                         style={{
                           backgroundColor: '#00875a',
@@ -1847,7 +1905,7 @@ export default function HomePage() {
           </div>
 
           {/* View Full Catalog Link */}
-          <div style={{ textAlign: 'center', marginTop: '36px' }}>
+          <div style={{ textAlign: 'center', marginTop: '38px' }}>
             <Link
               href="/shop"
               style={{
@@ -1855,12 +1913,14 @@ export default function HomePage() {
                 alignItems: 'center',
                 gap: '8px',
                 color: '#00875a',
-                fontSize: '0.9rem',
+                fontSize: '0.92rem',
                 fontWeight: 700,
                 textDecoration: 'none',
-                padding: '10px 24px',
+                padding: '12px 28px',
                 borderRadius: '999px',
-                backgroundColor: '#e6f7f0',
+                backgroundColor: '#ffffff',
+                border: '1.5px solid #00875a',
+                boxShadow: '0 2px 8px rgba(0, 135, 90, 0.08)',
                 transition: 'all 0.2s',
                 fontFamily: 'Arial, Helvetica, sans-serif'
               }}

@@ -135,19 +135,40 @@ function catalogPage(products: Product[], request: Request) {
             target.includes('oxygen')
           );
         }
+        if (tab === 'recent') {
+          return true; // Will be sorted by newest in sortBy handler
+        }
         if (tab === 'furniture') {
           const target = `${product.name || ''} ${product.category || ''}`.toLowerCase();
-          return (
-            (target.includes('furniture') ||
-              target.includes('chair') ||
-              target.includes('bed') ||
-              target.includes('stretcher') ||
-              target.includes('cabinet') ||
-              target.includes('trolley') ||
-              target.includes('table')) &&
+          const isFurnitureItem =
+            target.includes('stretcher') ||
+            target.includes('bed') ||
+            target.includes('chair') ||
+            target.includes('trolley') ||
+            target.includes('cabinet') ||
+            /\btables?\b/.test(target) ||
+            target.includes('wheelchair') ||
+            target.includes('cart') ||
+            target.includes('ward') ||
+            target.includes('commode') ||
+            target.includes('iv pole') ||
+            target.includes('couches') ||
+            target.includes('screen');
+          const isNotMedicalSupply =
+            !target.includes('dressing') &&
+            !target.includes('tegaderm') &&
             !target.includes('bandage') &&
-            !target.includes('plaster')
-          );
+            !target.includes('plaster') &&
+            !target.includes('portable') &&
+            !target.includes('rucksack') &&
+            !target.includes('therapy') &&
+            !target.includes('tube') &&
+            !target.includes('glove') &&
+            !target.includes('catheter') &&
+            !target.includes('suture') &&
+            !target.includes('syringe') &&
+            !target.includes('swab');
+          return isFurnitureItem && isNotMedicalSupply;
         }
         if (tab === 'consumables') {
           const target = `${product.name || ''} ${product.category || ''}`.toLowerCase();
