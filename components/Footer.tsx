@@ -28,14 +28,17 @@ export default function Footer() {
     }
   };
 
+  const isDark = pathname === '/';
+
   return (
     <footer
       style={{
-        backgroundColor: '#ffffff',
-        color: '#334155',
-        borderTop: '1px solid #eef2f6',
-        paddingTop: '50px',
-        paddingBottom: '28px'
+        backgroundColor: isDark ? '#0b0c0f' : '#ffffff',
+        color: isDark ? '#94a3b8' : '#334155',
+        borderTop: isDark ? '1px solid rgba(255, 255, 255, 0.08)' : '1px solid #eef2f6',
+        paddingTop: '56px',
+        paddingBottom: '28px',
+        transition: 'background-color 0.3s ease'
       }}
     >
       <style>{`
@@ -65,26 +68,26 @@ export default function Footer() {
           {/* Column 1: Brand & Contact Info */}
           <div>
             <div style={{ marginBottom: '20px' }}>
-              <FastonmedLogo height={42} theme="light" />
+              <FastonmedLogo height={42} theme={isDark ? 'dark' : 'light'} />
             </div>
 
             <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 20px 0', fontSize: '0.88rem', display: 'flex', flexDirection: 'column', gap: '10px' }}>
               <li style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
-                <MapPin size={16} color="var(--primary)" style={{ flexShrink: 0, marginTop: '3px' }} />
+                <MapPin size={16} color="#51b291" style={{ flexShrink: 0, marginTop: '3px' }} />
                 <span>Address: Dubai, United Arab Emirates</span>
               </li>
               <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Mail size={16} color="var(--primary)" style={{ flexShrink: 0 }} />
+                <Mail size={16} color="#51b291" style={{ flexShrink: 0 }} />
                 <span>
-                  Email: <a href="mailto:sales@fastonmed.com" style={{ color: '#0f172a', fontWeight: 600, textDecoration: 'none' }}>sales@fastonmed.com</a>
+                  Email: <a href="mailto:sales@fastonmed.com" style={{ color: isDark ? '#ffffff' : '#0f172a', fontWeight: 600, textDecoration: 'none' }}>sales@fastonmed.com</a>
                 </span>
               </li>
               <li style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
-                <Phone size={16} color="var(--primary)" style={{ flexShrink: 0, marginTop: '3px' }} />
+                <Phone size={16} color="#51b291" style={{ flexShrink: 0, marginTop: '3px' }} />
                 <div>
-                  Phone: <a href="tel:+971508893589" style={{ color: '#0f172a', fontWeight: 600, textDecoration: 'none' }}>+971 50 889 3589</a>
+                  Phone: <a href="tel:+971508893589" style={{ color: isDark ? '#ffffff' : '#0f172a', fontWeight: 600, textDecoration: 'none' }}>+971 50 889 3589</a>
                   <br />
-                  <a href="tel:+971508893586" style={{ color: '#0f172a', fontWeight: 600, textDecoration: 'none' }}>+971 50 889 3586</a>
+                  <a href="tel:+971508893586" style={{ color: isDark ? '#ffffff' : '#0f172a', fontWeight: 600, textDecoration: 'none' }}>+971 50 889 3586</a>
                 </div>
               </li>
             </ul>
@@ -98,11 +101,11 @@ export default function Footer() {
                   width: '36px',
                   height: '36px',
                   borderRadius: '50%',
-                  border: '1px solid #e2e8f0',
+                  border: isDark ? '1px solid rgba(255, 255, 255, 0.15)' : '1px solid #e2e8f0',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: '#334155',
+                  color: isDark ? '#f8fafc' : '#334155',
                   textDecoration: 'none'
                 }}
                 aria-label="Instagram"
@@ -121,11 +124,11 @@ export default function Footer() {
                   width: '36px',
                   height: '36px',
                   borderRadius: '50%',
-                  border: '1px solid #e2e8f0',
+                  border: isDark ? '1px solid rgba(255, 255, 255, 0.15)' : '1px solid #e2e8f0',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: '#334155',
+                  color: isDark ? '#f8fafc' : '#334155',
                   textDecoration: 'none'
                 }}
                 aria-label="LinkedIn"

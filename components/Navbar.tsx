@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Search, ShoppingBag, Heart, Menu, X, Phone, Mail } from 'lucide-react';
+import { Search, ShoppingBag, Heart, Menu, X, Phone, Mail, User } from 'lucide-react';
 import { useApp } from '@/lib/context';
 import { store } from '@/lib/store';
 import FastonmedLogo from './FastonmedLogo';
@@ -56,20 +56,23 @@ export default function Navbar() {
     }
   };
 
+  const isDarkHeader = pathname === '/';
+
   return (
     <>
-      {/* 1. TOPBAR (Exact FastOnMed Brand Teal #51b291) */}
+      {/* 1. TOPBAR */}
       <div
         id="topbar"
         style={{
-          backgroundColor: '#51b291',
+          backgroundColor: isDarkHeader ? '#0c0d10' : '#51b291',
           color: '#ffffff',
           fontSize: '0.84rem',
           height: '38px',
           display: 'flex',
           alignItems: 'center',
           position: 'relative',
-          zIndex: 101
+          zIndex: 101,
+          borderBottom: isDarkHeader ? '1px solid rgba(255,255,255,0.06)' : 'none'
         }}
       >
         <div
@@ -95,11 +98,12 @@ export default function Navbar() {
             <a
               href="tel:+971 508 893 589"
               style={{
-                color: '#ffffff',
+                color: isDarkHeader ? '#94a3b8' : '#ffffff',
                 textDecoration: 'none',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '6px'
+                gap: '6px',
+                transition: 'color 0.2s'
               }}
             >
               <Phone size={13} />
@@ -108,11 +112,12 @@ export default function Navbar() {
             <a
               href="mailto:sales@fastonmed.com"
               style={{
-                color: '#ffffff',
+                color: isDarkHeader ? '#94a3b8' : '#ffffff',
                 textDecoration: 'none',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '6px'
+                gap: '6px',
+                transition: 'color 0.2s'
               }}
             >
               <Mail size={13} />
@@ -128,7 +133,8 @@ export default function Navbar() {
               textAlign: 'center',
               fontWeight: 600,
               letterSpacing: '0.01em',
-              transition: 'opacity 0.3s ease'
+              transition: 'opacity 0.3s ease',
+              color: isDarkHeader ? '#e2e8f0' : '#ffffff'
             }}
           >
             <span>{tickerMessages[tickerIndex]}</span>
@@ -156,16 +162,16 @@ export default function Navbar() {
         `}</style>
       </div>
 
-      {/* 2. MAIN HEADER (Clean White Ecomus Minimalist) */}
+      {/* 2. MAIN HEADER (BeTheme Detailing Shop Dark on Home, Minimalist on Inner) */}
       <header
         id="main-header"
         style={{
-          backgroundColor: '#ffffff',
-          borderBottom: '1px solid #eef2f6',
+          backgroundColor: isDarkHeader ? '#111216' : '#ffffff',
+          borderBottom: isDarkHeader ? '1px solid rgba(255,255,255,0.08)' : '1px solid #eef2f6',
           position: 'sticky',
           top: 0,
           zIndex: 100,
-          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.03)'
+          boxShadow: isDarkHeader ? '0 4px 20px rgba(0, 0, 0, 0.4)' : '0 2px 8px rgba(0, 0, 0, 0.03)'
         }}
       >
         <div
@@ -175,7 +181,7 @@ export default function Navbar() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            height: '70px',
+            height: '74px',
             padding: '0 24px'
           }}
         >
@@ -187,7 +193,7 @@ export default function Navbar() {
               background: 'none',
               border: 'none',
               cursor: 'pointer',
-              color: '#0f172a',
+              color: isDarkHeader ? '#ffffff' : '#0f172a',
               padding: '6px',
               display: 'none',
               alignItems: 'center',
@@ -201,10 +207,10 @@ export default function Navbar() {
           {/* 1. Brand Logo (Responsive desktop / mobile) */}
           <Link href="/" style={{ display: 'flex', alignItems: 'center' }}>
             <div id="desktop-logo" style={{ display: 'block' }}>
-              <FastonmedLogo height={38} theme="light" />
+              <FastonmedLogo height={38} theme={isDarkHeader ? 'dark' : 'light'} />
             </div>
             <div id="mobile-logo" style={{ display: 'none' }}>
-              <FastonmedLogo height={28} theme="light" />
+              <FastonmedLogo height={28} theme={isDarkHeader ? 'dark' : 'light'} />
             </div>
           </Link>
 
@@ -213,7 +219,7 @@ export default function Navbar() {
             style={{
               display: 'none',
               alignItems: 'center',
-              gap: '40px'
+              gap: '36px'
             }}
             id="desktop-nav"
           >
@@ -224,10 +230,18 @@ export default function Navbar() {
                   key={link.href}
                   href={link.href}
                   style={{
-                    fontSize: '1rem',
-                    fontWeight: isActive ? 700 : 500,
-                    color: isActive ? '#51b291' : '#1e293b',
+                    fontSize: '0.95rem',
+                    fontWeight: isActive ? 700 : 600,
+                    color: isActive
+                      ? isDarkHeader
+                        ? '#bbf246'
+                        : '#51b291'
+                      : isDarkHeader
+                      ? '#f1f5f9'
+                      : '#1e293b',
                     textDecoration: 'none',
+                    letterSpacing: '0.02em',
+                    textTransform: 'uppercase',
                     transition: 'color 0.2s ease',
                     position: 'relative',
                     padding: '8px 0'
@@ -242,7 +256,7 @@ export default function Navbar() {
                         left: 0,
                         right: 0,
                         height: '2px',
-                        backgroundColor: '#51b291',
+                        backgroundColor: isDarkHeader ? '#bbf246' : '#51b291',
                         borderRadius: '2px'
                       }}
                     />
@@ -279,7 +293,7 @@ export default function Navbar() {
                 background: 'none',
                 border: 'none',
                 cursor: 'pointer',
-                color: '#1e293b',
+                color: isDarkHeader ? '#f8fafc' : '#1e293b',
                 padding: '6px',
                 display: 'flex',
                 alignItems: 'center',
@@ -291,13 +305,13 @@ export default function Navbar() {
               <Search size={21} />
             </button>
 
-            {/* Wishlist Icon (Desktop only for clean mobile header) */}
+            {/* Wishlist Icon */}
             <Link
               href="/wishlist"
               id="header-wishlist"
               style={{
                 position: 'relative',
-                color: '#1e293b',
+                color: isDarkHeader ? '#f8fafc' : '#1e293b',
                 padding: '6px',
                 display: 'flex',
                 alignItems: 'center'
@@ -312,8 +326,8 @@ export default function Navbar() {
                     position: 'absolute',
                     top: '-2px',
                     right: '-2px',
-                    backgroundColor: '#51b291',
-                    color: '#ffffff',
+                    backgroundColor: isDarkHeader ? '#bbf246' : '#51b291',
+                    color: isDarkHeader ? '#000000' : '#ffffff',
                     fontSize: '0.64rem',
                     fontWeight: 800,
                     width: '17px',
@@ -322,7 +336,7 @@ export default function Navbar() {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    boxShadow: '0 2px 5px rgba(81, 178, 145, 0.4)'
+                    boxShadow: '0 2px 5px rgba(0, 0, 0, 0.4)'
                   }}
                 >
                   {wishlist.length}
@@ -337,7 +351,7 @@ export default function Navbar() {
                 background: 'none',
                 border: 'none',
                 cursor: 'pointer',
-                color: '#1e293b',
+                color: isDarkHeader ? '#f8fafc' : '#1e293b',
                 padding: '6px',
                 display: 'flex',
                 alignItems: 'center',
@@ -352,8 +366,8 @@ export default function Navbar() {
                   position: 'absolute',
                   top: '-2px',
                   right: '-2px',
-                  backgroundColor: '#51b291',
-                  color: '#ffffff',
+                  backgroundColor: isDarkHeader ? '#bbf246' : '#51b291',
+                  color: isDarkHeader ? '#000000' : '#ffffff',
                   fontSize: '0.64rem',
                   fontWeight: 800,
                   width: '17px',
@@ -362,15 +376,31 @@ export default function Navbar() {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  boxShadow: '0 2px 5px rgba(81, 178, 145, 0.4)'
+                  boxShadow: '0 2px 5px rgba(0, 0, 0, 0.4)'
                 }}
               >
                 {cartCount}
               </span>
             </button>
+
+            {/* Account / Admin Login Icon */}
+            <Link
+              href="/admin/login"
+              style={{
+                color: isDarkHeader ? '#f8fafc' : '#1e293b',
+                padding: '6px',
+                display: 'flex',
+                alignItems: 'center'
+              }}
+              aria-label="Admin Portal & Account"
+              title="Account / Admin Portal"
+            >
+              <User size={21} />
+            </Link>
           </div>
         </div>
       </header>
+
 
       {/* 3. SEARCH OVERLAY MODAL */}
       {searchModalOpen && (
