@@ -5,17 +5,88 @@ import path from 'path';
 export const dynamic = 'force-dynamic';
 
 const CACHE_FILE = path.join(process.cwd(), 'data', 'products-cache.json');
+const BASELINE_FILE = path.join(process.cwd(), 'data', 'products-master-baseline.json');
+const BACKUPS_DIR = path.join(process.cwd(), 'data', 'backups');
+
 let inMemoryProducts: any[] | null = null;
 let lastCacheTime = 0;
 const CACHE_TTL_MS = 60_000; // 1 minute in-memory cache
 
+function ensureDirectories() {
+  const dir = path.dirname(CACHE_FILE);
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+  if (!fs.existsSync(BACKUPS_DIR)) fs.mkdirSync(BACKUPS_DIR, { recursive: true });
+}
+
+function createSnapshotBackup(products: any[]) {
+  try {
+    ensureDirectories();
+    if (!Array.isArray(products) || products.length === 0) return;
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    const backupFile = path.join(BACKUPS_DIR, `products-backup-${timestamp}.json`);
+    fs.writeFileSync(backupFile, JSON.stringify(products), 'utf8');
+
+    // Keep latest 10 rotating backups
+    const files = fs
+      .readdirSync(BACKUPS_DIR)
+      .filter((f) => f.startsWith('products-backup-') && f.endsWith('.json'))
+      .sort()
+      .reverse();
+    if (files.length > 10) {
+      for (const oldFile of files.slice(10)) {
+        try {
+          fs.unlinkSync(path.join(BACKUPS_DIR, oldFile));
+        } catch {}
+      }
+    }
+  } catch (err) {
+    console.error('Snapshot backup error:', err);
+  }
+}
+
 function loadFileCache(): any[] {
   try {
+    ensureDirectories();
+
+    // 1. Primary cache file
     if (fs.existsSync(CACHE_FILE)) {
       const raw = fs.readFileSync(CACHE_FILE, 'utf8');
       const parsed = JSON.parse(raw);
-      if (Array.isArray(parsed)) return parsed;
-      if (Array.isArray(parsed.products)) return parsed.products;
+      const list = Array.isArray(parsed) ? parsed : Array.isArray(parsed.products) ? parsed.products : [];
+      if (list.length > 0) return list;
+    }
+
+    // 2. Auto-recovery from latest snapshot backup
+    if (fs.existsSync(BACKUPS_DIR)) {
+      const files = fs
+        .readdirSync(BACKUPS_DIR)
+        .filter((f) => f.startsWith('products-backup-') && f.endsWith('.json'))
+        .sort()
+        .reverse();
+      for (const backup of files) {
+        try {
+          const raw = fs.readFileSync(path.join(BACKUPS_DIR, backup), 'utf8');
+          const parsed = JSON.parse(raw);
+          const list = Array.isArray(parsed) ? parsed : Array.isArray(parsed.products) ? parsed.products : [];
+          if (list.length > 0) {
+            console.log(`Safety Shield: Auto-recovered ${list.length} products from backup ${backup}`);
+            saveFileCache(list);
+            return list;
+          }
+        } catch {}
+      }
+    }
+
+    // 3. Immutable master baseline fail-safe
+    if (fs.existsSync(BASELINE_FILE)) {
+      const raw = fs.readFileSync(BASELINE_FILE, 'utf8');
+      const parsed = JSON.parse(raw);
+      const list = Array.isArray(parsed) ? parsed : Array.isArray(parsed.products) ? parsed.products : [];
+      if (list.length > 0) {
+        console.log(`Safety Shield: Auto-recovered ${list.length} products from master baseline`);
+        saveFileCache(list);
+        return list;
+      }
     }
   } catch (err) {
     console.warn('Could not read products file cache:', err);
@@ -25,8 +96,23 @@ function loadFileCache(): any[] {
 
 function saveFileCache(products: any[]) {
   try {
-    const dir = path.dirname(CACHE_FILE);
-    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    ensureDirectories();
+
+    // SAFETY SHIELD: Never allow overwriting catalog with empty data
+    if (!Array.isArray(products) || products.length === 0) {
+      console.warn('Safety Shield: Rejected attempt to overwrite product catalog with empty array');
+      return;
+    }
+
+    // SAFETY SHIELD: Never allow accidental truncation of >50% of the catalog in a single write
+    if (inMemoryProducts && inMemoryProducts.length > 100 && products.length < inMemoryProducts.length * 0.5) {
+      console.warn('Safety Shield: Prevented mass accidental deletion of products');
+      return;
+    }
+
+    // Create automatic snapshot before every change
+    createSnapshotBackup(products);
+
     fs.writeFileSync(CACHE_FILE, JSON.stringify(products), 'utf8');
     inMemoryProducts = products;
     lastCacheTime = Date.now();
@@ -36,7 +122,7 @@ function saveFileCache(products: any[]) {
 }
 
 function getCachedProducts(): any[] {
-  if (inMemoryProducts && Date.now() - lastCacheTime < CACHE_TTL_MS) {
+  if (inMemoryProducts && inMemoryProducts.length > 0 && Date.now() - lastCacheTime < CACHE_TTL_MS) {
     return inMemoryProducts;
   }
   const fromFile = loadFileCache();
@@ -48,32 +134,44 @@ function getCachedProducts(): any[] {
   return inMemoryProducts || [];
 }
 
-const crmUrl = () => `${(process.env.CRM_BACKEND_URL || 'http://127.0.0.1:3000').replace(/\/$/, '')}/api/products`;
+const getBackendUrls = () => {
+  const envUrl = process.env.CRM_BACKEND_URL || process.env.FAST_API_URL;
+  const urls: string[] = [];
+  if (envUrl) urls.push(`${envUrl.replace(/\/$/, '')}/api/products`);
+  urls.push('https://api.fastonmed.com/api/products');
+  urls.push('http://127.0.0.1:3000/api/products');
+  return Array.from(new Set(urls));
+};
 
 export async function GET(request: Request) {
   const cached = getCachedProducts();
 
-  // If we have cached products, return them immediately (< 5ms response time)
+  // Return cached products immediately (< 5ms)
   if (cached.length > 0) {
-    // If cache is older than TTL, revalidate in background without blocking response
+    // Background revalidation
     if (Date.now() - lastCacheTime > CACHE_TTL_MS) {
       setTimeout(async () => {
-        try {
-          const controller = new AbortController();
-          const timeout = setTimeout(() => controller.abort(), 4000);
-          const response = await fetch(crmUrl(), {
-            method: 'GET',
-            headers: { Accept: 'application/json' },
-            signal: controller.signal,
-            cache: 'no-store'
-          });
-          clearTimeout(timeout);
-          if (response.ok) {
-            const data = await response.json();
-            const products = Array.isArray(data) ? data : Array.isArray(data.products) ? data.products : null;
-            if (products && products.length > 0) saveFileCache(products);
-          }
-        } catch {}
+        for (const url of getBackendUrls()) {
+          try {
+            const controller = new AbortController();
+            const timeout = setTimeout(() => controller.abort(), 3500);
+            const response = await fetch(url, {
+              method: 'GET',
+              headers: { Accept: 'application/json' },
+              signal: controller.signal,
+              cache: 'no-store'
+            });
+            clearTimeout(timeout);
+            if (response.ok) {
+              const data = await response.json();
+              const products = Array.isArray(data) ? data : Array.isArray(data.products) ? data.products : null;
+              if (products && products.length > 0) {
+                saveFileCache(products);
+                break;
+              }
+            }
+          } catch {}
+        }
       }, 0);
     }
 
@@ -83,31 +181,32 @@ export async function GET(request: Request) {
     );
   }
 
-  // Fallback if cache was completely empty: try fetching directly
-  try {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 3000);
-    const response = await fetch(crmUrl(), {
-      method: 'GET',
-      headers: { Accept: 'application/json' },
-      signal: controller.signal,
-      cache: 'no-store'
-    });
-    clearTimeout(timeout);
-    if (response.ok) {
-      const data = await response.json();
-      const products = Array.isArray(data) ? data : Array.isArray(data.products) ? data.products : null;
-      if (products && products.length > 0) {
-        saveFileCache(products);
-        return NextResponse.json(
-          { success: true, products, count: products.length, source: 'crm' },
-          { headers: { 'Cache-Control': 'no-store' } }
-        );
+  // Fallback direct fetch if cache is empty
+  for (const url of getBackendUrls()) {
+    try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 3000);
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: { Accept: 'application/json' },
+        signal: controller.signal,
+        cache: 'no-store'
+      });
+      clearTimeout(timeout);
+      if (response.ok) {
+        const data = await response.json();
+        const products = Array.isArray(data) ? data : Array.isArray(data.products) ? data.products : null;
+        if (products && products.length > 0) {
+          saveFileCache(products);
+          return NextResponse.json(
+            { success: true, products, count: products.length, source: 'backend' },
+            { headers: { 'Cache-Control': 'no-store' } }
+          );
+        }
       }
-    }
-  } catch {}
+    } catch {}
+  }
 
-  // Return cached products immediately
   if (cached.length > 0) {
     return NextResponse.json(
       { success: true, products: cached, count: cached.length, source: 'cache' },
@@ -143,14 +242,16 @@ export async function POST(request: Request) {
 
     saveFileCache(updatedList);
 
-    // Forward to CRM asynchronously if available
-    try {
-      fetch(crmUrl(), {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
-      }).catch(() => {});
-    } catch {}
+    // Forward to backends asynchronously
+    for (const url of getBackendUrls()) {
+      try {
+        fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        }).catch(() => {});
+      } catch {}
+    }
 
     return NextResponse.json({ success: true, product: body, count: updatedList.length });
   } catch (error) {
@@ -169,15 +270,20 @@ export async function DELETE(request: Request) {
       current = current.filter((p: any) => p.id !== id);
     } else if (ids) {
       const idList = ids.split(',').map((x) => x.trim());
+      // Safety limit: avoid bulk-deleting more than 50 products in one call without confirmation
+      if (idList.length > 50) {
+        return NextResponse.json({ success: false, error: 'Safety limit: Cannot delete more than 50 products in one request' }, { status: 400 });
+      }
       current = current.filter((p: any) => !idList.includes(p.id));
     }
 
     saveFileCache(current);
 
-    // Forward to CRM if available
-    try {
-      fetch(`${crmUrl()}?${url.searchParams.toString()}`, { method: 'DELETE' }).catch(() => {});
-    } catch {}
+    for (const u of getBackendUrls()) {
+      try {
+        fetch(`${u}?${url.searchParams.toString()}`, { method: 'DELETE' }).catch(() => {});
+      } catch {}
+    }
 
     return NextResponse.json({ success: true, count: current.length });
   } catch (error) {

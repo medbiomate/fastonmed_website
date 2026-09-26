@@ -146,19 +146,43 @@ function catalogPage(products: Product[], request: Request) {
 }
 
 export async function GET(request: Request) {
-  const crmUrl = (process.env.CRM_BACKEND_URL || 'http://127.0.0.1:3000').replace(/\/$/, '');
+  const backendUrls = [
+    ...(process.env.CRM_BACKEND_URL ? [process.env.CRM_BACKEND_URL.replace(/\/$/, '')] : []),
+    ...(process.env.FAST_API_URL ? [process.env.FAST_API_URL.replace(/\/$/, '')] : []),
+    'https://api.fastonmed.com',
+    'http://127.0.0.1:3000'
+  ];
+
   try {
     let rawProducts = catalogCache?.expiresAt && catalogCache.expiresAt > Date.now() ? catalogCache.products : null;
     if (!rawProducts) {
-      const response = await fetch(`${crmUrl}/api/products?view=storefront`, { cache: 'no-store', headers: { Accept: 'application/json' } });
-      const result = await response.json();
-      if (!response.ok || !result?.success || !Array.isArray(result.products)) {
-        throw new Error(result?.error || `CRM returned ${response.status}`);
+      let fetched = false;
+      for (const baseUrl of backendUrls) {
+        try {
+          const controller = new AbortController();
+          const timeout = setTimeout(() => controller.abort(), 3500);
+          const response = await fetch(`${baseUrl}/api/products?view=storefront`, {
+            cache: 'no-store',
+            headers: { Accept: 'application/json' },
+            signal: controller.signal
+          });
+          clearTimeout(timeout);
+          if (response.ok) {
+            const result = await response.json();
+            if (result?.success && Array.isArray(result.products) && result.products.length > 0) {
+              rawProducts = result.products as CrmProduct[];
+              catalogCache = { products: rawProducts, expiresAt: Date.now() + 60_000 };
+              fetched = true;
+              break;
+            }
+          }
+        } catch {}
       }
-      rawProducts = result.products as CrmProduct[];
-      catalogCache = { products: rawProducts, expiresAt: Date.now() + 60_000 };
+      if (!fetched) {
+        throw new Error('Remote backends timed out or unavailable, falling back to local cache');
+      }
     }
-    const products = rawProducts
+    const products = rawProducts!
       .filter(item =>
         item.sourcePostType !== 'product_variation' &&
         item.name !== 'AUTO-DRAFT' &&
@@ -169,32 +193,37 @@ export async function GET(request: Request) {
       .map(mapCrmProduct);
     const paged = catalogPage(products, request);
     return NextResponse.json(
-      { success: true, ...paged, categories: buildCategories(products), source: 'crm' },
+      { success: true, ...paged, categories: buildCategories(products), source: 'backend' },
       { headers: { 'Cache-Control': 'no-store' } }
     );
-    } catch (error) {
-    console.error('Shared CRM catalog unavailable, trying local cache:', error);
+  } catch (error) {
+    console.error('Remote catalog unavailable, trying local cache/baseline:', error);
     try {
-      const cachePath = path.join(process.cwd(), 'data', 'products-cache.json');
-      if (fs.existsSync(cachePath)) {
-        const fileContent = fs.readFileSync(cachePath, 'utf8');
-        const parsed = JSON.parse(fileContent);
-        const rawProducts: CrmProduct[] = Array.isArray(parsed) ? parsed : Array.isArray(parsed.products) ? parsed.products : [];
-        if (rawProducts.length > 0) {
-          const products = rawProducts
-            .filter(item =>
-              item.sourcePostType !== 'product_variation' &&
-              item.name !== 'AUTO-DRAFT' &&
-              item.status !== 'auto-draft' &&
-              item.status !== 'trash' &&
-              (!item.status || item.status === 'publish' || item.status === 'published')
-            )
-            .map(mapCrmProduct);
-          const paged = catalogPage(products, request);
-          return NextResponse.json(
-            { success: true, ...paged, categories: buildCategories(products), source: 'cache' },
-            { headers: { 'Cache-Control': 'no-store' } }
-          );
+      const candidates = [
+        path.join(process.cwd(), 'data', 'products-cache.json'),
+        path.join(process.cwd(), 'data', 'products-master-baseline.json')
+      ];
+      for (const filePath of candidates) {
+        if (fs.existsSync(filePath)) {
+          const fileContent = fs.readFileSync(filePath, 'utf8');
+          const parsed = JSON.parse(fileContent);
+          const rawProducts: CrmProduct[] = Array.isArray(parsed) ? parsed : Array.isArray(parsed.products) ? parsed.products : [];
+          if (rawProducts.length > 0) {
+            const products = rawProducts
+              .filter(item =>
+                item.sourcePostType !== 'product_variation' &&
+                item.name !== 'AUTO-DRAFT' &&
+                item.status !== 'auto-draft' &&
+                item.status !== 'trash' &&
+                (!item.status || item.status === 'publish' || item.status === 'published')
+              )
+              .map(mapCrmProduct);
+            const paged = catalogPage(products, request);
+            return NextResponse.json(
+              { success: true, ...paged, categories: buildCategories(products), source: 'cache' },
+              { headers: { 'Cache-Control': 'no-store' } }
+            );
+          }
         }
       }
     } catch (fileErr) {
@@ -203,7 +232,7 @@ export async function GET(request: Request) {
 
     const paged = catalogPage(initialProducts, request);
     return NextResponse.json(
-      { success: true, ...paged, categories: initialCategories, source: 'fallback', warning: 'CRM backend unavailable' },
+      { success: true, ...paged, categories: initialCategories, source: 'fallback', warning: 'Remote catalog unavailable' },
       { headers: { 'Cache-Control': 'no-store' } }
     );
   }
