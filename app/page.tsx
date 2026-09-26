@@ -15,6 +15,9 @@ import {
   Clock,
   Sparkles,
   ChevronRight,
+  ChevronLeft,
+  Shuffle,
+  RefreshCw,
   Star,
   Layers,
   Heart,
@@ -22,7 +25,9 @@ import {
   ExternalLink,
   Award,
   Stethoscope,
-  Headphones
+  Headphones,
+  Zap,
+  Users
 } from 'lucide-react';
 import { useApp } from '@/lib/context';
 import type { Product } from '@/lib/types';
@@ -262,6 +267,98 @@ const initialBentoProducts: Product[] = initialBentoRaw.map(p => ({
   updatedAt: baseDate
 } as unknown as Product));
 
+// Curated high-value Biomedical Equipment for the top Spotlight card
+const spotlightEquipmentList = [
+  {
+    id: 'spotlight-1',
+    name: 'Haier Vaccine Refrigerator HYC-309',
+    category: 'Cold Chain Medical',
+    badge: 'MoHAP Certified',
+    description: '2°C to 8°C High Precision Vaccine & Pharmacy Cooling with Microprocessor',
+    regularPrice: 12500,
+    salePrice: 10950,
+    slug: 'haier-biomedical-hyc-309-pharmacy-refrigerator',
+    image: '/images/original/Fridges-Pharmacy_Haier_HYC-309.png',
+    specs: ['309L Net Capacity', 'Forced Air Uniformity', 'Express UAE Supply']
+  },
+  {
+    id: 'spotlight-2',
+    name: 'Mindray BeneVision N12 Patient Monitor',
+    category: 'ICU & Critical Care',
+    badge: 'Best Seller',
+    description: '12.1" Touchscreen with Multi-Lead ECG, SpO2, NIBP & Central Station Sync',
+    regularPrice: 24500,
+    salePrice: 22000,
+    slug: 'mindray-benevision-n12-patient-monitor',
+    image: '/products/patient-monitor.jpg',
+    specs: ['12.1" Capacitive Touch', 'Early Warning Score', 'Hospital Wards & ICU']
+  },
+  {
+    id: 'spotlight-3',
+    name: 'Biobase BSC-1000 Class II Biosafety Cabinet',
+    category: 'Laboratory & Diagnostic',
+    badge: 'Cleanroom Certified',
+    description: 'Motorized Sash Cleanroom Cabinet with 99.999% HEPA Filtration & UV System',
+    regularPrice: 11245,
+    salePrice: 9800,
+    slug: 'biobase-weighing-bio-safety-cabinet-bsc-1000',
+    image: '/wp-content/uploads/2025/06/biobase-weighing-bio-safety-cabinet-bsc-1000-1-510x510_large.jpg',
+    specs: ['HEPA Efficiency 99.999%', 'Class II Type A2', 'Clinical Pathology Ready']
+  },
+  {
+    id: 'spotlight-4',
+    name: 'Hamilton-C6 Next-Gen ICU Ventilator',
+    category: 'Respiratory & ICU',
+    badge: 'Intensive Care',
+    description: 'Adaptive ASV Ventilation System for Neonatal to Adult Critical ICU Suites',
+    regularPrice: 42000,
+    salePrice: 38000,
+    slug: 'shop',
+    image: '/products/ventilator.jpg',
+    specs: ['Adaptive ASV Technology', 'Turbine Driven Airflow', '24h Emergency AMC']
+  }
+];
+
+// Curated Clinical Consumables & Fast-Supply for the bottom card
+const fastSupplyConsumablesList = [
+  {
+    id: 'consumable-1',
+    name: 'Bio Safe Fluid Clean-Up Kit',
+    category: 'Hospital Disinfection & PPE',
+    discountBadge: 'SALE 30%',
+    description: 'Emergency Biohazard Spill Kit | Single-Use Protocol CM-1011024',
+    regularPrice: 135,
+    salePrice: 95,
+    slug: 'bio-safe-body-fluid-clean-up-kit-1-application-cm-1011024',
+    image: '/wp-content/uploads/2026/09/Body-Fluid-Clean-up-Kit-1-Application.jpg',
+    specs: ['1 Complete Application', 'Absorbent Granules', 'MoHAP Waste Bag']
+  },
+  {
+    id: 'consumable-2',
+    name: 'Emergency Spill Kit – 5 Applications',
+    category: 'Emergency Clinical Response',
+    discountBadge: 'SALE 21%',
+    description: 'Heavy-Duty Waterproof Carry Case for Clinical Wards & Central Laboratories',
+    regularPrice: 247,
+    salePrice: 195,
+    slug: 'body-fluid-spill-kit-5-application-in-carry-case',
+    image: '/wp-content/uploads/2025/07/body-fluid-spill-kit-5-application-in-carry-case-510x352_large.jpg',
+    specs: ['5 Uses Hard Case', 'Disinfectant Spray', 'Rapid Spill Containment']
+  },
+  {
+    id: 'consumable-3',
+    name: 'UN2814 Biosafety Specimen Transport Box BTB-L6',
+    category: 'Cold-Chain Diagnostic',
+    discountBadge: 'SALE 18%',
+    description: '6-Liter Thermal Insulation Box for UN2814 & UN3373 Pathology Specimens',
+    regularPrice: 340,
+    salePrice: 280,
+    slug: 'shop',
+    image: '/wp-content/uploads/2025/07/biosafety-transport-box-btb-l6-1-510x510_large.jpg',
+    specs: ['6L Volume Capacity', 'Thermal Seal Lock', 'WHO Biological Transport']
+  }
+];
+
 const categoryPills = [
   { id: 'all', label: 'All Products' },
   { id: 'icu', label: 'ICU & Monitoring' },
@@ -277,6 +374,55 @@ export default function HomePage() {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [newsletterSubmitted, setNewsletterSubmitted] = useState(false);
+
+  // Dynamic Product Shuffle States
+  const [spotlightIndex, setSpotlightIndex] = useState(0);
+  const [fastSupplyIndex, setFastSupplyIndex] = useState(0);
+  const [isShufflingTop, setIsShufflingTop] = useState(false);
+  const [isShufflingBottom, setIsShufflingBottom] = useState(false);
+
+  // Auto-shuffle intervals
+  useEffect(() => {
+    const timerTop = setInterval(() => {
+      setSpotlightIndex((prev) => (prev + 1) % spotlightEquipmentList.length);
+    }, 6000);
+    return () => clearInterval(timerTop);
+  }, []);
+
+  useEffect(() => {
+    const timerBottom = setInterval(() => {
+      setFastSupplyIndex((prev) => (prev + 1) % fastSupplyConsumablesList.length);
+    }, 7500);
+    return () => clearInterval(timerBottom);
+  }, []);
+
+  const handleShuffleTop = () => {
+    setIsShufflingTop(true);
+    setSpotlightIndex((prev) => (prev + 1) % spotlightEquipmentList.length);
+    setTimeout(() => setIsShufflingTop(false), 500);
+  };
+
+  const handlePrevTop = () => {
+    setSpotlightIndex((prev) => (prev - 1 + spotlightEquipmentList.length) % spotlightEquipmentList.length);
+  };
+
+  const handleNextTop = () => {
+    setSpotlightIndex((prev) => (prev + 1) % spotlightEquipmentList.length);
+  };
+
+  const handleShuffleBottom = () => {
+    setIsShufflingBottom(true);
+    setFastSupplyIndex((prev) => (prev + 1) % fastSupplyConsumablesList.length);
+    setTimeout(() => setIsShufflingBottom(false), 500);
+  };
+
+  const handlePrevBottom = () => {
+    setFastSupplyIndex((prev) => (prev - 1 + fastSupplyConsumablesList.length) % fastSupplyConsumablesList.length);
+  };
+
+  const handleNextBottom = () => {
+    setFastSupplyIndex((prev) => (prev + 1) % fastSupplyConsumablesList.length);
+  };
 
   // Fetch real products from catalog API on mount
   useEffect(() => {
@@ -384,7 +530,7 @@ export default function HomePage() {
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: '1.55fr 1fr',
+              gridTemplateColumns: '1.45fr 1fr',
               gap: '24px',
               alignItems: 'stretch'
             }}
@@ -396,24 +542,21 @@ export default function HomePage() {
                 position: 'relative',
                 borderRadius: '26px',
                 overflow: 'hidden',
-                minHeight: '580px',
+                minHeight: '620px',
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent: 'flex-end',
-                padding: '48px',
-                backgroundImage: `linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.85) 60%, rgba(255, 255, 255, 0.98) 100%), url('/images/hero-medical-light.jpg')`,
+                justifyContent: 'space-between',
+                padding: '44px 48px',
+                backgroundImage: `linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, rgba(248, 250, 252, 0.88) 55%, #f8fafc 100%), url('/images/hero-medical-light.jpg')`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 border: '1px solid #e2e8f0',
-                boxShadow: '0 10px 30px rgba(15, 23, 42, 0.05)'
+                boxShadow: '0 12px 35px rgba(15, 23, 42, 0.05)'
               }}
             >
               {/* Top Badge */}
               <div
                 style={{
-                  position: 'absolute',
-                  top: '32px',
-                  left: '48px',
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '8px',
@@ -421,7 +564,8 @@ export default function HomePage() {
                   padding: '8px 18px',
                   borderRadius: '30px',
                   border: '1px solid #e2e8f0',
-                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.04)'
+                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.04)',
+                  alignSelf: 'flex-start'
                 }}
               >
                 <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#00875a' }} />
@@ -431,10 +575,10 @@ export default function HomePage() {
               </div>
 
               {/* Main Content */}
-              <div style={{ maxWidth: '640px', zIndex: 2 }}>
+              <div style={{ maxWidth: '640px', zIndex: 2, margin: '24px 0' }}>
                 <h1
                   style={{
-                    fontSize: '3.2rem',
+                    fontSize: '3.1rem',
                     fontWeight: 900,
                     color: '#0f172a',
                     lineHeight: 1.12,
@@ -450,11 +594,11 @@ export default function HomePage() {
                     fontSize: '1.05rem',
                     color: '#475569',
                     lineHeight: 1.6,
-                    marginBottom: '32px',
+                    marginBottom: '28px',
                     fontWeight: 500
                   }}
                 >
-                  FastOnMed is the UAE’s trusted biomedical partner in Dubai Healthcare City (DHCC). We supply certified hospital furniture, ICU patient monitors, ventilators, and emergency healthcare consumables with 24h express supply across Dubai & Abu Dhabi.
+                  FastOnMed is the UAE’s trusted biomedical distributor in Dubai Healthcare City (DHCC). We supply certified hospital furniture, ICU patient monitors, ventilators, and emergency healthcare consumables with 24h express supply across Dubai & Abu Dhabi.
                 </p>
 
                 {/* Action Buttons */}
@@ -475,7 +619,7 @@ export default function HomePage() {
                       gap: '8px',
                       textDecoration: 'none',
                       transition: 'all 0.2s ease',
-                      boxShadow: '0 8px 20px rgba(0, 135, 90, 0.25)'
+                      boxShadow: '0 8px 20px rgba(0, 135, 90, 0.3)'
                     }}
                     className="hero-emerald-btn"
                   >
@@ -488,7 +632,7 @@ export default function HomePage() {
                     style={{
                       backgroundColor: '#ffffff',
                       color: '#0f172a',
-                      border: '1px solid #cbd5e1',
+                      border: '1.5px solid #cbd5e1',
                       padding: '14px 28px',
                       borderRadius: '12px',
                       fontWeight: 700,
@@ -505,9 +649,43 @@ export default function HomePage() {
                   </Link>
                 </div>
               </div>
+
+              {/* DOC+ Inspired Floating Micro-Metrics Strip */}
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(4, 1fr)',
+                  gap: '12px',
+                  backgroundColor: 'rgba(255, 255, 255, 0.94)',
+                  backdropFilter: 'blur(10px)',
+                  padding: '16px 20px',
+                  borderRadius: '18px',
+                  border: '1px solid #e2e8f0',
+                  boxShadow: '0 6px 20px rgba(15, 23, 42, 0.05)',
+                  zIndex: 2
+                }}
+                id="hero-metrics-strip"
+              >
+                <div>
+                  <div style={{ fontSize: '1.25rem', fontWeight: 900, color: '#00875a' }}>99.4%</div>
+                  <div style={{ fontSize: '0.72rem', color: '#64748b', fontWeight: 600 }}>24h UAE Delivery</div>
+                </div>
+                <div>
+                  <div style={{ fontSize: '1.25rem', fontWeight: 900, color: '#0f172a' }}>1,250+</div>
+                  <div style={{ fontSize: '0.72rem', color: '#64748b', fontWeight: 600 }}>Hospitals & Clinics</div>
+                </div>
+                <div>
+                  <div style={{ fontSize: '1.25rem', fontWeight: 900, color: '#d97706' }}>4.9 ★</div>
+                  <div style={{ fontSize: '0.72rem', color: '#64748b', fontWeight: 600 }}>Biomedical Reviews</div>
+                </div>
+                <div>
+                  <div style={{ fontSize: '1.25rem', fontWeight: 900, color: '#0284c7' }}>100%</div>
+                  <div style={{ fontSize: '0.72rem', color: '#64748b', fontWeight: 600 }}>MoHAP Certified</div>
+                </div>
+              </div>
             </div>
 
-            {/* 2. RIGHT COLUMN: REAL PRODUCTS SHOWCASE (Replacing countdown timer as requested) */}
+            {/* 2. RIGHT COLUMN: DYNAMIC PRODUCT SHUFFLE SHOWCASE */}
             <div
               style={{
                 display: 'grid',
@@ -515,184 +693,450 @@ export default function HomePage() {
                 gap: '24px'
               }}
             >
-              {/* Product Card 1: Haier Biomedical Vaccine & Pharmacy Refrigerator */}
-              <div
-                style={{
-                  backgroundColor: '#ffffff',
-                  borderRadius: '24px',
-                  padding: '28px',
-                  border: '1px solid #e2e8f0',
-                  boxShadow: '0 10px 25px rgba(15, 23, 42, 0.04)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  gap: '20px',
-                  position: 'relative',
-                  overflow: 'hidden',
-                  transition: 'transform 0.2s, box-shadow 0.2s'
-                }}
-                className="right-bento-card"
-              >
-                <div style={{ flex: 1, zIndex: 2 }}>
+              {/* Product Card 1: BOLD DARKENED CONTRAST CARD (Spotlight Equipment with Shuffle) */}
+              {(() => {
+                const item = spotlightEquipmentList[spotlightIndex];
+                return (
                   <div
+                    key={item.id}
                     style={{
-                      display: 'inline-block',
-                      backgroundColor: '#f0fdf4',
-                      color: '#15803d',
-                      fontSize: '0.72rem',
-                      fontWeight: 800,
-                      padding: '4px 10px',
-                      borderRadius: '20px',
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.04em',
-                      marginBottom: '8px'
-                    }}
-                  >
-                    Cold Chain Medical
-                  </div>
-                  <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0f172a', lineHeight: 1.3, marginBottom: '6px' }}>
-                    Haier Vaccine Refrigerator HYC-309
-                  </h3>
-                  <p style={{ fontSize: '0.82rem', color: '#64748b', marginBottom: '14px', lineHeight: 1.4 }}>
-                    2°C to 8°C High Precision Vaccine & Pharmacy Cooling
-                  </p>
-                  <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', marginBottom: '16px' }}>
-                    <span style={{ fontSize: '1.3rem', fontWeight: 900, color: '#0f172a' }}>AED 10,950</span>
-                    <span style={{ fontSize: '0.85rem', color: '#94a3b8', textDecoration: 'line-through' }}>AED 12,500</span>
-                  </div>
-                  <Link
-                    href="/product/haier-biomedical-hyc-309-pharmacy-refrigerator"
-                    style={{
-                      backgroundColor: '#0f172a',
-                      color: '#ffffff',
-                      padding: '10px 22px',
+                      background: 'linear-gradient(145deg, #07111e 0%, #0d1e38 55%, #05262c 100%)',
                       borderRadius: '24px',
-                      fontWeight: 700,
-                      fontSize: '0.82rem',
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.04em',
-                      textDecoration: 'none',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '6px'
+                      padding: '24px 26px',
+                      border: '1px solid rgba(255, 255, 255, 0.12)',
+                      boxShadow: '0 16px 36px rgba(7, 17, 30, 0.18)',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'space-between',
+                      position: 'relative',
+                      overflow: 'hidden',
+                      color: '#ffffff',
+                      transition: 'transform 0.25s ease, box-shadow 0.25s ease'
                     }}
+                    className="right-bento-card spotlight-card-glow"
                   >
-                    <span>BUY NOW</span>
-                    <ChevronRight size={15} />
-                  </Link>
-                </div>
+                    {/* Header Controls Bar */}
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px', zIndex: 3 }}>
+                      <div
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '6px',
+                          backgroundColor: 'rgba(16, 185, 129, 0.18)',
+                          color: '#34d399',
+                          border: '1px solid rgba(52, 211, 153, 0.35)',
+                          fontSize: '0.7rem',
+                          fontWeight: 800,
+                          padding: '4px 10px',
+                          borderRadius: '20px',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.04em'
+                        }}
+                      >
+                        <Zap size={12} />
+                        <span>Biomedical Spotlight</span>
+                      </div>
 
-                <div style={{ width: '130px', height: '170px', position: 'relative', flexShrink: 0 }}>
-                  <img
-                    src="/images/original/Fridges-Pharmacy_Haier_HYC-309.png"
-                    alt="Haier Biomedical Vaccine Refrigerator"
-                    style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-                  />
-                </div>
-              </div>
+                      {/* Interactive Shuffle & Navigation Buttons */}
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <span style={{ fontSize: '0.72rem', color: '#94a3b8', fontWeight: 700, marginRight: '4px' }}>
+                          0{spotlightIndex + 1} / 0{spotlightEquipmentList.length}
+                        </span>
 
-              {/* Product Card 2: Bio Safe Body Fluid Clean-Up Kit (Real Product from User Screenshot) */}
-              <div
-                style={{
-                  backgroundColor: '#ffffff',
-                  borderRadius: '24px',
-                  padding: '28px',
-                  border: '1px solid #e2e8f0',
-                  boxShadow: '0 10px 25px rgba(15, 23, 42, 0.04)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  gap: '20px',
-                  position: 'relative',
-                  overflow: 'hidden',
-                  transition: 'transform 0.2s, box-shadow 0.2s'
-                }}
-                className="right-bento-card"
-              >
-                {/* Circular Discount Sticker Badge */}
-                <div
-                  style={{
-                    position: 'absolute',
-                    top: '16px',
-                    right: '16px',
-                    width: '56px',
-                    height: '56px',
-                    borderRadius: '50%',
-                    backgroundColor: '#00875a',
-                    color: '#ffffff',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontWeight: 800,
-                    fontSize: '0.68rem',
-                    lineHeight: 1.15,
-                    boxShadow: '0 4px 12px rgba(0, 135, 90, 0.3)',
-                    transform: 'rotate(10deg)',
-                    zIndex: 5
-                  }}
-                >
-                  <span style={{ fontSize: '0.62rem' }}>SALE</span>
-                  <span style={{ fontSize: '0.95rem', fontWeight: 900 }}>30%</span>
-                </div>
+                        <button
+                          onClick={handleShuffleTop}
+                          title="Shuffle product"
+                          style={{
+                            backgroundColor: 'rgba(255, 255, 255, 0.12)',
+                            color: '#ffffff',
+                            border: '1px solid rgba(255, 255, 255, 0.2)',
+                            padding: '4px 10px',
+                            borderRadius: '16px',
+                            cursor: 'pointer',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '4px',
+                            fontSize: '0.72rem',
+                            fontWeight: 700,
+                            transition: 'all 0.2s'
+                          }}
+                          className="shuffle-btn-hover"
+                        >
+                          <Shuffle size={12} className={isShufflingTop ? 'animate-spin-once' : ''} />
+                          <span>Shuffle</span>
+                        </button>
 
-                <div style={{ flex: 1, zIndex: 2 }}>
+                        <button
+                          onClick={handlePrevTop}
+                          aria-label="Previous product"
+                          style={{
+                            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                            color: '#ffffff',
+                            border: 'none',
+                            width: '26px',
+                            height: '26px',
+                            borderRadius: '50%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            cursor: 'pointer'
+                          }}
+                        >
+                          <ChevronLeft size={14} />
+                        </button>
+
+                        <button
+                          onClick={handleNextTop}
+                          aria-label="Next product"
+                          style={{
+                            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                            color: '#ffffff',
+                            border: 'none',
+                            width: '26px',
+                            height: '26px',
+                            borderRadius: '50%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            cursor: 'pointer'
+                          }}
+                        >
+                          <ChevronRight size={14} />
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Product Body: Content + Floating Image */}
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px', zIndex: 2 }}>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontSize: '0.72rem', color: '#2dd4bf', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '4px' }}>
+                          {item.category}
+                        </div>
+                        <h3 style={{ fontSize: '1.24rem', fontWeight: 800, color: '#ffffff', lineHeight: 1.28, marginBottom: '6px' }}>
+                          {item.name}
+                        </h3>
+                        <p style={{ fontSize: '0.8rem', color: '#94a3b8', lineHeight: 1.4, marginBottom: '12px' }}>
+                          {item.description}
+                        </p>
+
+                        {/* Specs Pill List */}
+                        <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '14px' }}>
+                          {item.specs.map((s, idx) => (
+                            <span
+                              key={idx}
+                              style={{
+                                fontSize: '0.68rem',
+                                color: '#cbd5e1',
+                                backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                                padding: '3px 8px',
+                                borderRadius: '6px'
+                              }}
+                            >
+                              {s}
+                            </span>
+                          ))}
+                        </div>
+
+                        {/* Price & CTA */}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                          <div>
+                            <span style={{ fontSize: '1.32rem', fontWeight: 900, color: '#10b981' }}>
+                              AED {item.salePrice.toLocaleString()}
+                            </span>
+                            <span style={{ fontSize: '0.82rem', color: '#64748b', textDecoration: 'line-through', marginLeft: '6px' }}>
+                              AED {item.regularPrice.toLocaleString()}
+                            </span>
+                          </div>
+
+                          <Link
+                            href={item.slug.startsWith('http') || item.slug === 'shop' ? `/${item.slug}` : `/product/${item.slug}`}
+                            style={{
+                              backgroundColor: '#00875a',
+                              color: '#ffffff',
+                              padding: '9px 20px',
+                              borderRadius: '20px',
+                              fontWeight: 800,
+                              fontSize: '0.8rem',
+                              textTransform: 'uppercase',
+                              letterSpacing: '0.04em',
+                              textDecoration: 'none',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '6px',
+                              transition: 'all 0.2s ease',
+                              boxShadow: '0 4px 14px rgba(0, 135, 90, 0.4)'
+                            }}
+                            className="hero-emerald-btn"
+                          >
+                            <span>BUY NOW</span>
+                            <ChevronRight size={14} />
+                          </Link>
+                        </div>
+                      </div>
+
+                      {/* Product Image Stage */}
+                      <div
+                        style={{
+                          width: '135px',
+                          height: '165px',
+                          backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                          borderRadius: '16px',
+                          padding: '12px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          flexShrink: 0,
+                          border: '1px solid rgba(255, 255, 255, 0.12)',
+                          backdropFilter: 'blur(8px)'
+                        }}
+                      >
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                          className="shuffle-img-transition"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                );
+              })()}
+
+              {/* Product Card 2: MULTI-TONAL MINT & SLATE CARD (Clinical Fast-Supply with Shuffle) */}
+              {(() => {
+                const item = fastSupplyConsumablesList[fastSupplyIndex];
+                return (
                   <div
+                    key={item.id}
                     style={{
-                      display: 'inline-block',
-                      backgroundColor: '#eff6ff',
-                      color: '#1d4ed8',
-                      fontSize: '0.72rem',
-                      fontWeight: 800,
-                      padding: '4px 10px',
-                      borderRadius: '20px',
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.04em',
-                      marginBottom: '8px'
-                    }}
-                  >
-                    Hospital Disinfection & PPE
-                  </div>
-                  <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0f172a', lineHeight: 1.3, marginBottom: '6px' }}>
-                    Bio Safe Fluid Clean-Up Kit
-                  </h3>
-                  <p style={{ fontSize: '0.82rem', color: '#64748b', marginBottom: '14px', lineHeight: 1.4 }}>
-                    Emergency Biohazard Spill Kit | CM-1011024
-                  </p>
-                  <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', marginBottom: '16px' }}>
-                    <span style={{ fontSize: '1.3rem', fontWeight: 900, color: '#0f172a' }}>AED 95</span>
-                    <span style={{ fontSize: '0.85rem', color: '#94a3b8', textDecoration: 'line-through' }}>AED 135</span>
-                  </div>
-                  <Link
-                    href="/product/bio-safe-body-fluid-clean-up-kit-1-application-cm-1011024"
-                    style={{
-                      backgroundColor: '#00875a',
-                      color: '#ffffff',
-                      padding: '10px 22px',
+                      background: 'linear-gradient(135deg, #ffffff 0%, #f4fbf7 100%)',
                       borderRadius: '24px',
-                      fontWeight: 700,
-                      fontSize: '0.82rem',
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.04em',
-                      textDecoration: 'none',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '6px'
+                      padding: '24px 26px',
+                      border: '1px solid #cbd5e1',
+                      borderLeft: '6px solid #00875a',
+                      boxShadow: '0 14px 34px rgba(15, 23, 42, 0.06)',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'space-between',
+                      position: 'relative',
+                      overflow: 'hidden',
+                      transition: 'transform 0.25s ease, box-shadow 0.25s ease'
                     }}
+                    className="right-bento-card"
                   >
-                    <span>BUY NOW</span>
-                    <ChevronRight size={15} />
-                  </Link>
-                </div>
+                    {/* Circular Discount Sticker Badge */}
+                    <div
+                      style={{
+                        position: 'absolute',
+                        top: '14px',
+                        right: '14px',
+                        width: '52px',
+                        height: '52px',
+                        borderRadius: '50%',
+                        backgroundColor: '#00875a',
+                        color: '#ffffff',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontWeight: 800,
+                        fontSize: '0.64rem',
+                        lineHeight: 1.15,
+                        boxShadow: '0 4px 14px rgba(0, 135, 90, 0.35)',
+                        transform: 'rotate(8deg)',
+                        zIndex: 5
+                      }}
+                    >
+                      <span style={{ fontSize: '0.6rem', color: '#fef08a' }}>HOT</span>
+                      <span style={{ fontSize: '0.88rem', fontWeight: 900 }}>{item.discountBadge.replace('SALE ', '')}</span>
+                    </div>
 
-                <div style={{ width: '130px', height: '150px', position: 'relative', flexShrink: 0 }}>
-                  <img
-                    src="/wp-content/uploads/2026/09/Body-Fluid-Clean-up-Kit-1-Application.jpg"
-                    alt="Bio Safe Body Fluid Clean-Up Kit"
-                    style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-                  />
-                </div>
-              </div>
+                    {/* Header Controls Bar */}
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px', zIndex: 3, paddingRight: '56px' }}>
+                      <div
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '6px',
+                          backgroundColor: '#ecfdf5',
+                          color: '#065f46',
+                          border: '1px solid #a7f3d0',
+                          fontSize: '0.7rem',
+                          fontWeight: 800,
+                          padding: '4px 10px',
+                          borderRadius: '20px',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.04em'
+                        }}
+                      >
+                        <Stethoscope size={12} />
+                        <span>Clinical Fast-Supply</span>
+                      </div>
+
+                      {/* Interactive Shuffle & Navigation */}
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <span style={{ fontSize: '0.72rem', color: '#64748b', fontWeight: 700, marginRight: '4px' }}>
+                          0{fastSupplyIndex + 1} / 0{fastSupplyConsumablesList.length}
+                        </span>
+
+                        <button
+                          onClick={handleShuffleBottom}
+                          title="Shuffle consumable"
+                          style={{
+                            backgroundColor: '#f1f5f9',
+                            color: '#0f172a',
+                            border: '1px solid #cbd5e1',
+                            padding: '4px 10px',
+                            borderRadius: '16px',
+                            cursor: 'pointer',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '4px',
+                            fontSize: '0.72rem',
+                            fontWeight: 700,
+                            transition: 'all 0.2s'
+                          }}
+                        >
+                          <Shuffle size={12} className={isShufflingBottom ? 'animate-spin-once' : ''} />
+                          <span>Shuffle</span>
+                        </button>
+
+                        <button
+                          onClick={handlePrevBottom}
+                          aria-label="Previous item"
+                          style={{
+                            backgroundColor: '#f1f5f9',
+                            color: '#0f172a',
+                            border: 'none',
+                            width: '26px',
+                            height: '26px',
+                            borderRadius: '50%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            cursor: 'pointer'
+                          }}
+                        >
+                          <ChevronLeft size={14} />
+                        </button>
+
+                        <button
+                          onClick={handleNextBottom}
+                          aria-label="Next item"
+                          style={{
+                            backgroundColor: '#f1f5f9',
+                            color: '#0f172a',
+                            border: 'none',
+                            width: '26px',
+                            height: '26px',
+                            borderRadius: '50%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            cursor: 'pointer'
+                          }}
+                        >
+                          <ChevronRight size={14} />
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Product Body: Content + Image */}
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px', zIndex: 2 }}>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontSize: '0.72rem', color: '#0f766e', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '4px' }}>
+                          {item.category}
+                        </div>
+                        <h3 style={{ fontSize: '1.24rem', fontWeight: 800, color: '#0b1424', lineHeight: 1.28, marginBottom: '6px' }}>
+                          {item.name}
+                        </h3>
+                        <p style={{ fontSize: '0.8rem', color: '#475569', lineHeight: 1.4, marginBottom: '12px' }}>
+                          {item.description}
+                        </p>
+
+                        {/* Specs Pill List */}
+                        <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '14px' }}>
+                          {item.specs.map((s, idx) => (
+                            <span
+                              key={idx}
+                              style={{
+                                fontSize: '0.68rem',
+                                color: '#334155',
+                                backgroundColor: '#e2e8f0',
+                                padding: '3px 8px',
+                                borderRadius: '6px',
+                                fontWeight: 600
+                              }}
+                            >
+                              {s}
+                            </span>
+                          ))}
+                        </div>
+
+                        {/* Price & CTA */}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                          <div>
+                            <span style={{ fontSize: '1.32rem', fontWeight: 900, color: '#0f172a' }}>
+                              AED {item.salePrice}
+                            </span>
+                            <span style={{ fontSize: '0.82rem', color: '#94a3b8', textDecoration: 'line-through', marginLeft: '6px' }}>
+                              AED {item.regularPrice}
+                            </span>
+                          </div>
+
+                          <Link
+                            href={item.slug.startsWith('http') || item.slug === 'shop' ? `/${item.slug}` : `/product/${item.slug}`}
+                            style={{
+                              backgroundColor: '#0f172a',
+                              color: '#ffffff',
+                              padding: '9px 20px',
+                              borderRadius: '20px',
+                              fontWeight: 800,
+                              fontSize: '0.8rem',
+                              textTransform: 'uppercase',
+                              letterSpacing: '0.04em',
+                              textDecoration: 'none',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '6px',
+                              transition: 'all 0.2s ease',
+                              boxShadow: '0 4px 14px rgba(15, 23, 42, 0.25)'
+                            }}
+                            className="hero-outline-btn"
+                          >
+                            <span>BUY NOW</span>
+                            <ChevronRight size={14} />
+                          </Link>
+                        </div>
+                      </div>
+
+                      {/* Product Image Stage */}
+                      <div
+                        style={{
+                          width: '135px',
+                          height: '155px',
+                          backgroundColor: '#ffffff',
+                          borderRadius: '16px',
+                          padding: '12px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          flexShrink: 0,
+                          border: '1px solid #e2e8f0',
+                          boxShadow: '0 4px 14px rgba(0, 0, 0, 0.03)'
+                        }}
+                      >
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                          className="shuffle-img-transition"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                );
+              })()}
             </div>
           </div>
         </div>
@@ -705,10 +1149,16 @@ export default function HomePage() {
             #hero-bento-title {
               font-size: 2.5rem !important;
             }
+            #hero-metrics-strip {
+              grid-template-columns: repeat(2, 1fr) !important;
+            }
           }
           @media (max-width: 640px) {
             #hero-bento-title {
               font-size: 2rem !important;
+            }
+            #hero-metrics-strip {
+              grid-template-columns: 1fr !important;
             }
           }
           .hero-emerald-btn:hover {
@@ -716,12 +1166,32 @@ export default function HomePage() {
             transform: translateY(-2px);
           }
           .hero-outline-btn:hover {
-            border-color: #00875a !important;
-            color: #00875a !important;
+            background-color: #1e293b !important;
+            border-color: #1e293b !important;
+            color: #ffffff !important;
+            transform: translateY(-2px);
           }
           .right-bento-card:hover {
             transform: translateY(-3px);
-            box-shadow: 0 16px 36px rgba(15, 23, 42, 0.08) !important;
+            box-shadow: 0 20px 42px rgba(15, 23, 42, 0.12) !important;
+          }
+          .shuffle-btn-hover:hover {
+            background-color: rgba(255, 255, 255, 0.22) !important;
+            transform: scale(1.04);
+          }
+          @keyframes spinOnce {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+          }
+          .animate-spin-once {
+            animation: spinOnce 0.5s ease-in-out;
+          }
+          .shuffle-img-transition {
+            animation: fadeInScale 0.4s ease forwards;
+          }
+          @keyframes fadeInScale {
+            0% { opacity: 0.6; transform: scale(0.96); }
+            100% { opacity: 1; transform: scale(1); }
           }
         `}</style>
       </section>
@@ -882,6 +1352,134 @@ export default function HomePage() {
                   Wholesale institutional pricing, flexible credit terms, and official UAE tender support.
                 </p>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 2.5: INSTITUTIONAL PROCUREMENT BANNER (DOC+ Style Dark Accent Module in Light Canvas) */}
+      <section style={{ padding: '0 0 60px' }}>
+        <div className="container" style={{ maxWidth: '1360px', margin: '0 auto', padding: '0 20px' }}>
+          <div
+            style={{
+              background: 'linear-gradient(135deg, #071322 0%, #0d2238 50%, #064e3b 100%)',
+              borderRadius: '26px',
+              padding: '48px 52px',
+              color: '#ffffff',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '36px',
+              flexWrap: 'wrap',
+              boxShadow: '0 20px 48px rgba(7, 19, 34, 0.22)',
+              border: '1px solid rgba(255, 255, 255, 0.12)',
+              position: 'relative',
+              overflow: 'hidden'
+            }}
+          >
+            {/* Ambient emerald backlight */}
+            <div
+              style={{
+                position: 'absolute',
+                top: '-60px',
+                right: '-40px',
+                width: '320px',
+                height: '320px',
+                borderRadius: '50%',
+                background: 'radial-gradient(circle, rgba(16, 185, 129, 0.25) 0%, transparent 70%)',
+                pointerEvents: 'none'
+              }}
+            />
+
+            <div style={{ maxWidth: '680px', zIndex: 2 }}>
+              <div
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  backgroundColor: 'rgba(245, 158, 11, 0.16)',
+                  color: '#fbbf24',
+                  border: '1px solid rgba(251, 191, 36, 0.35)',
+                  fontSize: '0.72rem',
+                  fontWeight: 800,
+                  padding: '4px 12px',
+                  borderRadius: '20px',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.04em',
+                  marginBottom: '14px'
+                }}
+              >
+                <span>Institutional Bulk Supply & Tenders</span>
+              </div>
+              <h2
+                style={{
+                  fontSize: '2.1rem',
+                  fontWeight: 900,
+                  color: '#ffffff',
+                  lineHeight: 1.22,
+                  letterSpacing: '-0.02em',
+                  marginBottom: '12px'
+                }}
+              >
+                Procuring for UAE Hospitals, Day Surgery Clinics, or Labs?
+              </h2>
+              <p
+                style={{
+                  fontSize: '0.98rem',
+                  color: '#94a3b8',
+                  lineHeight: 1.6,
+                  margin: 0
+                }}
+              >
+                FastOnMed offers institutional tier discounts, 30-day payment credit facilities, and official MoHAP tax quotation delivery in under 60 minutes with dedicated biomedical engineering support.
+              </p>
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '14px', zIndex: 2, flexWrap: 'wrap' }}>
+              <Link
+                href="/contact"
+                style={{
+                  backgroundColor: '#f59e0b',
+                  color: '#0f172a',
+                  padding: '16px 32px',
+                  borderRadius: '12px',
+                  fontWeight: 800,
+                  fontSize: '0.92rem',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.04em',
+                  textDecoration: 'none',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  transition: 'all 0.2s ease',
+                  boxShadow: '0 8px 24px rgba(245, 158, 11, 0.35)'
+                }}
+                className="banner-amber-btn"
+              >
+                <span>Request Tender Quote</span>
+                <ArrowRight size={18} strokeWidth={2.5} />
+              </Link>
+
+              <a
+                href="tel:+971508893589"
+                style={{
+                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                  color: '#ffffff',
+                  border: '1px solid rgba(255, 255, 255, 0.25)',
+                  padding: '15px 24px',
+                  borderRadius: '12px',
+                  fontWeight: 700,
+                  fontSize: '0.88rem',
+                  textDecoration: 'none',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  transition: 'all 0.2s ease'
+                }}
+              >
+                <Phone size={16} />
+                <span>+971 508 893 589</span>
+              </a>
             </div>
           </div>
         </div>
