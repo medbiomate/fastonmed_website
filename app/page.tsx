@@ -30,7 +30,15 @@ import {
   Zap,
   Users,
   Globe,
-  Settings
+  Settings,
+  Hospital,
+  Building2,
+  FlaskConical,
+  HeartPulse,
+  Radio,
+  Smile,
+  Accessibility,
+  Activity
 } from 'lucide-react';
 import { useApp } from '@/lib/context';
 import type { Product } from '@/lib/types';
@@ -416,30 +424,78 @@ const therapeuticAreas = [
   }
 ];
 
-const latestNews = [
+const healthcareFacilitiesServed = [
   {
-    id: 'news-1',
-    date: 'May 15, 2026',
-    title: 'FastOnMed Expands Biomedical Engineering Center at DHCC',
-    desc: 'Equipped with ISO 17025 biomedical calibration analyzers to provide rapid hospital preventative maintenance across UAE.',
-    image: '/products/patient-monitor.jpg',
-    href: '/about-us'
+    id: 'hospitals',
+    title: 'Hospitals & Medical Centers',
+    badge: 'Tertiary Care',
+    desc: 'Equipping inpatient wards, emergency rooms, and surgical suites with MoHAP/DHA compliant equipment.',
+    equipment: ['Hospital Ward Beds', 'OT Lights & Tables', 'Patient Monitors', 'Infusion Pumps'],
+    icon: Hospital,
+    href: '/shop?category=hospital-furniture'
   },
   {
-    id: 'news-2',
-    date: 'April 28, 2026',
-    title: 'Multi-Parameter ICU Patient Monitors Deployed Across UAE',
-    desc: 'FastOnMed completes supply of advanced surgical monitoring systems with real-time arrhythmia telemetry to private hospitals.',
-    image: '/products/ventilator.jpg',
-    href: '/about-us'
+    id: 'clinics',
+    title: 'Medical Polyclinics & Centers',
+    badge: 'Ambulatory Care',
+    desc: 'Supplying consulting suites, diagnostic instruments, and tabletop autoclaves for specialty clinics.',
+    equipment: ['Examination Couches', 'Sterilizers & Autoclaves', 'Vital Signs Monitors', 'Diagnostic Sets'],
+    icon: Building2,
+    href: '/shop?category=patient-monitoring'
   },
   {
-    id: 'news-3',
-    date: 'April 10, 2026',
-    title: 'MoHAP Compliant 2–8°C Cold-Chain Storage for UAE Pharmacies',
-    desc: 'Supplying intelligent Haier Biomedical pharmacy refrigeration units with 24/7 temperature alarm telemetry across Dubai & Abu Dhabi.',
-    image: '/images/original/Fridges-Pharmacy_Haier_HYC-309.png',
-    href: '/about-us'
+    id: 'laboratories',
+    title: 'Clinical Laboratories',
+    badge: 'Diagnostic Labs',
+    desc: 'Outfitting clinical pathology and research laboratories with precision cold-chain and containment systems.',
+    equipment: ['Biosafety Cabinets', 'Lab Centrifuges', 'Specimen Transport Boxes', 'Laboratory Fridges'],
+    icon: FlaskConical,
+    href: '/shop?category=laboratory-equipment'
+  },
+  {
+    id: 'icu-emergency',
+    title: 'ICU & Emergency Units',
+    badge: 'Critical Care',
+    desc: 'Delivering life-support mechanical ventilators, emergency biphasic defibrillators, and mobile crash carts.',
+    equipment: ['ICU Ventilators', 'Defibrillators (AED)', 'Emergency Spill Kits', 'Syringe Pumps'],
+    icon: HeartPulse,
+    href: '/shop?category=icu-equipment'
+  },
+  {
+    id: 'radiology',
+    title: 'Radiology & Imaging Centers',
+    badge: 'Medical Imaging',
+    desc: 'Delivering Color Doppler ultrasound systems, imaging transducers, mobile carts, and radiation protection.',
+    equipment: ['Color Doppler Ultrasound', 'Ultrasound Probes', 'Ultrasound Carts', 'Radiation PPE'],
+    icon: Radio,
+    href: '/shop?category=radiology-equipments'
+  },
+  {
+    id: 'dental',
+    title: 'Dental Clinics & Surgeries',
+    badge: 'Oral Care',
+    desc: 'Complete delivery of clinical dental operatories, sterilization packaging reels, and suction accessories.',
+    equipment: ['Dental Treatment Chairs', 'Sterilization Reels', 'Ultrasonic Scalers', 'Autoclave Pouches'],
+    icon: Smile,
+    href: '/shop?category=consumables'
+  },
+  {
+    id: 'physiotherapy',
+    title: 'Rehabilitation & Physiotherapy',
+    badge: 'Physical Therapy',
+    desc: 'Equipping rehabilitation gymnasiums, sports medicine facilities, and mobility patient transfer care.',
+    equipment: ['Shockwave Therapy Units', 'Combo Electrotherapy', 'Foldable Wheelchairs', 'Transfer Chairs'],
+    icon: Accessibility,
+    href: '/shop?category=hospital-furniture'
+  },
+  {
+    id: 'pharmacy',
+    title: 'Pharmacies & Cold Chains',
+    badge: 'Pharmaceuticals',
+    desc: 'Furnishing hospital and retail pharmacies with MoHAP compliant 2–8°C refrigerators and vaccine loggers.',
+    equipment: ['Pharmacy Refrigerators', 'Vaccine Freezers', 'Temperature Loggers', 'Dispensing Trolleys'],
+    icon: Activity,
+    href: '/shop?category=pharmacy-refrigerators'
   }
 ];
 
@@ -1450,11 +1506,11 @@ export default function HomePage() {
         `}</style>
       </section>
 
-      {/* SECTION 6: NEWS & INSIGHTS / LATEST UPDATES */}
-      <section style={{ backgroundColor: '#ffffff', padding: '86px 0 90px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+      {/* SECTION 6: HEALTHCARE FACILITIES & FIRMS WE EQUIP */}
+      <section style={{ backgroundColor: '#ffffff', padding: '84px 0 90px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
         <div className="container" style={{ maxWidth: '1240px', margin: '0 auto', padding: '0 20px' }}>
           {/* Header */}
-          <div style={{ marginBottom: '36px' }}>
+          <div style={{ marginBottom: '38px', maxWidth: '820px' }}>
             <div
               style={{
                 display: 'inline-block',
@@ -1470,7 +1526,7 @@ export default function HomePage() {
                 fontFamily: 'Arial, Helvetica, sans-serif'
               }}
             >
-              NEWS & INSIGHTS
+              WHO WE SUPPLY & DELIVER TO
             </div>
             <h2
               style={{
@@ -1478,123 +1534,183 @@ export default function HomePage() {
                 fontWeight: 800,
                 color: '#0f172a',
                 letterSpacing: '-0.02em',
+                margin: '0 0 10px',
+                fontFamily: 'Arial, Helvetica, sans-serif'
+              }}
+            >
+              Healthcare Facilities & Sectors We Deliver To
+            </h2>
+            <p
+              style={{
+                fontSize: '0.94rem',
+                color: '#64748b',
+                lineHeight: 1.5,
                 margin: 0,
                 fontFamily: 'Arial, Helvetica, sans-serif'
               }}
             >
-              Latest Clinical Updates
-            </h2>
+              FastOnMed delivers MoHAP & DHA certified medical equipment, biomedical engineering support, and clinical consumables to healthcare firms across Dubai, Abu Dhabi, and the UAE.
+            </p>
           </div>
 
-          {/* 3 Horizontal News Cards Grid */}
+          {/* 8 Healthcare Delivery Facilities Cards Grid */}
           <div
-            id="news-cards-grid"
+            id="facilities-cards-grid"
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(3, 1fr)',
-              gap: '24px'
+              gridTemplateColumns: 'repeat(4, 1fr)',
+              gap: '20px'
             }}
           >
-            {latestNews.map(item => (
-              <div
-                key={item.id}
-                style={{
-                  backgroundColor: '#ffffff',
-                  borderRadius: '16px',
-                  border: '1px solid #edf2f7',
-                  overflow: 'hidden',
-                  display: 'flex',
-                  flexDirection: 'row',
-                  boxShadow: '0 4px 14px rgba(0, 0, 0, 0.04)',
-                  transition: 'all 0.25s ease',
-                  fontFamily: 'Arial, Helvetica, sans-serif'
-                }}
-                className="news-card-hover"
-              >
-                {/* Left Thumbnail */}
-                <div style={{ width: '40%', flexShrink: 0, overflow: 'hidden', backgroundColor: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8px' }}>
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    style={{
-                      maxHeight: '100%',
-                      maxWidth: '100%',
-                      objectFit: 'contain'
-                    }}
-                  />
-                </div>
+            {healthcareFacilitiesServed.map(facility => {
+              const IconComp = facility.icon;
+              return (
+                <Link
+                  key={facility.id}
+                  href={facility.href}
+                  style={{
+                    backgroundColor: '#ffffff',
+                    borderRadius: '16px',
+                    border: '1px solid #e2e8f0',
+                    padding: '22px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    textDecoration: 'none',
+                    boxShadow: '0 2px 10px rgba(0, 0, 0, 0.03)',
+                    transition: 'all 0.25s ease',
+                    fontFamily: 'Arial, Helvetica, sans-serif'
+                  }}
+                  className="facility-card-hover"
+                >
+                  {/* Top Bar: Icon + Badge */}
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
+                    <div
+                      style={{
+                        width: '46px',
+                        height: '46px',
+                        borderRadius: '12px',
+                        backgroundColor: '#e6f7f0',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: '#00875a'
+                      }}
+                    >
+                      <IconComp size={24} />
+                    </div>
 
-                {/* Right Content */}
-                <div style={{ padding: '18px', display: 'flex', flexDirection: 'column', flex: 1 }}>
-                  <span style={{ fontSize: '0.74rem', fontWeight: 700, color: '#00875a', marginBottom: '6px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                    {item.date}
-                  </span>
+                    <span
+                      style={{
+                        fontSize: '0.68rem',
+                        fontWeight: 700,
+                        backgroundColor: '#f1f5f9',
+                        color: '#475569',
+                        padding: '4px 10px',
+                        borderRadius: '999px',
+                        letterSpacing: '0.02em',
+                        fontFamily: 'Arial, Helvetica, sans-serif'
+                      }}
+                    >
+                      {facility.badge}
+                    </span>
+                  </div>
 
+                  {/* Title & Description */}
                   <h3
                     style={{
-                      fontSize: '0.94rem',
+                      fontSize: '1.02rem',
                       fontWeight: 800,
                       color: '#0f172a',
                       lineHeight: 1.35,
                       margin: '0 0 8px',
-                      display: '-webkit-box',
-                      WebkitLineClamp: 2,
-                      WebkitBoxOrient: 'vertical',
-                      overflow: 'hidden',
                       fontFamily: 'Arial, Helvetica, sans-serif'
                     }}
                   >
-                    {item.title}
+                    {facility.title}
                   </h3>
 
                   <p
                     style={{
-                      fontSize: '0.76rem',
+                      fontSize: '0.78rem',
                       color: '#64748b',
                       lineHeight: 1.45,
-                      margin: '0 0 14px',
-                      display: '-webkit-box',
-                      WebkitLineClamp: 2,
-                      WebkitBoxOrient: 'vertical',
-                      overflow: 'hidden',
-                      flex: 1,
+                      margin: '0 0 16px',
                       fontFamily: 'Arial, Helvetica, sans-serif'
                     }}
                   >
-                    {item.desc}
+                    {facility.desc}
                   </p>
 
-                  <Link
-                    href={item.href}
-                    style={{
-                      fontSize: '0.8rem',
-                      fontWeight: 700,
-                      color: '#00875a',
-                      textDecoration: 'none',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '4px',
-                      marginTop: 'auto',
-                      fontFamily: 'Arial, Helvetica, sans-serif'
-                    }}
-                  >
-                    <span>Read More</span>
-                    <ArrowRight size={13} />
-                  </Link>
-                </div>
-              </div>
-            ))}
+                  {/* Delivered Equipment Chips */}
+                  <div style={{ marginTop: 'auto', paddingTop: '14px', borderTop: '1px solid #f1f5f9' }}>
+                    <div
+                      style={{
+                        fontSize: '0.68rem',
+                        fontWeight: 800,
+                        color: '#00875a',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.04em',
+                        marginBottom: '8px',
+                        fontFamily: 'Arial, Helvetica, sans-serif'
+                      }}
+                    >
+                      Equipment Delivered
+                    </div>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '14px' }}>
+                      {facility.equipment.map((item, idx) => (
+                        <span
+                          key={idx}
+                          style={{
+                            fontSize: '0.7rem',
+                            fontWeight: 600,
+                            color: '#334155',
+                            backgroundColor: '#f8fafc',
+                            border: '1px solid #e2e8f0',
+                            padding: '3px 8px',
+                            borderRadius: '6px',
+                            fontFamily: 'Arial, Helvetica, sans-serif'
+                          }}
+                        >
+                          {item}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* View Supplies Link */}
+                    <div
+                      style={{
+                        fontSize: '0.8rem',
+                        fontWeight: 700,
+                        color: '#00875a',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '5px',
+                        fontFamily: 'Arial, Helvetica, sans-serif'
+                      }}
+                    >
+                      <span>Explore Equipment</span>
+                      <ArrowRight size={13} />
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </div>
 
         <style>{`
-          .news-card-hover:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 24px -6px rgba(0, 0, 0, 0.08) !important;
-            border-color: #cbd5e1 !important;
+          .facility-card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 14px 28px -6px rgba(0, 135, 90, 0.14) !important;
+            border-color: #00875a !important;
           }
-          @media (max-width: 900px) {
-            #news-cards-grid {
+          @media (max-width: 1024px) {
+            #facilities-cards-grid {
+              grid-template-columns: repeat(2, 1fr) !important;
+            }
+          }
+          @media (max-width: 640px) {
+            #facilities-cards-grid {
               grid-template-columns: 1fr !important;
             }
           }
