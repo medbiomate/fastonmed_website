@@ -56,7 +56,7 @@ export default function Navbar() {
     }
   };
 
-  const isDarkHeader = pathname === '/';
+  const isDarkHeader = false;
 
   return (
     <>

@@ -28,7 +28,7 @@ export default function Footer() {
     }
   };
 
-  const isDark = pathname === '/';
+  const isDark = false;
 
   return (
     <footer

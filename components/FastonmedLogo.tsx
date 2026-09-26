@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
 
 interface LogoProps {
   className?: string;
@@ -14,15 +13,14 @@ export default function FastonmedLogo({
   theme = 'light',
   className = ''
 }: LogoProps) {
-  // Original Fastonmed logo aspect ratio is ~3.4:1
-  const width = Math.round(height * 3.4);
-  const src = theme === 'dark' ? '/fastonmed-logo-white.png' : '/fastonmed-logo.png';
+  const width = Math.round(height * 3.43);
+  const src = theme === 'dark' ? '/fastonmed-logo-white.svg' : '/fastonmed-logo.svg';
 
   return (
     <div className={className} style={{ display: 'inline-flex', alignItems: 'center', lineHeight: 0 }}>
       <img
         src={src}
-        alt="Fastonmed Medical Equipment Solutions"
+        alt="FastOnMed Healthcare Equipment LLC"
         width={width}
         height={height}
         style={{
