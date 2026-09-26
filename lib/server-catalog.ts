@@ -1,5 +1,8 @@
+import fs from 'fs';
+import path from 'path';
 import type { Product, ProductCategory } from './types';
 import { initialCategories, initialProducts } from './mock-data';
+import { getProductBySlugOrIdFromHostingerDb, loadProductsFromHostingerDb } from './hostinger-db';
 
 let cachedProducts: Product[] | null = null;
 let cacheExpiresAt = 0;
@@ -89,54 +92,154 @@ function mapRawProduct(item: RawCrmProduct, index: number): Product {
 
 export async function getAllProducts(): Promise<Product[]> {
   const now = Date.now();
-  if (cachedProducts && cacheExpiresAt > now) {
+  if (cachedProducts && cacheExpiresAt > now && cachedProducts.length > 10) {
     return cachedProducts;
   }
 
-  const crmUrl = (process.env.CRM_BACKEND_URL || 'http://127.0.0.1:3000').replace(/\/$/, '');
+  let rawList: RawCrmProduct[] = [];
 
+  // Source 1: Local file cache (fastest & 100% reliable across restarts & Hostinger passenger)
   try {
-    const response = await fetch(`${crmUrl}/api/products?view=storefront`, {
-      cache: 'no-store',
-      headers: { Accept: 'application/json' }
-    });
-
-    if (!response.ok) {
-      throw new Error(`CRM API HTTP ${response.status}`);
-    }
-
-    const data = await response.json();
-    if (data?.success && Array.isArray(data.products)) {
-      const mapped = (data.products as RawCrmProduct[])
-        .filter(item =>
-          item.sourcePostType !== 'product_variation' &&
-          item.name !== 'AUTO-DRAFT' &&
-          item.status !== 'auto-draft' &&
-          item.status !== 'trash' &&
-          (!item.status || item.status === 'publish' || item.status === 'published')
-        )
-        .map(mapRawProduct)
-        .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-
-      cachedProducts = mapped;
-      cacheExpiresAt = now + 60_000; // 1 minute in-memory cache
-      return mapped;
+    const candidateFiles = [
+      path.join(process.cwd(), 'data', 'products-cache.json'),
+      path.join(process.cwd(), 'data', 'products-master-baseline.json')
+    ];
+    for (const filePath of candidateFiles) {
+      if (fs.existsSync(filePath)) {
+        const content = fs.readFileSync(filePath, 'utf8');
+        const parsed = JSON.parse(content);
+        const list = Array.isArray(parsed) ? parsed : Array.isArray(parsed.products) ? parsed.products : [];
+        if (list.length > 0) {
+          rawList = list;
+          break;
+        }
+      }
     }
   } catch (err) {
-    console.warn('[server-catalog] Falling back to initialProducts:', err);
+    console.warn('[server-catalog] Local file load warning:', err);
+  }
+
+  // Source 2: Hostinger MySQL live database (if local file was empty or missing)
+  if (rawList.length === 0) {
+    try {
+      const dbProducts = await loadProductsFromHostingerDb();
+      if (Array.isArray(dbProducts) && dbProducts.length > 0) {
+        rawList = dbProducts;
+      }
+    } catch (err) {
+      console.warn('[server-catalog] DB load warning:', err);
+    }
+  }
+
+  // Source 3: Remote CRM backend if configured
+  if (rawList.length === 0) {
+    const crmUrls = [
+      ...(process.env.CRM_BACKEND_URL ? [process.env.CRM_BACKEND_URL.replace(/\/$/, '')] : []),
+      'https://api.fastonmed.com',
+      'http://127.0.0.1:3000'
+    ];
+    for (const url of crmUrls) {
+      try {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 2500);
+        const response = await fetch(`${url}/api/products?view=storefront`, {
+          cache: 'no-store',
+          headers: { Accept: 'application/json' },
+          signal: controller.signal
+        });
+        clearTimeout(timeout);
+        if (response.ok) {
+          const data = await response.json();
+          if (data?.success && Array.isArray(data.products) && data.products.length > 0) {
+            rawList = data.products;
+            break;
+          }
+        }
+      } catch {}
+    }
+  }
+
+  if (rawList.length > 0) {
+    const mapped = rawList
+      .filter(item =>
+        item.sourcePostType !== 'product_variation' &&
+        item.name !== 'AUTO-DRAFT' &&
+        item.status !== 'auto-draft' &&
+        item.status !== 'trash' &&
+        (!item.status || item.status === 'publish' || item.status === 'published')
+      )
+      .map(mapRawProduct)
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
+    cachedProducts = mapped;
+    cacheExpiresAt = now + 120_000; // 2 minutes in-memory cache
+    return mapped;
   }
 
   return initialProducts;
 }
 
 export async function getServerProductBySlug(slug: string): Promise<Product | null> {
+  if (!slug) return null;
+
+  const rawSlug = decodeURIComponent(slug).trim().replace(/\/+$/, '');
+  const normalized = rawSlug.toLowerCase();
+
+  // 1. Direct fast query to Hostinger MySQL
+  try {
+    const dbItem = await getProductBySlugOrIdFromHostingerDb(rawSlug);
+    if (dbItem && dbItem.name) {
+      return mapRawProduct(dbItem, 0);
+    }
+  } catch (err) {
+    console.warn('[server-catalog] Direct DB slug lookup warning:', err);
+  }
+
+  // 2. Lookup in all loaded products
   const products = await getAllProducts();
-  const normalized = slug.trim().toLowerCase();
-  return (
-    products.find(p => p.slug.toLowerCase() === normalized || p.id.toLowerCase() === normalized) ||
-    null
+
+  // A. Exact slug or id or sku
+  let matched = products.find(
+    p => p.slug.toLowerCase() === normalized || 
+         p.id.toLowerCase() === normalized || 
+         (p.sku && p.sku.toLowerCase() === normalized)
   );
+  if (matched) return matched;
+
+  // B. Canonical URL or productUrl match
+  matched = products.find(
+    p => (p.canonicalUrl && p.canonicalUrl.toLowerCase().endsWith('/' + normalized)) ||
+         (p.canonicalUrl && p.canonicalUrl.toLowerCase().includes('/product/' + normalized))
+  );
+  if (matched) return matched;
+
+  // C. Title slugification match
+  matched = products.find(p => slugify(p.name) === normalized);
+  if (matched) return matched;
+
+  // D. Substring or stripped match
+  matched = products.find(
+    p => p.slug.toLowerCase().includes(normalized) || 
+         normalized.includes(p.slug.toLowerCase())
+  );
+  if (matched) return matched;
+
+  // E. Number code matching (extract digits of length >= 5 e.g. 1011024 or 16973)
+  const numbers = normalized.match(/\d{5,}/g);
+  if (numbers && numbers.length > 0) {
+    for (const num of numbers) {
+      matched = products.find(
+        p => p.slug.toLowerCase().includes(num) || 
+             p.id.toLowerCase().includes(num) || 
+             (p.sku && p.sku.toLowerCase().includes(num))
+      );
+      if (matched) return matched;
+    }
+  }
+
+  return null;
 }
+
 
 /**
  * Intelligent similar products matcher:

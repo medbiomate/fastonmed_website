@@ -222,3 +222,38 @@ export async function loadProductsFromHostingerDb(): Promise<any[]> {
   }
   return [];
 }
+
+export async function getProductBySlugOrIdFromHostingerDb(slugOrId: string): Promise<any | null> {
+  try {
+    const db = getHostingerDbPool();
+    const clean = decodeURIComponent(slugOrId).trim().toLowerCase().replace(/\/+$/, '');
+    
+    // 1. Direct match on slug, id, sku, or lower(slug)
+    const [rows] = await db.query<any[]>(
+      'SELECT raw_data FROM products WHERE slug = ? OR id = ? OR sku = ? OR LOWER(slug) = ? LIMIT 1',
+      [clean, clean, clean, clean]
+    );
+
+    if (Array.isArray(rows) && rows.length > 0) {
+      const raw = rows[0].raw_data;
+      return typeof raw === 'string' ? JSON.parse(raw) : raw;
+    }
+
+    // 2. Fallback fuzzy match on slug
+    if (clean.length > 3) {
+      const [fuzzyRows] = await db.query<any[]>(
+        'SELECT raw_data FROM products WHERE slug LIKE ? LIMIT 1',
+        [`%${clean}%`]
+      );
+
+      if (Array.isArray(fuzzyRows) && fuzzyRows.length > 0) {
+        const raw = fuzzyRows[0].raw_data;
+        return typeof raw === 'string' ? JSON.parse(raw) : raw;
+      }
+    }
+  } catch (err) {
+    console.warn('Hostinger DB getProductBySlug error:', err);
+  }
+  return null;
+}
+
