@@ -196,6 +196,7 @@ function ShopContent() {
           </div>
         ) : (
           <div
+            className="shop-product-grid"
             style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
@@ -205,6 +206,14 @@ function ShopContent() {
             {products.map(p => (
               <ProductCard key={p.id} product={p} showActions />
             ))}
+            <style>{`
+              @media (max-width: 768px) {
+                .shop-product-grid {
+                  grid-template-columns: repeat(2, 1fr) !important;
+                  gap: 12px !important;
+                }
+              }
+            `}</style>
           </div>
         )}
         {!loading && totalPages > 1 && (

@@ -13,8 +13,9 @@ export default function FastonmedLogo({
   theme = 'light',
   className = ''
 }: LogoProps) {
-  const width = Math.round(height * 3.43);
-  const src = theme === 'dark' ? '/fastonmed-logo-white.svg' : '/fastonmed-logo.svg';
+  // Real FastOnMed transparent logo aspect ratio: 503 x 92 = 5.467:1
+  const width = Math.round(height * 5.467);
+  const src = theme === 'dark' ? '/fastonmed-logo-dark.png' : '/fastonmed-logo.png';
 
   return (
     <div className={className} style={{ display: 'inline-flex', alignItems: 'center', lineHeight: 0 }}>

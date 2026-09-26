@@ -693,6 +693,7 @@ export default function ProductClientView({ product, similarProducts }: ProductC
             </div>
 
             <div
+              className="similar-product-grid"
               style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
@@ -703,6 +704,15 @@ export default function ProductClientView({ product, similarProducts }: ProductC
                 <ProductCard key={item.id} product={item} showActions />
               ))}
             </div>
+
+            <style>{`
+              @media (max-width: 768px) {
+                .similar-product-grid {
+                  grid-template-columns: repeat(2, 1fr) !important;
+                  gap: 12px !important;
+                }
+              }
+            `}</style>
           </section>
         )}
 

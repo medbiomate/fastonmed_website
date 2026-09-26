@@ -538,6 +538,7 @@ export default function HomePage() {
           >
             {/* 1. MAIN BENTO CARD (Left Large Hero Card) */}
             <div
+              id="hero-bento-card-left"
               style={{
                 position: 'relative',
                 borderRadius: '26px',
@@ -685,8 +686,9 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* 2. RIGHT COLUMN: DYNAMIC PRODUCT SHUFFLE SHOWCASE */}
+            {/* 2. RIGHT COLUMN: DYNAMIC PRODUCT SHUFFLE SHOWCASE (Mobile Swipeable Slider) */}
             <div
+              className="hero-right-bento-col"
               style={{
                 display: 'grid',
                 gridTemplateRows: '1fr 1fr',
@@ -1138,6 +1140,12 @@ export default function HomePage() {
                 );
               })()}
             </div>
+            {/* Mobile Touch Slider Swipe Hint */}
+            <div className="mobile-swipe-pill" style={{ display: 'none', alignItems: 'center', justifyContent: 'center', gap: '6px', margin: '10px auto 0', color: '#64748b', fontSize: '0.74rem', fontWeight: 700 }}>
+              <span style={{ backgroundColor: '#ffffff', padding: '6px 16px', borderRadius: '20px', border: '1px solid #cbd5e1', boxShadow: '0 2px 6px rgba(0,0,0,0.04)' }}>
+                ↔ Swipe horizontally to explore featured equipment & fast-supplies
+              </span>
+            </div>
           </div>
         </div>
 
@@ -1145,20 +1153,59 @@ export default function HomePage() {
           @media (max-width: 1024px) {
             #hero-bento-grid {
               grid-template-columns: 1fr !important;
+              gap: 20px !important;
+            }
+            #hero-bento-card-left {
+              min-height: auto !important;
+              padding: 34px 26px !important;
             }
             #hero-bento-title {
-              font-size: 2.5rem !important;
+              font-size: 2.3rem !important;
             }
             #hero-metrics-strip {
               grid-template-columns: repeat(2, 1fr) !important;
+              gap: 10px !important;
+            }
+            .hero-right-bento-col {
+              display: flex !important;
+              grid-template-rows: none !important;
+              overflow-x: auto !important;
+              scroll-snap-type: x mandatory !important;
+              -webkit-overflow-scrolling: touch !important;
+              scrollbar-width: none !important;
+              gap: 16px !important;
+              padding: 6px 4px 16px !important;
+              margin: 0 !important;
+            }
+            .hero-right-bento-col::-webkit-scrollbar {
+              display: none !important;
+            }
+            .hero-right-bento-col .right-bento-card {
+              flex: 0 0 calc(100vw - 52px) !important;
+              max-width: 440px !important;
+              scroll-snap-align: center !important;
+              min-height: 285px !important;
+            }
+            .mobile-swipe-pill {
+              display: flex !important;
             }
           }
           @media (max-width: 640px) {
             #hero-bento-title {
-              font-size: 2rem !important;
+              font-size: 1.85rem !important;
+              line-height: 1.18 !important;
+            }
+            #hero-bento-card-left {
+              padding: 24px 18px !important;
             }
             #hero-metrics-strip {
-              grid-template-columns: 1fr !important;
+              grid-template-columns: repeat(2, 1fr) !important;
+              gap: 8px !important;
+              padding: 12px 14px !important;
+            }
+            .hero-right-bento-col .right-bento-card {
+              flex: 0 0 calc(100vw - 42px) !important;
+              padding: 20px 18px !important;
             }
           }
           .hero-emerald-btn:hover {
@@ -1527,6 +1574,7 @@ export default function HomePage() {
 
             {/* Category Filter Pills */}
             <div
+              className="category-pills-row"
               style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -1562,6 +1610,7 @@ export default function HomePage() {
 
           {/* Product Grid */}
           <div
+            className="recommended-product-grid"
             style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
@@ -1605,6 +1654,7 @@ export default function HomePage() {
                         borderRadius: '20px',
                         zIndex: 3
                       }}
+                      className="product-badge"
                     >
                       -{discountPct}%
                     </div>
@@ -1630,6 +1680,7 @@ export default function HomePage() {
                       color: isFav ? '#ef4444' : '#64748b',
                       boxShadow: '0 2px 6px rgba(0, 0, 0, 0.05)'
                     }}
+                    className="product-wish-btn"
                     aria-label="Save to Wishlist"
                   >
                     <Heart size={18} fill={isFav ? '#ef4444' : 'none'} />
@@ -1638,6 +1689,7 @@ export default function HomePage() {
                   {/* Product Image Container */}
                   <Link
                     href={`/product/${product.slug}`}
+                    className="product-img-box"
                     style={{
                       display: 'block',
                       backgroundColor: '#f8fafc',
@@ -1661,8 +1713,8 @@ export default function HomePage() {
                   </Link>
 
                   {/* Product Info */}
-                  <div style={{ padding: '20px 22px 24px', display: 'flex', flexDirection: 'column', flex: 1 }}>
-                    <div style={{ fontSize: '0.74rem', fontWeight: 800, color: '#0d9488', textTransform: 'uppercase', marginBottom: '6px' }}>
+                  <div className="product-info-box" style={{ padding: '20px 22px 24px', display: 'flex', flexDirection: 'column', flex: 1 }}>
+                    <div className="product-cat-label" style={{ fontSize: '0.74rem', fontWeight: 800, color: '#0d9488', textTransform: 'uppercase', marginBottom: '6px' }}>
                       {product.category || 'Medical Equipment'}
                     </div>
 
@@ -1687,7 +1739,7 @@ export default function HomePage() {
                     </Link>
 
                     {/* Star Rating */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginBottom: '14px' }}>
+                    <div className="product-stars-row" style={{ display: 'flex', alignItems: 'center', gap: '4px', marginBottom: '14px' }}>
                       {[...Array(5)].map((_, i) => (
                         <Star key={i} size={14} fill="#f59e0b" color="#f59e0b" />
                       ))}
@@ -1695,15 +1747,15 @@ export default function HomePage() {
                     </div>
 
                     {/* Price & Action Row */}
-                    <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '12px', borderTop: '1px solid #f1f5f9' }}>
+                    <div className="product-price-action-row" style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '12px', borderTop: '1px solid #f1f5f9' }}>
                       <div>
                         {price > 0 ? (
                           <div>
-                            <span style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0f172a' }}>
+                            <span className="product-price-val" style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0f172a' }}>
                               AED {price.toLocaleString()}
                             </span>
                             {hasDiscount && (
-                              <span style={{ fontSize: '0.85rem', color: '#94a3b8', textDecoration: 'line-through', marginLeft: '8px' }}>
+                              <span className="product-strike-val" style={{ fontSize: '0.85rem', color: '#94a3b8', textDecoration: 'line-through', marginLeft: '8px' }}>
                                 AED {product.regularPrice.toLocaleString()}
                               </span>
                             )}
@@ -1811,6 +1863,88 @@ export default function HomePage() {
           .view-all-btn:hover {
             border-color: #00875a !important;
             color: #00875a !important;
+          }
+
+          @media (max-width: 768px) {
+            .category-pills-row {
+              flex-wrap: nowrap !important;
+              overflow-x: auto !important;
+              -webkit-overflow-scrolling: touch !important;
+              scrollbar-width: none !important;
+              padding-bottom: 4px !important;
+              width: 100% !important;
+            }
+            .category-pills-row::-webkit-scrollbar {
+              display: none !important;
+            }
+            .category-pills-row button {
+              white-space: nowrap !important;
+              flex-shrink: 0 !important;
+              padding: 6px 14px !important;
+              font-size: 0.78rem !important;
+            }
+            .recommended-product-grid {
+              grid-template-columns: repeat(2, 1fr) !important;
+              gap: 10px !important;
+            }
+            .recommended-product-grid .product-card-hover {
+              border-radius: 14px !important;
+            }
+            .recommended-product-grid .product-badge {
+              top: 8px !important;
+              left: 8px !important;
+              padding: 2px 7px !important;
+              font-size: 0.65rem !important;
+            }
+            .recommended-product-grid .product-wish-btn {
+              top: 8px !important;
+              right: 8px !important;
+              width: 30px !important;
+              height: 30px !important;
+            }
+            .recommended-product-grid .product-wish-btn svg {
+              width: 14px !important;
+              height: 14px !important;
+            }
+            .recommended-product-grid .product-img-box {
+              height: 130px !important;
+              padding: 10px !important;
+            }
+            .recommended-product-grid .product-info-box {
+              padding: 10px 10px 12px !important;
+            }
+            .recommended-product-grid .product-cat-label {
+              font-size: 0.66rem !important;
+              margin-bottom: 3px !important;
+            }
+            .recommended-product-grid .product-title-link {
+              font-size: 0.8rem !important;
+              line-height: 1.25 !important;
+              height: 30px !important;
+              margin-bottom: 6px !important;
+            }
+            .recommended-product-grid .product-stars-row {
+              display: none !important;
+            }
+            .recommended-product-grid .product-price-action-row {
+              padding-top: 8px !important;
+              flex-direction: column !important;
+              align-items: flex-start !important;
+              gap: 8px !important;
+            }
+            .recommended-product-grid .product-price-val {
+              font-size: 0.94rem !important;
+            }
+            .recommended-product-grid .product-strike-val {
+              font-size: 0.72rem !important;
+            }
+            .recommended-product-grid .btn-add-cart {
+              width: 100% !important;
+              justify-content: center !important;
+              padding: 7px 10px !important;
+              font-size: 0.76rem !important;
+              border-radius: 8px !important;
+            }
           }
         `}</style>
       </section>
