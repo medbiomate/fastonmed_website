@@ -44,9 +44,11 @@ export default function Navbar() {
     ? chromeSettings.headerMenu.map(m => ({ label: m.label, href: m.url }))
     : [
         { label: 'Home', href: '/' },
-        { label: 'Shop', href: '/shop' },
         { label: 'About Us', href: '/about-us' },
-        { label: 'Contact', href: '/contact' }
+        { label: 'Products', href: '/shop' },
+        { label: 'Services', href: '/services' },
+        { label: 'Quality', href: '/about-us' },
+        { label: 'Contact Us', href: '/contact' }
       ];
 
   const handleSearchSubmit = (e: React.FormEvent) => {
@@ -64,15 +66,14 @@ export default function Navbar() {
       <div
         id="topbar"
         style={{
-          backgroundColor: isDarkHeader ? '#0c0d10' : '#51b291',
+          backgroundColor: '#00875a',
           color: '#ffffff',
           fontSize: '0.84rem',
           height: '38px',
           display: 'flex',
           alignItems: 'center',
           position: 'relative',
-          zIndex: 101,
-          borderBottom: isDarkHeader ? '1px solid rgba(255,255,255,0.06)' : 'none'
+          zIndex: 101
         }}
       >
         <div
@@ -230,18 +231,11 @@ export default function Navbar() {
                   key={link.href}
                   href={link.href}
                   style={{
-                    fontSize: '0.95rem',
-                    fontWeight: isActive ? 700 : 600,
-                    color: isActive
-                      ? isDarkHeader
-                        ? '#bbf246'
-                        : '#51b291'
-                      : isDarkHeader
-                      ? '#f1f5f9'
-                      : '#1e293b',
+                    fontSize: '0.92rem',
+                    fontWeight: isActive ? 700 : 500,
+                    color: isActive ? '#00875a' : '#334155',
                     textDecoration: 'none',
-                    letterSpacing: '0.02em',
-                    textTransform: 'uppercase',
+                    letterSpacing: '0.01em',
                     transition: 'color 0.2s ease',
                     position: 'relative',
                     padding: '8px 0'
@@ -255,8 +249,8 @@ export default function Navbar() {
                         bottom: 0,
                         left: 0,
                         right: 0,
-                        height: '2px',
-                        backgroundColor: isDarkHeader ? '#bbf246' : '#51b291',
+                        height: '2.5px',
+                        backgroundColor: '#00875a',
                         borderRadius: '2px'
                       }}
                     />
@@ -271,6 +265,7 @@ export default function Navbar() {
               #desktop-logo { display: block !important; }
               #mobile-logo { display: none !important; }
               #header-wishlist { display: flex !important; }
+              #header-cta-btn { display: inline-flex !important; }
             }
             @media (max-width: 899px) {
               #mobile-menu-trigger { display: flex !important; }
@@ -311,7 +306,7 @@ export default function Navbar() {
               id="header-wishlist"
               style={{
                 position: 'relative',
-                color: isDarkHeader ? '#f8fafc' : '#1e293b',
+                color: '#1e293b',
                 padding: '6px',
                 display: 'flex',
                 alignItems: 'center'
@@ -326,8 +321,8 @@ export default function Navbar() {
                     position: 'absolute',
                     top: '-2px',
                     right: '-2px',
-                    backgroundColor: isDarkHeader ? '#bbf246' : '#51b291',
-                    color: isDarkHeader ? '#000000' : '#ffffff',
+                    backgroundColor: '#00875a',
+                    color: '#ffffff',
                     fontSize: '0.64rem',
                     fontWeight: 800,
                     width: '17px',
@@ -335,8 +330,7 @@ export default function Navbar() {
                     borderRadius: '50%',
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'center',
-                    boxShadow: '0 2px 5px rgba(0, 0, 0, 0.4)'
+                    justifyContent: 'center'
                   }}
                 >
                   {wishlist.length}
@@ -351,7 +345,7 @@ export default function Navbar() {
                 background: 'none',
                 border: 'none',
                 cursor: 'pointer',
-                color: isDarkHeader ? '#f8fafc' : '#1e293b',
+                color: '#1e293b',
                 padding: '6px',
                 display: 'flex',
                 alignItems: 'center',
@@ -366,8 +360,8 @@ export default function Navbar() {
                   position: 'absolute',
                   top: '-2px',
                   right: '-2px',
-                  backgroundColor: isDarkHeader ? '#bbf246' : '#51b291',
-                  color: isDarkHeader ? '#000000' : '#ffffff',
+                  backgroundColor: '#00875a',
+                  color: '#ffffff',
                   fontSize: '0.64rem',
                   fontWeight: 800,
                   width: '17px',
@@ -375,8 +369,7 @@ export default function Navbar() {
                   borderRadius: '50%',
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'center',
-                  boxShadow: '0 2px 5px rgba(0, 0, 0, 0.4)'
+                  justifyContent: 'center'
                 }}
               >
                 {cartCount}
@@ -387,7 +380,7 @@ export default function Navbar() {
             <Link
               href="/admin/login"
               style={{
-                color: isDarkHeader ? '#f8fafc' : '#1e293b',
+                color: '#1e293b',
                 padding: '6px',
                 display: 'flex',
                 alignItems: 'center'
@@ -396,6 +389,28 @@ export default function Navbar() {
               title="Account / Admin Portal"
             >
               <User size={21} />
+            </Link>
+
+            {/* Get in Touch CTA Button */}
+            <Link
+              href="/contact"
+              id="header-cta-btn"
+              style={{
+                backgroundColor: '#00875a',
+                color: '#ffffff',
+                padding: '9px 20px',
+                borderRadius: '8px',
+                fontWeight: 700,
+                fontSize: '0.86rem',
+                textDecoration: 'none',
+                display: 'none',
+                alignItems: 'center',
+                marginLeft: '8px',
+                transition: 'background-color 0.2s',
+                boxShadow: '0 2px 8px rgba(0, 135, 90, 0.25)'
+              }}
+            >
+              Get in Touch
             </Link>
           </div>
         </div>

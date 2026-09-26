@@ -9,6 +9,7 @@ import {
   Truck,
   CheckCircle2,
   Wrench,
+  Calendar,
   Phone,
   MessageCircle,
   Package,
@@ -27,7 +28,9 @@ import {
   Stethoscope,
   Headphones,
   Zap,
-  Users
+  Users,
+  Globe,
+  Settings
 } from 'lucide-react';
 import { useApp } from '@/lib/context';
 import type { Product } from '@/lib/types';
@@ -367,6 +370,121 @@ const categoryPills = [
   { id: 'diagnostic', label: 'Laboratory & Diagnostic' }
 ];
 
+const therapeuticAreas = [
+  {
+    id: 'icu-equipment',
+    title: 'ICU & Critical Care',
+    desc: 'High-acuity ICU ventilators, infusion pumps & defibrillators.',
+    image: '/images/illustrations/icu-care.svg',
+    href: '/shop?category=icu-equipment'
+  },
+  {
+    id: 'patient-monitoring',
+    title: 'Patient Monitoring',
+    desc: 'Multi-parameter monitors, ECG & wireless telemetry units.',
+    image: '/images/illustrations/patient-monitoring.svg',
+    href: '/shop?category=patient-monitoring'
+  },
+  {
+    id: 'pharmacy-refrigerators',
+    title: 'Medical Cold Storage',
+    desc: 'MoHAP compliant 2–8°C pharmacy fridges & biofreezers.',
+    image: '/images/illustrations/medical-cold-storage.svg',
+    href: '/shop?category=pharmacy-refrigerators'
+  },
+  {
+    id: 'radiology-equipments',
+    title: 'Ultrasound & Radiology',
+    desc: 'Color Doppler ultrasound systems & mobile digital X-ray.',
+    image: '/images/illustrations/ultrasound-radiology.svg',
+    href: '/shop?category=radiology-equipments'
+  },
+  {
+    id: 'laboratory-equipment',
+    title: 'Clinical Laboratory',
+    desc: 'Biochemistry analyzers, centrifuges & biosafety cabinets.',
+    image: '/images/illustrations/clinical-laboratory.svg',
+    href: '/shop?category=laboratory-equipment'
+  },
+  {
+    id: 'hospital-furniture',
+    title: 'Hospital Furniture',
+    desc: 'Electric hospital beds, examination couches & dental units.',
+    image: '/images/illustrations/hospital-furniture.svg',
+    href: '/shop?category=hospital-furniture'
+  }
+];
+
+const latestNews = [
+  {
+    id: 'news-1',
+    date: 'May 15, 2026',
+    title: 'FastOnMed Expands Biomedical Engineering Center at DHCC',
+    desc: 'Equipped with ISO 17025 biomedical calibration analyzers to provide rapid hospital preventative maintenance across UAE.',
+    image: '/products/patient-monitor.jpg',
+    href: '/about-us'
+  },
+  {
+    id: 'news-2',
+    date: 'April 28, 2026',
+    title: 'Multi-Parameter ICU Patient Monitors Deployed Across UAE',
+    desc: 'FastOnMed completes supply of advanced surgical monitoring systems with real-time arrhythmia telemetry to private hospitals.',
+    image: '/products/ventilator.jpg',
+    href: '/about-us'
+  },
+  {
+    id: 'news-3',
+    date: 'April 10, 2026',
+    title: 'MoHAP Compliant 2–8°C Cold-Chain Storage for UAE Pharmacies',
+    desc: 'Supplying intelligent Haier Biomedical pharmacy refrigeration units with 24/7 temperature alarm telemetry across Dubai & Abu Dhabi.',
+    image: '/images/original/Fridges-Pharmacy_Haier_HYC-309.png',
+    href: '/about-us'
+  }
+];
+
+const heroFeaturedProducts = [
+  {
+    id: 'hero-vent',
+    name: 'Mindray SV300 ICU Ventilator',
+    shortName: 'ICU Ventilator',
+    category: 'Critical Care & ICU',
+    image: '/images/hero-showcase/1-icu-ventilator.png',
+    href: '/shop?category=patient-monitoring'
+  },
+  {
+    id: 'hero-monitor',
+    name: 'Multi-Parameter Patient Monitor',
+    shortName: 'Patient Monitor',
+    category: 'Patient Monitoring',
+    image: '/images/hero-showcase/2-patient-monitor.png',
+    href: '/shop?category=patient-monitoring'
+  },
+  {
+    id: 'hero-ecg',
+    name: 'CardioTouch 12-Channel ECG Machine',
+    shortName: '12-Lead ECG Machine',
+    category: 'Diagnostic Cardiology',
+    image: '/images/hero-showcase/3-ecg-machine.png',
+    href: '/shop?category=diagnostic-equipment'
+  },
+  {
+    id: 'hero-fridge',
+    name: 'Haier Biomedical Pharmacy Refrigerator',
+    shortName: 'Pharmacy Refrigerator',
+    category: 'Medical Cold Storage',
+    image: '/images/hero-showcase/4-pharmacy-fridge.png',
+    href: '/shop?category=pharmacy-refrigerators'
+  },
+  {
+    id: 'hero-aed',
+    name: 'Automated External Defibrillator AED',
+    shortName: 'Clinical Defibrillator',
+    category: 'Emergency Care',
+    image: '/images/hero-showcase/5-aed-defibrillator.png',
+    href: '/shop?category=emergency-care'
+  }
+];
+
 export default function HomePage() {
   const { addToCart, isInWishlist, toggleWishlist } = useApp();
   const [products, setProducts] = useState<Product[]>(initialBentoProducts);
@@ -374,24 +492,60 @@ export default function HomePage() {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [newsletterSubmitted, setNewsletterSubmitted] = useState(false);
+  const [activeHeroIdx, setActiveHeroIdx] = useState(0);
 
-  // Fetch real products from catalog API on mount
+  // Auto-cycle through equipment showcase images
   useEffect(() => {
-    async function loadCatalog() {
+    const timer = setInterval(() => {
+      setActiveHeroIdx(prev => (prev + 1) % heroFeaturedProducts.length);
+    }, 4500);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Dynamic category products cache
+  const [categoryCache, setCategoryCache] = useState<Record<string, Product[]>>({
+    all: initialBentoProducts
+  });
+  const [isCategoryLoading, setIsCategoryLoading] = useState(false);
+
+  // Dynamic tab product loader from catalog API
+  useEffect(() => {
+    let isMounted = true;
+    async function loadTabProducts() {
+      if (categoryCache[selectedCategory] && categoryCache[selectedCategory].length > 0) {
+        return;
+      }
+
+      setIsCategoryLoading(true);
       try {
-        const res = await fetch('/api/catalog?limit=16');
+        const url =
+          selectedCategory === 'all'
+            ? '/api/catalog?limit=24'
+            : `/api/catalog?tab=${selectedCategory}&limit=16`;
+        const res = await fetch(url);
         if (res.ok) {
           const data = await res.json();
-          if (data?.success && Array.isArray(data.products) && data.products.length > 0) {
-            setProducts(data.products);
+          if (isMounted && data?.success && Array.isArray(data.products) && data.products.length > 0) {
+            setCategoryCache(prev => ({
+              ...prev,
+              [selectedCategory]: data.products
+            }));
+            if (selectedCategory === 'all') {
+              setProducts(data.products);
+            }
           }
         }
       } catch (err) {
-        console.warn('Using initial bento products:', err);
+        console.warn('Failed to load category products:', err);
+      } finally {
+        if (isMounted) setIsCategoryLoading(false);
       }
     }
-    loadCatalog();
-  }, []);
+    loadTabProducts();
+    return () => {
+      isMounted = false;
+    };
+  }, [selectedCategory, categoryCache]);
 
   const handleAddToCart = (product: Product) => {
     addToCart(product, 1);
@@ -410,46 +564,41 @@ export default function HomePage() {
     }
   };
 
-  // Filter products for the Recommended section
-  const filteredProducts = products.filter(p => {
-    if (selectedCategory === 'all') return true;
-    if (selectedCategory === 'icu') {
-      return (
-        p.category?.toLowerCase().includes('icu') ||
-        p.category?.toLowerCase().includes('general') ||
-        p.name.toLowerCase().includes('monitor') ||
-        p.name.toLowerCase().includes('ventilator')
-      );
-    }
-    if (selectedCategory === 'furniture') {
-      return (
-        p.category?.toLowerCase().includes('furniture') ||
-        p.name.toLowerCase().includes('bed') ||
-        p.name.toLowerCase().includes('cabinet')
-      );
-    }
-    if (selectedCategory === 'consumables') {
-      return (
-        p.category?.toLowerCase().includes('consumables') ||
-        p.category?.toLowerCase().includes('disposables') ||
-        p.name.toLowerCase().includes('kit') ||
-        p.name.toLowerCase().includes('clean') ||
-        p.name.toLowerCase().includes('wipes')
-      );
-    }
-    if (selectedCategory === 'diagnostic') {
-      return (
-        p.category?.toLowerCase().includes('laboratory') ||
-        p.category?.toLowerCase().includes('diagnostic') ||
-        p.name.toLowerCase().includes('box') ||
-        p.name.toLowerCase().includes('refrigerator')
-      );
-    }
-    return true;
-  });
+  // Active products for the selected category pill with intelligent fallback
+  const activeCategoryProducts =
+    categoryCache[selectedCategory] && categoryCache[selectedCategory].length > 0
+      ? categoryCache[selectedCategory]
+      : initialBentoProducts.filter(p => {
+          if (selectedCategory === 'all') return true;
+          const text = `${p.name} ${p.category}`.toLowerCase();
+          if (selectedCategory === 'icu')
+            return (
+              text.includes('icu') ||
+              text.includes('ventilator') ||
+              text.includes('monitor') ||
+              text.includes('oxygen')
+            );
+          if (selectedCategory === 'furniture')
+            return text.includes('furniture') || text.includes('chair') || text.includes('bed');
+          if (selectedCategory === 'consumables')
+            return (
+              text.includes('consumables') ||
+              text.includes('disposable') ||
+              text.includes('kit') ||
+              text.includes('dressing')
+            );
+          if (selectedCategory === 'diagnostic')
+            return (
+              text.includes('diagnostic') ||
+              text.includes('laboratory') ||
+              text.includes('refrigerator') ||
+              text.includes('autoclave')
+            );
+          return true;
+        });
 
   return (
-    <div style={{ backgroundColor: '#f8fafc', color: '#0f172a', minHeight: '100vh', overflowX: 'hidden' }}>
+    <div style={{ backgroundColor: '#ffffff', color: '#0f172a', minHeight: '100vh', overflowX: 'hidden', fontFamily: 'Arial, Helvetica, sans-serif' }}>
       {/* Toast Notification */}
       {toastMessage && (
         <div
@@ -467,221 +616,542 @@ export default function HomePage() {
             gap: '10px',
             boxShadow: '0 12px 30px rgba(0, 0, 0, 0.2)',
             fontSize: '0.9rem',
-            fontWeight: 600
+            fontWeight: 600,
+            fontFamily: 'Arial, Helvetica, sans-serif'
           }}
         >
-          <CheckCircle2 size={18} color="#42b69c" />
+          <CheckCircle2 size={18} color="#00875a" />
           <span>{toastMessage}</span>
         </div>
       )}
 
-      {/* SECTION 1: CLEAN LIGHT HERO BANNER (Professional Medical E-Commerce) */}
-      <section style={{ padding: '16px 0 24px', position: 'relative' }}>
-        <div className="container" style={{ maxWidth: '1360px', margin: '0 auto', padding: '0 16px' }}>
+      {/* SECTION 1: HERO SECTION (Rich Medical Equipment Collection & Arial Typography) */}
+      <section
+        id="medinova-hero-section"
+        style={{
+          background: 'radial-gradient(1100px 580px at 75% 25%, #e8f9f2 0%, #ffffff 75%)',
+          padding: '56px 0 68px',
+          position: 'relative',
+          overflow: 'hidden',
+          fontFamily: 'Arial, Helvetica, sans-serif'
+        }}
+      >
+        <div className="container" style={{ maxWidth: '1260px', margin: '0 auto', padding: '0 20px' }}>
           <div
-            id="hero-main-banner"
+            id="hero-two-col-grid"
             style={{
-              borderRadius: '20px',
-              border: '1px solid #e2e8f0',
-              backgroundColor: '#ffffff',
-              padding: '32px 36px',
               display: 'grid',
-              gridTemplateColumns: '1.3fr 1fr',
-              gap: '28px',
-              alignItems: 'center',
-              boxShadow: '0 4px 20px rgba(15, 23, 42, 0.03)',
-              position: 'relative',
-              overflow: 'hidden'
+              gridTemplateColumns: '1.05fr 0.95fr',
+              gap: '40px',
+              alignItems: 'center'
             }}
           >
-            {/* Background subtle tint */}
-            <div
-              style={{
-                position: 'absolute',
-                top: 0,
-                right: 0,
-                bottom: 0,
-                width: '42%',
-                background: 'linear-gradient(135deg, #f0fdfa 0%, #e6f9f3 100%)',
-                zIndex: 0,
-                pointerEvents: 'none'
-              }}
-              className="hero-bg-tint"
-            />
-
-            {/* Left Content Column */}
-            <div style={{ zIndex: 1 }}>
-              {/* Badge */}
+            {/* Left Column: Headline & Content */}
+            <div id="hero-left-content">
+              {/* Trust Badge with Primary SEO Keyword */}
               <div
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '6px',
-                  backgroundColor: '#f0fdf4',
-                  border: '1px solid #bbf7d0',
-                  color: '#166534',
-                  padding: '4px 10px',
-                  borderRadius: '20px',
-                  fontSize: '0.7rem',
-                  fontWeight: 700,
+                  backgroundColor: '#e6f7f0',
+                  color: '#00875a',
+                  padding: '6px 14px',
+                  borderRadius: '999px',
+                  fontSize: '0.78rem',
+                  fontWeight: 800,
+                  letterSpacing: '0.05em',
                   textTransform: 'uppercase',
-                  letterSpacing: '0.04em',
-                  marginBottom: '12px'
+                  marginBottom: '20px',
+                  fontFamily: 'Arial, Helvetica, sans-serif'
                 }}
               >
-                <div style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#16a34a' }} />
-                <span>UAE Licensed Medical Supplier · DHCC Dubai</span>
+                <span>MoHAP Licensed · Best Medical Equipment Supplier in UAE</span>
               </div>
 
-              {/* Heading */}
+              {/* Main H1: Best Medical Equipment Supplier in UAE */}
               <h1
-                id="hero-title"
+                id="hero-main-title"
                 style={{
-                  fontSize: '2.2rem',
+                  fontSize: '3.3rem',
                   fontWeight: 800,
                   color: '#0f172a',
-                  lineHeight: 1.18,
-                  letterSpacing: '-0.02em',
-                  margin: '0 0 12px'
+                  lineHeight: 1.14,
+                  letterSpacing: '-0.025em',
+                  margin: '0 0 16px',
+                  fontFamily: 'Arial, Helvetica, sans-serif'
                 }}
               >
-                Medical Equipment & Hospital Supplies
+                Best Medical Equipment<br />
+                <span style={{ color: '#00875a' }}>Supplier in UAE</span>
               </h1>
 
-              {/* Subtitle */}
-              <p
-                id="hero-subtitle"
+              {/* Credibility Statement */}
+              <div
+                id="hero-credibility-statement"
                 style={{
-                  fontSize: '0.94rem',
-                  color: '#475569',
-                  lineHeight: 1.5,
-                  margin: '0 0 20px',
-                  maxWidth: '540px'
+                  fontSize: '1.25rem',
+                  fontWeight: 800,
+                  color: '#0f172a',
+                  lineHeight: 1.35,
+                  margin: '0 0 16px',
+                  letterSpacing: '-0.01em',
+                  fontFamily: 'Arial, Helvetica, sans-serif'
                 }}
               >
-                Certified hospital furniture, patient monitors, diagnostic equipment, and clinical consumables with fast express delivery across Dubai, Abu Dhabi, and all 7 Emirates.
+                8+ Years. 10,000+ Devices. 100% Certified.
+              </div>
+
+              {/* Subtitle with SEO sub-keywords */}
+              <p
+                id="hero-main-subtitle"
+                style={{
+                  fontSize: '1rem',
+                  color: '#475569',
+                  lineHeight: 1.65,
+                  margin: '0 0 28px',
+                  maxWidth: '540px',
+                  fontFamily: 'Arial, Helvetica, sans-serif'
+                }}
+              >
+                FastOnMed is the premier medical equipment supplier in UAE. We deliver MoHAP-licensed biomedical technology, ICU ventilators, patient monitors, diagnostic devices, and clinical consumables to leading hospitals, clinics, and laboratories across Dubai, Abu Dhabi, and the Northern Emirates.
               </p>
 
-              {/* CTAs */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+              {/* Action Buttons: In-line on Laptop, Stacked on Mobile, Icon matching Logo Color #42B69C */}
+              <div 
+                id="hero-actions-container"
+              >
                 <Link
                   href="/shop"
                   style={{
-                    backgroundColor: '#00875a',
+                    backgroundColor: '#002845',
                     color: '#ffffff',
-                    padding: '10px 22px',
-                    borderRadius: '10px',
+                    padding: '14px 26px',
+                    borderRadius: '14px',
                     fontWeight: 700,
-                    fontSize: '0.84rem',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.03em',
+                    fontSize: '0.98rem',
+                    textDecoration: 'none',
                     display: 'inline-flex',
                     alignItems: 'center',
-                    gap: '6px',
-                    textDecoration: 'none',
-                    transition: 'all 0.2s',
-                    boxShadow: '0 4px 12px rgba(0, 135, 90, 0.25)'
+                    justifyContent: 'center',
+                    gap: '10px',
+                    transition: 'all 0.2s ease',
+                    boxShadow: '0 4px 14px rgba(0, 40, 69, 0.2)',
+                    fontFamily: 'Arial, Helvetica, sans-serif'
                   }}
-                  className="btn-hero-primary"
+                  className="hero-nav-btn-primary"
                 >
-                  <span>Browse Products</span>
-                  <ChevronRight size={15} />
+                  <Calendar size={18} color="#42B69C" strokeWidth={2.4} />
+                  <span>Explore Equipment</span>
+                  <ArrowRight size={17} color="#ffffff" strokeWidth={2.4} />
                 </Link>
 
                 <a
-                  href="https://wa.me/971508893589?text=Hello%20FastOnMed%20Sales%2C%20I%20would%20like%20to%20request%20a%20commercial%20quotation%20for%20medical%20equipment."
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="tel:+971508893589"
                   style={{
-                    backgroundColor: '#ffffff',
-                    color: '#0f172a',
-                    border: '1px solid #cbd5e1',
-                    padding: '10px 18px',
-                    borderRadius: '10px',
+                    backgroundColor: '#002845',
+                    color: '#ffffff',
+                    padding: '14px 26px',
+                    borderRadius: '14px',
                     fontWeight: 700,
-                    fontSize: '0.84rem',
+                    fontSize: '0.98rem',
+                    textDecoration: 'none',
                     display: 'inline-flex',
                     alignItems: 'center',
-                    gap: '6px',
-                    textDecoration: 'none',
-                    transition: 'all 0.2s'
+                    justifyContent: 'center',
+                    gap: '10px',
+                    transition: 'all 0.2s ease',
+                    boxShadow: '0 4px 14px rgba(0, 40, 69, 0.2)',
+                    fontFamily: 'Arial, Helvetica, sans-serif'
                   }}
-                  className="btn-hero-secondary"
+                  className="hero-nav-btn-secondary"
                 >
-                  <MessageCircle size={15} color="#25d366" />
-                  <span>Request Quote (RFQ)</span>
+                  <Phone size={18} color="#42B69C" fill="#42B69C" strokeWidth={1} />
+                  <span>Call Now</span>
                 </a>
               </div>
             </div>
 
-            {/* Right Product Spotlight (Desktop only, hidden on mobile for clean fast product access) */}
-            <div id="hero-right-spotlight" style={{ zIndex: 1, display: 'flex', justifyContent: 'center' }}>
+            {/* Right Column: Pure Clean Medical Equipment Image Showcase (Auto-changing, 5 images, bg removed, no thumbnails) */}
+            <div id="hero-image-col" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
               <div
                 style={{
-                  backgroundColor: '#ffffff',
-                  borderRadius: '16px',
-                  padding: '18px',
-                  border: '1px solid #d9e6e1',
-                  boxShadow: '0 8px 24px rgba(0, 135, 90, 0.07)',
-                  maxWidth: '360px',
                   width: '100%',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '12px'
+                  maxWidth: '560px',
+                  backgroundColor: '#ffffff',
+                  borderRadius: '24px',
+                  boxShadow: '0 20px 45px -15px rgba(0, 135, 90, 0.12)',
+                  border: '1.5px solid #e2e8f0',
+                  padding: '24px',
+                  fontFamily: 'Arial, Helvetica, sans-serif'
                 }}
               >
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <span style={{ fontSize: '0.68rem', fontWeight: 800, color: '#00875a', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-                    Featured Clinical Tech
-                  </span>
-                  <span style={{ fontSize: '0.66rem', fontWeight: 700, backgroundColor: '#f0fdf4', color: '#166534', padding: '2px 8px', borderRadius: '12px' }}>
-                    In Stock · UAE
-                  </span>
-                </div>
-
+                {/* Main Prominent Equipment Display */}
                 <div
+                  className="hero-showcase-main-img"
                   style={{
+                    position: 'relative',
                     width: '100%',
-                    height: '160px',
+                    height: '420px',
+                    borderRadius: '16px',
                     backgroundColor: '#f8fafc',
-                    borderRadius: '12px',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    padding: '12px'
+                    padding: '28px',
+                    overflow: 'hidden',
+                    border: '1px solid #f1f5f9'
                   }}
                 >
                   <img
-                    src="/wp-content/uploads/2025/06/biobase-weighing-bio-safety-cabinet-bsc-1000-1-510x510_large.jpg"
-                    alt="Biobase BSC-1000 Biosafety Cabinet"
-                    style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                    key={heroFeaturedProducts[activeHeroIdx].id}
+                    src={heroFeaturedProducts[activeHeroIdx].image}
+                    alt={heroFeaturedProducts[activeHeroIdx].name}
+                    className="hero-auto-image"
+                    style={{
+                      maxHeight: '100%',
+                      maxWidth: '100%',
+                      objectFit: 'contain',
+                      display: 'block'
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <style>{`
+          @keyframes heroImgFadeIn {
+            from { opacity: 0; transform: scale(0.97); }
+            to { opacity: 1; transform: scale(1); }
+          }
+          .hero-auto-image {
+            animation: heroImgFadeIn 0.4s ease;
+          }
+          #hero-actions-container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 14px;
+            width: auto;
+            flex-wrap: wrap;
+          }
+          .hero-nav-btn-primary,
+          .hero-nav-btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: auto;
+            padding: 14px 26px;
+            background-color: #002845;
+            color: #ffffff;
+            transition: all 0.2s ease;
+          }
+          .hero-nav-btn-primary:hover,
+          .hero-nav-btn-secondary:hover {
+            background-color: #00875a !important;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 135, 90, 0.28) !important;
+          }
+          .hero-nav-btn-primary:active,
+          .hero-nav-btn-secondary:active {
+            transform: translateY(0);
+          }
+          @media (max-width: 900px) {
+            #medinova-hero-section {
+              padding: 28px 0 36px !important;
+            }
+            #hero-two-col-grid {
+              grid-template-columns: 1fr !important;
+              gap: 28px !important;
+            }
+            #hero-left-content {
+              text-align: left !important;
+            }
+            #hero-main-title {
+              font-size: 2.35rem !important;
+              line-height: 1.14 !important;
+              margin-bottom: 14px !important;
+              letter-spacing: -0.02em !important;
+            }
+            #hero-credibility-statement {
+              font-size: 1.15rem !important;
+              line-height: 1.35 !important;
+              margin-bottom: 14px !important;
+            }
+            #hero-main-subtitle {
+              font-size: 0.95rem !important;
+              line-height: 1.6 !important;
+              margin-bottom: 22px !important;
+            }
+            #hero-actions-container {
+              flex-direction: column !important;
+              width: 100% !important;
+              gap: 12px !important;
+            }
+            .hero-nav-btn-primary, .hero-nav-btn-secondary {
+              width: 100% !important;
+              height: 52px !important;
+              font-size: 0.98rem !important;
+            }
+            #hero-image-col {
+              max-width: 540px !important;
+              width: 100% !important;
+              margin: 0 auto !important;
+            }
+            .hero-showcase-main-img {
+              height: 290px !important;
+              padding: 18px !important;
+            }
+          }
+        `}</style>
+      </section>
+
+      {/* SECTION 2: FLOATING OVERLAP TRUST BAR (The 4 Feature Cards in Arial) */}
+      <div
+        style={{
+          maxWidth: '1240px',
+          margin: '-32px auto 0',
+          padding: '0 20px',
+          position: 'relative',
+          zIndex: 10,
+          fontFamily: 'Arial, Helvetica, sans-serif'
+        }}
+      >
+        <div
+          id="medinova-trust-cards"
+          style={{
+            backgroundColor: '#ffffff',
+            borderRadius: '16px',
+            border: '1px solid #edf2f7',
+            boxShadow: '0 16px 36px -8px rgba(0, 0, 0, 0.07)',
+            padding: '26px 32px',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(4, 1fr)',
+            gap: '24px'
+          }}
+        >
+          {/* 1. Quality Assurance */}
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '14px' }}>
+            <div style={{ width: '42px', height: '42px', borderRadius: '50%', backgroundColor: '#e0f2fe', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <ShieldCheck size={20} color="#0284c7" />
+            </div>
+            <div>
+              <h4 style={{ fontSize: '0.92rem', fontWeight: 700, color: '#0f172a', margin: '0 0 4px', fontFamily: 'Arial, Helvetica, sans-serif' }}>MoHAP & DHA Licensed</h4>
+              <p style={{ fontSize: '0.78rem', color: '#64748b', margin: 0, lineHeight: 1.45, fontFamily: 'Arial, Helvetica, sans-serif' }}>100% genuine biomedical equipment with direct UAE warranty.</p>
+            </div>
+          </div>
+
+          {/* 2. Research Driven */}
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '14px' }}>
+            <div style={{ width: '42px', height: '42px', borderRadius: '50%', backgroundColor: '#dcfce7', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <Sparkles size={20} color="#16a34a" />
+            </div>
+            <div>
+              <h4 style={{ fontSize: '0.92rem', fontWeight: 700, color: '#0f172a', margin: '0 0 4px', fontFamily: 'Arial, Helvetica, sans-serif' }}>Biomedical AMC & Service</h4>
+              <p style={{ fontSize: '0.78rem', color: '#64748b', margin: 0, lineHeight: 1.45, fontFamily: 'Arial, Helvetica, sans-serif' }}>In-house biomedical engineers, calibration & hospital support.</p>
+            </div>
+          </div>
+
+          {/* 3. Global Reach */}
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '14px' }}>
+            <div style={{ width: '42px', height: '42px', borderRadius: '50%', backgroundColor: '#f3e8ff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <Globe size={20} color="#9333ea" />
+            </div>
+            <div>
+              <h4 style={{ fontSize: '0.92rem', fontWeight: 700, color: '#0f172a', margin: '0 0 4px', fontFamily: 'Arial, Helvetica, sans-serif' }}>7 Emirates Coverage</h4>
+              <p style={{ fontSize: '0.78rem', color: '#64748b', margin: 0, lineHeight: 1.45, fontFamily: 'Arial, Helvetica, sans-serif' }}>Same-day Dubai dispatch & 24h delivery across UAE & GCC.</p>
+            </div>
+          </div>
+
+          {/* 4. Patient First */}
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '14px' }}>
+            <div style={{ width: '42px', height: '42px', borderRadius: '50%', backgroundColor: '#ffedd5', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <Heart size={20} color="#ea580c" />
+            </div>
+            <div>
+              <h4 style={{ fontSize: '0.92rem', fontWeight: 700, color: '#0f172a', margin: '0 0 4px', fontFamily: 'Arial, Helvetica, sans-serif' }}>24/7 Clinical Support</h4>
+              <p style={{ fontSize: '0.78rem', color: '#64748b', margin: 0, lineHeight: 1.45, fontFamily: 'Arial, Helvetica, sans-serif' }}>Direct hospital procurement rates & emergency loaner units.</p>
+            </div>
+          </div>
+        </div>
+
+        <style>{`
+          @media (max-width: 900px) {
+            #medinova-trust-cards {
+              grid-template-columns: repeat(2, 1fr) !important;
+              padding: 20px !important;
+              gap: 18px !important;
+            }
+          }
+          @media (max-width: 580px) {
+            #medinova-trust-cards {
+              grid-template-columns: 1fr !important;
+            }
+          }
+        `}</style>
+      </div>
+
+      {/* SECTION 3: ABOUT US / A LEGACY OF TRUST (ENCLOSED IN STYLISH SUITABLE MINT CARD BOX) */}
+      <section style={{ backgroundColor: '#ffffff', padding: '90px 0 80px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+        <div className="container" style={{ maxWidth: '1240px', margin: '0 auto', padding: '0 20px' }}>
+          {/* THE SUITABLE COLORED CARD BOX */}
+          <div
+            id="about-us-card-box"
+            style={{
+              background: 'linear-gradient(135deg, #f2faf6 0%, #eaf7f1 100%)',
+              border: '1.5px solid #bbf2dc',
+              borderRadius: '24px',
+              padding: '52px 48px',
+              boxShadow: '0 16px 40px -10px rgba(0, 135, 90, 0.08)'
+            }}
+          >
+            <div
+              id="about-two-col-grid"
+              style={{
+                display: 'grid',
+                gridTemplateColumns: '1.05fr 1fr',
+                gap: '48px',
+                alignItems: 'center'
+              }}
+            >
+              {/* Left Column: Content */}
+              <div>
+                <div
+                  style={{
+                    display: 'inline-block',
+                    backgroundColor: '#ffffff',
+                    color: '#00875a',
+                    border: '1px solid #a7f3d0',
+                    padding: '5px 14px',
+                    borderRadius: '999px',
+                    fontSize: '0.76rem',
+                    fontWeight: 800,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.04em',
+                    marginBottom: '16px',
+                    fontFamily: 'Arial, Helvetica, sans-serif'
+                  }}
+                >
+                  ABOUT FASTONMED
+                </div>
+
+                <h2
+                  id="about-headline"
+                  style={{
+                    fontSize: '2.5rem',
+                    fontWeight: 800,
+                    color: '#0f172a',
+                    lineHeight: 1.2,
+                    letterSpacing: '-0.02em',
+                    margin: '0 0 18px',
+                    fontFamily: 'Arial, Helvetica, sans-serif'
+                  }}
+                >
+                  A Legacy of Trust<br />in UAE Healthcare
+                </h2>
+
+                <p
+                  style={{
+                    fontSize: '0.96rem',
+                    color: '#475569',
+                    lineHeight: 1.65,
+                    margin: '0 0 24px',
+                    fontFamily: 'Arial, Helvetica, sans-serif'
+                  }}
+                >
+                  With licensed biomedical engineering facilities and a dedicated clinical support team, FastOnMed is dedicated to empowering UAE hospitals, day surgery centers, and clinics with dependable medical technologies and responsive support.
+                </p>
+
+                {/* 4 Checkpoint Items */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '30px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <CheckCircle2 size={18} color="#00875a" />
+                    <span style={{ fontSize: '0.9rem', fontWeight: 600, color: '#1e293b', fontFamily: 'Arial, Helvetica, sans-serif' }}>MoHAP & DHA Licensed Biomedical Supplier</span>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <CheckCircle2 size={18} color="#00875a" />
+                    <span style={{ fontSize: '0.9rem', fontWeight: 600, color: '#1e293b', fontFamily: 'Arial, Helvetica, sans-serif' }}>Comprehensive Range of Biomedical & ICU Products</span>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <CheckCircle2 size={18} color="#00875a" />
+                    <span style={{ fontSize: '0.9rem', fontWeight: 600, color: '#1e293b', fontFamily: 'Arial, Helvetica, sans-serif' }}>In-House Biomedical Engineering & Calibration AMC</span>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <CheckCircle2 size={18} color="#00875a" />
+                    <span style={{ fontSize: '0.9rem', fontWeight: 600, color: '#1e293b', fontFamily: 'Arial, Helvetica, sans-serif' }}>Direct Hospital Supply Across All 7 Emirates</span>
+                  </div>
+                </div>
+
+                {/* Learn More Button */}
+                <Link
+                  href="/about-us"
+                  style={{
+                    backgroundColor: '#00875a',
+                    color: '#ffffff',
+                    padding: '12px 26px',
+                    borderRadius: '8px',
+                    fontWeight: 700,
+                    fontSize: '0.9rem',
+                    textDecoration: 'none',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    boxShadow: '0 4px 14px rgba(0, 135, 90, 0.22)',
+                    transition: 'all 0.2s ease',
+                    fontFamily: 'Arial, Helvetica, sans-serif'
+                  }}
+                >
+                  <span>Learn More</span>
+                  <ArrowRight size={16} />
+                </Link>
+              </div>
+
+              {/* Right Column: Medical Equipment Showcase with Signature Arched Corner & Badge */}
+              <div style={{ position: 'relative' }}>
+                <div
+                  style={{
+                    borderRadius: '40px 16px 16px 16px',
+                    overflow: 'hidden',
+                    boxShadow: '0 20px 40px -10px rgba(0, 0, 0, 0.15)',
+                    position: 'relative',
+                    border: '3px solid #ffffff',
+                    backgroundColor: '#ffffff',
+                    padding: '8px'
+                  }}
+                >
+                  <img
+                    src="/images/hero-medical-equipment.jpg"
+                    alt="FastOnMed Medical Equipment & Biomedical Technologies Range"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      display: 'block',
+                      borderRadius: '32px 12px 12px 12px',
+                      objectFit: 'contain'
+                    }}
                   />
                 </div>
 
-                <div>
-                  <h3 style={{ fontSize: '0.96rem', fontWeight: 700, color: '#0f172a', margin: '0 0 6px', lineHeight: 1.3 }}>
-                    Biobase BSC-1000 Biosafety Cabinet
-                  </h3>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '6px' }}>
-                    <div>
-                      <span style={{ fontSize: '1.12rem', fontWeight: 800, color: '#0f172a' }}>AED 9,800</span>
-                      <span style={{ fontSize: '0.76rem', color: '#94a3b8', textDecoration: 'line-through', marginLeft: '6px' }}>AED 11,245</span>
-                    </div>
-                    <Link
-                      href="/product/biobase-weighing-bio-safety-cabinet-bsc-1000"
-                      style={{
-                        backgroundColor: '#00875a',
-                        color: '#ffffff',
-                        padding: '6px 14px',
-                        borderRadius: '8px',
-                        fontSize: '0.76rem',
-                        fontWeight: 700,
-                        textDecoration: 'none'
-                      }}
-                    >
-                      View
-                    </Link>
-                  </div>
+                {/* Floating 15+ Years Badge */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    bottom: '-18px',
+                    left: '20px',
+                    backgroundColor: '#ffffff',
+                    borderRadius: '12px',
+                    padding: '14px 22px',
+                    boxShadow: '0 10px 30px rgba(0, 0, 0, 0.12)',
+                    border: '1.5px solid #d1fae5',
+                    textAlign: 'center',
+                    zIndex: 2
+                  }}
+                >
+                  <div style={{ fontSize: '2.1rem', fontWeight: 800, color: '#00875a', lineHeight: 1, fontFamily: 'Arial, Helvetica, sans-serif' }}>15+</div>
+                  <div style={{ fontSize: '0.78rem', fontWeight: 600, color: '#64748b', marginTop: '4px', fontFamily: 'Arial, Helvetica, sans-serif' }}>Years in UAE Healthcare</div>
                 </div>
               </div>
             </div>
@@ -690,153 +1160,454 @@ export default function HomePage() {
 
         <style>{`
           @media (max-width: 900px) {
-            #hero-main-banner {
+            #about-us-card-box {
+              padding: 30px 20px !important;
+              border-radius: 18px !important;
+            }
+            #about-two-col-grid {
               grid-template-columns: 1fr !important;
-              padding: 20px 16px !important;
-              border-radius: 16px !important;
+              gap: 36px !important;
             }
-            .hero-bg-tint {
-              display: none !important;
-            }
-            #hero-right-spotlight {
-              display: none !important;
-            }
-            #hero-title {
-              font-size: 1.4rem !important;
-              line-height: 1.22 !important;
-              margin-bottom: 8px !important;
-            }
-            #hero-subtitle {
-              font-size: 0.84rem !important;
-              line-height: 1.45 !important;
-              margin-bottom: 16px !important;
-            }
-            .btn-hero-primary, .btn-hero-secondary {
-              padding: 8px 16px !important;
-              font-size: 0.8rem !important;
+            #about-headline {
+              font-size: 1.85rem !important;
             }
           }
         `}</style>
       </section>
 
-      {/* SECTION 2: SLIM TRUST STRIP (Takes Minimal Vertical Space, Zero Bloat) */}
-      <section style={{ padding: '0 0 20px' }}>
-        <div className="container" style={{ maxWidth: '1360px', margin: '0 auto', padding: '0 16px' }}>
+      {/* SECTION 4: OUR PRODUCTS / MEDICAL EQUIPMENT SPECIALTIES */}
+      <section style={{ backgroundColor: '#fafcfa', padding: '80px 0 90px', borderTop: '1px solid #f1f5f9', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+        <div className="container" style={{ maxWidth: '1240px', margin: '0 auto', padding: '0 20px' }}>
+          {/* Header */}
+          <div style={{ marginBottom: '36px' }}>
+            <div
+              style={{
+                display: 'inline-block',
+                backgroundColor: '#e6f7f0',
+                color: '#00875a',
+                padding: '5px 14px',
+                borderRadius: '999px',
+                fontSize: '0.76rem',
+                fontWeight: 800,
+                textTransform: 'uppercase',
+                letterSpacing: '0.04em',
+                marginBottom: '12px',
+                fontFamily: 'Arial, Helvetica, sans-serif'
+              }}
+            >
+              OUR SPECIALTIES
+            </div>
+            <h2
+              style={{
+                fontSize: '2.3rem',
+                fontWeight: 800,
+                color: '#0f172a',
+                letterSpacing: '-0.02em',
+                margin: 0,
+                fontFamily: 'Arial, Helvetica, sans-serif'
+              }}
+            >
+              Medical Equipment Specialties
+            </h2>
+          </div>
+
+          {/* 6 Category Cards Grid */}
           <div
-            id="trust-strip-grid"
+            id="therapeutic-cards-grid"
             style={{
-              backgroundColor: '#ffffff',
-              borderRadius: '14px',
-              border: '1px solid #e2e8f0',
-              padding: '12px 18px',
               display: 'grid',
-              gridTemplateColumns: 'repeat(4, 1fr)',
-              gap: '14px',
-              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.02)'
+              gridTemplateColumns: 'repeat(6, 1fr)',
+              gap: '16px'
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <div style={{ width: '32px', height: '32px', borderRadius: '8px', backgroundColor: '#f0fdf4', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                <Truck size={16} color="#00875a" />
+            {therapeuticAreas.map(area => (
+              <Link
+                key={area.id}
+                href={area.href}
+                style={{
+                  backgroundColor: '#ffffff',
+                  borderRadius: '14px',
+                  border: '1px solid #f1f5f9',
+                  overflow: 'hidden',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  textDecoration: 'none',
+                  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.03)',
+                  transition: 'all 0.25s ease',
+                  fontFamily: 'Arial, Helvetica, sans-serif'
+                }}
+                className="therapeutic-card"
+              >
+                {/* Medical Specialty Illustration */}
+                <div style={{ height: '145px', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <img
+                    src={area.image}
+                    alt={area.title}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      display: 'block',
+                      transition: 'transform 0.3s ease'
+                    }}
+                    className="therapeutic-img"
+                  />
+                </div>
+
+                {/* Content */}
+                <div style={{ padding: '14px', display: 'flex', flexDirection: 'column', flex: 1 }}>
+                  <h4 style={{ fontSize: '0.94rem', fontWeight: 800, color: '#0f172a', margin: '0 0 6px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                    {area.title}
+                  </h4>
+                  <p style={{ fontSize: '0.75rem', color: '#64748b', lineHeight: 1.45, margin: '0 0 14px', flex: 1, fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                    {area.desc}
+                  </p>
+
+                  <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 'auto' }}>
+                    <div
+                      style={{
+                        width: '26px',
+                        height: '26px',
+                        borderRadius: '50%',
+                        border: '1px solid #e2e8f0',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: '#00875a'
+                      }}
+                    >
+                      <ArrowRight size={13} />
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          {/* Centered View All Products Button */}
+          <div style={{ textAlign: 'center', marginTop: '40px' }}>
+            <Link
+              href="/shop"
+              style={{
+                backgroundColor: '#00875a',
+                color: '#ffffff',
+                padding: '12px 32px',
+                borderRadius: '8px',
+                fontWeight: 700,
+                fontSize: '0.92rem',
+                textDecoration: 'none',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                boxShadow: '0 4px 14px rgba(0, 135, 90, 0.25)',
+                transition: 'all 0.2s ease',
+                fontFamily: 'Arial, Helvetica, sans-serif'
+              }}
+            >
+              View Complete Catalog
+            </Link>
+          </div>
+        </div>
+
+        <style>{`
+          .therapeutic-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px -6px rgba(0, 135, 90, 0.12) !important;
+            border-color: #cbd5e1 !important;
+          }
+          .therapeutic-card:hover .therapeutic-img {
+            transform: scale(1.05);
+          }
+          @media (max-width: 1024px) {
+            #therapeutic-cards-grid {
+              grid-template-columns: repeat(3, 1fr) !important;
+            }
+          }
+          @media (max-width: 640px) {
+            #therapeutic-cards-grid {
+              grid-template-columns: repeat(2, 1fr) !important;
+              gap: 10px !important;
+            }
+          }
+        `}</style>
+      </section>
+
+      {/* SECTION 5: BRAND GREEN METRICS COUNTER RIBBON (Full Bleed in Arial) */}
+      <section
+        style={{
+          background: 'linear-gradient(135deg, #00875a 0%, #006040 100%)',
+          color: '#ffffff',
+          padding: '48px 0',
+          fontFamily: 'Arial, Helvetica, sans-serif'
+        }}
+      >
+        <div className="container" style={{ maxWidth: '1240px', margin: '0 auto', padding: '0 20px' }}>
+          <div
+            id="metrics-ribbon-grid"
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(4, 1fr)',
+              gap: '24px',
+              textAlign: 'center'
+            }}
+          >
+            {/* Stat 1 */}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <div style={{ marginBottom: '8px', opacity: 0.9 }}>
+                <Globe size={28} color="#ffffff" />
               </div>
-              <div>
-                <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#0f172a' }}>Express UAE Delivery</div>
-                <div style={{ fontSize: '0.68rem', color: '#64748b' }}>Same-day Dubai & 24h Emirates</div>
-              </div>
+              <div style={{ fontSize: '2.5rem', fontWeight: 800, lineHeight: 1.1, fontFamily: 'Arial, Helvetica, sans-serif' }}>7</div>
+              <div style={{ fontSize: '0.84rem', opacity: 0.85, marginTop: '4px', fontFamily: 'Arial, Helvetica, sans-serif' }}>Emirates Covered</div>
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <div style={{ width: '32px', height: '32px', borderRadius: '8px', backgroundColor: '#f0fdfa', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                <ShieldCheck size={16} color="#0d9488" />
+            {/* Stat 2 */}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <div style={{ marginBottom: '8px', opacity: 0.9 }}>
+                <Package size={28} color="#ffffff" />
               </div>
-              <div>
-                <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#0f172a' }}>MoHAP & DHA Certified</div>
-                <div style={{ fontSize: '0.68rem', color: '#64748b' }}>100% genuine medical grade</div>
-              </div>
+              <div style={{ fontSize: '2.5rem', fontWeight: 800, lineHeight: 1.1, fontFamily: 'Arial, Helvetica, sans-serif' }}>500+</div>
+              <div style={{ fontSize: '0.84rem', opacity: 0.85, marginTop: '4px', fontFamily: 'Arial, Helvetica, sans-serif' }}>Quality Medical Devices</div>
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <div style={{ width: '32px', height: '32px', borderRadius: '8px', backgroundColor: '#fffbeb', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                <Wrench size={16} color="#d97706" />
+            {/* Stat 3 */}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <div style={{ marginBottom: '8px', opacity: 0.9 }}>
+                <Users size={28} color="#ffffff" />
               </div>
-              <div>
-                <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#0f172a' }}>Biomedical Warranty</div>
-                <div style={{ fontSize: '0.68rem', color: '#64748b' }}>Technical support & AMC</div>
-              </div>
+              <div style={{ fontSize: '2.5rem', fontWeight: 800, lineHeight: 1.1, fontFamily: 'Arial, Helvetica, sans-serif' }}>300+</div>
+              <div style={{ fontSize: '0.84rem', opacity: 0.85, marginTop: '4px', fontFamily: 'Arial, Helvetica, sans-serif' }}>Hospitals & Clinics</div>
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <div style={{ width: '32px', height: '32px', borderRadius: '8px', backgroundColor: '#fdf2f8', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                <Award size={16} color="#db2777" />
+            {/* Stat 4 */}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <div style={{ marginBottom: '8px', opacity: 0.9 }}>
+                <Settings size={28} color="#ffffff" />
               </div>
-              <div>
-                <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#0f172a' }}>Hospital B2B Pricing</div>
-                <div style={{ fontSize: '0.68rem', color: '#64748b' }}>Institutional wholesale rates</div>
-              </div>
+              <div style={{ fontSize: '2.5rem', fontWeight: 800, lineHeight: 1.1, fontFamily: 'Arial, Helvetica, sans-serif' }}>15+</div>
+              <div style={{ fontSize: '0.84rem', opacity: 0.85, marginTop: '4px', fontFamily: 'Arial, Helvetica, sans-serif' }}>Years of Excellence</div>
             </div>
           </div>
         </div>
 
         <style>{`
-          @media (max-width: 900px) {
-            #trust-strip-grid {
+          @media (max-width: 768px) {
+            #metrics-ribbon-grid {
               grid-template-columns: repeat(2, 1fr) !important;
-              gap: 10px !important;
-              padding: 10px 12px !important;
+              gap: 28px 16px !important;
             }
           }
         `}</style>
       </section>
 
-      {/* SECTION 3: RECOMMENDED PRODUCTS (Light Mode Medical Grid) */}
-      <section style={{ padding: '60px 0 80px', backgroundColor: '#ffffff', borderTop: '1px solid #e2e8f0', borderBottom: '1px solid #e2e8f0' }}>
-        <div className="container" style={{ maxWidth: '1360px', margin: '0 auto', padding: '0 20px' }}>
-          {/* Section Header */}
+      {/* SECTION 6: NEWS & INSIGHTS / LATEST UPDATES */}
+      <section style={{ backgroundColor: '#ffffff', padding: '86px 0 90px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+        <div className="container" style={{ maxWidth: '1240px', margin: '0 auto', padding: '0 20px' }}>
+          {/* Header */}
+          <div style={{ marginBottom: '36px' }}>
+            <div
+              style={{
+                display: 'inline-block',
+                backgroundColor: '#e6f7f0',
+                color: '#00875a',
+                padding: '5px 14px',
+                borderRadius: '999px',
+                fontSize: '0.76rem',
+                fontWeight: 800,
+                textTransform: 'uppercase',
+                letterSpacing: '0.04em',
+                marginBottom: '12px',
+                fontFamily: 'Arial, Helvetica, sans-serif'
+              }}
+            >
+              NEWS & INSIGHTS
+            </div>
+            <h2
+              style={{
+                fontSize: '2.3rem',
+                fontWeight: 800,
+                color: '#0f172a',
+                letterSpacing: '-0.02em',
+                margin: 0,
+                fontFamily: 'Arial, Helvetica, sans-serif'
+              }}
+            >
+              Latest Clinical Updates
+            </h2>
+          </div>
+
+          {/* 3 Horizontal News Cards Grid */}
+          <div
+            id="news-cards-grid"
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(3, 1fr)',
+              gap: '24px'
+            }}
+          >
+            {latestNews.map(item => (
+              <div
+                key={item.id}
+                style={{
+                  backgroundColor: '#ffffff',
+                  borderRadius: '16px',
+                  border: '1px solid #edf2f7',
+                  overflow: 'hidden',
+                  display: 'flex',
+                  flexDirection: 'row',
+                  boxShadow: '0 4px 14px rgba(0, 0, 0, 0.04)',
+                  transition: 'all 0.25s ease',
+                  fontFamily: 'Arial, Helvetica, sans-serif'
+                }}
+                className="news-card-hover"
+              >
+                {/* Left Thumbnail */}
+                <div style={{ width: '40%', flexShrink: 0, overflow: 'hidden', backgroundColor: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8px' }}>
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    style={{
+                      maxHeight: '100%',
+                      maxWidth: '100%',
+                      objectFit: 'contain'
+                    }}
+                  />
+                </div>
+
+                {/* Right Content */}
+                <div style={{ padding: '18px', display: 'flex', flexDirection: 'column', flex: 1 }}>
+                  <span style={{ fontSize: '0.74rem', fontWeight: 700, color: '#00875a', marginBottom: '6px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                    {item.date}
+                  </span>
+
+                  <h3
+                    style={{
+                      fontSize: '0.94rem',
+                      fontWeight: 800,
+                      color: '#0f172a',
+                      lineHeight: 1.35,
+                      margin: '0 0 8px',
+                      display: '-webkit-box',
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: 'vertical',
+                      overflow: 'hidden',
+                      fontFamily: 'Arial, Helvetica, sans-serif'
+                    }}
+                  >
+                    {item.title}
+                  </h3>
+
+                  <p
+                    style={{
+                      fontSize: '0.76rem',
+                      color: '#64748b',
+                      lineHeight: 1.45,
+                      margin: '0 0 14px',
+                      display: '-webkit-box',
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: 'vertical',
+                      overflow: 'hidden',
+                      flex: 1,
+                      fontFamily: 'Arial, Helvetica, sans-serif'
+                    }}
+                  >
+                    {item.desc}
+                  </p>
+
+                  <Link
+                    href={item.href}
+                    style={{
+                      fontSize: '0.8rem',
+                      fontWeight: 700,
+                      color: '#00875a',
+                      textDecoration: 'none',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      marginTop: 'auto',
+                      fontFamily: 'Arial, Helvetica, sans-serif'
+                    }}
+                  >
+                    <span>Read More</span>
+                    <ArrowRight size={13} />
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <style>{`
+          .news-card-hover:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px -6px rgba(0, 0, 0, 0.08) !important;
+            border-color: #cbd5e1 !important;
+          }
+          @media (max-width: 900px) {
+            #news-cards-grid {
+              grid-template-columns: 1fr !important;
+            }
+          }
+        `}</style>
+      </section>
+
+      {/* SECTION 7: INTERACTIVE PRODUCT CATALOG (Browse & Order) */}
+      <section style={{ backgroundColor: '#fafcfa', padding: '70px 0 80px', borderTop: '1px solid #f1f5f9', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+        <div className="container" style={{ maxWidth: '1240px', margin: '0 auto', padding: '0 20px' }}>
           <div
             style={{
               display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
               alignItems: 'flex-end',
-              marginBottom: '36px',
+              justifyContent: 'space-between',
+              marginBottom: '28px',
               flexWrap: 'wrap',
-              gap: '20px'
+              gap: '16px'
             }}
           >
             <div>
-              <span
+              <div
                 style={{
+                  display: 'inline-block',
+                  backgroundColor: '#e6f7f0',
                   color: '#00875a',
-                  fontSize: '0.72rem',
+                  padding: '5px 14px',
+                  borderRadius: '999px',
+                  fontSize: '0.76rem',
                   fontWeight: 800,
                   textTransform: 'uppercase',
-                  letterSpacing: '0.08em'
+                  letterSpacing: '0.04em',
+                  marginBottom: '10px',
+                  fontFamily: 'Arial, Helvetica, sans-serif'
                 }}
               >
-                Official Healthcare Catalog
-              </span>
+                LIVE CATALOG
+              </div>
               <h2
-                id="products-section-heading"
                 style={{
-                  fontSize: '1.65rem',
+                  fontSize: '2.1rem',
                   fontWeight: 800,
                   color: '#0f172a',
                   letterSpacing: '-0.02em',
-                  marginTop: '4px'
+                  margin: 0,
+                  fontFamily: 'Arial, Helvetica, sans-serif'
                 }}
               >
-                Featured Medical Products
+                Featured Equipment & Supplies
               </h2>
             </div>
 
-            {/* Category Filter Pills */}
+            {/* Segmented Category Pill Tabs */}
             <div
-              className="category-pills-row"
               style={{
-                display: 'flex',
+                display: 'inline-flex',
                 alignItems: 'center',
-                gap: '8px',
-                flexWrap: 'wrap'
+                backgroundColor: '#ffffff',
+                padding: '4px',
+                borderRadius: '999px',
+                border: '1px solid #e2e8f0',
+                gap: '4px',
+                overflowX: 'auto',
+                maxWidth: '100%',
+                fontFamily: 'Arial, Helvetica, sans-serif'
               }}
             >
               {categoryPills.map(cat => {
@@ -846,16 +1617,17 @@ export default function HomePage() {
                     key={cat.id}
                     onClick={() => setSelectedCategory(cat.id)}
                     style={{
-                      backgroundColor: isSelected ? '#00875a' : '#ffffff',
+                      backgroundColor: isSelected ? '#00875a' : 'transparent',
                       color: isSelected ? '#ffffff' : '#475569',
-                      border: isSelected ? '1px solid #00875a' : '1px solid #cbd5e1',
-                      padding: '8px 18px',
-                      borderRadius: '24px',
-                      fontSize: '0.85rem',
+                      border: 'none',
+                      padding: '7px 16px',
+                      borderRadius: '999px',
+                      fontSize: '0.8rem',
                       fontWeight: 700,
                       cursor: 'pointer',
                       transition: 'all 0.2s ease',
-                      boxShadow: isSelected ? '0 4px 12px rgba(0, 135, 90, 0.25)' : 'none'
+                      whiteSpace: 'nowrap',
+                      fontFamily: 'Arial, Helvetica, sans-serif'
                     }}
                   >
                     {cat.label}
@@ -870,11 +1642,13 @@ export default function HomePage() {
             className="recommended-product-grid"
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-              gap: '24px'
+              gridTemplateColumns: 'repeat(4, 1fr)',
+              gap: '20px',
+              opacity: isCategoryLoading ? 0.65 : 1,
+              transition: 'opacity 0.2s ease'
             }}
           >
-            {filteredProducts.slice(0, 8).map(product => {
+            {activeCategoryProducts.slice(0, 8).map(product => {
               const price = product.salePrice && product.salePrice > 0 ? product.salePrice : product.regularPrice;
               const hasDiscount = product.salePrice && product.regularPrice > product.salePrice;
               const discountPct = hasDiscount ? Math.round(((product.regularPrice - product.salePrice!) / product.regularPrice) * 100) : null;
@@ -885,33 +1659,34 @@ export default function HomePage() {
                   key={product.id}
                   style={{
                     backgroundColor: '#ffffff',
-                    borderRadius: '20px',
+                    borderRadius: '14px',
                     overflow: 'hidden',
-                    border: '1px solid #e2e8f0',
+                    border: '1px solid #f1f5f9',
                     display: 'flex',
                     flexDirection: 'column',
-                    transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                    transition: 'all 0.25s ease',
                     position: 'relative',
-                    boxShadow: '0 4px 15px rgba(0, 0, 0, 0.02)'
+                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.02)',
+                    fontFamily: 'Arial, Helvetica, sans-serif'
                   }}
-                  className="product-card-hover"
+                  className="product-card-modern"
                 >
                   {/* Badge */}
                   {discountPct && (
                     <div
                       style={{
                         position: 'absolute',
-                        top: '14px',
-                        left: '14px',
+                        top: '12px',
+                        left: '12px',
                         backgroundColor: '#00875a',
                         color: '#ffffff',
-                        fontSize: '0.72rem',
+                        fontSize: '0.7rem',
                         fontWeight: 800,
-                        padding: '4px 10px',
-                        borderRadius: '20px',
-                        zIndex: 3
+                        padding: '3px 8px',
+                        borderRadius: '999px',
+                        zIndex: 3,
+                        fontFamily: 'Arial, Helvetica, sans-serif'
                       }}
-                      className="product-badge"
                     >
                       -{discountPct}%
                     </div>
@@ -922,151 +1697,148 @@ export default function HomePage() {
                     onClick={() => toggleWishlist(product.id)}
                     style={{
                       position: 'absolute',
-                      top: '14px',
-                      right: '14px',
+                      top: '12px',
+                      right: '12px',
                       backgroundColor: '#ffffff',
-                      border: '1px solid #e2e8f0',
-                      width: '36px',
-                      height: '36px',
+                      border: '1px solid #f1f5f9',
+                      width: '32px',
+                      height: '32px',
                       borderRadius: '50%',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       cursor: 'pointer',
-                      zIndex: 3,
-                      color: isFav ? '#ef4444' : '#64748b',
-                      boxShadow: '0 2px 6px rgba(0, 0, 0, 0.05)'
+                      zIndex: 3
                     }}
-                    className="product-wish-btn"
-                    aria-label="Save to Wishlist"
+                    aria-label="Wishlist"
                   >
-                    <Heart size={18} fill={isFav ? '#ef4444' : 'none'} />
+                    <Heart size={15} color={isFav ? '#ef4444' : '#94a3b8'} fill={isFav ? '#ef4444' : 'none'} />
                   </button>
 
-                  {/* Product Image Container */}
+                  {/* Product Image Link */}
                   <Link
                     href={`/product/${product.slug}`}
                     className="product-img-box"
                     style={{
-                      display: 'block',
                       backgroundColor: '#f8fafc',
-                      padding: '24px',
-                      height: '240px',
-                      position: 'relative',
-                      overflow: 'hidden'
+                      borderRadius: '10px',
+                      margin: '10px 10px 0',
+                      height: '180px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      padding: '16px',
+                      textDecoration: 'none'
                     }}
                   >
                     <img
-                      src={product.mainImage || '/products/patient-monitor.jpg'}
+                      src={product.mainImage || (product as any).image || '/products/patient-monitor.jpg'}
                       alt={product.name}
                       style={{
-                        width: '100%',
-                        height: '100%',
+                        maxHeight: '100%',
+                        maxWidth: '100%',
                         objectFit: 'contain',
                         transition: 'transform 0.3s ease'
                       }}
-                      className="card-img"
+                      className="product-img"
                     />
                   </Link>
 
                   {/* Product Info */}
-                  <div className="product-info-box" style={{ padding: '20px 22px 24px', display: 'flex', flexDirection: 'column', flex: 1 }}>
-                    <div className="product-cat-label" style={{ fontSize: '0.74rem', fontWeight: 800, color: '#0d9488', textTransform: 'uppercase', marginBottom: '6px' }}>
-                      {product.category || 'Medical Equipment'}
-                    </div>
+                  <div
+                    style={{
+                      padding: '14px',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      flex: 1,
+                      fontFamily: 'Arial, Helvetica, sans-serif'
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontSize: '0.72rem',
+                        fontWeight: 700,
+                        color: '#00875a',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.04em',
+                        marginBottom: '4px',
+                        fontFamily: 'Arial, Helvetica, sans-serif'
+                      }}
+                    >
+                      {product.category || 'Medical Supplies'}
+                    </span>
 
                     <Link
                       href={`/product/${product.slug}`}
                       style={{
-                        fontSize: '1rem',
+                        fontSize: '0.9rem',
                         fontWeight: 700,
                         color: '#0f172a',
-                        textDecoration: 'none',
                         lineHeight: 1.35,
-                        marginBottom: '12px',
+                        textDecoration: 'none',
+                        marginBottom: '10px',
                         display: '-webkit-box',
                         WebkitLineClamp: 2,
                         WebkitBoxOrient: 'vertical',
                         overflow: 'hidden',
-                        height: '42px'
+                        height: '38px',
+                        fontFamily: 'Arial, Helvetica, sans-serif'
                       }}
-                      className="product-title-link"
                     >
                       {product.name}
                     </Link>
 
-                    {/* Star Rating */}
-                    <div className="product-stars-row" style={{ display: 'flex', alignItems: 'center', gap: '4px', marginBottom: '14px' }}>
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} size={14} fill="#f59e0b" color="#f59e0b" />
-                      ))}
-                      <span style={{ fontSize: '0.75rem', color: '#64748b', marginLeft: '6px' }}>(5.0)</span>
-                    </div>
-
-                    {/* Price & Action Row */}
-                    <div className="product-price-action-row" style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '12px', borderTop: '1px solid #f1f5f9' }}>
+                    {/* Price and RFQ Action */}
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        marginTop: 'auto',
+                        paddingTop: '10px',
+                        borderTop: '1px solid #f1f5f9'
+                      }}
+                    >
                       <div>
                         {price > 0 ? (
-                          <div>
-                            <span className="product-price-val" style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0f172a' }}>
+                          <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px' }}>
+                            <span style={{ fontSize: '1.02rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Arial, Helvetica, sans-serif' }}>
                               AED {price.toLocaleString()}
                             </span>
                             {hasDiscount && (
-                              <span className="product-strike-val" style={{ fontSize: '0.85rem', color: '#94a3b8', textDecoration: 'line-through', marginLeft: '8px' }}>
+                              <span style={{ fontSize: '0.75rem', color: '#94a3b8', textDecoration: 'line-through', fontFamily: 'Arial, Helvetica, sans-serif' }}>
                                 AED {product.regularPrice.toLocaleString()}
                               </span>
                             )}
                           </div>
                         ) : (
-                          <span style={{ fontSize: '0.95rem', fontWeight: 700, color: '#00875a' }}>
+                          <span style={{ fontSize: '0.84rem', fontWeight: 700, color: '#00875a', fontFamily: 'Arial, Helvetica, sans-serif' }}>
                             Quote on Request
                           </span>
                         )}
                       </div>
 
-                      {price > 0 ? (
-                        <button
-                          onClick={() => handleAddToCart(product)}
-                          style={{
-                            backgroundColor: '#00875a',
-                            color: '#ffffff',
-                            border: 'none',
-                            padding: '9px 18px',
-                            borderRadius: '10px',
-                            fontWeight: 800,
-                            fontSize: '0.82rem',
-                            cursor: 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '6px',
-                            transition: 'all 0.2s',
-                            boxShadow: '0 4px 12px rgba(0, 135, 90, 0.2)'
-                          }}
-                          className="btn-add-cart"
-                        >
-                          <ShoppingBag size={14} />
-                          <span>Add</span>
-                        </button>
-                      ) : (
-                        <Link
-                          href={`/product/${product.slug}`}
-                          style={{
-                            backgroundColor: '#f1f5f9',
-                            color: '#0f172a',
-                            padding: '8px 14px',
-                            borderRadius: '10px',
-                            fontWeight: 700,
-                            fontSize: '0.8rem',
-                            textDecoration: 'none',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '4px'
-                          }}
-                        >
-                          <span>RFQ</span>
-                          <ChevronRight size={14} />
-                        </Link>
-                      )}
+                      <button
+                        onClick={() => handleAddToCart(product)}
+                        style={{
+                          backgroundColor: '#00875a',
+                          color: '#ffffff',
+                          border: 'none',
+                          padding: '7px 14px',
+                          borderRadius: '8px',
+                          fontWeight: 700,
+                          fontSize: '0.78rem',
+                          cursor: 'pointer',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '4px',
+                          transition: 'all 0.2s',
+                          fontFamily: 'Arial, Helvetica, sans-serif'
+                        }}
+                      >
+                        <span>RFQ</span>
+                        <ChevronRight size={13} />
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -1074,797 +1846,49 @@ export default function HomePage() {
             })}
           </div>
 
-          {/* View All Button */}
-          <div style={{ textAlign: 'center', marginTop: '48px' }}>
+          {/* View Full Catalog Link */}
+          <div style={{ textAlign: 'center', marginTop: '36px' }}>
             <Link
               href="/shop"
               style={{
-                backgroundColor: '#ffffff',
-                color: '#0f172a',
-                border: '2px solid #cbd5e1',
-                padding: '14px 38px',
-                borderRadius: '12px',
-                fontWeight: 700,
-                fontSize: '0.95rem',
-                textDecoration: 'none',
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '10px',
-                transition: 'all 0.2s ease',
-                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.03)'
+                gap: '8px',
+                color: '#00875a',
+                fontSize: '0.9rem',
+                fontWeight: 700,
+                textDecoration: 'none',
+                padding: '10px 24px',
+                borderRadius: '999px',
+                backgroundColor: '#e6f7f0',
+                transition: 'all 0.2s',
+                fontFamily: 'Arial, Helvetica, sans-serif'
               }}
-              className="view-all-btn"
             >
-              <span>Explore Full Medical Catalog (3,150+ Items)</span>
-              <ArrowRight size={18} />
+              <span>Explore Complete Catalog ({products.length} Items)</span>
+              <ArrowRight size={16} />
             </Link>
           </div>
         </div>
 
         <style>{`
-          .product-card-hover:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 16px 36px rgba(15, 23, 42, 0.08) !important;
-            border-color: #00875a !important;
+          .product-card-modern:hover {
+            box-shadow: 0 12px 28px -8px rgba(0, 135, 90, 0.12) !important;
+            transform: translateY(-3px);
+            border-color: #cbd5e1 !important;
           }
-          .product-card-hover:hover .card-img {
-            transform: scale(1.05);
-          }
-          .product-title-link:hover {
-            color: #00875a !important;
-          }
-          .btn-add-cart:hover {
-            background-color: #00704a !important;
+          .product-card-modern:hover .product-img {
             transform: scale(1.04);
           }
-          .view-all-btn:hover {
-            border-color: #00875a !important;
-            color: #00875a !important;
+          @media (max-width: 1024px) {
+            .recommended-product-grid {
+              grid-template-columns: repeat(3, 1fr) !important;
+            }
           }
-
           @media (max-width: 768px) {
-            .category-pills-row {
-              flex-wrap: nowrap !important;
-              overflow-x: auto !important;
-              -webkit-overflow-scrolling: touch !important;
-              scrollbar-width: none !important;
-              padding-bottom: 4px !important;
-              width: 100% !important;
-            }
-            .category-pills-row::-webkit-scrollbar {
-              display: none !important;
-            }
-            .category-pills-row button {
-              white-space: nowrap !important;
-              flex-shrink: 0 !important;
-              padding: 6px 14px !important;
-              font-size: 0.78rem !important;
-            }
             .recommended-product-grid {
               grid-template-columns: repeat(2, 1fr) !important;
               gap: 10px !important;
-            }
-            .recommended-product-grid .product-card-hover {
-              border-radius: 14px !important;
-            }
-            .recommended-product-grid .product-badge {
-              top: 8px !important;
-              left: 8px !important;
-              padding: 2px 7px !important;
-              font-size: 0.65rem !important;
-            }
-            .recommended-product-grid .product-wish-btn {
-              top: 8px !important;
-              right: 8px !important;
-              width: 30px !important;
-              height: 30px !important;
-            }
-            .recommended-product-grid .product-wish-btn svg {
-              width: 14px !important;
-              height: 14px !important;
-            }
-            .recommended-product-grid .product-img-box {
-              height: 130px !important;
-              padding: 10px !important;
-            }
-            .recommended-product-grid .product-info-box {
-              padding: 10px 10px 12px !important;
-            }
-            .recommended-product-grid .product-cat-label {
-              font-size: 0.66rem !important;
-              margin-bottom: 3px !important;
-            }
-            .recommended-product-grid .product-title-link {
-              font-size: 0.8rem !important;
-              line-height: 1.25 !important;
-              height: 30px !important;
-              margin-bottom: 6px !important;
-            }
-            .recommended-product-grid .product-stars-row {
-              display: none !important;
-            }
-            .recommended-product-grid .product-price-action-row {
-              padding-top: 8px !important;
-              flex-direction: column !important;
-              align-items: flex-start !important;
-              gap: 8px !important;
-            }
-            .recommended-product-grid .product-price-val {
-              font-size: 0.94rem !important;
-            }
-            .recommended-product-grid .product-strike-val {
-              font-size: 0.72rem !important;
-            }
-            .recommended-product-grid .btn-add-cart {
-              width: 100% !important;
-              justify-content: center !important;
-              padding: 7px 10px !important;
-              font-size: 0.76rem !important;
-              border-radius: 8px !important;
-            }
-            #products-section-heading {
-              font-size: 1.25rem !important;
-            }
-          }
-        `}</style>
-      </section>
-
-      {/* SECTION 3.5: INSTITUTIONAL BULK SUPPLY & HOSPITAL PROCUREMENT (Placed Naturally After Catalog) */}
-      <section style={{ padding: '0 0 40px' }}>
-        <div className="container" style={{ maxWidth: '1360px', margin: '0 auto', padding: '0 16px' }}>
-          <div
-            id="institutional-banner-card"
-            style={{
-              background: 'linear-gradient(135deg, #071322 0%, #0d2238 50%, #064e3b 100%)',
-              borderRadius: '20px',
-              padding: '32px 36px',
-              color: '#ffffff',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              gap: '24px',
-              flexWrap: 'wrap',
-              boxShadow: '0 12px 32px rgba(7, 19, 34, 0.16)',
-              border: '1px solid rgba(255, 255, 255, 0.12)',
-              position: 'relative',
-              overflow: 'hidden'
-            }}
-          >
-            <div style={{ maxWidth: '640px', zIndex: 2 }}>
-              <div
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  backgroundColor: 'rgba(245, 158, 11, 0.16)',
-                  color: '#fbbf24',
-                  border: '1px solid rgba(251, 191, 36, 0.35)',
-                  fontSize: '0.68rem',
-                  fontWeight: 800,
-                  padding: '3px 10px',
-                  borderRadius: '16px',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.04em',
-                  marginBottom: '10px'
-                }}
-              >
-                <span>Institutional Bulk Supply & Tenders</span>
-              </div>
-              <h2
-                id="inst-banner-title"
-                style={{
-                  fontSize: '1.65rem',
-                  fontWeight: 800,
-                  color: '#ffffff',
-                  lineHeight: 1.25,
-                  letterSpacing: '-0.02em',
-                  margin: '0 0 10px'
-                }}
-              >
-                Procuring for UAE Hospitals, Clinics, or Laboratories?
-              </h2>
-              <p
-                id="inst-banner-sub"
-                style={{
-                  fontSize: '0.9rem',
-                  color: '#94a3b8',
-                  lineHeight: 1.55,
-                  margin: 0
-                }}
-              >
-                FastOnMed provides institutional discounts, flexible payment terms, and official MoHAP tax quotation delivery in under 60 minutes with dedicated biomedical engineering support.
-              </p>
-            </div>
-
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', zIndex: 2, flexWrap: 'wrap' }}>
-              <Link
-                href="/contact"
-                style={{
-                  backgroundColor: '#f59e0b',
-                  color: '#0f172a',
-                  padding: '11px 24px',
-                  borderRadius: '10px',
-                  fontWeight: 800,
-                  fontSize: '0.85rem',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.03em',
-                  textDecoration: 'none',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  transition: 'all 0.2s ease',
-                  boxShadow: '0 4px 14px rgba(245, 158, 11, 0.3)'
-                }}
-              >
-                <span>Request Tender Quote</span>
-                <ArrowRight size={16} />
-              </Link>
-
-              <a
-                href="tel:+971508893589"
-                style={{
-                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                  color: '#ffffff',
-                  border: '1px solid rgba(255, 255, 255, 0.25)',
-                  padding: '10px 18px',
-                  borderRadius: '10px',
-                  fontWeight: 700,
-                  fontSize: '0.84rem',
-                  textDecoration: 'none',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '6px'
-                }}
-              >
-                <Phone size={15} />
-                <span>+971 508 893 589</span>
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <style>{`
-          @media (max-width: 900px) {
-            #institutional-banner-card {
-              padding: 22px 18px !important;
-              border-radius: 16px !important;
-            }
-            #inst-banner-title {
-              font-size: 1.25rem !important;
-            }
-            #inst-banner-sub {
-              font-size: 0.82rem !important;
-            }
-          }
-        `}</style>
-      </section>
-
-      {/* SECTION 4: DUAL CLINICAL SPOTLIGHT BANNERS (Light Medical Style) */}
-      <section style={{ padding: '40px 0 60px' }}>
-        <div className="container" style={{ maxWidth: '1360px', margin: '0 auto', padding: '0 16px' }}>
-          <div style={{ textAlign: 'center', marginBottom: '28px' }}>
-            <span style={{ color: '#00875a', fontSize: '0.74rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-              Specialized Healthcare Units
-            </span>
-            <h2 id="clinical-units-heading" style={{ fontSize: '1.65rem', fontWeight: 800, color: '#0f172a', letterSpacing: '-0.02em', marginTop: '4px' }}>
-              Clinical Units & Hospital Setup
-            </h2>
-          </div>
-
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-              gap: '20px'
-            }}
-            id="dual-spotlight-grid"
-          >
-            {/* Banner 1: ICU & Critical Care */}
-            <div
-              style={{
-                position: 'relative',
-                borderRadius: '18px',
-                overflow: 'hidden',
-                minHeight: '280px',
-                padding: '28px 24px',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'flex-end',
-                backgroundImage: `linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.88) 55%, rgba(255, 255, 255, 0.98) 100%), url('/products/patient-monitor.jpg')`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                border: '1px solid #e2e8f0',
-                boxShadow: '0 6px 20px rgba(15, 23, 42, 0.04)'
-              }}
-              className="spotlight-banner-card"
-            >
-              <span style={{ fontSize: '0.7rem', fontWeight: 800, color: '#00875a', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '6px' }}>
-                Intensive Care Systems
-              </span>
-              <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0f172a', lineHeight: 1.25, marginBottom: '8px' }}>
-                Multi-Parameter Patient Monitors & Ventilators
-              </h3>
-              <p style={{ fontSize: '0.86rem', color: '#475569', lineHeight: 1.45, marginBottom: '16px', maxWidth: '420px' }}>
-                Continuous cardiac telemetry, invasive arterial blood pressure, and hospital central monitoring networks.
-              </p>
-              <Link
-                href="/shop?category=general-medical-devices"
-                style={{
-                  backgroundColor: '#0f172a',
-                  color: '#ffffff',
-                  padding: '9px 20px',
-                  borderRadius: '8px',
-                  fontWeight: 700,
-                  fontSize: '0.8rem',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.04em',
-                  textDecoration: 'none',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  width: 'fit-content'
-                }}
-                className="banner-cta"
-              >
-                <span>EXPLORE ICU GEAR</span>
-                <ChevronRight size={14} />
-              </Link>
-            </div>
-
-            {/* Banner 2: Hospital Furniture & Sterilization */}
-            <div
-              style={{
-                position: 'relative',
-                borderRadius: '18px',
-                overflow: 'hidden',
-                minHeight: '280px',
-                padding: '28px 24px',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'flex-end',
-                backgroundImage: `linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.88) 55%, rgba(255, 255, 255, 0.98) 100%), url('/images/original/WhatsApp-Image-2025-06-28-at-18.29.37-1.jpeg')`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                border: '1px solid #e2e8f0',
-                boxShadow: '0 6px 20px rgba(15, 23, 42, 0.04)'
-              }}
-              className="spotlight-banner-card"
-            >
-              <span style={{ fontSize: '0.7rem', fontWeight: 800, color: '#0d9488', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '6px' }}>
-                Hospital Ward & Surgical Setup
-              </span>
-              <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0f172a', lineHeight: 1.25, marginBottom: '8px' }}>
-                Electric Hospital Beds & Surgical Lighting
-              </h3>
-              <p style={{ fontSize: '0.86rem', color: '#475569', lineHeight: 1.45, marginBottom: '16px', maxWidth: '420px' }}>
-                High-grade antibacterial hospital ward furniture, clinical examination couches, and autoclaves.
-              </p>
-              <Link
-                href="/shop?category=hospital-furniture"
-                style={{
-                  backgroundColor: '#0f172a',
-                  color: '#ffffff',
-                  padding: '9px 20px',
-                  borderRadius: '8px',
-                  fontWeight: 700,
-                  fontSize: '0.8rem',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.04em',
-                  textDecoration: 'none',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  width: 'fit-content'
-                }}
-                className="banner-cta"
-              >
-                <span>VIEW FURNITURE</span>
-                <ChevronRight size={14} />
-              </Link>
-            </div>
-          </div>
-        </div>
-
-        <style>{`
-          @media (max-width: 768px) {
-            #clinical-units-heading {
-              font-size: 1.22rem !important;
-            }
-            .spotlight-banner-card {
-              padding: 20px 16px !important;
-              min-height: 240px !important;
-            }
-            .spotlight-banner-card h3 {
-              font-size: 1.08rem !important;
-            }
-            .spotlight-banner-card p {
-              font-size: 0.8rem !important;
-              margin-bottom: 12px !important;
-            }
-          }
-          .banner-cta:hover {
-            background-color: #00875a !important;
-          }
-        `}</style>
-      </section>
-
-      {/* SECTION 5: CLINICAL CONSULTANT HELP BOX (Fresh Light Styling) */}
-      <section style={{ padding: '0 0 60px' }}>
-        <div className="container" style={{ maxWidth: '1360px', margin: '0 auto', padding: '0 16px' }}>
-          <div
-            id="consultant-advisory-card"
-            style={{
-              background: 'linear-gradient(135deg, #f0fdfa 0%, #e6fffa 100%)',
-              borderRadius: '20px',
-              padding: '36px 40px',
-              border: '1px solid #99f6e4',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              flexWrap: 'wrap',
-              gap: '24px',
-              boxShadow: '0 8px 24px rgba(13, 148, 136, 0.06)'
-            }}
-          >
-            <div style={{ maxWidth: '640px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                <Headphones size={20} color="#00875a" />
-                <span style={{ fontSize: '0.76rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.06em', color: '#00875a' }}>
-                  Biomedical Advisory
-                </span>
-              </div>
-              <h3 id="consultant-box-title" style={{ fontSize: '1.4rem', fontWeight: 800, color: '#0f172a', letterSpacing: '-0.02em', marginBottom: '8px' }}>
-                Need help? Contact our biomedical consultant
-              </h3>
-              <p style={{ fontSize: '0.88rem', color: '#475569', lineHeight: 1.55, margin: 0 }}>
-                Our Dubai Healthcare City (DHCC) clinical specialists provide technical consultations, DHA compliance verification, hospital procurement quotes, and installation engineering.
-              </p>
-            </div>
-
-            <div id="consultant-action-buttons" style={{ display: 'flex', flexDirection: 'column', gap: '10px', minWidth: '220px' }}>
-              <a
-                href="tel:+971508893589"
-                style={{
-                  backgroundColor: '#00875a',
-                  color: '#ffffff',
-                  padding: '13px 24px',
-                  borderRadius: '10px',
-                  fontWeight: 700,
-                  fontSize: '0.95rem',
-                  textDecoration: 'none',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '8px',
-                  boxShadow: '0 4px 14px rgba(0, 135, 90, 0.2)',
-                  transition: 'all 0.2s'
-                }}
-              >
-                <Phone size={17} />
-                <span>+971 508 893 589</span>
-              </a>
-
-              <a
-                href="https://wa.me/971508893589?text=Hello%20FastOnMed%20Team,%20I%20would%20like%20to%20consult%20regarding%20hospital%20equipment%20procurement"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  backgroundColor: '#25D366',
-                  color: '#ffffff',
-                  padding: '12px 24px',
-                  borderRadius: '10px',
-                  fontWeight: 700,
-                  fontSize: '0.9rem',
-                  textDecoration: 'none',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '8px',
-                  transition: 'all 0.2s'
-                }}
-              >
-                <MessageCircle size={17} />
-                <span>WhatsApp Consultant</span>
-              </a>
-            </div>
-          </div>
-        </div>
-        <style>{`
-          @media (max-width: 768px) {
-            #consultant-advisory-card {
-              padding: 22px 18px !important;
-              border-radius: 16px !important;
-            }
-            #consultant-box-title {
-              font-size: 1.15rem !important;
-              line-height: 1.35 !important;
-            }
-            #consultant-action-buttons {
-              width: 100% !important;
-              min-width: 100% !important;
-            }
-          }
-        `}</style>
-      </section>
-
-      {/* SECTION 6: CLINICAL GUIDES & HEALTHCARE INSIGHTS */}
-      <section style={{ padding: '0 0 60px' }}>
-        <div className="container" style={{ maxWidth: '1360px', margin: '0 auto', padding: '0 16px' }}>
-          <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-            <span style={{ color: '#00875a', fontSize: '0.78rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-              Healthcare Knowledge Base
-            </span>
-            <h2 id="guides-section-heading" style={{ fontSize: '1.65rem', fontWeight: 800, color: '#0f172a', letterSpacing: '-0.02em', marginTop: '6px' }}>
-              Clinical Equipment Guides & UAE Regulations
-            </h2>
-          </div>
-
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-              gap: '20px'
-            }}
-          >
-            {/* Article 1 */}
-            <div
-              style={{
-                backgroundColor: '#ffffff',
-                borderRadius: '16px',
-                overflow: 'hidden',
-                border: '1px solid #e2e8f0',
-                display: 'flex',
-                flexDirection: 'column',
-                boxShadow: '0 3px 12px rgba(0, 0, 0, 0.02)'
-              }}
-            >
-              <div style={{ height: '170px', backgroundColor: '#f1f5f9', position: 'relative', overflow: 'hidden' }}>
-                <img
-                  src="/images/original/clinic-1.webp"
-                  alt="DHA Clinic Licensing"
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                />
-                <div style={{ position: 'absolute', top: '12px', left: '12px', backgroundColor: '#ffffff', color: '#0d9488', fontSize: '0.68rem', fontWeight: 800, padding: '3px 8px', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
-                  REGULATORY GUIDE
-                </div>
-              </div>
-              <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', flex: 1 }}>
-                <span style={{ fontSize: '0.72rem', color: '#64748b', marginBottom: '6px' }}>5 min read • DHA Standards</span>
-                <h4 style={{ fontSize: '1.02rem', fontWeight: 700, color: '#0f172a', lineHeight: 1.4, marginBottom: '8px' }}>
-                  Mandatory Medical Equipment Checklist for DHA Clinic Licensing in Dubai
-                </h4>
-                <p style={{ fontSize: '0.84rem', color: '#64748b', lineHeight: 1.55, marginBottom: '14px' }}>
-                  Learn the required biomedical inspection protocols, defibrillator guidelines, and sterilization benchmarks demanded by Dubai Health Authority.
-                </p>
-                <Link
-                  href="/contact"
-                  style={{
-                    color: '#00875a',
-                    fontSize: '0.82rem',
-                    fontWeight: 700,
-                    textDecoration: 'none',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '5px',
-                    marginTop: 'auto'
-                  }}
-                >
-                  <span>Request Full Checklist</span>
-                  <ChevronRight size={14} />
-                </Link>
-              </div>
-            </div>
-
-            {/* Article 2 */}
-            <div
-              style={{
-                backgroundColor: '#ffffff',
-                borderRadius: '16px',
-                overflow: 'hidden',
-                border: '1px solid #e2e8f0',
-                display: 'flex',
-                flexDirection: 'column',
-                boxShadow: '0 3px 12px rgba(0, 0, 0, 0.02)'
-              }}
-            >
-              <div style={{ height: '170px', backgroundColor: '#f1f5f9', position: 'relative', overflow: 'hidden' }}>
-                <img
-                  src="/products/patient-monitor.jpg"
-                  alt="ICU Patient Monitoring"
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                />
-                <div style={{ position: 'absolute', top: '12px', left: '12px', backgroundColor: '#ffffff', color: '#00875a', fontSize: '0.68rem', fontWeight: 800, padding: '3px 8px', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
-                  CLINICAL TECH
-                </div>
-              </div>
-              <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', flex: 1 }}>
-                <span style={{ fontSize: '0.72rem', color: '#64748b', marginBottom: '6px' }}>4 min read • ICU Protocol</span>
-                <h4 style={{ fontSize: '1.02rem', fontWeight: 700, color: '#0f172a', lineHeight: 1.4, marginBottom: '8px' }}>
-                  Choosing Multi-Parameter Patient Monitors for ICU vs. General Hospital Wards
-                </h4>
-                <p style={{ fontSize: '0.84rem', color: '#64748b', lineHeight: 1.55, marginBottom: '14px' }}>
-                  A comparative technical breakdown between portable bedside monitors and centralized ICU telemetry stations.
-                </p>
-                <Link
-                  href="/shop?category=general-medical-devices"
-                  style={{
-                    color: '#00875a',
-                    fontSize: '0.82rem',
-                    fontWeight: 700,
-                    textDecoration: 'none',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '5px',
-                    marginTop: 'auto'
-                  }}
-                >
-                  <span>View Monitor Models</span>
-                  <ChevronRight size={14} />
-                </Link>
-              </div>
-            </div>
-
-            {/* Article 3 */}
-            <div
-              style={{
-                backgroundColor: '#ffffff',
-                borderRadius: '16px',
-                overflow: 'hidden',
-                border: '1px solid #e2e8f0',
-                display: 'flex',
-                flexDirection: 'column',
-                boxShadow: '0 3px 12px rgba(0, 0, 0, 0.02)'
-              }}
-            >
-              <div style={{ height: '170px', backgroundColor: '#f1f5f9', position: 'relative', overflow: 'hidden' }}>
-                <img
-                  src="/images/original/WhatsApp-Image-2025-06-28-at-18.29.38-1-1.jpeg"
-                  alt="Biomedical Engineering AMC"
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                />
-                <div style={{ position: 'absolute', top: '12px', left: '12px', backgroundColor: '#ffffff', color: '#d97706', fontSize: '0.68rem', fontWeight: 800, padding: '3px 8px', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
-                  BIOMEDICAL AMC
-                </div>
-              </div>
-              <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', flex: 1 }}>
-                <span style={{ fontSize: '0.72rem', color: '#64748b', marginBottom: '6px' }}>6 min read • Maintenance</span>
-                <h4 style={{ fontSize: '1.02rem', fontWeight: 700, color: '#0f172a', lineHeight: 1.4, marginBottom: '8px' }}>
-                  Preventive Maintenance and Electrical Safety Testing for Medical Facilities
-                </h4>
-                <p style={{ fontSize: '0.84rem', color: '#64748b', lineHeight: 1.55, marginBottom: '14px' }}>
-                  Understanding IEC 62353 standards for leakage current, ground resistance, and annual calibration certifications.
-                </p>
-                <Link
-                  href="/contact"
-                  style={{
-                    color: '#00875a',
-                    fontSize: '0.82rem',
-                    fontWeight: 700,
-                    textDecoration: 'none',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '5px',
-                    marginTop: 'auto'
-                  }}
-                >
-                  <span>Book Biomedical Inspection</span>
-                  <ChevronRight size={14} />
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-        <style>{`
-          @media (max-width: 768px) {
-            #guides-section-heading {
-              font-size: 1.22rem !important;
-              line-height: 1.35 !important;
-            }
-          }
-        `}</style>
-      </section>
-
-      {/* SECTION 7: CLINICAL NEWSLETTER */}
-      <section style={{ padding: '0 0 60px' }}>
-        <div className="container" style={{ maxWidth: '880px', margin: '0 auto', padding: '0 16px', textAlign: 'center' }}>
-          <div
-            id="newsletter-card"
-            style={{
-              backgroundColor: '#ffffff',
-              borderRadius: '20px',
-              padding: '36px 32px',
-              border: '1px solid #e2e8f0',
-              boxShadow: '0 6px 20px rgba(0, 0, 0, 0.03)'
-            }}
-          >
-            <span style={{ color: '#00875a', fontSize: '0.76rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-              Institutional Procurement Network
-            </span>
-            <h3 id="newsletter-heading" style={{ fontSize: '1.45rem', fontWeight: 800, color: '#0f172a', letterSpacing: '-0.02em', margin: '8px 0 10px' }}>
-              Join Our Clinical Procurement Newsletter
-            </h3>
-            <p style={{ fontSize: '0.88rem', color: '#64748b', maxWidth: '520px', margin: '0 auto 22px', lineHeight: 1.55 }}>
-              Receive monthly UAE MoHAP regulatory updates, hospital tender discounts, and new biomedical equipment releases.
-            </p>
-
-            {newsletterSubmitted ? (
-              <div style={{ backgroundColor: '#f0fdf4', color: '#15803d', padding: '14px 20px', borderRadius: '10px', fontWeight: 700, fontSize: '0.9rem', display: 'inline-block' }}>
-                ✓ Thank you! You are now subscribed to FastOnMed Clinical Procurement Updates.
-              </div>
-            ) : (
-              <form
-                id="newsletter-form"
-                onSubmit={handleNewsletter}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  maxWidth: '480px',
-                  margin: '0 auto',
-                  backgroundColor: '#f8fafc',
-                  borderRadius: '12px',
-                  padding: '5px 5px 5px 16px',
-                  border: '1px solid #cbd5e1'
-                }}
-              >
-                <input
-                  type="email"
-                  required
-                  placeholder="Enter hospital or clinic email..."
-                  value={newsletterEmail}
-                  onChange={e => setNewsletterEmail(e.target.value)}
-                  style={{
-                    flex: 1,
-                    background: 'none',
-                    border: 'none',
-                    color: '#0f172a',
-                    fontSize: '0.88rem',
-                    outline: 'none',
-                    padding: '8px 0'
-                  }}
-                />
-                <button
-                  type="submit"
-                  style={{
-                    backgroundColor: '#00875a',
-                    color: '#ffffff',
-                    border: 'none',
-                    padding: '11px 20px',
-                    borderRadius: '8px',
-                    fontWeight: 800,
-                    fontSize: '0.82rem',
-                    cursor: 'pointer',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.04em',
-                    flexShrink: 0
-                  }}
-                >
-                  Subscribe
-                </button>
-              </form>
-            )}
-          </div>
-        </div>
-        <style>{`
-          @media (max-width: 768px) {
-            #newsletter-card {
-              padding: 24px 18px !important;
-              border-radius: 16px !important;
-            }
-            #newsletter-heading {
-              font-size: 1.15rem !important;
-              line-height: 1.35 !important;
-            }
-            #newsletter-form {
-              flex-direction: column !important;
-              padding: 10px !important;
-              gap: 8px !important;
-            }
-            #newsletter-form input {
-              width: 100% !important;
-              text-align: center !important;
-            }
-            #newsletter-form button {
-              width: 100% !important;
             }
           }
         `}</style>
@@ -1875,3 +1899,4 @@ export default function HomePage() {
     </div>
   );
 }
+

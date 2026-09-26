@@ -46,8 +46,8 @@
   --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
   --shadow-glow: 0 0 25px rgba(81, 178, 145, 0.25);
 
-  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-  --font-heading: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-sans: Arial, Helvetica, sans-serif;
+  --font-heading: Arial, Helvetica, sans-serif;
 
   --transition-fast: 0.15s ease;
   --transition-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
@@ -59,10 +59,11 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 html, body {
-  font-family: var(--font-sans);
+  font-family: Arial, Helvetica, sans-serif !important;
   background-color: var(--bg-main);
   color: var(--text-main);
   line-height: 1.5;
@@ -71,7 +72,7 @@ html, body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-heading);
+  font-family: Arial, Helvetica, sans-serif !important;
   color: var(--text-main);
   line-height: 1.25;
   font-weight: 700;

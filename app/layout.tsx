@@ -6,20 +6,23 @@ import SiteShell from '@/components/SiteShell';
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.fastonmed.com'),
   title: {
-    default: 'FastOnMed | Healthcare Equipment & Medical Solutions Dubai UAE',
-    template: '%s | FastOnMed UAE'
+    default: 'FastOnMed | Best Medical Equipment Supplier in UAE',
+    template: '%s | FastOnMed - Best Medical Equipment Supplier in UAE'
   },
   description:
-    'Premier medical equipment distributor in Dubai Healthcare City (DHCC). Official supplier of hospital furniture, patient monitors, ICU ventilators, and biomedical engineering services across UAE.',
+    'FastOnMed is the Best Medical Equipment Supplier in UAE. Trusted distributor of MoHAP & DHA licensed biomedical technology, ICU ventilators, patient monitors, hospital furniture, and clinical equipment in Dubai, Abu Dhabi, and across the UAE.',
   keywords: [
-    'Medical Equipment Dubai',
-    'Hospital Furniture UAE',
-    'Medical Supplies UAE',
-    'Dubai Healthcare City DHCC',
-    'Biomedical Engineering Dubai',
+    'Best Medical Equipment Supplier in UAE',
+    'Medical Equipment Supplier in UAE',
+    'Medical Equipment Supplier Dubai',
+    'Medical Equipment Supplier Abu Dhabi',
+    'Biomedical Equipment UAE',
+    'Hospital Equipment Supplier UAE',
     'ICU Ventilators UAE',
-    'Patient Monitors',
-    'FastOnMed'
+    'Patient Monitoring Systems UAE',
+    'Clinical Diagnostic Equipment Dubai',
+    'MoHAP Licensed Medical Supplier',
+    'FastOnMed Healthcare UAE'
   ],
   authors: [{ name: 'FastOnMed Healthcare Equipment LLC' }],
   creator: 'FastOnMed Healthcare Solutions',
@@ -32,23 +35,23 @@ export const metadata: Metadata = {
     locale: 'en_AE',
     url: 'https://www.fastonmed.com',
     siteName: 'FastOnMed Healthcare Equipment LLC',
-    title: 'FastOnMed | Healthcare Equipment & Medical Solutions Dubai UAE',
+    title: 'FastOnMed | Best Medical Equipment Supplier in UAE',
     description:
-      'Official medical equipment distributor in Dubai Healthcare City (DHCC). Providing MoHAP & DHA approved hospital supplies and biomedical support across the UAE.',
+      'FastOnMed is the Best Medical Equipment Supplier in UAE. Providing MoHAP & DHA approved hospital supplies, ICU ventilators, patient monitors, and biomedical support across Dubai and the UAE.',
     images: [
       {
         url: 'https://www.fastonmed.com/fastonmed-logo.png',
         width: 1200,
         height: 630,
-        alt: 'FastOnMed Healthcare Equipment Dubai UAE'
+        alt: 'FastOnMed - Best Medical Equipment Supplier in UAE'
       }
     ]
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'FastOnMed | Healthcare Equipment & Medical Solutions Dubai UAE',
+    title: 'FastOnMed | Best Medical Equipment Supplier in UAE',
     description:
-      'Premier medical equipment supplier in Dubai Healthcare City. Official warranty, fast delivery across UAE, and biomedical technical support.',
+      'FastOnMed is the Best Medical Equipment Supplier in UAE. Official warranty, same-day delivery across UAE, and biomedical technical support.',
     images: ['https://www.fastonmed.com/fastonmed-logo.png']
   },
   robots: {

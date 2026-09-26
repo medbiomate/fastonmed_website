@@ -8,42 +8,45 @@ import ProductCard from '@/components/ProductCard';
 import CategoryWidget from '@/components/CategoryWidget';
 import CatalogSearchHeader from '@/components/CatalogSearchHeader';
 import { fetchCatalog } from '@/lib/backend-client';
+import { initialCategories, initialProducts } from '@/lib/mock-data';
 
 function ShopContent() {
   const searchParams = useSearchParams();
   const initialCategory = searchParams.get('category') || '';
   const initialSearch = searchParams.get('search') || '';
 
-  const [products, setProducts] = useState<Product[]>([]);
-  const [categories, setCategories] = useState<ProductCategory[]>([]);
+  const [products, setProducts] = useState<Product[]>(() => initialProducts.slice(0, 20));
+  const [categories, setCategories] = useState<ProductCategory[]>(initialCategories);
   const [selectedCategory, setSelectedCategory] = useState<string>(initialCategory);
   const [searchQuery, setSearchQuery] = useState<string>(initialSearch);
   const [sortBy, setSortBy] = useState<string>('recent');
   const [page, setPage] = useState(1);
-  const [totalProducts, setTotalProducts] = useState(0);
-  const [totalPages, setTotalPages] = useState(1);
-  const [loading, setLoading] = useState(true);
+  const [totalProducts, setTotalProducts] = useState(2720);
+  const [totalPages, setTotalPages] = useState(136);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     let active = true;
     setLoading(true);
     const timer = window.setTimeout(() => {
       fetchCatalog({ page, limit: 20, search: searchQuery, category: selectedCategory, sortBy })
-      .then(({ products: sharedProducts, categories: sharedCategories, total, totalPages: pages }) => {
-        if (!active) return;
-        setProducts(sharedProducts);
-        setCategories(sharedCategories);
-        setTotalProducts(total);
-        setTotalPages(pages);
-      })
-      .catch(() => {
-        if (!active) return;
-        setProducts([]);
-        setTotalProducts(0);
-      })
-      .finally(() => {
-        if (active) setLoading(false);
-      });
+        .then(({ products: sharedProducts, categories: sharedCategories, total, totalPages: pages }) => {
+          if (!active) return;
+          if (Array.isArray(sharedProducts) && sharedProducts.length > 0) {
+            setProducts(sharedProducts);
+            setTotalProducts(total);
+            setTotalPages(pages);
+          }
+          if (Array.isArray(sharedCategories) && sharedCategories.length > 0) {
+            setCategories(sharedCategories);
+          }
+        })
+        .catch(err => {
+          console.warn('Catalog fetch warning:', err);
+        })
+        .finally(() => {
+          if (active) setLoading(false);
+        });
     }, searchQuery ? 250 : 0);
     return () => {
       active = false;

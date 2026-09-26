@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 220" width="100%" height="100%">
+  <defs>
+    <linearGradient id="monBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#eff6ff"/>
+      <stop offset="100%" stop-color="#dbeafe"/>
+    </linearGradient>
+    <linearGradient id="monScreen" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0b1329"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <linearGradient id="monBody" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#e2e8f0"/>
+    </linearGradient>
+    <filter id="ecgGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="2.5" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    <filter id="monShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#0f172a" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <!-- Background Canvas -->
+  <rect width="320" height="220" rx="14" fill="url(#monBg)"/>
+
+  <!-- Telemetry Pulse Grid -->
+  <g stroke="#93c5fd" stroke-width="0.5" opacity="0.4">
+    <line x1="20" y1="50" x2="300" y2="50"/>
+    <line x1="20" y1="100" x2="300" y2="100"/>
+    <line x1="20" y1="150" x2="300" y2="150"/>
+    <line x1="75" y1="20" x2="75" y2="200"/>
+    <line x1="150" y1="20" x2="150" y2="200"/>
+    <line x1="225" y1="20" x2="225" y2="200"/>
+  </g>
+
+  <!-- Stylized Big Cardiac Rhythm Wave in Background -->
+  <path d="M20,110 L70,110 L80,95 L90,135 L102,75 L112,125 L120,105 L130,110 L300,110" 
+        fill="none" stroke="#60a5fa" stroke-width="2" opacity="0.25"/>
+
+  <!-- Monitor Stand and Unit -->
+  <g filter="url(#monShadow)">
+    <!-- Wheeled Stand Base -->
+    <ellipse cx="160" cy="188" rx="55" ry="11" fill="#cbd5e1"/>
+    <rect x="110" y="188" width="12" height="16" rx="4" fill="#64748b"/>
+    <rect x="198" y="188" width="12" height="16" rx="4" fill="#64748b"/>
+    <rect x="154" y="191" width="12" height="15" rx="3" fill="#475569"/>
+
+    <!-- Stand Column & Basket -->
+    <rect x="154" y="105" width="12" height="85" rx="2" fill="url(#monBody)"/>
+    <rect x="135" y="135" width="50" height="16" rx="4" fill="#e2e8f0" stroke="#cbd5e1"/>
+    <line x1="145" y1="135" x2="145" y2="151" stroke="#94a3b8" stroke-width="1.5"/>
+    <line x1="155" y1="135" x2="155" y2="151" stroke="#94a3b8" stroke-width="1.5"/>
+    <line x1="165" y1="135" x2="165" y2="151" stroke="#94a3b8" stroke-width="1.5"/>
+    <line x1="175" y1="135" x2="175" y2="151" stroke="#94a3b8" stroke-width="1.5"/>
+
+    <!-- Monitor Mounting Pivot -->
+    <rect x="150" y="92" width="20" height="14" rx="3" fill="#64748b"/>
+
+    <!-- Main Multi-Parameter Monitor -->
+    <rect x="95" y="24" width="130" height="76" rx="10" fill="url(#monBody)" stroke="#94a3b8" stroke-width="2"/>
+    <!-- Screen Bezel -->
+    <rect x="101" y="29" width="102" height="66" rx="6" fill="url(#monScreen)"/>
+
+    <!-- Live ECG Line (Glowing Green) -->
+    <path d="M104,46 L124,46 L128,38 L133,56 L138,32 L143,54 L147,43 L152,46 L175,46" 
+          fill="none" stroke="#22c55e" stroke-width="2" filter="url(#ecgGlow)"/>
+    
+    <!-- SpO2 Pleth Wave (Glowing Cyan) -->
+    <path d="M104,64 Q109,56 114,64 T124,64 T134,58 T144,64 T154,64 T164,58 T174,64" 
+          fill="none" stroke="#38bdf8" stroke-width="1.8"/>
+
+    <!-- Respiration Wave (Glowing Yellow) -->
+    <path d="M104,80 Q112,74 120,80 T136,80 T152,74 T168,80" 
+          fill="none" stroke="#eab308" stroke-width="1.5"/>
+
+    <!-- Digital Readouts on Right Side of Screen -->
+    <g transform="translate(178, 32)">
+      <text x="0" y="11" font-family="Arial, sans-serif" font-size="11" font-weight="900" fill="#22c55e">78</text>
+      <text x="16" y="9" font-family="Arial, sans-serif" font-size="5" fill="#86efac">BPM</text>
+
+      <text x="0" y="26" font-family="Arial, sans-serif" font-size="10" font-weight="900" fill="#38bdf8">99</text>
+      <text x="16" y="24" font-family="Arial, sans-serif" font-size="5" fill="#7dd3fc">%</text>
+
+      <text x="0" y="40" font-family="Arial, sans-serif" font-size="7" font-weight="900" fill="#eab308">120/80</text>
+      <text x="0" y="47" font-family="Arial, sans-serif" font-size="5" fill="#fde047">NIBP</text>
+    </g>
+
+    <!-- Side Control Dial & Keys on Physical Bezel -->
+    <circle cx="215" cy="46" r="6" fill="#475569" stroke="#94a3b8" stroke-width="1"/>
+    <rect x="210" y="58" width="10" height="4" rx="2" fill="#22c55e"/>
+    <rect x="210" y="65" width="10" height="4" rx="2" fill="#38bdf8"/>
+    <rect x="210" y="72" width="10" height="4" rx="2" fill="#e2e8f0"/>
+
+    <!-- Hanging Patient Cable Sensor -->
+    <path d="M102,78 C80,95 72,130 84,150" fill="none" stroke="#3b82f6" stroke-width="2.5"/>
+    <rect x="80" y="148" width="10" height="8" rx="2" fill="#1d4ed8"/>
+  </g>
+
+  <!-- Pulse Heart Badge Floating -->
+  <g transform="translate(230, 20)" filter="url(#monShadow)">
+    <rect width="78" height="24" rx="12" fill="#ffffff" stroke="#93c5fd" stroke-width="1.5"/>
+    <circle cx="12" cy="12" r="5" fill="#2563eb"/>
+    <!-- Heart Icon -->
+    <path d="M12,15 L9,12 Q8,10 10,9 Q11,9 12,10 Q13,9 14,9 Q16,10 15,12 Z" fill="#ffffff"/>
+    <text x="22" y="16" font-family="Arial, sans-serif" font-size="8.5" font-weight="bold" fill="#1d4ed8">Real-Time</text>
+  </g>
+</svg>

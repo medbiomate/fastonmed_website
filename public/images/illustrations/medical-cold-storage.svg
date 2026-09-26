@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 220" width="100%" height="100%">
+  <defs>
+    <linearGradient id="coldBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f0fdfa"/>
+      <stop offset="100%" stop-color="#ccfbf1"/>
+    </linearGradient>
+    <linearGradient id="fridgeBody" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#e2e8f0"/>
+    </linearGradient>
+    <linearGradient id="glassGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#e0f2fe" stop-opacity="0.8"/>
+      <stop offset="50%" stop-color="#bae6fd" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#7dd3fc" stop-opacity="0.7"/>
+    </linearGradient>
+    <filter id="coldGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    <filter id="fridgeShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#0f172a" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <!-- Background Canvas -->
+  <rect width="320" height="220" rx="14" fill="url(#coldBg)"/>
+
+  <!-- Decorative Snowflake Elements in Background -->
+  <g stroke="#99f6e4" stroke-width="1.5" opacity="0.6" stroke-linecap="round">
+    <!-- Top Left Snowflake -->
+    <g transform="translate(50, 45) scale(0.65)">
+      <line x1="0" y1="-20" x2="0" y2="20"/>
+      <line x1="-20" y1="0" x2="20" y2="0"/>
+      <line x1="-14" y1="-14" x2="14" y2="14"/>
+      <line x1="-14" y1="14" x2="14" y2="-14"/>
+    </g>
+    <!-- Bottom Right Snowflake -->
+    <g transform="translate(265, 160) scale(0.8)">
+      <line x1="0" y1="-20" x2="0" y2="20"/>
+      <line x1="-20" y1="0" x2="20" y2="0"/>
+      <line x1="-14" y1="-14" x2="14" y2="14"/>
+      <line x1="-14" y1="14" x2="14" y2="-14"/>
+    </g>
+  </g>
+
+  <!-- The Pharmacy Refrigerator Unit -->
+  <g filter="url(#fridgeShadow)" transform="translate(115, 16)">
+    <!-- Main Outer Cabinet Frame -->
+    <rect x="0" y="0" width="90" height="180" rx="8" fill="url(#fridgeBody)" stroke="#94a3b8" stroke-width="2"/>
+    
+    <!-- Top Header Control Panel with Digital Temp Display -->
+    <rect x="6" y="6" width="78" height="24" rx="4" fill="#00875a"/>
+    <rect x="22" y="10" width="46" height="16" rx="3" fill="#0b1329"/>
+    <!-- LED Display 4.0 °C -->
+    <text x="27" y="22" font-family="Arial, sans-serif" font-size="10" font-weight="900" fill="#22c55e" filter="url(#coldGlow)">+4.0°C</text>
+    <circle cx="73" cy="18" r="2.5" fill="#38bdf8"/>
+
+    <!-- Glass Double Door Frame -->
+    <rect x="6" y="34" width="78" height="136" rx="4" fill="#0f172a" fill-opacity="0.05" stroke="#cbd5e1" stroke-width="2"/>
+    <rect x="8" y="36" width="74" height="132" rx="3" fill="url(#glassGrad)"/>
+
+    <!-- Shelves (4 Tiers) -->
+    <line x1="10" y1="68" x2="80" y2="68" stroke="#ffffff" stroke-width="2.5"/>
+    <line x1="10" y1="100" x2="80" y2="100" stroke="#ffffff" stroke-width="2.5"/>
+    <line x1="10" y1="132" x2="80" y2="132" stroke="#ffffff" stroke-width="2.5"/>
+
+    <!-- Vaccine & Medicine Vials on Shelves -->
+    <!-- Shelf 1 -->
+    <rect x="18" y="52" width="6" height="15" rx="1.5" fill="#0284c7"/>
+    <rect x="28" y="50" width="7" height="17" rx="1.5" fill="#0d9488"/>
+    <rect x="38" y="53" width="6" height="14" rx="1.5" fill="#0284c7"/>
+    <rect x="48" y="49" width="8" height="18" rx="2" fill="#2563eb"/>
+    <rect x="60" y="51" width="7" height="16" rx="1.5" fill="#0d9488"/>
+
+    <!-- Shelf 2 -->
+    <rect x="16" y="84" width="14" height="15" rx="2" fill="#ffffff" stroke="#00875a"/>
+    <rect x="34" y="85" width="12" height="14" rx="2" fill="#ffffff" stroke="#0ea5e9"/>
+    <rect x="52" y="83" width="15" height="16" rx="2" fill="#ffffff" stroke="#00875a"/>
+
+    <!-- Shelf 3 -->
+    <rect x="20" y="118" width="6" height="13" rx="1" fill="#38bdf8"/>
+    <rect x="28" y="116" width="7" height="15" rx="1" fill="#22c55e"/>
+    <rect x="38" y="118" width="6" height="13" rx="1" fill="#38bdf8"/>
+    <rect x="48" y="115" width="8" height="16" rx="1" fill="#22c55e"/>
+    <rect x="59" y="117" width="7" height="14" rx="1" fill="#38bdf8"/>
+
+    <!-- Door Vertical Chrome Handle -->
+    <rect x="74" y="80" width="4" height="40" rx="2" fill="#64748b" stroke="#ffffff" stroke-width="0.8"/>
+
+    <!-- Base Feet -->
+    <rect x="8" y="180" width="14" height="8" rx="2" fill="#475569"/>
+    <rect x="68" y="180" width="14" height="8" rx="2" fill="#475569"/>
+  </g>
+
+  <!-- Left Floating Temperature Range Badge -->
+  <g transform="translate(18, 110)" filter="url(#fridgeShadow)">
+    <rect width="84" height="34" rx="8" fill="#ffffff" stroke="#99f6e4" stroke-width="1.5"/>
+    <text x="12" y="16" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="#0d9488">MoHAP Cold-Chain</text>
+    <text x="12" y="28" font-family="Arial, sans-serif" font-size="10" font-weight="900" fill="#00875a">2°C to 8°C</text>
+  </g>
+
+  <!-- Top Right Certification Badge -->
+  <g transform="translate(220, 24)" filter="url(#fridgeShadow)">
+    <rect width="82" height="24" rx="12" fill="#ffffff" stroke="#5eead4" stroke-width="1.5"/>
+    <circle cx="12" cy="12" r="5" fill="#0d9488"/>
+    <path d="M12,8 L12,16 M8,12 L16,12" stroke="#ffffff" stroke-width="1.2"/>
+    <text x="22" y="16" font-family="Arial, sans-serif" font-size="8.5" font-weight="bold" fill="#0d9488">WHO PQS</text>
+  </g>
+</svg>
