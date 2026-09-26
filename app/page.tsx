@@ -1277,8 +1277,8 @@ export default function HomePage() {
                 href={area.href}
                 style={{
                   backgroundColor: '#ffffff',
-                  borderRadius: '14px',
-                  border: '1px solid #f1f5f9',
+                  borderRadius: '16px',
+                  border: '1px solid #e2e8f0',
                   overflow: 'hidden',
                   display: 'flex',
                   flexDirection: 'column',
@@ -1289,15 +1289,15 @@ export default function HomePage() {
                 }}
                 className="therapeutic-card"
               >
-                {/* Medical Specialty Illustration */}
-                <div style={{ height: '145px', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                {/* Medical Specialty Line Illustration */}
+                <div style={{ height: '148px', backgroundColor: '#f8fafc', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8px', borderBottom: '1px solid #f1f5f9' }}>
                   <img
                     src={area.image}
                     alt={area.title}
                     style={{
                       width: '100%',
                       height: '100%',
-                      objectFit: 'cover',
+                      objectFit: 'contain',
                       display: 'block',
                       transition: 'transform 0.3s ease'
                     }}
