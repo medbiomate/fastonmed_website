@@ -1,0 +1,47 @@
+[
+  {
+    "id": "user-fuhad",
+    "name": "Fuhad",
+    "email": "fuhad@fastonmed.com",
+    "username": "fuhad",
+    "role": "Super Admin",
+    "password": "growth123",
+    "createdAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "user-hashim",
+    "name": "Hashim",
+    "email": "hashim@fastonmed.com",
+    "username": "hashim",
+    "role": "Administrator",
+    "password": "hashim123",
+    "createdAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "user-riyas",
+    "name": "Riyas",
+    "email": "riyas@fastonmed.com",
+    "username": "riyas",
+    "role": "Shop Manager",
+    "password": "riyas123",
+    "createdAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "user-admin",
+    "name": "Fastonmed Admin",
+    "email": "admin@fastonmed.com",
+    "username": "admin",
+    "role": "Administrator",
+    "password": "admin123",
+    "createdAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "admin-1790340384762-84uq",
+    "name": "Dr. Sarah Smith",
+    "email": "sarah.test@fastonmed.com",
+    "username": "sarahtest",
+    "role": "Editor",
+    "password": "securepassword123",
+    "createdAt": "2026-09-25T12:46:24.762Z"
+  }
+]
