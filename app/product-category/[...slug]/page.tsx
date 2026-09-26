@@ -6,8 +6,42 @@ import { hasUsableProductImage } from '@/lib/sitemap-utils';
 const slugify = (value: string) => value.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string[] }> }): Promise<Metadata> {
-  const { slug } = await params; const label = slug.at(-1)?.replaceAll('-', ' ') || 'Medical Equipment';
-  return { title: `${label.replace(/\b\w/g, (char) => char.toUpperCase())} in UAE | Fastonmed`, alternates: { canonical: `https://www.fastonmed.com/product-category/${slug.join('/')}` } };
+  const { slug } = await params;
+  const rawLabel = slug.at(-1)?.replaceAll('-', ' ') || 'Medical Equipment';
+  const formattedLabel = rawLabel.replace(/\b\w/g, (char) => char.toUpperCase());
+  const canonicalUrl = `https://www.fastonmed.com/product-category/${slug.join('/')}`;
+  const title = `${formattedLabel} | Best Medical Equipment Supplier in UAE | FastOnMed`;
+  const description = `Discover certified ${formattedLabel} from FastOnMed, the Best Medical Equipment Supplier in UAE. Official UAE distribution, MoHAP compliance, and rapid delivery in Dubai & Abu Dhabi.`;
+
+  return {
+    title,
+    description,
+    keywords: [
+      formattedLabel,
+      `${formattedLabel} UAE`,
+      `${formattedLabel} Dubai`,
+      'Best Medical Equipment Supplier in UAE',
+      'Medical Equipment Supplier in UAE',
+      'Hospital Supplies UAE',
+      'FastOnMed Healthcare'
+    ],
+    alternates: {
+      canonical: canonicalUrl
+    },
+    openGraph: {
+      title,
+      description,
+      url: canonicalUrl,
+      siteName: 'FastOnMed Healthcare Equipment LLC',
+      locale: 'en_AE',
+      type: 'website'
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description
+    }
+  };
 }
 
 export default async function ProductCategoryPage({ params }: { params: Promise<{ slug: string[] }> }) {

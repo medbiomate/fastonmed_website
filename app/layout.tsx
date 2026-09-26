@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://www.fastonmed.com'),
   title: {
     default: 'FastOnMed | Best Medical Equipment Supplier in UAE',
-    template: '%s | FastOnMed - Best Medical Equipment Supplier in UAE'
+    template: '%s'
   },
   description:
     'FastOnMed is the Best Medical Equipment Supplier in UAE. Trusted distributor of MoHAP & DHA licensed biomedical technology, ICU ventilators, patient monitors, hospital furniture, and clinical equipment in Dubai, Abu Dhabi, and across the UAE.',

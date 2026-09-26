@@ -33,22 +33,46 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const page = await getSharedEditorialPage(slug);
-  if (!page) return {};
+  if (!page) {
+    return {
+      title: 'Page Not Found | Best Medical Equipment Supplier in UAE | FastOnMed',
+      robots: { index: false, follow: true }
+    };
+  }
+
+  const title = `${page.title} | Best Medical Equipment Supplier in UAE | FastOnMed`;
+  const description =
+    page.description ||
+    `${page.title} – FastOnMed is the Best Medical Equipment Supplier in UAE. MoHAP compliant clinical solutions, ICU ventilators, and hospital equipment across Dubai and Abu Dhabi.`;
+  const canonicalUrl = `https://www.fastonmed.com/${slug}`;
 
   return {
-    title: `${page.title} | Fastonmed Dubai & UAE`,
-    description: page.description,
+    title,
+    description,
+    keywords: [
+      page.title,
+      'Best Medical Equipment Supplier in UAE',
+      'Medical Equipment Supplier in UAE',
+      'Hospital Supplies UAE',
+      'Biomedical Engineering UAE',
+      'FastOnMed Healthcare'
+    ],
     alternates: {
-      canonical: `https://www.fastonmed.com/${slug}`,
+      canonical: canonicalUrl,
     },
     openGraph: {
-      title: `${page.title} | Fastonmed`,
-      description: page.description,
-      url: `https://www.fastonmed.com/${slug}`,
-      siteName: 'Fastonmed',
-      locale: 'en_US',
+      title,
+      description,
+      url: canonicalUrl,
+      siteName: 'FastOnMed Healthcare Equipment LLC',
+      locale: 'en_AE',
       type: 'article',
     },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+    }
   };
 }
 

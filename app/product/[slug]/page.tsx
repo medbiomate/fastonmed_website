@@ -32,10 +32,10 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
     .replace(/<[^>]*>?/gm, '')
     .slice(0, 155);
 
-  const seoTitle = `${product.name} – Buy Online UAE | FastOnMed`;
+  const seoTitle = `${product.name} | Best Medical Equipment Supplier in UAE | FastOnMed`;
   const seoDescription = cleanDescription.length > 20
-    ? `${cleanDescription} Official UAE warranty & fast delivery in Dubai & Abu Dhabi.`
-    : `Buy ${product.name} from FastOnMed UAE. Official medical distributor in Dubai Healthcare City (DHCC) with warranty and biomedical support.`;
+    ? `${cleanDescription} FastOnMed is the Best Medical Equipment Supplier in UAE. Official warranty & fast delivery across UAE.`
+    : `Buy ${product.name} from FastOnMed, the Best Medical Equipment Supplier in UAE. Official distributor in Dubai Healthcare City (DHCC) with warranty and biomedical support.`;
 
   return {
     title: seoTitle,
@@ -44,6 +44,8 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
       product.name,
       product.category,
       product.brand || 'FastOnMed Partner',
+      'Best Medical Equipment Supplier in UAE',
+      'Medical Equipment Supplier in UAE',
       'Medical Equipment Dubai',
       'Healthcare Supplies UAE',
       'Buy Hospital Equipment Dubai',
