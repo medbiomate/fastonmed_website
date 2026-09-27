@@ -3,7 +3,20 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { MapPin, Mail, Phone, Send, Check } from 'lucide-react';
+import {
+  MapPin,
+  Mail,
+  Phone,
+  Send,
+  Check,
+  ChevronDown,
+  ChevronUp,
+  ShieldCheck,
+  Award,
+  Clock,
+  Sparkles,
+  QrCode
+} from 'lucide-react';
 import FastonmedLogo from './FastonmedLogo';
 import { store } from '@/lib/store';
 
@@ -12,6 +25,8 @@ export default function Footer() {
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
   const [chromeSettings, setChromeSettings] = useState(() => store.getSiteChrome());
+  const [expandedSection, setExpandedSection] = useState<string | null>(null);
+
   useEffect(() => {
     setChromeSettings(store.getSiteChrome());
   }, []);
@@ -28,99 +43,217 @@ export default function Footer() {
     }
   };
 
-  const isDark = false;
+  const toggleSection = (id: string) => {
+    setExpandedSection(prev => (prev === id ? null : id));
+  };
 
   return (
     <footer
       style={{
-        backgroundColor: isDark ? '#0b0c0f' : '#ffffff',
-        color: isDark ? '#94a3b8' : '#334155',
-        borderTop: isDark ? '1px solid rgba(255, 255, 255, 0.08)' : '1px solid #eef2f6',
-        paddingTop: '56px',
-        paddingBottom: '28px',
-        transition: 'background-color 0.3s ease'
+        backgroundColor: '#ffffff',
+        color: '#334155',
+        borderTop: '1px solid #e2e8f0',
+        paddingTop: '52px',
+        paddingBottom: '0',
+        fontFamily: 'Arial, Helvetica, sans-serif'
       }}
     >
       <style>{`
-        @media (max-width: 768px) {
-          .footer-main-grid {
-            grid-template-columns: repeat(2, 1fr) !important;
-            gap: 30px 20px !important;
-            margin-bottom: 32px !important;
-          }
-          .footer-col-brand {
-            grid-column: 1 / -1 !important;
-          }
-          .footer-col-help {
-            grid-column: 1 / 2 !important;
-          }
-          .footer-col-links {
-            grid-column: 2 / 3 !important;
-          }
-          .footer-col-newsletter {
-            grid-column: 1 / -1 !important;
-          }
-          .footer-bottom-bar {
+        .fm-footer-link {
+          color: #475569;
+          text-decoration: none;
+          font-size: 0.82rem;
+          line-height: 1.5;
+          transition: color 0.15s ease, transform 0.15s ease;
+          display: inline-block;
+        }
+        .fm-footer-link:hover {
+          color: #00875a !important;
+          transform: translateX(2px);
+        }
+        .fm-social-btn {
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+          border: 1px solid #e2e8f0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #334155;
+          text-decoration: none;
+          background: #ffffff;
+          transition: all 0.2s ease;
+        }
+        .fm-social-btn:hover {
+          background: #00875a;
+          color: #ffffff !important;
+          border-color: #00875a;
+          transform: translateY(-2px);
+        }
+        .fm-dir-header {
+          font-size: 0.92rem;
+          font-weight: 700;
+          color: #0f172a;
+          margin-bottom: 14px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding-bottom: 6px;
+          border-bottom: 2px solid #f1f5f9;
+        }
+        .fm-dir-list {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+          display: flex;
+          flex-direction: column;
+          gap: 7px;
+        }
+        .fm-legal-link {
+          color: #94a3b8;
+          text-decoration: none;
+          font-size: 0.8rem;
+          transition: color 0.15s ease;
+        }
+        .fm-legal-link:hover {
+          color: #ffffff;
+          text-decoration: underline;
+        }
+        @media (max-width: 991px) {
+          .fm-top-row {
             flex-direction: column !important;
-            text-align: center !important;
-            gap: 8px !important;
+            gap: 32px !important;
+          }
+          .fm-mega-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 28px 20px !important;
+          }
+          .fm-dir-col-toggle {
+            cursor: pointer;
+          }
+        }
+        @media (max-width: 640px) {
+          .fm-top-columns {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 24px 16px !important;
+          }
+          .fm-mega-grid {
+            grid-template-columns: 1fr !important;
+            gap: 16px !important;
+          }
+          .fm-mega-col-content {
+            display: none;
+          }
+          .fm-mega-col-content.active {
+            display: block !important;
+            padding-top: 6px;
+          }
+          .fm-bottom-legal-row {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 14px !important;
+          }
+          .fm-bottom-qr-wrap {
+            width: 100% !important;
+            justify-content: flex-start !important;
           }
         }
       `}</style>
-      <div className="container">
+
+      <div className="container" style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 20px' }}>
+        {/* ========================================================================= */}
+        {/* SECTION 1: BRAND HEADER, QUICK SHORTCUTS & TOP COLUMNS (LIKE GO DIGIT)   */}
+        {/* ========================================================================= */}
         <div
-          className="footer-main-grid"
+          className="fm-top-row"
           style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
             gap: '40px',
-            marginBottom: '44px'
+            paddingBottom: '36px',
+            borderBottom: '1px solid #eef2f6'
           }}
         >
-          {/* Column 1: Brand & Contact Info */}
-          <div className="footer-col-brand">
-            <div style={{ marginBottom: '20px' }}>
-              <FastonmedLogo height={42} theme={isDark ? 'dark' : 'light'} />
+          {/* Brand Info & Socials */}
+          <div style={{ flex: '1 1 320px', maxWidth: '380px' }}>
+            <div style={{ marginBottom: '16px' }}>
+              <FastonmedLogo height={44} theme="light" />
             </div>
 
-            <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 20px 0', fontSize: '0.88rem', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              <li style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
-                <MapPin size={16} color="#51b291" style={{ flexShrink: 0, marginTop: '3px' }} />
-                <span>Address: Dubai, United Arab Emirates</span>
-              </li>
-              <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Mail size={16} color="#51b291" style={{ flexShrink: 0 }} />
-                <span>
-                  Email: <a href="mailto:sales@fastonmed.com" style={{ color: isDark ? '#ffffff' : '#0f172a', fontWeight: 600, textDecoration: 'none' }}>sales@fastonmed.com</a>
-                </span>
-              </li>
-              <li style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
-                <Phone size={16} color="#51b291" style={{ flexShrink: 0, marginTop: '3px' }} />
-                <div>
-                  Phone: <a href="tel:+971508893589" style={{ color: isDark ? '#ffffff' : '#0f172a', fontWeight: 600, textDecoration: 'none' }}>+971 50 889 3589</a>
-                  <br />
-                  <a href="tel:+971508893586" style={{ color: isDark ? '#ffffff' : '#0f172a', fontWeight: 600, textDecoration: 'none' }}>+971 50 889 3586</a>
-                </div>
-              </li>
-            </ul>
+            {/* Quick Links Row below logo */}
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+                gap: '8px 14px',
+                fontSize: '0.85rem',
+                fontWeight: 700,
+                color: '#0f172a',
+                marginBottom: '16px'
+              }}
+            >
+              <Link href="/about-us" className="fm-footer-link" style={{ fontWeight: 700, color: '#0f172a' }}>
+                About Us
+              </Link>
+              <span style={{ color: '#cbd5e1' }}>|</span>
+              <Link href="/contact" className="fm-footer-link" style={{ fontWeight: 700, color: '#0f172a' }}>
+                Contact
+              </Link>
+              <span style={{ color: '#cbd5e1' }}>|</span>
+              <Link href="/shop" className="fm-footer-link" style={{ fontWeight: 700, color: '#0f172a' }}>
+                Catalog
+              </Link>
+              <span style={{ color: '#cbd5e1' }}>|</span>
+              <Link href="/brands" className="fm-footer-link" style={{ fontWeight: 700, color: '#0f172a' }}>
+                Brands
+              </Link>
+              <span style={{ color: '#cbd5e1' }}>|</span>
+              <Link href="/contact" className="fm-footer-link" style={{ fontWeight: 700, color: '#0f172a' }}>
+                Request Quote
+              </Link>
+            </div>
 
-            <div style={{ display: 'flex', gap: '12px' }}>
+            <p style={{ fontSize: '0.82rem', color: '#64748b', lineHeight: 1.5, margin: '0 0 16px 0' }}>
+              FastonMed is the Best Medical Equipment Supplier in UAE. Official distributor of MoHAP & DHA licensed biomedical technology, ICU ventilators, diagnostics, and clinical equipment.
+            </p>
+
+            {/* Social Icons (Rounded like Go Digit) */}
+            <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+              <a
+                href="https://wa.me/971508893589"
+                target="_blank"
+                rel="noreferrer"
+                className="fm-social-btn"
+                aria-label="WhatsApp"
+                title="Chat on WhatsApp"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12.031 2C6.5 2 2 6.5 2 12.031c0 1.947.562 3.759 1.531 5.312L2 22l4.812-1.531A9.97 9.97 0 0 0 12.03 22C17.562 22 22 17.5 22 12.031 22 6.5 17.562 2 12.031 2zm0 18.25c-1.656 0-3.218-.469-4.562-1.281l-.313-.188-3.031.969.969-2.969-.219-.344A8.19 8.19 0 0 1 3.78 12.03c0-4.562 3.688-8.25 8.25-8.25s8.25 3.688 8.25 8.25-3.688 8.25-8.25 8.25zm4.563-6.188c-.25-.125-1.469-.719-1.688-.813-.219-.094-.375-.125-.531.125-.156.25-.625.813-.781.969-.156.156-.281.188-.531.063-.25-.125-1.063-.375-2.031-1.219-.75-.688-1.25-1.531-1.406-1.781-.156-.25-.031-.375.094-.5.125-.125.25-.281.375-.406.125-.156.156-.25.25-.406.094-.156.031-.313-.031-.438-.063-.125-.531-1.313-.75-1.781-.188-.469-.406-.406-.563-.406h-.469c-.156 0-.438.063-.656.313-.219.25-.875.844-.875 2.063s.906 2.406 1.031 2.563c.125.188 1.781 2.719 4.313 3.813.625.25 1.094.406 1.469.531.625.188 1.188.156 1.625.094.5-.063 1.469-.625 1.688-1.219.219-.594.219-1.094.156-1.219-.063-.125-.219-.188-.469-.313z"/>
+                </svg>
+              </a>
+              <a
+                href="https://www.linkedin.com/company/fastonmed"
+                target="_blank"
+                rel="noreferrer"
+                className="fm-social-btn"
+                aria-label="LinkedIn"
+                title="Follow on LinkedIn"
+              >
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+                  <rect width="4" height="12" x="2" y="9"/>
+                  <circle cx="4" cy="4" r="2"/>
+                </svg>
+              </a>
               <a
                 href="https://www.instagram.com/fastonmed"
                 target="_blank"
                 rel="noreferrer"
-                style={{
-                  width: '36px',
-                  height: '36px',
-                  borderRadius: '50%',
-                  border: isDark ? '1px solid rgba(255, 255, 255, 0.15)' : '1px solid #e2e8f0',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: isDark ? '#f8fafc' : '#334155',
-                  textDecoration: 'none'
-                }}
+                className="fm-social-btn"
                 aria-label="Instagram"
+                title="Follow on Instagram"
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
@@ -129,32 +262,33 @@ export default function Footer() {
                 </svg>
               </a>
               <a
-                href="https://www.linkedin.com/company/fastonmed"
+                href="https://www.facebook.com/fastonmed"
                 target="_blank"
                 rel="noreferrer"
-                style={{
-                  width: '36px',
-                  height: '36px',
-                  borderRadius: '50%',
-                  border: isDark ? '1px solid rgba(255, 255, 255, 0.15)' : '1px solid #e2e8f0',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: isDark ? '#f8fafc' : '#334155',
-                  textDecoration: 'none'
-                }}
-                aria-label="LinkedIn"
+                className="fm-social-btn"
+                aria-label="Facebook"
+                title="Follow on Facebook"
               >
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
-                  <rect width="4" height="12" x="2" y="9"/>
-                  <circle cx="4" cy="4" r="2"/>
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/>
+                </svg>
+              </a>
+              <a
+                href="https://www.youtube.com/@fastonmed"
+                target="_blank"
+                rel="noreferrer"
+                className="fm-social-btn"
+                aria-label="YouTube"
+                title="Subscribe on YouTube"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.5 12 3.5 12 3.5s-7.505 0-9.377.55a3.016 3.016 0 0 0-2.122 2.136C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.55 9.376.55 9.376.55s7.505 0 9.377-.55a3.016 3.016 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
                 </svg>
               </a>
             </div>
 
-            {/* Trustpilot-Style Google Reviews Badge */}
-            <div style={{ marginTop: '20px', paddingTop: '16px', borderTop: '1px solid #f1f5f9' }}>
+            {/* Google Rating badge */}
+            <div style={{ marginTop: '16px' }}>
               <a
                 href="https://share.google/zWzPzh4XjEJlQcKK6"
                 target="_blank"
@@ -166,13 +300,11 @@ export default function Footer() {
                   textDecoration: 'none',
                   backgroundColor: '#f8fafc',
                   border: '1px solid #e2e8f0',
-                  padding: '9px 14px',
-                  borderRadius: '10px',
-                  transition: 'all 0.2s ease',
-                  boxShadow: '0 2px 6px rgba(15, 23, 42, 0.03)'
+                  padding: '7px 12px',
+                  borderRadius: '8px'
                 }}
               >
-                <svg viewBox="0 0 24 24" width="22" height="22" style={{ flexShrink: 0 }}>
+                <svg viewBox="0 0 24 24" width="20" height="20" style={{ flexShrink: 0 }}>
                   <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
                   <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
                   <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.16 0 9.98 0 12s.45 3.84 1.25 5.42l4.03-3.15z"/>
@@ -183,137 +315,535 @@ export default function Footer() {
                     <span style={{ fontSize: '0.78rem', fontWeight: 800, color: '#0f172a' }}>Google Rating</span>
                     <span style={{ fontSize: '0.78rem', fontWeight: 800, color: '#00875a' }}>5.0 ★★★★★</span>
                   </div>
-                  <div style={{ fontSize: '0.7rem', color: '#64748b' }}>Fastonmed Trading L.L.C</div>
+                  <div style={{ fontSize: '0.7rem', color: '#64748b' }}>Fastonmed Trading L.L.C • UAE</div>
                 </div>
               </a>
             </div>
           </div>
 
-          {/* Column 2: Help */}
-          <div className="footer-col-help">
-            <h4 style={{ fontSize: '1rem', fontWeight: 700, color: '#0f172a', marginBottom: '20px' }}>
-              Help
-            </h4>
-            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '0.88rem' }}>
-              <li>
-                <Link href="/privacy-policy" style={{ color: '#64748b', textDecoration: 'none', transition: 'color 0.2s' }}>
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link href="/returns-exchanges" style={{ color: '#64748b', textDecoration: 'none', transition: 'color 0.2s' }}>
-                  Returns + Exchanges
-                </Link>
-              </li>
-              <li>
-                <Link href="/shipping" style={{ color: '#64748b', textDecoration: 'none', transition: 'color 0.2s' }}>
-                  Shipping & Delivery
-                </Link>
-              </li>
-              <li>
-                <Link href="/terms-conditions" style={{ color: '#64748b', textDecoration: 'none', transition: 'color 0.2s' }}>
-                  Terms & Conditions
-                </Link>
-              </li>
-            </ul>
-          </div>
+          {/* Right Columns: Products, Resources, Important Links */}
+          <div
+            className="fm-top-columns"
+            style={{
+              flex: '2 1 600px',
+              display: 'grid',
+              gridTemplateColumns: 'repeat(3, 1fr)',
+              gap: '30px'
+            }}
+          >
+            {/* Products Column */}
+            <div>
+              <h4 style={{ fontSize: '0.96rem', fontWeight: 700, color: '#0f172a', margin: '0 0 14px 0' }}>
+                Products
+              </h4>
+              <ul className="fm-dir-list">
+                <li>
+                  <Link href="/product-category/icu-equipment" className="fm-footer-link">
+                    ICU & Critical Care
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/product-category/patient-monitoring" className="fm-footer-link">
+                    Patient Monitoring
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/product-category/pharmacy-refrigerators" className="fm-footer-link">
+                    Medical Cold Storage
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/product-category/radiology-equipments" className="fm-footer-link">
+                    Ultrasound & Radiology
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/product-category/laboratory-equipment" className="fm-footer-link">
+                    Clinical Laboratory
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/product-category/hospital-furniture" className="fm-footer-link">
+                    Hospital Furniture
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/cardiology-equipment" className="fm-footer-link">
+                    Cardiology Diagnostics
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/shop" className="fm-footer-link" style={{ fontWeight: 700, color: '#00875a' }}>
+                    View All 2,700+ Products →
+                  </Link>
+                </li>
+              </ul>
+            </div>
 
-          {/* Column 3: Useful Links */}
-          <div className="footer-col-links">
-            <h4 style={{ fontSize: '1rem', fontWeight: 700, color: '#0f172a', marginBottom: '20px' }}>
-              Useful Links
-            </h4>
-            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '0.88rem' }}>
-              <li>
-                <Link href="/" style={{ color: '#64748b', textDecoration: 'none', transition: 'color 0.2s' }}>
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link href="/shop" style={{ color: '#64748b', textDecoration: 'none', transition: 'color 0.2s' }}>
-                  Shop Equipment
-                </Link>
-              </li>
-              <li>
-                <Link href="/about-us" style={{ color: '#64748b', textDecoration: 'none', transition: 'color 0.2s' }}>
-                  About Us
-                </Link>
-              </li>
-              <li>
-                <Link href="/contact" style={{ color: '#64748b', textDecoration: 'none', transition: 'color 0.2s' }}>
-                  Contact Us
-                </Link>
-              </li>
-              <li>
-                <Link href="/contact" style={{ color: '#64748b', textDecoration: 'none', transition: 'color 0.2s' }}>
-                  Visit Our Store
-                </Link>
-              </li>
-            </ul>
-          </div>
+            {/* Resources Column */}
+            <div>
+              <h4 style={{ fontSize: '0.96rem', fontWeight: 700, color: '#0f172a', margin: '0 0 14px 0' }}>
+                Resources
+              </h4>
+              <ul className="fm-dir-list">
+                <li>
+                  <Link href="/medical-equipment-calibration-service-in-uae" className="fm-footer-link">
+                    Biomedical Calibration
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/amc-cmc-for-medical-equipment-in-dubai-uae" className="fm-footer-link">
+                    AMC & CMC Contracts
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/plan-preventive-maintenance-for-medical-equipment-in-uae" className="fm-footer-link">
+                    Preventive Maintenance
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/ultrasound-probe-repair-in-uae" className="fm-footer-link">
+                    Ultrasound Probe Repair
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/flexible-rigid-endoscope-repair-in-dubai" className="fm-footer-link">
+                    Endoscope Repair Dubai
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/used-medical-equipment-in-uae" className="fm-footer-link">
+                    Certified Pre-Owned
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/school-medical-supplies-in-uae" className="fm-footer-link">
+                    School Medical Supplies
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/blog" className="fm-footer-link">
+                    Clinical Guides & Articles
+                  </Link>
+                </li>
+              </ul>
+            </div>
 
-          {/* Column 4: Newsletter */}
-          <div className="footer-col-newsletter">
-            <h4 style={{ fontSize: '1rem', fontWeight: 700, color: '#0f172a', marginBottom: '14px' }}>
-              Sign Up for Email
-            </h4>
-            <p style={{ fontSize: '0.85rem', color: '#64748b', lineHeight: 1.5, marginBottom: '16px' }}>
-              Sign up to get first dibs on new arrivals, sales, clinical guides, events and more!
-            </p>
-
-            <form onSubmit={handleSubscribe} style={{ display: 'flex', gap: '8px' }}>
-              <input
-                type="email"
-                required
-                placeholder="Enter your email..."
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                className="form-control"
-                style={{ fontSize: '0.86rem', height: '42px' }}
-              />
-              <button
-                type="submit"
-                className="btn btn-primary"
-                style={{
-                  height: '42px',
-                  padding: '0 16px',
-                  borderRadius: 'var(--radius-sm)',
-                  backgroundColor: '#0f172a',
-                  borderColor: '#0f172a'
-                }}
-              >
-                {subscribed ? <Check size={16} /> : <Send size={16} />}
-              </button>
-            </form>
-            {subscribed && (
-              <span style={{ fontSize: '0.78rem', color: 'var(--primary)', marginTop: '6px', display: 'block', fontWeight: 600 }}>
-                Thank you for subscribing!
-              </span>
-            )}
+            {/* Important Links Column */}
+            <div>
+              <h4 style={{ fontSize: '0.96rem', fontWeight: 700, color: '#0f172a', margin: '0 0 14px 0' }}>
+                Important Links
+              </h4>
+              <ul className="fm-dir-list">
+                <li>
+                  <Link href="/medical-equipment-supplier-in-uae" className="fm-footer-link">
+                    Supplier Overview UAE
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/store-locations" className="fm-footer-link">
+                    Store & Warehouses
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/brands" className="fm-footer-link">
+                    Authorized Brands
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/order-tracking" className="fm-footer-link">
+                    Order Tracking
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/my-account" className="fm-footer-link">
+                    Hospital Account Portal
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/contact" className="fm-footer-link">
+                    Institutional RFQ Tender
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/shipping" className="fm-footer-link">
+                    UAE Delivery Times
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/returns-exchanges" className="fm-footer-link">
+                    Warranty & Return Policy
+                  </Link>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
 
-        {/* Bottom Bar: Copyright & Attribution */}
-        <div
-          className="footer-bottom-bar"
-          style={{
-            borderTop: '1px solid #f1f5f9',
-            paddingTop: '20px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            flexWrap: 'wrap',
-            gap: '12px',
-            fontSize: '0.8rem',
-            color: '#94a3b8'
-          }}
-        >
-          <div>
-            {chromeSettings.footerCopyright || '© 2026 Fastonmed. All Rights Reserved.'}
+        {/* ========================================================================= */}
+        {/* SECTION 2: MEGA SEO DIRECTORY - ROW 1 (4 COLUMNS - EXACTLY LIKE DIGIT)   */}
+        {/* ========================================================================= */}
+        <div style={{ paddingTop: '32px', paddingBottom: '32px', borderBottom: '1px solid #eef2f6' }}>
+          <div className="fm-mega-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '30px' }}>
+            {/* Guide Column 1: ICU & Critical Care Equipment */}
+            <div>
+              <div
+                className="fm-dir-header fm-dir-col-toggle"
+                onClick={() => toggleSection('icu')}
+              >
+                <span>ICU & Critical Care Guides</span>
+                <span className="d-block d-sm-none">
+                  {expandedSection === 'icu' ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                </span>
+              </div>
+              <div className={`fm-mega-col-content ${expandedSection === 'icu' ? 'active' : ''}`}>
+                <ul className="fm-dir-list">
+                  <li><Link href="/product-category/icu-equipment" className="fm-footer-link">ICU Ventilators & Respirators</Link></li>
+                  <li><Link href="/product-category/patient-monitoring" className="fm-footer-link">Multi-Parameter ICU Monitors</Link></li>
+                  <li><Link href="/automated-external-defibrillator" className="fm-footer-link">Automated External Defibrillator</Link></li>
+                  <li><Link href="/moh-registered-aed-machine-in-uae" className="fm-footer-link">MoH Registered AED Machine UAE</Link></li>
+                  <li><Link href="/aed-replacement-pad-in-dubai" className="fm-footer-link">AED Replacement Pads in Dubai</Link></li>
+                  <li><Link href="/product-category/icu-equipment" className="fm-footer-link">Syringe & Infusion Pumps</Link></li>
+                  <li><Link href="/product-category/icu-equipment" className="fm-footer-link">High-Vacuum Suction Units</Link></li>
+                  <li><Link href="/bipap-machine" className="fm-footer-link">BiPAP Non-Invasive Ventilation</Link></li>
+                  <li><Link href="/cpap-apap-machine" className="fm-footer-link">CPAP & APAP Sleep Therapy</Link></li>
+                  <li><Link href="/oxygen-sensor" className="fm-footer-link">Medical Oxygen Sensors & Cells</Link></li>
+                  <li><Link href="/product-category/hospital-furniture" className="fm-footer-link">Emergency Resuscitation Crash Carts</Link></li>
+                  <li><Link href="/product-category/icu-equipment" className="fm-footer-link">High Flow Nasal Cannula (HFNC)</Link></li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Guide Column 2: Diagnostic & Cardiology Systems */}
+            <div>
+              <div
+                className="fm-dir-header fm-dir-col-toggle"
+                onClick={() => toggleSection('cardio')}
+              >
+                <span>Diagnostic & Cardiology Guides</span>
+                <span className="d-block d-sm-none">
+                  {expandedSection === 'cardio' ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                </span>
+              </div>
+              <div className={`fm-mega-col-content ${expandedSection === 'cardio' ? 'active' : ''}`}>
+                <ul className="fm-dir-list">
+                  <li><Link href="/ecg-machine" className="fm-footer-link">12-Lead Diagnostic ECG Machine</Link></li>
+                  <li><Link href="/holter-ecg-monitor-2" className="fm-footer-link">Holter ECG Continuous Monitor</Link></li>
+                  <li><Link href="/ambulatory-blood-pressure-monitor" className="fm-footer-link">Ambulatory Blood Pressure (ABPM)</Link></li>
+                  <li><Link href="/ambulatory-and-holter-ecg-monitors" className="fm-footer-link">Ambulatory & Holter ECG Monitors</Link></li>
+                  <li><Link href="/tmt-stress-test-system" className="fm-footer-link">TMT Cardiac Stress Test System</Link></li>
+                  <li><Link href="/cardiology-equipment" className="fm-footer-link">Cardiology Equipment Supplier</Link></li>
+                  <li><Link href="/product-category/radiology-equipments" className="fm-footer-link">Color Doppler Ultrasound Machine</Link></li>
+                  <li><Link href="/radiology-equipment-supplier-in-uae" className="fm-footer-link">Radiology Equipment Supplier UAE</Link></li>
+                  <li><Link href="/ultrasound-probe-repair-in-uae" className="fm-footer-link">Ultrasound Probe Repair UAE</Link></li>
+                  <li><Link href="/best-obstetrics-gynecology-equipment-in-uae" className="fm-footer-link">Obstetrics & Gynecology Equipment</Link></li>
+                  <li><Link href="/prp-tubes" className="fm-footer-link">PRP Tubes & Centrifuge Kits</Link></li>
+                  <li><Link href="/product-category/radiology-equipments" className="fm-footer-link">Digital Mobile Radiography X-Ray</Link></li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Guide Column 3: Hospital Furniture & Clinical Couches */}
+            <div>
+              <div
+                className="fm-dir-header fm-dir-col-toggle"
+                onClick={() => toggleSection('furniture')}
+              >
+                <span>Hospital Furniture Guides</span>
+                <span className="d-block d-sm-none">
+                  {expandedSection === 'furniture' ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                </span>
+              </div>
+              <div className={`fm-mega-col-content ${expandedSection === 'furniture' ? 'active' : ''}`}>
+                <ul className="fm-dir-list">
+                  <li><Link href="/product-category/hospital-furniture" className="fm-footer-link">Electric 5-Function ICU Hospital Beds</Link></li>
+                  <li><Link href="/product-category/hospital-furniture" className="fm-footer-link">Manual 2-Crank Fowler Hospital Beds</Link></li>
+                  <li><Link href="/product-category/hospital-furniture" className="fm-footer-link">Hydraulic Examination Couches</Link></li>
+                  <li><Link href="/product-category/hospital-furniture" className="fm-footer-link">Gynecological Delivery Beds & Tables</Link></li>
+                  <li><Link href="/product-category/hospital-furniture" className="fm-footer-link">Patient Transport Stretchers & Carts</Link></li>
+                  <li><Link href="/product-category/hospital-furniture" className="fm-footer-link">Phlebotomy Blood Donation Chairs</Link></li>
+                  <li><Link href="/product-category/hospital-furniture" className="fm-footer-link">Emergency Medication Crash Trolleys</Link></li>
+                  <li><Link href="/product-category/hospital-furniture" className="fm-footer-link">Hospital Bedside Lockers & Cabinets</Link></li>
+                  <li><Link href="/product-category/hospital-furniture" className="fm-footer-link">Overbed Food Tables & IV Poles</Link></li>
+                  <li><Link href="/product-category/hospital-furniture" className="fm-footer-link">Heavy-Duty Patient Wheelchairs</Link></li>
+                  <li><Link href="/dental-equipment-supplier-in-dubai" className="fm-footer-link">Dental Equipment Supplier Dubai</Link></li>
+                  <li><Link href="/product-category/hospital-furniture" className="fm-footer-link">Surgical Shadowless OT Ceiling Lights</Link></li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Guide Column 4: Laboratory, Cold Chain & Consumables */}
+            <div>
+              <div
+                className="fm-dir-header fm-dir-col-toggle"
+                onClick={() => toggleSection('lab')}
+              >
+                <span>Laboratory & Cold Chain Guides</span>
+                <span className="d-block d-sm-none">
+                  {expandedSection === 'lab' ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                </span>
+              </div>
+              <div className={`fm-mega-col-content ${expandedSection === 'lab' ? 'active' : ''}`}>
+                <ul className="fm-dir-list">
+                  <li><Link href="/product-category/pharmacy-refrigerators" className="fm-footer-link">MoHAP 2°C–8°C Pharmacy Fridges</Link></li>
+                  <li><Link href="/product-category/pharmacy-refrigerators" className="fm-footer-link">-20°C to -86°C Ultra Low Biofreezers</Link></li>
+                  <li><Link href="/product-category/laboratory-equipment" className="fm-footer-link">Clinical Chemistry Analyzers</Link></li>
+                  <li><Link href="/product-category/laboratory-equipment" className="fm-footer-link">High-Speed Clinical Centrifuges</Link></li>
+                  <li><Link href="/product-category/laboratory-equipment" className="fm-footer-link">Medical Steam Autoclaves & Sterilizers</Link></li>
+                  <li><Link href="/product-category/laboratory-equipment" className="fm-footer-link">Biosafety & Laminar Airflow Benches</Link></li>
+                  <li><Link href="/ozone-generator" className="fm-footer-link">Medical Ozone Generator Systems</Link></li>
+                  <li><Link href="/school-medical-supplies-in-uae" className="fm-footer-link">School Medical Supplies in UAE</Link></li>
+                  <li><Link href="/consumables" className="fm-footer-link">Clinical Consumables & ECG Paper</Link></li>
+                  <li><Link href="/flexible-rigid-endoscope-repair-in-dubai" className="fm-footer-link">Endoscope Repair in Dubai</Link></li>
+                  <li><Link href="/used-medical-equipment-in-uae" className="fm-footer-link">Used Medical Equipment in UAE</Link></li>
+                  <li><Link href="/product-category/laboratory-equipment" className="fm-footer-link">Clinical Pathology Microscopes</Link></li>
+                </ul>
+              </div>
+            </div>
           </div>
-          <div style={{ display: 'flex', gap: '20px' }}>
-            <span>Dubai, United Arab Emirates</span>
-            <span>MoHAP / DHA Certified</span>
+        </div>
+
+        {/* ========================================================================= */}
+        {/* SECTION 3: MEGA SEO DIRECTORY - ROW 2 (4 COLUMNS - EXACTLY LIKE DIGIT)   */}
+        {/* ========================================================================= */}
+        <div style={{ paddingTop: '32px', paddingBottom: '36px' }}>
+          <div className="fm-mega-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '30px' }}>
+            {/* Row 2 Column 1: Biomedical Engineering & Maintenance */}
+            <div>
+              <div
+                className="fm-dir-header fm-dir-col-toggle"
+                onClick={() => toggleSection('service')}
+              >
+                <span>Biomedical Engineering & AMC</span>
+                <span className="d-block d-sm-none">
+                  {expandedSection === 'service' ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                </span>
+              </div>
+              <div className={`fm-mega-col-content ${expandedSection === 'service' ? 'active' : ''}`}>
+                <ul className="fm-dir-list">
+                  <li><Link href="/medical-equipment-calibration-service-in-uae" className="fm-footer-link">Equipment Calibration Service UAE</Link></li>
+                  <li><Link href="/amc-cmc-for-medical-equipment-in-dubai-uae" className="fm-footer-link">AMC & CMC Maintenance Dubai UAE</Link></li>
+                  <li><Link href="/plan-preventive-maintenance-for-medical-equipment-in-uae" className="fm-footer-link">Planned Preventive Maintenance (PPM)</Link></li>
+                  <li><Link href="/medical-equipment-service-in-uae-2" className="fm-footer-link">Medical Equipment Service in UAE</Link></li>
+                  <li><Link href="/amc-cmc-for-medical-equipment-in-dubai-uae" className="fm-footer-link">Biomedical Electrical Safety Audits</Link></li>
+                  <li><Link href="/ultrasound-probe-repair-in-uae" className="fm-footer-link">Ultrasound Acoustic & Crystal Repair</Link></li>
+                  <li><Link href="/flexible-rigid-endoscope-repair-in-dubai" className="fm-footer-link">Rigid & Flexible Optical Calibration</Link></li>
+                  <li><Link href="/product-category/icu-equipment" className="fm-footer-link">ICU Ventilator Flow Sensor Overhaul</Link></li>
+                  <li><Link href="/contact" className="fm-footer-link">Hospital Turnkey Equipment Setup</Link></li>
+                  <li><Link href="/contact" className="fm-footer-link">24/7 Biomedical Emergency Support</Link></li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Row 2 Column 2: Healthcare Facilities We Supply */}
+            <div>
+              <div
+                className="fm-dir-header fm-dir-col-toggle"
+                onClick={() => toggleSection('facilities')}
+              >
+                <span>Healthcare Facilities Supplied</span>
+                <span className="d-block d-sm-none">
+                  {expandedSection === 'facilities' ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                </span>
+              </div>
+              <div className={`fm-mega-col-content ${expandedSection === 'facilities' ? 'active' : ''}`}>
+                <ul className="fm-dir-list">
+                  <li><Link href="/about-us" className="fm-footer-link">Tertiary Hospitals & Emergency Units</Link></li>
+                  <li><Link href="/about-us" className="fm-footer-link">Day Surgery & Outpatient Clinics</Link></li>
+                  <li><Link href="/about-us" className="fm-footer-link">Polyclinics & Diagnostic Centers</Link></li>
+                  <li><Link href="/radiology-equipment-supplier-in-uae" className="fm-footer-link">Radiology & Medical Imaging Centers</Link></li>
+                  <li><Link href="/product-category/laboratory-equipment" className="fm-footer-link">Clinical Pathology & Diagnostic Labs</Link></li>
+                  <li><Link href="/dental-equipment-supplier-in-dubai" className="fm-footer-link">Dental Clinics & Maxillofacial Units</Link></li>
+                  <li><Link href="/product-category/hospital-furniture" className="fm-footer-link">Physiotherapy & Rehabilitation Centers</Link></li>
+                  <li><Link href="/school-medical-supplies-in-uae" className="fm-footer-link">School, University & Nursery Clinics</Link></li>
+                  <li><Link href="/product-category/pharmacy-refrigerators" className="fm-footer-link">Pharmacy & Cold Chain Warehouses</Link></li>
+                  <li><Link href="/moh-registered-aed-machine-in-uae" className="fm-footer-link">Ambulance Fleets & First Responders</Link></li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Row 2 Column 3: UAE Regional Distribution */}
+            <div>
+              <div
+                className="fm-dir-header fm-dir-col-toggle"
+                onClick={() => toggleSection('regions')}
+              >
+                <span>UAE Regional Distribution</span>
+                <span className="d-block d-sm-none">
+                  {expandedSection === 'regions' ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                </span>
+              </div>
+              <div className={`fm-mega-col-content ${expandedSection === 'regions' ? 'active' : ''}`}>
+                <ul className="fm-dir-list">
+                  <li><Link href="/medical-equipment-supplier-in-uae" className="fm-footer-link">Medical Equipment Supplier Dubai</Link></li>
+                  <li><Link href="/medical-equipment-supplier-in-uae" className="fm-footer-link">Medical Equipment Abu Dhabi & Al Ain</Link></li>
+                  <li><Link href="/medical-equipment-supplier-in-uae" className="fm-footer-link">Clinical Supplies Sharjah Medical City</Link></li>
+                  <li><Link href="/medical-equipment-supplier-in-uae" className="fm-footer-link">Medical Equipment Supplier Ajman</Link></li>
+                  <li><Link href="/medical-equipment-supplier-in-uae" className="fm-footer-link">Hospital Equipment Ras Al Khaimah (RAK)</Link></li>
+                  <li><Link href="/medical-equipment-supplier-in-uae" className="fm-footer-link">Healthcare Solutions Fujairah & UAQ</Link></li>
+                  <li><Link href="/shipping" className="fm-footer-link">Same-Day Dubai Clinical Express Delivery</Link></li>
+                  <li><Link href="/contact" className="fm-footer-link">UAE Free Zone & GCC Export Supply</Link></li>
+                  <li><Link href="/contact" className="fm-footer-link">MoHAP Approved Wholesale Procurement</Link></li>
+                  <li><Link href="/contact" className="fm-footer-link">UAE Ministry & Private Hospital Tenders</Link></li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Row 2 Column 4: Standards & Compliance Guides */}
+            <div>
+              <div
+                className="fm-dir-header fm-dir-col-toggle"
+                onClick={() => toggleSection('compliance')}
+              >
+                <span>Standards & Regulations Guides</span>
+                <span className="d-block d-sm-none">
+                  {expandedSection === 'compliance' ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                </span>
+              </div>
+              <div className={`fm-mega-col-content ${expandedSection === 'compliance' ? 'active' : ''}`}>
+                <ul className="fm-dir-list">
+                  <li><Link href="/medical-equipment-supplier-in-uae" className="fm-footer-link">Best Medical Equipment Supplier UAE</Link></li>
+                  <li><Link href="/about-us" className="fm-footer-link">MoHAP Medical Device Import Standards</Link></li>
+                  <li><Link href="/about-us" className="fm-footer-link">DHA Health Facility Guidelines Dubai</Link></li>
+                  <li><Link href="/about-us" className="fm-footer-link">DoH Abu Dhabi Biomedical Regulations</Link></li>
+                  <li><Link href="/terms-conditions" className="fm-footer-link">Official Manufacturer Warranty Terms</Link></li>
+                  <li><Link href="/returns-exchanges" className="fm-footer-link">Warranty Claims & Exchange Policy</Link></li>
+                  <li><Link href="/shipping" className="fm-footer-link">Cold-Chain Temperature Monitored Delivery</Link></li>
+                  <li><Link href="/privacy-policy" className="fm-footer-link">Hospital Privacy & Data Protection</Link></li>
+                  <li><Link href="/brands" className="fm-footer-link">Certified Global Healthcare Brands</Link></li>
+                  <li><Link href="/store-locations" className="fm-footer-link">FastonMed Warehouses & Service Hubs</Link></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ========================================================================= */}
+      {/* SECTION 4: CONTRASTING BLACK BOTTOM BAR (EXACTLY LIKE DIGIT'S DARK STRIP) */}
+      {/* ========================================================================= */}
+      <div
+        style={{
+          backgroundColor: '#090d16',
+          color: '#94a3b8',
+          borderTop: '1px solid #1e293b',
+          paddingTop: '28px',
+          paddingBottom: '32px'
+        }}
+      >
+        <div className="container" style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 20px' }}>
+          {/* Legal Navigation Links + QR Code Row */}
+          <div
+            className="fm-bottom-legal-row"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              flexWrap: 'wrap',
+              gap: '20px',
+              paddingBottom: '22px',
+              borderBottom: '1px solid rgba(255, 255, 255, 0.08)'
+            }}
+          >
+            {/* Quick Policy Links */}
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+                gap: '8px 18px',
+                fontSize: '0.84rem',
+                fontWeight: 600
+              }}
+            >
+              <Link href="/shop" className="fm-legal-link">Downloads</Link>
+              <span style={{ color: '#334155' }}>|</span>
+              <Link href="/privacy-policy" className="fm-legal-link">Privacy Policy</Link>
+              <span style={{ color: '#334155' }}>|</span>
+              <Link href="/terms-conditions" className="fm-legal-link">Terms & Conditions</Link>
+              <span style={{ color: '#334155' }}>|</span>
+              <Link href="/returns-exchanges" className="fm-legal-link">Returns & Exchanges</Link>
+              <span style={{ color: '#334155' }}>|</span>
+              <Link href="/shipping" className="fm-legal-link">Shipping & Delivery</Link>
+              <span style={{ color: '#334155' }}>|</span>
+              <Link href="/about-us" className="fm-legal-link">MoHAP Compliance</Link>
+              <span style={{ color: '#334155' }}>|</span>
+              <Link href="/contact" className="fm-legal-link">24/7 Biomedical Support</Link>
+              <span style={{ color: '#334155' }}>|</span>
+              <Link href="/store-locations" className="fm-legal-link">Dubai Store</Link>
+            </div>
+
+            {/* QR Code Verification Widget (Styled like Digit QR Code) */}
+            <div
+              className="fm-bottom-qr-wrap"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                backgroundColor: 'rgba(255, 255, 255, 0.04)',
+                border: '1px solid rgba(255, 255, 255, 0.12)',
+                padding: '6px 12px',
+                borderRadius: '8px'
+              }}
+            >
+              <div
+                style={{
+                  width: '38px',
+                  height: '38px',
+                  backgroundColor: '#ffffff',
+                  borderRadius: '4px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#0f172a'
+                }}
+              >
+                <QrCode size={28} />
+              </div>
+              <div style={{ lineHeight: 1.3 }}>
+                <div style={{ fontSize: '0.74rem', fontWeight: 700, color: '#f8fafc' }}>
+                  Verify FastonMed UAE
+                </div>
+                <div style={{ fontSize: '0.68rem', color: '#64748b' }}>
+                  MoHAP & DHA Certified Supplier
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Legal Registrations, Corporate Office & MoHAP Info (Styled like Digit IRDAI / CIN details) */}
+          <div style={{ paddingTop: '20px', fontSize: '0.75rem', lineHeight: 1.6, color: '#64748b' }}>
+            <p style={{ margin: '0 0 8px 0', color: '#94a3b8' }}>
+              <strong style={{ color: '#cbd5e1' }}>Commercial License:</strong> FastonMed Healthcare Equipment LLC | <strong style={{ color: '#cbd5e1' }}>MoHAP Reg:</strong> UAE-MED-2024-889 | <strong style={{ color: '#cbd5e1' }}>DHA Registered Vendor:</strong> DHA-MED-9942 | <strong style={{ color: '#cbd5e1' }}>DoH Abu Dhabi Compliance:</strong> Approved Clinical Supplier
+            </p>
+            <p style={{ margin: '0 0 12px 0' }}>
+              FastonMed Healthcare Equipment LLC | Corporate Office Address: Dubai Healthcare City (DHCC) & Al Qusais Industrial Area, Dubai, United Arab Emirates | P.O. Box 23881, Dubai, UAE | Official Biomedical Helpline: +971 50 889 3589 / +971 50 889 3586 | Email: sales@fastonmed.com | Calibration Support: service@fastonmed.com.
+            </p>
+            <p style={{ margin: '0 0 16px 0', fontSize: '0.72rem', color: '#475569' }}>
+              FastonMed is the Best Medical Equipment Supplier in UAE. Licensed distributor of MoHAP, DHA, and DoH approved biomedical technology, ICU ventilators, multi-parameter patient monitors, hospital furniture, surgical lighting, medical cold storage, and clinical laboratory equipment across Dubai, Abu Dhabi, Sharjah, Ajman, Ras Al Khaimah, Fujairah, and Umm Al Quwain. All brand logos, trademarks, and registered marks displayed on this platform belong to their respective corporate manufacturers.
+            </p>
+
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                flexWrap: 'wrap',
+                gap: '10px',
+                paddingTop: '14px',
+                borderTop: '1px solid rgba(255, 255, 255, 0.06)',
+                fontSize: '0.74rem',
+                color: '#64748b'
+              }}
+            >
+              <div>
+                © 2026 FastonMed Healthcare Equipment LLC. All Rights Reserved.
+              </div>
+              <div style={{ display: 'flex', gap: '16px' }}>
+                <span>Dubai • Abu Dhabi • Sharjah • Northern Emirates</span>
+                <span>ISO 9001:2015 & MoHAP Certified</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
