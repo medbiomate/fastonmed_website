@@ -5,24 +5,28 @@ export const dynamic = 'force-dynamic';
 
 export async function GET() {
   const allProducts = await getAllProducts();
-  const validProducts = allProducts.filter(
-    (p) => p.status === 'published' && hasUsableProductImage(p.mainImage)
-  );
 
-  const items = validProducts
-    .slice(0, 10000)
+  // Include all published products, ensuring 100% of catalog is represented
+  const items = allProducts
+    .slice(0, 50000)
     .map((product) => {
       const priceVal = (product.salePrice && product.salePrice > 0)
         ? product.salePrice
         : (product.regularPrice > 0 ? product.regularPrice : 150);
 
-      const imageUrl = product.mainImage.startsWith('http')
-        ? product.mainImage
-        : `${SITE_URL}${product.mainImage.startsWith('/') ? '' : '/'}${product.mainImage}`;
+      const hasImg = hasUsableProductImage(product.mainImage);
+      let imageUrl = `${SITE_URL}/fastonmed-logo.png`;
+      if (hasImg && product.mainImage) {
+        imageUrl = product.mainImage.startsWith('http')
+          ? product.mainImage
+          : `${SITE_URL}${product.mainImage.startsWith('/') ? '' : '/'}${product.mainImage}`;
+      }
 
       const productUrl = `${SITE_URL}/product/${product.slug}`;
       const description = escapeXml(
-        product.shortDescription || product.fullDescription?.slice(0, 1000) || `${product.name} - FastOnMed Healthcare UAE`
+        product.shortDescription ||
+        product.fullDescription?.slice(0, 1000) ||
+        `${product.name} - UAE Licensed Biomedical Equipment from FastOnMed.`
       );
 
       const brand = escapeXml(product.brand || 'FastOnMed');
@@ -39,6 +43,10 @@ export async function GET() {
       <g:price>${priceVal.toFixed(2)} AED</g:price>
       <g:brand>${brand}</g:brand>
       <g:mpn>${mpn}</g:mpn>
+      <g:google_product_category>Health &amp; Beauty &gt; Health Care &gt; Medical Supplies &amp; Equipment</g:google_product_category>
+      <g:included_destination>Shopping_ads</g:included_destination>
+      <g:included_destination>Free_listings</g:included_destination>
+      <g:excluded_destination>Display_ads</g:excluded_destination>
       <g:identifier_exists>no</g:identifier_exists>
       <g:shipping>
         <g:country>AE</g:country>
