@@ -805,7 +805,7 @@ export default function Footer() {
                   Verify FastonMed UAE
                 </div>
                 <div style={{ fontSize: '0.68rem', color: '#64748b' }}>
-                  Verified Healthcare Equipment Supplier
+                  License: 1606077 • TRN: 105373862900003
                 </div>
               </div>
             </div>
@@ -813,11 +813,40 @@ export default function Footer() {
 
           {/* Legal Registrations & Corporate Office */}
           <div style={{ paddingTop: '20px', fontSize: '0.75rem', lineHeight: 1.6, color: '#64748b' }}>
-            <p style={{ margin: '0 0 8px 0', color: '#94a3b8' }}>
-              <strong style={{ color: '#cbd5e1' }}>Commercial Entity:</strong> FastonMed Healthcare Equipment LLC | United Arab Emirates
-            </p>
+            <div
+              style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                alignItems: 'center',
+                gap: '8px 20px',
+                padding: '10px 14px',
+                backgroundColor: 'rgba(255, 255, 255, 0.03)',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                borderRadius: '8px',
+                marginBottom: '14px',
+                fontSize: '0.75rem',
+                color: '#94a3b8'
+              }}
+            >
+              <div>
+                <strong style={{ color: '#cbd5e1' }}>Legal Entity:</strong> FASTONMED TRADING L.L.C (فاستونميد للتجارة ذ.م.م)
+              </div>
+              <div>
+                <strong style={{ color: '#cbd5e1' }}>Commercial License No:</strong> 1606077
+              </div>
+              <div>
+                <strong style={{ color: '#cbd5e1' }}>Register No:</strong> 2818619
+              </div>
+              <div>
+                <strong style={{ color: '#cbd5e1' }}>VAT TRN:</strong> 105373862900003
+              </div>
+              <div>
+                <strong style={{ color: '#cbd5e1' }}>Jurisdiction:</strong> United Arab Emirates
+              </div>
+            </div>
+
             <p style={{ margin: '0 0 12px 0' }}>
-              FastonMed Healthcare Equipment LLC | Corporate Office Address: Dubai Healthcare City (DHCC) & Al Qusais Industrial Area, Dubai, United Arab Emirates | P.O. Box 23881, Dubai, UAE | Official Biomedical Helpline: +971 50 889 3589 / +971 50 889 3586 | Email: sales@fastonmed.com | Calibration Support: service@fastonmed.com.
+              FASTONMED TRADING L.L.C | Corporate Office Address: Dubai Healthcare City (DHCC) & Al Qusais Industrial Area, Dubai, United Arab Emirates | P.O. Box 23881, Dubai, UAE | Official Biomedical Helpline: +971 50 889 3589 / +971 50 889 3586 | Email: sales@fastonmed.com | Calibration Support: service@fastonmed.com.
             </p>
             <p style={{ margin: '0 0 16px 0', fontSize: '0.72rem', color: '#475569' }}>
               FastonMed is the Best Medical Equipment Supplier in UAE. Distributor of certified biomedical technology, ICU ventilators, multi-parameter patient monitors, hospital furniture, surgical lighting, medical cold storage, and clinical laboratory equipment across Dubai, Abu Dhabi, Sharjah, Ajman, Ras Al Khaimah, Fujairah, and Umm Al Quwain. All brand logos, trademarks, and registered marks displayed on this platform belong to their respective corporate manufacturers.
@@ -837,7 +866,7 @@ export default function Footer() {
               }}
             >
               <div>
-                © 2026 FastonMed Healthcare Equipment LLC. All Rights Reserved.
+                © 2026 FastonMed (FASTONMED TRADING L.L.C). All Rights Reserved.
               </div>
               <div style={{ display: 'flex', gap: '16px' }}>
                 <span>Dubai • Abu Dhabi • Sharjah • Northern Emirates</span>

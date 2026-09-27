@@ -79,6 +79,27 @@ const orgSchema = {
   '@context': 'https://schema.org',
   '@type': 'MedicalBusiness',
   name: 'FastonMed',
+  legalName: 'FASTONMED TRADING L.L.C',
+  alternateName: 'فاستونميد للتجارة ذ.م.م',
+  vatID: '105373862900003',
+  taxID: '105373862900003',
+  identifier: [
+    {
+      '@type': 'PropertyValue',
+      name: 'Commercial License Number',
+      value: '1606077'
+    },
+    {
+      '@type': 'PropertyValue',
+      name: 'Commercial Register Number',
+      value: '2818619'
+    },
+    {
+      '@type': 'PropertyValue',
+      name: 'Tax Registration Number (TRN)',
+      value: '105373862900003'
+    }
+  ],
   url: 'https://www.fastonmed.com',
   logo: 'https://www.fastonmed.com/fastonmed-logo.png',
   image: 'https://www.fastonmed.com/fastonmed-logo.png',
