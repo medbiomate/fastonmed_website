@@ -133,23 +133,42 @@ export default function Navbar() {
               justifySelf: 'start'
             }}
           >
-            <a
-              href="tel:+971508893589"
+            <div
               style={{
                 color: '#ffffff',
-                textDecoration: 'none',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '6px',
-                opacity: 0.95,
-                transition: 'opacity 0.2s'
+                opacity: 0.95
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.opacity = '1')}
-              onMouseLeave={(e) => (e.currentTarget.style.opacity = '0.95')}
             >
               <Phone size={13} strokeWidth={2.2} />
-              <span>+971 508 893 589</span>
-            </a>
+              <a
+                href="tel:+971508893589"
+                style={{
+                  color: '#ffffff',
+                  textDecoration: 'none',
+                  transition: 'opacity 0.2s'
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.8')}
+                onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
+              >
+                +971 50 889 3589
+              </a>
+              <span style={{ opacity: 0.4 }}>/</span>
+              <a
+                href="tel:+971508893586"
+                style={{
+                  color: '#ffffff',
+                  textDecoration: 'none',
+                  transition: 'opacity 0.2s'
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.8')}
+                onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
+              >
+                +971 50 889 3586
+              </a>
+            </div>
 
             <span style={{ opacity: 0.35, fontSize: '0.75rem' }}>|</span>
 
@@ -948,11 +967,29 @@ export default function Navbar() {
                   fontSize: '0.86rem',
                   fontWeight: 700,
                   textDecoration: 'none',
+                  marginBottom: '10px'
+                }}
+              >
+                <span>WhatsApp: +971 50 889 3589</span>
+              </a>
+
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                  fontSize: '0.82rem',
+                  fontWeight: 600,
+                  color: '#0f172a',
                   marginBottom: '14px'
                 }}
               >
-                <span>WhatsApp: +971 508 893 589</span>
-              </a>
+                <span>Call:</span>
+                <a href="tel:+971508893589" style={{ color: '#51b291', textDecoration: 'none' }}>+971 50 889 3589</a>
+                <span style={{ color: '#cbd5e1' }}>/</span>
+                <a href="tel:+971508893586" style={{ color: '#51b291', textDecoration: 'none' }}>+971 50 889 3586</a>
+              </div>
 
               <div style={{ fontSize: '0.78rem', color: '#64748b' }}>
                 Dubai, UAE • Official Medical Equipment Supplier

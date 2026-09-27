@@ -2729,11 +2729,11 @@ export default function HomePage() {
                     Need Immediate Urgent Assistance?
                   </div>
                   <div style={{ fontSize: '1rem', fontWeight: 700, color: '#0f172a', marginTop: '2px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                    <a href="tel:+97142384111" style={{ color: '#0f172a', textDecoration: 'none' }}>+971 4 238 4111</a> / <a href="tel:+971501234567" style={{ color: '#0f172a', textDecoration: 'none' }}>+971 50 123 4567</a>
+                    <a href="tel:+971508893589" style={{ color: '#0f172a', textDecoration: 'none' }}>+971 50 889 3589</a> / <a href="tel:+971508893586" style={{ color: '#0f172a', textDecoration: 'none' }}>+971 50 889 3586</a>
                   </div>
                 </div>
                 <a
-                  href="https://wa.me/971501234567?text=Hello%20FastonMed%20team,%20I%20need%20an%20urgent%20medical%20equipment%20quotation."
+                  href="https://wa.me/971508893589?text=Hello%20FastonMed%20team,%20I%20need%20an%20urgent%20medical%20equipment%20quotation."
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
@@ -2810,7 +2810,7 @@ export default function HomePage() {
                   </p>
                   <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', flexWrap: 'wrap' }}>
                     <a
-                      href={`https://wa.me/971501234567?text=Hello%20FastonMed,%20I%20just%20submitted%20inquiry%20%23${leadRefId || ''}%20for%20${encodeURIComponent(leadForm.equipmentInterest)}.`}
+                      href={`https://wa.me/971508893589?text=Hello%20FastonMed,%20I%20just%20submitted%20inquiry%20%23${leadRefId || ''}%20for%20${encodeURIComponent(leadForm.equipmentInterest)}.`}
                       target="_blank"
                       rel="noopener noreferrer"
                       style={{

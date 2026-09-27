@@ -44,7 +44,7 @@ export const defaultSiteChromeSettings: SiteChromeSettings = {
   footerLayout: "fastonmed-wide",
   footerLogo: "/fastonmed-logo.svg",
   footerEmail: "sales@fastonmed.com",
-  footerPhone: "+971 508 893 589",
+  footerPhone: "+971 50 889 3589 / +971 50 889 3586",
   footerAddress: "Dubai, United Arab Emirates",
   footerExploreTitle: "Quick Links",
   footerExploreLinks: [

@@ -1327,26 +1327,26 @@ Our certified biomedical engineers provide not only equipment procurement but al
     title: 'Contact FastonMed',
     slug: 'contact',
     content: `Get in touch with our medical equipment sales and biomedical engineering teams in UAE.
-Phone: +971 508 893 589
+Phone: +971 50 889 3589 / +971 50 889 3586
 Email: sales@fastonmed.com
-Office: Business Bay / Al Quoz, Dubai, United Arab Emirates.`,
+Office: OFF215 - Arjumand Building, Green Community Village, DIP-1, Dubai, United Arab Emirates.`,
     status: 'published',
     updatedAt: '2026-09-24T12:00:00Z',
     seoTitle: 'Contact FastonMed - Medical Equipment Supplier Dubai UAE',
-    seoDescription: 'Contact FastonMed for medical equipment enquiries, quotations, or maintenance services in Dubai & UAE. Call +971 508 893 589.'
+    seoDescription: 'Contact FastonMed for medical equipment enquiries, quotations, or maintenance services in Dubai & UAE. Call +971 50 889 3589 / +971 50 889 3586.'
   }
 ];
 
 export const initialStoreSettings: StoreSettings = {
   storeName: 'FastonMed (FASTONMED TRADING L.L.C)',
-  supportPhone: '+971 508 893 589',
+  supportPhone: '+971 50 889 3589 / +971 50 889 3586',
   salesEmail: 'sales@fastonmed.com',
   whatsappNumber: '+971508893589',
   currency: 'AED',
   vatRate: 5,
   freeShippingThreshold: 500,
   flatShippingRate: 25,
-  address: 'Warehouse & Showroom: Al Quoz Industrial Area, Dubai, United Arab Emirates',
+  address: 'OFF215 - Arjumand Building, Green Community Village, DIP-1, Dubai, United Arab Emirates',
   announcementText: '⚙️ Reliable Equipment, Exceptional Care. | 💡 Empowering Healthcare with Precision Technology. | 🔧 Complete Solutions — From Sales to Service.'
 };
 

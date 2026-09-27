@@ -26,10 +26,12 @@ export default function Topbar() {
       <div className="container flex items-center justify-between">
         {/* Left: Contact Info */}
         <div className="flex items-center gap-4" style={{ fontWeight: 500 }}>
-          <a href="tel:+971508893589" className="flex items-center gap-2" style={{ color: '#ffffff', opacity: 0.95 }}>
+          <div className="flex items-center gap-1.5" style={{ color: '#ffffff', opacity: 0.95 }}>
             <Phone size={13} />
-            <span>+971 508 893 589</span>
-          </a>
+            <a href="tel:+971508893589" style={{ color: '#ffffff', textDecoration: 'none' }}>+971 50 889 3589</a>
+            <span style={{ opacity: 0.5 }}>/</span>
+            <a href="tel:+971508893586" style={{ color: '#ffffff', textDecoration: 'none' }}>+971 50 889 3586</a>
+          </div>
           <span style={{ opacity: 0.4 }}>|</span>
           <a href="mailto:sales@fastonmed.com" className="flex items-center gap-2" style={{ color: '#ffffff', opacity: 0.95 }}>
             <Mail size={13} />

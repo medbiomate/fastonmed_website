@@ -811,7 +811,7 @@ export default function NotFoundView() {
               onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#FFFFFF')}
             >
               <PhoneCall size={16} color="#00875A" />
-              Call Biomedical Desk: +971 50 889 3589
+              Call Biomedical Desk: +971 50 889 3589 / +971 50 889 3586
             </a>
 
             <div

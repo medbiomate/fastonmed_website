@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { MapPin, Phone, Mail, Clock, Send, CheckCircle2 } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Send, CheckCircle2, MessageCircle } from 'lucide-react';
 import { submitWebsiteEnquiry } from '@/lib/backend-client';
 import { useLocale } from '@/lib/locale-context';
 
@@ -78,11 +78,34 @@ export default function ContactClientView({ isAr: propIsAr }: { isAr?: boolean }
                 <Phone size={22} color="#51b291" style={{ flexShrink: 0, marginTop: '2px' }} />
                 <div>
                   <div style={{ fontWeight: 600, color: '#0f172a', fontSize: '0.95rem' }}>
-                    {isAr ? 'الخط المباشر وواتساب' : 'Direct Line & WhatsApp'}
+                    {isAr ? 'الخطوط المباشرة للاتصال' : 'Direct Call Lines'}
+                  </div>
+                  <div style={{ color: '#64748b', fontSize: '0.9rem', display: 'flex', flexWrap: 'wrap', gap: '6px', alignItems: 'center' }} dir="ltr">
+                    <a href="tel:+971508893589" style={{ color: '#51b291', textDecoration: 'none', fontWeight: 600 }}>
+                      +971 50 889 3589
+                    </a>
+                    <span style={{ color: '#94a3b8' }}>/</span>
+                    <a href="tel:+971508893586" style={{ color: '#51b291', textDecoration: 'none', fontWeight: 600 }}>
+                      +971 50 889 3586
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', gap: '14px' }}>
+                <MessageCircle size={22} color="#25D366" style={{ flexShrink: 0, marginTop: '2px' }} />
+                <div>
+                  <div style={{ fontWeight: 600, color: '#0f172a', fontSize: '0.95rem' }}>
+                    {isAr ? 'واتساب للاستفسارات' : 'WhatsApp Enquiries'}
                   </div>
                   <div style={{ color: '#64748b', fontSize: '0.9rem' }} dir="ltr">
-                    <a href="tel:+971508893589" style={{ color: '#51b291', textDecoration: 'none', fontWeight: 600 }}>
-                      +971 508 893 589
+                    <a
+                      href="https://wa.me/971508893589?text=Hello%20FastonMed%20Team,%20I%20have%20an%20enquiry%20regarding%20medical%20equipment."
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ color: '#059669', textDecoration: 'none', fontWeight: 600 }}
+                    >
+                      +971 50 889 3589
                     </a>
                   </div>
                 </div>
