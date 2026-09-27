@@ -906,9 +906,9 @@ export default function HomePage() {
                   }}
                   className="hero-nav-btn-primary"
                 >
-                  <Calendar size={18} color="#42B69C" strokeWidth={2.4} />
+                  <Calendar size={18} color="#42B69C" strokeWidth={2.4} className="hero-btn-icon" />
                   <span>Explore Equipment</span>
-                  <ArrowRight size={17} color="#ffffff" strokeWidth={2.4} />
+                  <ArrowRight size={17} color="#ffffff" strokeWidth={2.4} className="hero-btn-arrow" />
                 </Link>
 
                 <a
@@ -931,7 +931,7 @@ export default function HomePage() {
                   }}
                   className="hero-nav-btn-secondary"
                 >
-                  <Phone size={18} color="#42B69C" fill="#42B69C" strokeWidth={1} />
+                  <Phone size={18} color="#42B69C" fill="#42B69C" strokeWidth={1} className="hero-btn-icon" />
                   <span>Call Now</span>
                 </a>
               </div>
@@ -1029,7 +1029,7 @@ export default function HomePage() {
           }
           @media (max-width: 900px) {
             #medinova-hero-section {
-              padding: 16px 0 24px !important;
+              padding: 16px 0 20px !important;
             }
             #hero-two-col-grid {
               display: flex !important;
@@ -1062,13 +1062,24 @@ export default function HomePage() {
               margin: 0 0 14px !important;
             }
             #hero-image-col > div {
-              padding: 12px !important;
+              padding: 6px !important;
               border-radius: 16px !important;
+              background: #ffffff !important;
+              border: 1px solid #e2e8f0 !important;
+              box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.06) !important;
             }
             .hero-showcase-main-img {
-              height: 230px !important;
-              padding: 12px !important;
+              height: 200px !important;
+              padding: 8px !important;
               border-radius: 12px !important;
+              background: radial-gradient(circle at center, #ffffff 40%, #f1f5f9 100%) !important;
+              border: none !important;
+            }
+            .hero-auto-image {
+              max-height: 100% !important;
+              max-width: 100% !important;
+              object-fit: contain !important;
+              filter: drop-shadow(0 8px 16px rgba(0, 40, 69, 0.14)) !important;
             }
             .hero-desc-desktop {
               display: none !important;
@@ -1087,22 +1098,27 @@ export default function HomePage() {
               flex-direction: row !important;
               width: 100% !important;
               gap: 8px !important;
+              margin-bottom: 4px !important;
             }
-            .hero-nav-btn-primary {
-              flex: 1.2 !important;
-              width: auto !important;
-              height: 44px !important;
-              padding: 0 12px !important;
-              font-size: 0.84rem !important;
-              border-radius: 8px !important;
-            }
+            .hero-nav-btn-primary,
             .hero-nav-btn-secondary {
-              flex: 1 !important;
+              flex: 1 1 0 !important;
               width: auto !important;
+              min-width: 0 !important;
               height: 44px !important;
-              padding: 0 12px !important;
-              font-size: 0.84rem !important;
-              border-radius: 8px !important;
+              padding: 0 10px !important;
+              font-size: 0.82rem !important;
+              border-radius: 10px !important;
+              white-space: nowrap !important;
+              gap: 6px !important;
+            }
+            .hero-btn-arrow {
+              display: none !important;
+            }
+            .hero-btn-icon {
+              width: 16px !important;
+              height: 16px !important;
+              flex-shrink: 0 !important;
             }
           }
         `}</style>
@@ -1110,6 +1126,7 @@ export default function HomePage() {
 
       {/* SECTION 2: FLOATING OVERLAP TRUST BAR (The 4 Feature Cards in Arial) */}
       <div
+        id="medinova-trust-cards-wrapper"
         style={{
           maxWidth: '1240px',
           margin: '-32px auto 0',
@@ -1179,11 +1196,14 @@ export default function HomePage() {
 
         <style>{`
           @media (max-width: 900px) {
+            #medinova-trust-cards-wrapper {
+              margin: 18px auto 0 !important;
+            }
             #medinova-trust-cards {
               grid-template-columns: repeat(2, 1fr) !important;
               padding: 16px 14px !important;
               gap: 12px !important;
-              margin-top: -16px !important;
+              margin-top: 0 !important;
               border-radius: 14px !important;
             }
             #medinova-trust-cards h4 {
