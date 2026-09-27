@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Shop Medical Equipment Online UAE | Best Medical Equipment Supplier in UAE',
     description:
-      'Order clinical medical equipment online from FastonMed, the Best Medical Equipment Supplier in UAE. MoHAP compliant, official warranty, fast delivery.'
+      'Order clinical medical equipment online from FastonMed, the Best Medical Equipment Supplier in UAE. Certified genuine products, official warranty, fast delivery.'
   }
 };
 

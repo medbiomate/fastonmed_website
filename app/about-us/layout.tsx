@@ -4,7 +4,7 @@ import React from 'react';
 export const metadata: Metadata = {
   title: 'About Us | Best Medical Equipment Supplier in UAE | FastonMed',
   description:
-    'Learn about FastonMed, the Best Medical Equipment Supplier in UAE. Based in Dubai Healthcare City (DHCC), supplying MoHAP & DHA compliant hospital equipment, ICU ventilators, diagnostics, and biomedical engineering services across the UAE.',
+    'Learn about FastonMed, the Best Medical Equipment Supplier in UAE. Based in Dubai Healthcare City (DHCC), supplying certified hospital equipment, ICU ventilators, diagnostics, and biomedical engineering services across the UAE.',
   keywords: [
     'About FastonMed',
     'Best Medical Equipment Supplier in UAE',
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     'Hospital Equipment Supplier UAE',
     'Biomedical Engineering Services UAE',
     'Dubai Healthcare City DHCC',
-    'MoHAP Approved Medical Devices'
+    'Certified Medical Devices UAE'
   ],
   alternates: {
     canonical: 'https://www.fastonmed.com/about-us'
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'About Us | Best Medical Equipment Supplier in UAE | FastonMed',
     description:
-      'FastonMed is the Best Medical Equipment Supplier in UAE. Discover our biomedical expertise, DHA/MoHAP certified equipment, and clinical support across the UAE.',
+      'FastonMed is the Best Medical Equipment Supplier in UAE. Discover our biomedical expertise, certified clinical equipment, and dedicated support across the UAE.',
     url: 'https://www.fastonmed.com/about-us',
     siteName: 'FastonMed Healthcare Equipment LLC',
     locale: 'en_AE',

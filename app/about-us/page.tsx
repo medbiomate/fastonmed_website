@@ -41,7 +41,7 @@ export default function AboutPage() {
               Quality & Compliance
             </h2>
             <p style={{ color: '#64748b', lineHeight: 1.6, fontSize: '0.95rem' }}>
-              All instruments and machinery conform to UAE MoHAP, DHA, and DoH statutory frameworks. Every shipment includes factory calibration documentation, serial verification, and full manufacturer warranty.
+              All instruments and machinery conform to rigorous international quality and healthcare safety frameworks. Every shipment includes factory calibration documentation, serial verification, and full manufacturer warranty.
             </p>
           </div>
         </div>

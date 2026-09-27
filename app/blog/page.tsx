@@ -15,7 +15,7 @@ type Post = {
 export const metadata: Metadata = {
   title: 'Healthcare & Biomedical Insights | Best Medical Equipment Supplier in UAE | FastonMed',
   description:
-    'Clinical insights, regulatory MoHAP updates, biomedical maintenance guides, and hospital technology news from FastonMed, the Best Medical Equipment Supplier in UAE.',
+    'Clinical insights, healthcare technology updates, biomedical maintenance guides, and hospital technology news from FastonMed, the Best Medical Equipment Supplier in UAE.',
   keywords: [
     'FastonMed Journal',
     'Best Medical Equipment Supplier in UAE',

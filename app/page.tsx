@@ -903,7 +903,7 @@ export default function HomePage() {
                   fontFamily: 'Arial, Helvetica, sans-serif'
                 }}
               >
-                MoHAP-certified biomedical systems & clinical supplies across the UAE.
+                High-precision biomedical systems & clinical supplies across the UAE.
               </p>
 
               {/* Action Buttons: In-line on Laptop, Stacked on Mobile, Icon matching Logo Color #42B69C */}
@@ -1263,7 +1263,7 @@ export default function HomePage() {
               <ShieldCheck size={20} color="#0284c7" />
             </div>
             <div>
-              <h4 style={{ fontSize: '0.92rem', fontWeight: 700, color: '#0f172a', margin: '0 0 4px', fontFamily: 'Arial, Helvetica, sans-serif' }}>MoHAP & DHA Licensed</h4>
+              <h4 style={{ fontSize: '0.92rem', fontWeight: 700, color: '#0f172a', margin: '0 0 4px', fontFamily: 'Arial, Helvetica, sans-serif' }}>Certified Genuine Quality</h4>
               <p style={{ fontSize: '0.78rem', color: '#64748b', margin: 0, lineHeight: 1.45, fontFamily: 'Arial, Helvetica, sans-serif' }}>100% genuine biomedical equipment with direct UAE warranty.</p>
             </div>
           </div>
@@ -1401,14 +1401,14 @@ export default function HomePage() {
                     fontFamily: 'Arial, Helvetica, sans-serif'
                   }}
                 >
-                  With licensed biomedical engineering facilities and a dedicated clinical support team, FastonMed is dedicated to empowering UAE hospitals, day surgery centers, and clinics with dependable medical technologies and responsive support.
+                  With professional biomedical engineering facilities and a dedicated clinical support team, FastonMed is dedicated to empowering UAE hospitals, day surgery centers, and clinics with dependable medical technologies and responsive support.
                 </p>
 
                 {/* 4 Checkpoint Items */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '30px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                     <CheckCircle2 size={18} color="#00875a" />
-                    <span style={{ fontSize: '0.9rem', fontWeight: 600, color: '#1e293b', fontFamily: 'Arial, Helvetica, sans-serif' }}>MoHAP & DHA Licensed Biomedical Supplier</span>
+                    <span style={{ fontSize: '0.9rem', fontWeight: 600, color: '#1e293b', fontFamily: 'Arial, Helvetica, sans-serif' }}>UAE Registered Healthcare & Biomedical Supplier</span>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                     <CheckCircle2 size={18} color="#00875a" />
@@ -1880,7 +1880,7 @@ export default function HomePage() {
                 fontFamily: 'Arial, Helvetica, sans-serif'
               }}
             >
-              FastonMed delivers MoHAP & DHA certified medical equipment, biomedical engineering support, and clinical consumables to healthcare firms across Dubai, Abu Dhabi, and the UAE.
+              FastonMed delivers genuine certified medical equipment, biomedical engineering support, and clinical consumables to healthcare firms across Dubai, Abu Dhabi, and the UAE.
             </p>
           </div>
 
@@ -2674,7 +2674,7 @@ export default function HomePage() {
                   </div>
                   <div>
                     <div style={{ fontSize: '0.92rem', fontWeight: 700, color: '#0f172a', marginBottom: '2px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                      MoHAP & DHA Certified Documentation
+                      Manufacturer Certified Documentation
                     </div>
                     <div style={{ fontSize: '0.8rem', color: '#64748b', lineHeight: 1.4, fontFamily: 'Arial, Helvetica, sans-serif' }}>
                       Official compliance certificates, factory calibration, and warranty.

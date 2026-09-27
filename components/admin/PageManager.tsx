@@ -121,7 +121,7 @@ const DEFAULT_CORE_PAGES: AdminPageItem[] = [
           'Fastonmed Medical Solution was established with a singular focus: to elevate patient care by supplying reliable, certified medical technology alongside uncompromising maintenance and engineering services.',
           'Our team of certified biomedical engineers and clinical consultants works closely with healthcare facilities to ensure operational excellence.'
         ],
-        points: ['Licensed by UAE Health Authorities', 'Authorized Global Brand Partner', 'ISO Certified Quality Standards']
+        points: ['Certified Healthcare Supplier', 'Authorized Global Brand Partner', 'ISO Certified Quality Standards']
       }
     ],
     faqs: [

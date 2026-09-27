@@ -213,10 +213,10 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
     mainEntity: [
       {
         '@type': 'Question',
-        name: `Is ${product.name} approved by UAE health authorities?`,
+        name: `Is ${product.name} genuine and warranted for healthcare facilities in the UAE?`,
         acceptedAnswer: {
           '@type': 'Answer',
-          text: `Yes. ${product.name} is distributed in compliance with UAE Ministry of Health & Prevention (MoHAP), Dubai Health Authority (DHA), and Department of Health (DoH) healthcare equipment regulations.`
+          text: `Yes. ${product.name} is a 100% genuine medical product supplied with manufacturer warranty, calibration verification, and complete technical support across the UAE.`
         }
       },
       {

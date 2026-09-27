@@ -23,7 +23,7 @@ export async function generateMetadata({
   const canonicalUrl = `https://www.fastonmed.com/product-category/${slug.join('/')}`;
   const title = `${formattedLabel} in UAE | FastonMed`;
   const description = specialty?.description ||
-    `Discover certified ${formattedLabel} from FastonMed, leading medical equipment supplier in UAE. Official UAE distribution, MoHAP compliance, and rapid delivery in Dubai & Abu Dhabi.`;
+    `Discover certified ${formattedLabel} from FastonMed, leading medical equipment supplier in UAE. Official UAE distribution, verified quality standards, and rapid delivery in Dubai & Abu Dhabi.`;
 
   return {
     title,

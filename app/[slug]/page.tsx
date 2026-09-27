@@ -44,7 +44,7 @@ export async function generateMetadata({
   const title = `${page.title} | Best Medical Equipment Supplier in UAE | FastonMed`;
   const description =
     page.description ||
-    `${page.title} – FastonMed is the Best Medical Equipment Supplier in UAE. MoHAP compliant clinical solutions, ICU ventilators, and hospital equipment across Dubai and Abu Dhabi.`;
+    `${page.title} – FastonMed is the Best Medical Equipment Supplier in UAE. Certified clinical solutions, ICU ventilators, and hospital equipment across Dubai and Abu Dhabi.`;
   const canonicalUrl = `https://www.fastonmed.com/${slug}`;
 
   return {
@@ -142,7 +142,7 @@ const DEFAULT_HEALTHCARE_FAQS: FAQItem[] = [
   {
     question: 'Are all equipment and medical supplies certified for clinical use in the UAE?',
     answer:
-      'Yes. FastonMed provides genuine medical devices and equipment that comply with UAE Ministry of Health and Prevention (MOHAP), Dubai Health Authority (DHA), and international quality standards (CE, ISO, FDA).',
+      'Yes. FastonMed provides genuine medical devices and equipment that conform to international quality standards (CE, ISO, FDA) with official manufacturer warranties.',
   },
   {
     question: 'How quickly can FastonMed deliver equipment across Dubai and other Emirates?',
@@ -432,7 +432,7 @@ export default async function EditorialPage({
                         FastonMed Dubai
                       </div>
                       <div style={{ fontSize: '0.74rem', color: '#64748b' }}>
-                        MOHAP Compliant Healthcare Supplier
+                        Certified Healthcare Equipment Supplier
                       </div>
                     </div>
                   </div>

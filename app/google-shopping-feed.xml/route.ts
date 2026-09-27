@@ -26,7 +26,7 @@ export async function GET() {
       const description = escapeXml(
         product.shortDescription ||
         product.fullDescription?.slice(0, 1000) ||
-        `${product.name} - UAE Licensed Biomedical Equipment from FastonMed.`
+        `${product.name} - Genuine Biomedical Equipment from FastonMed.`
       );
 
       const brand = escapeXml(product.brand || 'FastonMed');
@@ -62,7 +62,7 @@ export async function GET() {
   <channel>
     <title>FastonMed Healthcare Equipment - Google Merchant Feed</title>
     <link>${SITE_URL}</link>
-    <description>FastonMed is the Best Medical Equipment Supplier in UAE. MoHAP and DHA certified biomedical equipment.</description>
+    <description>FastonMed is the Best Medical Equipment Supplier in UAE. Certified biomedical and healthcare equipment.</description>
 ${items}
   </channel>
 </rss>`;
