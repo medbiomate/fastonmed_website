@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 import React from 'react';
 
 export const metadata: Metadata = {
-  title: 'About Us | Best Medical Equipment Supplier in UAE | FastOnMed',
+  title: 'About Us | Best Medical Equipment Supplier in UAE | FastonMed',
   description:
-    'Learn about FastOnMed, the Best Medical Equipment Supplier in UAE. Based in Dubai Healthcare City (DHCC), supplying MoHAP & DHA compliant hospital equipment, ICU ventilators, diagnostics, and biomedical engineering services across the UAE.',
+    'Learn about FastonMed, the Best Medical Equipment Supplier in UAE. Based in Dubai Healthcare City (DHCC), supplying MoHAP & DHA compliant hospital equipment, ICU ventilators, diagnostics, and biomedical engineering services across the UAE.',
   keywords: [
-    'About FastOnMed',
+    'About FastonMed',
     'Best Medical Equipment Supplier in UAE',
     'Medical Equipment Supplier Dubai',
     'Hospital Equipment Supplier UAE',
@@ -18,19 +18,19 @@ export const metadata: Metadata = {
     canonical: 'https://www.fastonmed.com/about-us'
   },
   openGraph: {
-    title: 'About Us | Best Medical Equipment Supplier in UAE | FastOnMed',
+    title: 'About Us | Best Medical Equipment Supplier in UAE | FastonMed',
     description:
-      'FastOnMed is the Best Medical Equipment Supplier in UAE. Discover our biomedical expertise, DHA/MoHAP certified equipment, and clinical support across the UAE.',
+      'FastonMed is the Best Medical Equipment Supplier in UAE. Discover our biomedical expertise, DHA/MoHAP certified equipment, and clinical support across the UAE.',
     url: 'https://www.fastonmed.com/about-us',
-    siteName: 'FastOnMed Healthcare Equipment LLC',
+    siteName: 'FastonMed Healthcare Equipment LLC',
     locale: 'en_AE',
     type: 'website'
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'About Us | Best Medical Equipment Supplier in UAE | FastOnMed',
+    title: 'About Us | Best Medical Equipment Supplier in UAE | FastonMed',
     description:
-      'FastOnMed is the Best Medical Equipment Supplier in UAE. Providing hospital equipment, ICU ventilators, and biomedical engineering in Dubai & Abu Dhabi.'
+      'FastonMed is the Best Medical Equipment Supplier in UAE. Providing hospital equipment, ICU ventilators, and biomedical engineering in Dubai & Abu Dhabi.'
   }
 };
 

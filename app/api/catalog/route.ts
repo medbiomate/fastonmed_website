@@ -47,7 +47,7 @@ function mapCrmProduct(item: CrmProduct, index: number): Product {
   const salePrice = item.salePrice ? Number(item.salePrice) : undefined;
   const price = salePrice || regularPrice;
   const stock = Math.max(0, Number(item.inStock ?? 0));
-  const description = item.description?.trim() || 'Contact FastOnMed for product specifications and availability.';
+  const description = item.description?.trim() || 'Contact FastonMed for product specifications and availability.';
   const createdAt = item.createdAt ? new Date(item.createdAt).toISOString() : new Date(0).toISOString();
   const updatedAt = item.updatedAt ? new Date(item.updatedAt).toISOString() : createdAt;
 
@@ -61,7 +61,7 @@ function mapCrmProduct(item: CrmProduct, index: number): Product {
     regularPrice,
     salePrice,
     category: item.category?.trim() || 'Medical Equipment',
-    brand: item.brand?.trim() || 'FastOnMed Partner',
+    brand: item.brand?.trim() || 'FastonMed Partner',
     model: item.model,
     shortDescription: item.shortDescription || description,
     fullDescription: description,

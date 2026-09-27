@@ -528,7 +528,7 @@ export default function Navbar() {
             onClick={e => e.stopPropagation()}
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-              <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0f172a' }}>Search FastOnMed</h3>
+              <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0f172a' }}>Search FastonMed</h3>
               <button
                 onClick={() => setSearchModalOpen(false)}
                 style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#64748b' }}

@@ -9,7 +9,7 @@ export const initialCategories: ProductCategory[] = [
     image: '/images/original/Fridges-Pharmacy_Haier_HYC-309.png',
     displayOrder: 1,
     productCount: 18,
-    seoTitle: 'Pharmacy Refrigerators UAE - FastOnMed Medical Cold Storage',
+    seoTitle: 'Pharmacy Refrigerators UAE - FastonMed Medical Cold Storage',
     seoDescription: 'Explore Haier Biomedical and top pharmaceutical cold storage refrigerators in UAE.'
   },
   {
@@ -20,7 +20,7 @@ export const initialCategories: ProductCategory[] = [
     image: '/images/original/genaral-equipments-1.jpeg',
     displayOrder: 2,
     productCount: 34,
-    seoTitle: 'ICU & Critical Care Equipment UAE - FastOnMed',
+    seoTitle: 'ICU & Critical Care Equipment UAE - FastonMed',
     seoDescription: 'High performance ICU equipment for hospitals and intensive care units across UAE.'
   },
   {
@@ -42,7 +42,7 @@ export const initialCategories: ProductCategory[] = [
     image: '/images/original/dental-chair-1.jpeg',
     displayOrder: 4,
     productCount: 29,
-    seoTitle: 'Dental Chairs & Equipment UAE - FastOnMed',
+    seoTitle: 'Dental Chairs & Equipment UAE - FastonMed',
     seoDescription: 'Ergonomic dental delivery systems and sterilization equipment for dental clinics in Dubai.'
   },
   {
@@ -680,7 +680,7 @@ Its integrated turbine does not rely on a central compressed air supply, making 
     isNew: false,
     status: 'published',
     seoTitle: 'Nihon Kohden Life Scope G3 Patient Monitor UAE',
-    seoDescription: 'Nihon Kohden patient monitoring solutions for hospitals in Dubai and Abu Dhabi. Request quote from FastOnMed authorized supplier.',
+    seoDescription: 'Nihon Kohden patient monitoring solutions for hospitals in Dubai and Abu Dhabi. Request quote from FastonMed authorized supplier.',
     rating: 5,
     reviewCount: 6,
     createdAt: '2026-09-03T10:00:00Z',
@@ -771,7 +771,7 @@ Constructed from transparent, heavy-duty medical grade PVC, the splints permit c
     isBestSeller: false,
     isNew: false,
     status: 'published',
-    seoTitle: 'Belmont Clesta II Dental Chair UAE Supplier - FastOnMed',
+    seoTitle: 'Belmont Clesta II Dental Chair UAE Supplier - FastonMed',
     seoDescription: 'Inquire on Belmont Clesta II Japanese dental treatment chair in UAE. Complete installation, warranty, and technician support across Dubai and Abu Dhabi.',
     rating: 5,
     reviewCount: 5,
@@ -821,7 +821,7 @@ Constructed from transparent, heavy-duty medical grade PVC, the splints permit c
       { id: 'var-glv-l', sku: 'GLV-NIT-L', regularPrice: 28, salePrice: 24, stockQuantity: 100, stockStatus: 'in_stock', attributes: { Size: 'Large' } },
       { id: 'var-glv-xl', sku: 'GLV-NIT-XL', regularPrice: 30, salePrice: 26, stockQuantity: 50, stockStatus: 'in_stock', attributes: { Size: 'X-Large' } }
     ],
-    seoTitle: 'Medical Nitrile Examination Gloves Powder-Free UAE - FastOnMed',
+    seoTitle: 'Medical Nitrile Examination Gloves Powder-Free UAE - FastonMed',
     seoDescription: 'Buy medical nitrile gloves in Dubai, UAE. Powder-free, latex-free boxes of 100. Small, Medium, Large, XL sizes with fast UAE bulk delivery.',
     rating: 5,
     reviewCount: 32,
@@ -867,7 +867,7 @@ Constructed from transparent, heavy-duty medical grade PVC, the splints permit c
     isNew: true,
     status: 'published',
     seoTitle: 'Schiller Cardiovit FT-1 Portable ECG Machine UAE',
-    seoDescription: 'Schiller Cardiovit FT-1 12-lead touch ECG machine supplier in UAE. Wi-Fi EMR integration, Swiss ETM software, in stock at FastOnMed.',
+    seoDescription: 'Schiller Cardiovit FT-1 12-lead touch ECG machine supplier in UAE. Wi-Fi EMR integration, Swiss ETM software, in stock at FastonMed.',
     rating: 5,
     reviewCount: 7,
     createdAt: '2026-09-07T10:00:00Z',
@@ -1038,7 +1038,7 @@ export const initialOrders: Order[] = [
     timeline: [
       { status: 'pending_payment', note: 'Order placed', timestamp: '2026-09-22T08:00:00Z' },
       { status: 'confirmed', note: 'Card payment confirmed via Stripe', timestamp: '2026-09-22T08:05:00Z' },
-      { status: 'shipped', note: 'Dispatched via FastOnMed Logistics van', timestamp: '2026-09-22T13:00:00Z' },
+      { status: 'shipped', note: 'Dispatched via FastonMed Logistics van', timestamp: '2026-09-22T13:00:00Z' },
       { status: 'delivered', note: 'Received and signed by clinic supervisor', timestamp: '2026-09-22T16:30:00Z' }
     ],
     createdAt: '2026-09-22T08:00:00Z',
@@ -1210,7 +1210,7 @@ export const initialBlogPosts: BlogPost[] = [
     featuredImage: "https://www.fastonmed.com/wp-content/uploads/2025/06/genaral-equipments-1.jpeg",
     category: "Healthcare Facility Setup",
     tags: ["DHA Guidelines", "Day Surgery Dubai", "Operating Theatre", "Patient Monitors"],
-    author: "FastOnMed Clinical Advisory",
+    author: "FastonMed Clinical Advisory",
     authorRole: "Written By",
     authorImage: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=150&q=80",
     reviewer: "Biomedical Engineering Board",
@@ -1258,7 +1258,7 @@ export const initialBlogPosts: BlogPost[] = [
     featuredImage: "https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=1200&q=80",
     category: "Biomedical Maintenance",
     tags: ["ICU Monitors", "Biomedical Calibration", "Patient Safety", "DHA Inspection"],
-    author: "FastOnMed Biomedical Services",
+    author: "FastonMed Biomedical Services",
     authorRole: "Written By",
     authorImage: "",
     reviewer: "Senior Biomedical Engineer",
@@ -1314,7 +1314,7 @@ export const initialPages: PageContent[] = [
     id: 'pg-about',
     title: 'About Us',
     slug: 'about-us',
-    content: `FastOnMed is a premier United Arab Emirates supplier of advanced medical devices, hospital equipment, and biomedical services. Headquartered in Dubai, we serve healthcare institutions across Dubai, Abu Dhabi, Sharjah, Ajman, Ras Al Khaimah, Fujairah, and Umm Al Quwain.
+    content: `FastonMed is a premier United Arab Emirates supplier of advanced medical devices, hospital equipment, and biomedical services. Headquartered in Dubai, we serve healthcare institutions across Dubai, Abu Dhabi, Sharjah, Ajman, Ras Al Khaimah, Fujairah, and Umm Al Quwain.
 
 Our certified biomedical engineers provide not only equipment procurement but also turnkey installation, testing, staff clinical training, preventive maintenance, and calibration services.`,
     status: 'published',
@@ -1324,7 +1324,7 @@ Our certified biomedical engineers provide not only equipment procurement but al
   },
   {
     id: 'pg-contact',
-    title: 'Contact FastOnMed',
+    title: 'Contact FastonMed',
     slug: 'contact',
     content: `Get in touch with our medical equipment sales and biomedical engineering teams in UAE.
 Phone: +971 508 893 589
@@ -1338,7 +1338,7 @@ Office: Business Bay / Al Quoz, Dubai, United Arab Emirates.`,
 ];
 
 export const initialStoreSettings: StoreSettings = {
-  storeName: 'FastOnMed Medical Solution',
+  storeName: 'FastonMed Medical Solution',
   supportPhone: '+971 508 893 589',
   salesEmail: 'sales@fastonmed.com',
   whatsappNumber: '+971508893589',

@@ -496,7 +496,7 @@ export default function ProductManager({
                     <td colSpan={8} className="tk-empty" style={{ padding: '60px 24px', textAlign: 'center' }}>
                       <div style={{ display: 'inline-flex', alignItems: 'center', gap: '12px', color: '#475569', fontSize: '14px', fontWeight: 500 }}>
                         <span style={{ display: 'inline-block', width: '20px', height: '20px', border: '2.5px solid #cbd5e1', borderTopColor: '#0d9488', borderRadius: '50%', animation: 'spin 0.7s linear infinite' }} />
-                        Loading FastOnMed product catalogue...
+                        Loading FastonMed product catalogue...
                       </div>
                     </td>
                   </tr>

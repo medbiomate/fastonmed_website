@@ -10,7 +10,7 @@ export default function WhatsAppFloatingButton() {
   // Hide in /admin
   if (pathname?.startsWith('/admin')) return null;
 
-  const defaultMsg = encodeURIComponent('Hello FastOnMed, I am browsing your medical equipment store and would like to speak with a sales specialist.');
+  const defaultMsg = encodeURIComponent('Hello FastonMed, I am browsing your medical equipment store and would like to speak with a sales specialist.');
   const waUrl = `https://wa.me/971508893589?text=${defaultMsg}`;
 
   return (
@@ -33,7 +33,7 @@ export default function WhatsAppFloatingButton() {
         href={waUrl}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="Contact FastOnMed via WhatsApp"
+        aria-label="Contact FastonMed via WhatsApp"
         className="whatsapp-floating-btn"
         style={{
           position: 'fixed',

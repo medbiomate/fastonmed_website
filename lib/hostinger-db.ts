@@ -8,7 +8,7 @@ export function getHostingerDbPool(): mysql.Pool {
       host: process.env.HOSTINGER_DB_HOST || 'srv679.hstgr.io',
       port: Number(process.env.HOSTINGER_DB_PORT || 3306),
       user: process.env.HOSTINGER_DB_USER || 'u304645447_fastonmed',
-      password: process.env.HOSTINGER_DB_PASSWORD || 'FastOnMed_DbPass_2026#!',
+      password: process.env.HOSTINGER_DB_PASSWORD || 'FastonMed_DbPass_2026#!',
       database: process.env.HOSTINGER_DB_NAME || 'u304645447_fastonmed',
       waitForConnections: true,
       connectionLimit: 10,

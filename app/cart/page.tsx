@@ -10,7 +10,7 @@ export default function CartPage() {
   const { cart, updateCartQuantity, removeFromCart, cartSubtotal, cartTax, cartGrandTotal } = useApp();
 
   const waCartText = encodeURIComponent(
-    `Hello FastOnMed Sales, I would like to place an order for the following items:\n` +
+    `Hello FastonMed Sales, I would like to place an order for the following items:\n` +
     cart.map(item => `- ${item.name} (Qty: ${item.quantity}) - AED ${(item.price * item.quantity).toLocaleString()}`).join('\n') +
     `\n\nTotal: AED ${cartGrandTotal.toLocaleString()} (incl. VAT)`
   );

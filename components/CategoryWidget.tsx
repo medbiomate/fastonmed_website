@@ -255,7 +255,7 @@ export default function CategoryWidget({
           >
             <Image
               src="/products/patient-monitor.jpg"
-              alt="All Medical Equipment - FastOnMed UAE"
+              alt="All Medical Equipment - FastonMed UAE"
               fill
               className="cat-widget-img"
               style={{ objectFit: 'contain', padding: '6px', transition: 'transform 0.3s ease' }}
@@ -348,7 +348,7 @@ export default function CategoryWidget({
               >
                 <Image
                   src={imgSrc}
-                  alt={`${displayName} - FastOnMed Healthcare UAE`}
+                  alt={`${displayName} - FastonMed Healthcare UAE`}
                   fill
                   className="cat-widget-img"
                   style={{ objectFit: 'contain', padding: '6px', transition: 'transform 0.3s ease' }}

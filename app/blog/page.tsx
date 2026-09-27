@@ -13,11 +13,11 @@ type Post = {
 };
 
 export const metadata: Metadata = {
-  title: 'Healthcare & Biomedical Insights | Best Medical Equipment Supplier in UAE | FastOnMed',
+  title: 'Healthcare & Biomedical Insights | Best Medical Equipment Supplier in UAE | FastonMed',
   description:
-    'Clinical insights, regulatory MoHAP updates, biomedical maintenance guides, and hospital technology news from FastOnMed, the Best Medical Equipment Supplier in UAE.',
+    'Clinical insights, regulatory MoHAP updates, biomedical maintenance guides, and hospital technology news from FastonMed, the Best Medical Equipment Supplier in UAE.',
   keywords: [
-    'FastOnMed Journal',
+    'FastonMed Journal',
     'Best Medical Equipment Supplier in UAE',
     'Biomedical Engineering Insights UAE',
     'Hospital Technology Dubai',
@@ -28,19 +28,19 @@ export const metadata: Metadata = {
     canonical: 'https://www.fastonmed.com/blog'
   },
   openGraph: {
-    title: 'Healthcare & Biomedical Insights | Best Medical Equipment Supplier in UAE | FastOnMed',
+    title: 'Healthcare & Biomedical Insights | Best Medical Equipment Supplier in UAE | FastonMed',
     description:
-      'Clinical technology insights and equipment guides from FastOnMed, the Best Medical Equipment Supplier in UAE.',
+      'Clinical technology insights and equipment guides from FastonMed, the Best Medical Equipment Supplier in UAE.',
     url: 'https://www.fastonmed.com/blog',
-    siteName: 'FastOnMed Healthcare Equipment LLC',
+    siteName: 'FastonMed Healthcare Equipment LLC',
     locale: 'en_AE',
     type: 'website'
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Healthcare & Biomedical Insights | Best Medical Equipment Supplier in UAE | FastOnMed',
+    title: 'Healthcare & Biomedical Insights | Best Medical Equipment Supplier in UAE | FastonMed',
     description:
-      'Clinical insights and equipment guides from FastOnMed, the Best Medical Equipment Supplier in UAE.'
+      'Clinical insights and equipment guides from FastonMed, the Best Medical Equipment Supplier in UAE.'
   }
 };
 

@@ -10,13 +10,13 @@ export default function AboutPage() {
       <div className="container">
         <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center', marginBottom: '56px' }}>
           <span style={{ color: '#51b291', fontSize: '0.85rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-            About FastOnMed
+            About FastonMed
           </span>
           <h1 style={{ fontSize: '2.5rem', fontWeight: 800, color: '#0f172a', marginTop: '6px' }}>
             Empowering Healthcare Through Precision Engineering & Certified Supply
           </h1>
           <p style={{ color: '#64748b', fontSize: '1.05rem', lineHeight: 1.6, marginTop: '16px' }}>
-            Based in Dubai Healthcare City (DHCC), UAE, FastOnMed Healthcare Equipment & Medical Solutions LLC is a leading distributor of capital clinical equipment, temperature-controlled laboratory cold-chain systems, and biomedical maintenance contracts across the GCC region.
+            Based in Dubai Healthcare City (DHCC), UAE, FastonMed Healthcare Equipment & Medical Solutions LLC is a leading distributor of capital clinical equipment, temperature-controlled laboratory cold-chain systems, and biomedical maintenance contracts across the GCC region.
           </p>
         </div>
 
@@ -49,7 +49,7 @@ export default function AboutPage() {
         {/* Core Pillars */}
         <div style={{ backgroundColor: '#ffffff', borderRadius: '16px', padding: '48px', border: '1px solid #e2e8f0' }}>
           <h2 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#0f172a', marginBottom: '24px', textAlign: 'center' }}>
-            FastOnMed Clinical Capabilities
+            FastonMed Clinical Capabilities
           </h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '24px' }}>
             {[

@@ -35,7 +35,7 @@ export default function AdminHeader({ title }: Props) {
     <div className="tk-page-heading">
       <div>
         <h1>{title}</h1>
-        <p>Manage and monitor FastOnMed from one workspace.</p>
+        <p>Manage and monitor FastonMed from one workspace.</p>
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
         {syncResult && <span style={{ fontSize: 12, color: '#15803d', fontWeight: 600 }}><CheckCircle2 size={14} /> {syncResult}</span>}

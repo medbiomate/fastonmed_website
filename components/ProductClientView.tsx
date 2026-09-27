@@ -66,7 +66,7 @@ export default function ProductClientView({ product, similarProducts }: ProductC
   const canonicalUrl = `https://www.fastonmed.com/product/${product.slug}`;
   const priceLine = price && price > 0 ? `Price: AED ${price.toLocaleString()}\n` : '';
   const waOrderText = encodeURIComponent(
-    `Hello FastOnMed Sales Team,\nI would like to inquire about purchasing:\n*${product.name}*\nSKU: ${product.sku}\n${priceLine}Link: ${canonicalUrl}`
+    `Hello FastonMed Sales Team,\nI would like to inquire about purchasing:\n*${product.name}*\nSKU: ${product.sku}\n${priceLine}Link: ${canonicalUrl}`
   );
   const waUrl = `https://wa.me/971508893589?text=${waOrderText}`;
 
@@ -74,13 +74,13 @@ export default function ProductClientView({ product, similarProducts }: ProductC
   const specs = Object.entries(product.technicalSpecs || {});
   const displaySpecs: [string, string][] = specs.length > 0 ? specs : [
     ['Product Category', product.category || 'Medical Equipment'],
-    ['Brand / Manufacturer', product.brand || 'FastOnMed Partner'],
+    ['Brand / Manufacturer', product.brand || 'FastonMed Partner'],
     ['SKU / Catalog ID', product.sku || 'N/A'],
     ['Regulatory Compliance', 'UAE MoHAP / DHA / DoH Certified'],
     ['Warranty', product.warrantyPeriod || '1 Year Biomedical Warranty'],
     ['Supply Voltage / Power', '220V - 240V / 50-60Hz (UAE Standard)'],
     ['Clinical Application', 'Hospital Inpatient, ICU, Clinic & Homecare'],
-    ['After-Sales Service', 'FastOnMed Dubai Healthcare City Service Center']
+    ['After-Sales Service', 'FastonMed Dubai Healthcare City Service Center']
   ];
 
   return (
@@ -160,7 +160,7 @@ export default function ProductClientView({ product, similarProducts }: ProductC
                 {selectedImage ? (
                   <Image
                     src={selectedImage}
-                  alt={`${product.name} - FastOnMed Healthcare UAE`}
+                  alt={`${product.name} - FastonMed Healthcare UAE`}
                   fill
                   priority
                   style={{ objectFit: 'contain' }}
@@ -187,7 +187,7 @@ export default function ProductClientView({ product, similarProducts }: ProductC
                     letterSpacing: '0.04em'
                   }}
                 >
-                  {product.brand || 'FastOnMed Partner'}
+                  {product.brand || 'FastonMed Partner'}
                 </span>
                 <span
                   style={{
@@ -590,11 +590,11 @@ export default function ProductClientView({ product, similarProducts }: ProductC
                 {[
                   {
                     q: `Is ${product.name} approved by UAE Ministry of Health (MoHAP)?`,
-                    a: 'Yes. All medical equipment distributed by FastOnMed is compliant with UAE MoHAP, Dubai Health Authority (DHA), and Department of Health (DoH Abu Dhabi) standards for hospital and clinical installation.'
+                    a: 'Yes. All medical equipment distributed by FastonMed is compliant with UAE MoHAP, Dubai Health Authority (DHA), and Department of Health (DoH Abu Dhabi) standards for hospital and clinical installation.'
                   },
                   {
-                    q: 'How does FastOnMed handle warranty, maintenance, and calibration?',
-                    a: 'FastOnMed provides an official 1-year warranty on equipment. Our Dubai Healthcare City biomedical engineers provide preventative maintenance, calibration certificates, and 24-48 hour on-site technical support.'
+                    q: 'How does FastonMed handle warranty, maintenance, and calibration?',
+                    a: 'FastonMed provides an official 1-year warranty on equipment. Our Dubai Healthcare City biomedical engineers provide preventative maintenance, calibration certificates, and 24-48 hour on-site technical support.'
                   },
                   {
                     q: 'What is the delivery timeline for orders across the UAE?',
@@ -781,7 +781,7 @@ export default function ProductClientView({ product, similarProducts }: ProductC
             </h3>
 
             <p style={{ color: '#e2e8f0', fontSize: '0.96rem', lineHeight: 1.6, margin: '0 0 16px', opacity: 0.95 }}>
-              Speak directly with FastOnMed’s biomedical engineering desk in Dubai Healthcare City for turnkey department packages, institutional bulk discounts, and localized AMC support.
+              Speak directly with FastonMed’s biomedical engineering desk in Dubai Healthcare City for turnkey department packages, institutional bulk discounts, and localized AMC support.
             </p>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '18px', flexWrap: 'wrap', fontSize: '0.80rem', fontWeight: 600, color: '#bbf7d0' }}>
@@ -802,7 +802,7 @@ export default function ProductClientView({ product, similarProducts }: ProductC
 
           <div style={{ position: 'relative', zIndex: 1 }}>
             <a
-              href="https://wa.me/971508893589?text=Hello%20FastOnMed%20Sales%2C%20I%20would%20like%20to%20request%20a%20commercial%20quotation%20for%20healthcare%20equipment."
+              href="https://wa.me/971508893589?text=Hello%20FastonMed%20Sales%2C%20I%20would%20like%20to%20request%20a%20commercial%20quotation%20for%20healthcare%20equipment."
               target="_blank"
               rel="noopener noreferrer"
               style={{

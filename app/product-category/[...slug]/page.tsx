@@ -21,9 +21,9 @@ export async function generateMetadata({
     : target.replaceAll('-', ' ').replace(/\b\w/g, (char) => char.toUpperCase());
 
   const canonicalUrl = `https://www.fastonmed.com/product-category/${slug.join('/')}`;
-  const title = `${formattedLabel} | Best Medical Equipment Supplier in UAE | FastOnMed`;
+  const title = `${formattedLabel} | Best Medical Equipment Supplier in UAE | FastonMed`;
   const description = specialty?.description ||
-    `Discover certified ${formattedLabel} from FastOnMed, the Best Medical Equipment Supplier in UAE. Official UAE distribution, MoHAP compliance, and rapid delivery in Dubai & Abu Dhabi.`;
+    `Discover certified ${formattedLabel} from FastonMed, the Best Medical Equipment Supplier in UAE. Official UAE distribution, MoHAP compliance, and rapid delivery in Dubai & Abu Dhabi.`;
 
   return {
     title,
@@ -35,7 +35,7 @@ export async function generateMetadata({
       'Best Medical Equipment Supplier in UAE',
       'Medical Equipment Supplier in UAE',
       'Hospital Supplies UAE',
-      'FastOnMed Healthcare'
+      'FastonMed Healthcare'
     ],
     alternates: {
       canonical: canonicalUrl
@@ -44,7 +44,7 @@ export async function generateMetadata({
       title,
       description,
       url: canonicalUrl,
-      siteName: 'FastOnMed Healthcare Equipment LLC',
+      siteName: 'FastonMed Healthcare Equipment LLC',
       locale: 'en_AE',
       type: 'website'
     },

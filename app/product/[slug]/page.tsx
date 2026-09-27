@@ -14,8 +14,8 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
 
   if (!product) {
     return {
-      title: 'Medical Equipment Product Not Found | FastOnMed Dubai',
-      description: 'The requested healthcare product could not be found in the FastOnMed medical catalog.',
+      title: 'Medical Equipment Product Not Found | FastonMed Dubai',
+      description: 'The requested healthcare product could not be found in the FastonMed medical catalog.',
       robots: { index: false, follow: true }
     };
   }
@@ -32,10 +32,10 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
     .replace(/<[^>]*>?/gm, '')
     .slice(0, 155);
 
-  const seoTitle = `${product.name} | Best Medical Equipment Supplier in UAE | FastOnMed`;
+  const seoTitle = `${product.name} | Best Medical Equipment Supplier in UAE | FastonMed`;
   const seoDescription = cleanDescription.length > 20
-    ? `${cleanDescription} FastOnMed is the Best Medical Equipment Supplier in UAE. Official warranty & fast delivery across UAE.`
-    : `Buy ${product.name} from FastOnMed, the Best Medical Equipment Supplier in UAE. Official distributor in Dubai Healthcare City (DHCC) with warranty and biomedical support.`;
+    ? `${cleanDescription} FastonMed is the Best Medical Equipment Supplier in UAE. Official warranty & fast delivery across UAE.`
+    : `Buy ${product.name} from FastonMed, the Best Medical Equipment Supplier in UAE. Official distributor in Dubai Healthcare City (DHCC) with warranty and biomedical support.`;
 
   return {
     title: seoTitle,
@@ -43,14 +43,14 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
     keywords: [
       product.name,
       product.category,
-      product.brand || 'FastOnMed Partner',
+      product.brand || 'FastonMed Partner',
       'Best Medical Equipment Supplier in UAE',
       'Medical Equipment Supplier in UAE',
       'Medical Equipment Dubai',
       'Healthcare Supplies UAE',
       'Buy Hospital Equipment Dubai',
       'Dubai Healthcare City DHCC',
-      'FastOnMed'
+      'FastonMed'
     ],
     alternates: {
       canonical: canonicalUrl
@@ -59,7 +59,7 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
       title: seoTitle,
       description: seoDescription,
       url: canonicalUrl,
-      siteName: 'FastOnMed Healthcare Equipment & Medical Solutions LLC',
+      siteName: 'FastonMed Healthcare Equipment & Medical Solutions LLC',
       locale: 'en_AE',
       type: 'website',
       images: [
@@ -67,7 +67,7 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
           url: imgUrl,
           width: 800,
           height: 800,
-          alt: `${product.name} - FastOnMed Healthcare UAE`
+          alt: `${product.name} - FastonMed Healthcare UAE`
         }
       ]
     },
@@ -146,7 +146,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
     mpn: product.sku || product.id,
     brand: {
       '@type': 'Brand',
-      name: product.brand || 'FastOnMed Partner'
+      name: product.brand || 'FastonMed Partner'
     },
     category: product.category,
     offers: {
@@ -159,7 +159,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
       availability: product.stockStatus === 'out_of_stock' ? 'https://schema.org/OutOfStock' : 'https://schema.org/InStock',
       seller: {
         '@type': 'MedicalBusiness',
-        name: 'FastOnMed Healthcare Equipment LLC',
+        name: 'FastonMed Healthcare Equipment LLC',
         telephone: '+971508893589',
         address: {
           '@type': 'PostalAddress',
@@ -228,7 +228,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
         name: `What warranty and service comes with ${product.name}?`,
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'FastOnMed provides an official 1-year warranty along with certified biomedical calibration and maintenance from our Dubai Healthcare City engineering center.'
+          text: 'FastonMed provides an official 1-year warranty along with certified biomedical calibration and maintenance from our Dubai Healthcare City engineering center.'
         }
       },
       {

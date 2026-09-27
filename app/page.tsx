@@ -143,7 +143,7 @@ const initialBentoRaw = [
     regularPrice: 247,
     salePrice: 195,
     category: 'Consumables & PPE',
-    brand: 'FastOnMed Partner',
+    brand: 'FastonMed Partner',
     shortDescription: 'Comprehensive emergency clinical response kit with robust carry case.',
     fullDescription: 'Contains 5 individual application kits with absorbent granules, disinfectant spray, and waste bags.',
     mainImage: '/wp-content/uploads/2025/07/body-fluid-spill-kit-5-application-in-carry-case-510x352_large.jpg',
@@ -253,7 +253,7 @@ const initialBentoRaw = [
     regularPrice: 229,
     salePrice: 189,
     category: 'Laboratory & Diagnostic',
-    brand: 'FastOnMed Partner',
+    brand: 'FastonMed Partner',
     shortDescription: 'Thermal insulation transport box for UN2814 and UN3373 diagnostic biological specimens.',
     fullDescription: 'Durable cold-chain specimen transfer container compliant with WHO and UAE biological transport protocols.',
     mainImage: '/wp-content/uploads/2025/07/biosafety-transport-box-btb-l6-1-510x510_large.jpg',
@@ -742,7 +742,7 @@ export default function HomePage() {
       if (data?.success) {
         setLeadSubmitted(true);
         setLeadRefId(data.leadId || `LEAD-${Date.now().toString().slice(-6)}`);
-        setToastMessage('Inquiry successfully synchronized with FastOnMed CRM');
+        setToastMessage('Inquiry successfully synchronized with FastonMed CRM');
         setTimeout(() => setToastMessage(null), 4000);
       } else {
         setLeadError(data?.error || 'Failed to submit inquiry. Please call our biomedical desk directly.');
@@ -891,7 +891,7 @@ export default function HomePage() {
                   fontFamily: 'Arial, Helvetica, sans-serif'
                 }}
               >
-                FastOnMed is the premier medical equipment supplier in UAE, delivering MoHAP-licensed biomedical technology, ICU systems, and clinical supplies across all 7 Emirates.
+                FastonMed is the premier medical equipment supplier in UAE, delivering MoHAP-licensed biomedical technology, ICU systems, and clinical supplies across all 7 Emirates.
               </p>
               <p
                 className="hero-desc-mobile"
@@ -1401,7 +1401,7 @@ export default function HomePage() {
                     fontFamily: 'Arial, Helvetica, sans-serif'
                   }}
                 >
-                  With licensed biomedical engineering facilities and a dedicated clinical support team, FastOnMed is dedicated to empowering UAE hospitals, day surgery centers, and clinics with dependable medical technologies and responsive support.
+                  With licensed biomedical engineering facilities and a dedicated clinical support team, FastonMed is dedicated to empowering UAE hospitals, day surgery centers, and clinics with dependable medical technologies and responsive support.
                 </p>
 
                 {/* 4 Checkpoint Items */}
@@ -1463,7 +1463,7 @@ export default function HomePage() {
                 >
                   <img
                     src="/images/hero-medical-equipment.jpg"
-                    alt="FastOnMed Medical Equipment & Biomedical Technologies Range"
+                    alt="FastonMed Medical Equipment & Biomedical Technologies Range"
                     style={{
                       width: '100%',
                       height: 'auto',
@@ -1880,7 +1880,7 @@ export default function HomePage() {
                 fontFamily: 'Arial, Helvetica, sans-serif'
               }}
             >
-              FastOnMed delivers MoHAP & DHA certified medical equipment, biomedical engineering support, and clinical consumables to healthcare firms across Dubai, Abu Dhabi, and the UAE.
+              FastonMed delivers MoHAP & DHA certified medical equipment, biomedical engineering support, and clinical consumables to healthcare firms across Dubai, Abu Dhabi, and the UAE.
             </p>
           </div>
 
@@ -2733,7 +2733,7 @@ export default function HomePage() {
                   </div>
                 </div>
                 <a
-                  href="https://wa.me/971501234567?text=Hello%20FastOnMed%20team,%20I%20need%20an%20urgent%20medical%20equipment%20quotation."
+                  href="https://wa.me/971501234567?text=Hello%20FastonMed%20team,%20I%20need%20an%20urgent%20medical%20equipment%20quotation."
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
@@ -2785,7 +2785,7 @@ export default function HomePage() {
                     <CheckCircle2 size={34} />
                   </div>
                   <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#0f172a', margin: '0 0 8px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                    Inquiry Forwarded to FastOnMed CRM!
+                    Inquiry Forwarded to FastonMed CRM!
                   </h3>
                   {leadRefId && (
                     <div
@@ -2810,7 +2810,7 @@ export default function HomePage() {
                   </p>
                   <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', flexWrap: 'wrap' }}>
                     <a
-                      href={`https://wa.me/971501234567?text=Hello%20FastOnMed,%20I%20just%20submitted%20inquiry%20%23${leadRefId || ''}%20for%20${encodeURIComponent(leadForm.equipmentInterest)}.`}
+                      href={`https://wa.me/971501234567?text=Hello%20FastonMed,%20I%20just%20submitted%20inquiry%20%23${leadRefId || ''}%20for%20${encodeURIComponent(leadForm.equipmentInterest)}.`}
                       target="_blank"
                       rel="noopener noreferrer"
                       style={{
@@ -3154,12 +3154,12 @@ export default function HomePage() {
                       fontFamily: 'Arial, Helvetica, sans-serif'
                     }}
                   >
-                    <span>{isLeadSubmitting ? 'Synchronizing to CRM...' : 'Submit RFQ to FastOnMed CRM'}</span>
+                    <span>{isLeadSubmitting ? 'Synchronizing to CRM...' : 'Submit RFQ to FastonMed CRM'}</span>
                     <Send size={15} />
                   </button>
 
                   <div style={{ textAlign: 'center', fontSize: '0.7rem', color: '#94a3b8', marginTop: '2px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                    🔒 Inquiries are directly routed to the FastOnMed Biomedical CRM platform under UAE healthcare compliance.
+                    🔒 Inquiries are directly routed to the FastonMed Biomedical CRM platform under UAE healthcare compliance.
                   </div>
                 </form>
               )}

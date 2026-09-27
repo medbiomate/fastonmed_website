@@ -41,7 +41,7 @@ export default function AdminTopHeader() {
   const [userMenuOpen, setUserMenuOpen] = useState(false);
 
   const meta = useMemo(
-    () => routeMeta[pathname] ?? { breadcrumb: 'FastOnMed Console', action: 'Add Product', href: '/admin/products/new' },
+    () => routeMeta[pathname] ?? { breadcrumb: 'FastonMed Console', action: 'Add Product', href: '/admin/products/new' },
     [pathname]
   );
 
@@ -89,15 +89,15 @@ export default function AdminTopHeader() {
     }
   };
 
-  const displayName = currentUser?.name || 'FastOnMed Admin';
+  const displayName = currentUser?.name || 'FastonMed Admin';
   const displayRole = currentUser?.role || 'Administrator';
   const initial = displayName.charAt(0).toUpperCase();
 
   return (
     <header className="tk-admin-header">
       <div className="tk-admin-header-left">
-        <Link href="/admin" className="tk-admin-brand" title="FastOnMed Console">
-          <Image src="/fastonmed-logo.png" alt="FastOnMed" width={137} height={31} priority />
+        <Link href="/admin" className="tk-admin-brand" title="FastonMed Console">
+          <Image src="/fastonmed-logo.png" alt="FastonMed" width={137} height={31} priority />
           <span>Console</span>
         </Link>
         <div className="tk-admin-breadcrumb"><i>/</i>{meta.breadcrumb}</div>

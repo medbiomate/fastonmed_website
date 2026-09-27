@@ -35,15 +35,15 @@ export async function generateMetadata({
   const page = await getSharedEditorialPage(slug);
   if (!page) {
     return {
-      title: 'Page Not Found | Best Medical Equipment Supplier in UAE | FastOnMed',
+      title: 'Page Not Found | Best Medical Equipment Supplier in UAE | FastonMed',
       robots: { index: false, follow: true }
     };
   }
 
-  const title = `${page.title} | Best Medical Equipment Supplier in UAE | FastOnMed`;
+  const title = `${page.title} | Best Medical Equipment Supplier in UAE | FastonMed`;
   const description =
     page.description ||
-    `${page.title} – FastOnMed is the Best Medical Equipment Supplier in UAE. MoHAP compliant clinical solutions, ICU ventilators, and hospital equipment across Dubai and Abu Dhabi.`;
+    `${page.title} – FastonMed is the Best Medical Equipment Supplier in UAE. MoHAP compliant clinical solutions, ICU ventilators, and hospital equipment across Dubai and Abu Dhabi.`;
   const canonicalUrl = `https://www.fastonmed.com/${slug}`;
 
   return {
@@ -55,7 +55,7 @@ export async function generateMetadata({
       'Medical Equipment Supplier in UAE',
       'Hospital Supplies UAE',
       'Biomedical Engineering UAE',
-      'FastOnMed Healthcare'
+      'FastonMed Healthcare'
     ],
     alternates: {
       canonical: canonicalUrl,
@@ -64,7 +64,7 @@ export async function generateMetadata({
       title,
       description,
       url: canonicalUrl,
-      siteName: 'FastOnMed Healthcare Equipment LLC',
+      siteName: 'FastonMed Healthcare Equipment LLC',
       locale: 'en_AE',
       type: 'article',
     },
@@ -141,10 +141,10 @@ const DEFAULT_HEALTHCARE_FAQS: FAQItem[] = [
   {
     question: 'Are all equipment and medical supplies certified for clinical use in the UAE?',
     answer:
-      'Yes. FastOnMed provides genuine medical devices and equipment that comply with UAE Ministry of Health and Prevention (MOHAP), Dubai Health Authority (DHA), and international quality standards (CE, ISO, FDA).',
+      'Yes. FastonMed provides genuine medical devices and equipment that comply with UAE Ministry of Health and Prevention (MOHAP), Dubai Health Authority (DHA), and international quality standards (CE, ISO, FDA).',
   },
   {
-    question: 'How quickly can FastOnMed deliver equipment across Dubai and other Emirates?',
+    question: 'How quickly can FastonMed deliver equipment across Dubai and other Emirates?',
     answer:
       'In-stock equipment and consumables are dispatched promptly with standard 1–2 business day delivery across Dubai, Abu Dhabi, Sharjah, Ajman, Ras Al Khaimah, Fujairah, and Umm Al Quwain.',
   },
@@ -154,7 +154,7 @@ const DEFAULT_HEALTHCARE_FAQS: FAQItem[] = [
       'Yes. Our dedicated biomedical engineering and technical team provides complete on-site installation, operational calibration, and staff handover training for healthcare facilities.',
   },
   {
-    question: 'Does FastOnMed assist with complete hospital, clinic, or specialized department setup?',
+    question: 'Does FastonMed assist with complete hospital, clinic, or specialized department setup?',
     answer:
       'Absolutely. We assist healthcare entrepreneurs, hospital administrators, and clinic directors with turnkey equipment planning, procurement lists, room layouts, and lifecycle maintenance contracts (AMC/CMC).',
   },
@@ -213,7 +213,7 @@ export default async function EditorialPage({
 
   // WhatsApp enquiry link for hero CTA
   const heroWaMessage = encodeURIComponent(
-    `Hello FastOnMed UAE,\nI am viewing your page "${page.title}" and would like to enquire about your equipment solutions and pricing.`
+    `Hello FastonMed UAE,\nI am viewing your page "${page.title}" and would like to enquire about your equipment solutions and pricing.`
   );
   const heroWaLink = `https://wa.me/971508893589?text=${heroWaMessage}`;
 
@@ -428,7 +428,7 @@ export default async function EditorialPage({
                     </div>
                     <div>
                       <div style={{ fontSize: '0.84rem', fontWeight: 800, color: '#0f2923' }}>
-                        FastOnMed Dubai
+                        FastonMed Dubai
                       </div>
                       <div style={{ fontSize: '0.74rem', color: '#64748b' }}>
                         MOHAP Compliant Healthcare Supplier

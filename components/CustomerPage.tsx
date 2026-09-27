@@ -18,7 +18,7 @@ export default function CustomerPage({ mode }: { mode: Mode }) {
   const { wishlist, compareList, cart, cartGrandTotal, setIsCompareOpen } = useApp();
   const itemCount = mode === 'wishlist' ? wishlist.length : mode === 'compare' ? compareList.length : mode === 'checkout' ? cart.length : 0;
   const Icon = copy[mode].icon;
-  const orderText = encodeURIComponent(`Hello FastOnMed Sales, I would like help with my ${mode}. ${mode === 'checkout' ? `My cart has ${cart.length} item(s), total AED ${cartGrandTotal.toLocaleString()}.` : ''}`);
+  const orderText = encodeURIComponent(`Hello FastonMed Sales, I would like help with my ${mode}. ${mode === 'checkout' ? `My cart has ${cart.length} item(s), total AED ${cartGrandTotal.toLocaleString()}.` : ''}`);
 
   return <main style={{ background: '#f7faf9', minHeight: 620, padding: '70px 24px' }}>
     <section className="container" style={{ maxWidth: 900 }}>

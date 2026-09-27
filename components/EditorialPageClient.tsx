@@ -344,7 +344,7 @@ export default function EditorialPageClient({
 
                 // Prefilled WhatsApp link
                 const waMessage = encodeURIComponent(
-                  `Hello FastOnMed Sales Team,\nI would like to inquire/purchase:\n*${product.name}*\nPrice: ${
+                  `Hello FastonMed Sales Team,\nI would like to inquire/purchase:\n*${product.name}*\nPrice: ${
                     price && price > 0 ? `AED ${price.toLocaleString()}` : 'Contact for Price'
                   }\nURL: https://www.fastonmed.com/product/${product.slug}\n\nThank you!`
                 );
@@ -920,7 +920,7 @@ export default function EditorialPageClient({
                 Our Dubai Office
               </h3>
               <p style={{ color: '#475569', fontSize: '0.92rem', lineHeight: 1.6, marginBottom: 24 }}>
-                FastOnMed supplies and maintains medical & dental installations across all seven Emirates with on-site biomedical technical support.
+                FastonMed supplies and maintains medical & dental installations across all seven Emirates with on-site biomedical technical support.
               </p>
 
               {/* Map embed */}
@@ -1074,7 +1074,7 @@ export default function EditorialPageClient({
                     Thank you! We received your enquiry.
                   </h4>
                   <p style={{ margin: '0 0 16px', color: '#047857', fontSize: '0.88rem' }}>
-                    A FastOnMed healthcare equipment specialist will get back to you within 2 business hours.
+                    A FastonMed healthcare equipment specialist will get back to you within 2 business hours.
                   </p>
                   <button
                     type="button"
@@ -1291,7 +1291,7 @@ export default function EditorialPageClient({
 
                     <a
                       href={`https://wa.me/971508893589?text=${encodeURIComponent(
-                        `Hello FastOnMed, I am reaching out from ${title} page to request an equipment consultation.`
+                        `Hello FastonMed, I am reaching out from ${title} page to request an equipment consultation.`
                       )}`}
                       target="_blank"
                       rel="noopener noreferrer"

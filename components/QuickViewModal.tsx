@@ -21,7 +21,7 @@ export default function QuickViewModal() {
   };
 
   const waText = encodeURIComponent(
-    `Hello FastOnMed Sales, I would like to inquire about: ${product.name} (SKU: ${product.sku}) https://www.fastonmed.com/product/${product.slug}`
+    `Hello FastonMed Sales, I would like to inquire about: ${product.name} (SKU: ${product.sku}) https://www.fastonmed.com/product/${product.slug}`
   );
   const waUrl = `https://wa.me/971508893589?text=${waText}`;
 

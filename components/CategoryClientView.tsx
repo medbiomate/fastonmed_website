@@ -229,7 +229,7 @@ export default function CategoryClientView({
                 }}
               >
                 {specialtyConfig?.description ||
-                  `Certified ${categoryTitle} supplied by FastOnMed across Dubai, Abu Dhabi, and Northern Emirates. 100% compliant with UAE MoHAP and DHA medical device regulations with manufacturer warranty.`}
+                  `Certified ${categoryTitle} supplied by FastonMed across Dubai, Abu Dhabi, and Northern Emirates. 100% compliant with UAE MoHAP and DHA medical device regulations with manufacturer warranty.`}
               </p>
 
               {/* 4 Trust Highlights */}
@@ -311,7 +311,7 @@ export default function CategoryClientView({
                   {initialProducts.length} Certified Models
                 </div>
                 <span style={{ fontSize: '0.76rem', color: '#64748b' }}>
-                  Supplied in UAE by FastOnMed
+                  Supplied in UAE by FastonMed
                 </span>
               </div>
             )}
@@ -683,7 +683,7 @@ export default function CategoryClientView({
                 Equipping a Hospital Ward, Day Surgery, or Clinic?
               </h3>
               <p style={{ color: '#cbd5e1', fontSize: '0.92rem', lineHeight: 1.6, margin: 0 }}>
-                FastOnMed supplies private and government healthcare institutions across Dubai, Abu Dhabi, and Northern Emirates with official MoHAP documentation, biomedical warranty, and scheduled calibration.
+                FastonMed supplies private and government healthcare institutions across Dubai, Abu Dhabi, and Northern Emirates with official MoHAP documentation, biomedical warranty, and scheduled calibration.
               </p>
             </div>
 
@@ -710,7 +710,7 @@ export default function CategoryClientView({
               </Link>
 
               <a
-                href="https://wa.me/971508893589?text=Hello%20FastOnMed%20Sales%20Team%2C%20I%20would%20like%20to%20request%20a%20bulk%20procurement%20quotation%20for%20hospital%20equipment."
+                href="https://wa.me/971508893589?text=Hello%20FastonMed%20Sales%20Team%2C%20I%20would%20like%20to%20request%20a%20bulk%20procurement%20quotation%20for%20hospital%20equipment."
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{

@@ -105,7 +105,7 @@ export default function ContactPage() {
                   Thank you! Enquiry Received.
                 </h3>
                 <p style={{ color: '#64748b', fontSize: '0.95rem', lineHeight: 1.5 }}>
-                  A biomedical representative from FastOnMed will reach out to you within 2 business hours.
+                  A biomedical representative from FastonMed will reach out to you within 2 business hours.
                 </p>
               </div>
             ) : (

@@ -6,11 +6,11 @@ import SiteShell from '@/components/SiteShell';
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.fastonmed.com'),
   title: {
-    default: 'FastOnMed | Best Medical Equipment Supplier in UAE',
+    default: 'FastonMed | Best Medical Equipment Supplier in UAE',
     template: '%s'
   },
   description:
-    'FastOnMed is the Best Medical Equipment Supplier in UAE. Trusted distributor of MoHAP & DHA licensed biomedical technology, ICU ventilators, patient monitors, hospital furniture, and clinical equipment in Dubai, Abu Dhabi, and across the UAE.',
+    'FastonMed is the Best Medical Equipment Supplier in UAE. MoHAP & DHA licensed biomedical technology, ICU ventilators, hospital furniture & clinical devices.',
   keywords: [
     'Best Medical Equipment Supplier in UAE',
     'Medical Equipment Supplier in UAE',
@@ -22,11 +22,11 @@ export const metadata: Metadata = {
     'Patient Monitoring Systems UAE',
     'Clinical Diagnostic Equipment Dubai',
     'MoHAP Licensed Medical Supplier',
-    'FastOnMed Healthcare UAE'
+    'FastonMed Healthcare UAE'
   ],
-  authors: [{ name: 'FastOnMed Healthcare Equipment LLC' }],
-  creator: 'FastOnMed Healthcare Solutions',
-  publisher: 'FastOnMed Healthcare Solutions',
+  authors: [{ name: 'FastonMed Healthcare Equipment LLC' }],
+  creator: 'FastonMed Healthcare Solutions',
+  publisher: 'FastonMed Healthcare Solutions',
   alternates: {
     canonical: 'https://www.fastonmed.com'
   },
@@ -34,24 +34,24 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_AE',
     url: 'https://www.fastonmed.com',
-    siteName: 'FastOnMed Healthcare Equipment LLC',
-    title: 'FastOnMed | Best Medical Equipment Supplier in UAE',
+    siteName: 'FastonMed Healthcare Equipment LLC',
+    title: 'FastonMed | Best Medical Equipment Supplier in UAE',
     description:
-      'FastOnMed is the Best Medical Equipment Supplier in UAE. Providing MoHAP & DHA approved hospital supplies, ICU ventilators, patient monitors, and biomedical support across Dubai and the UAE.',
+      'FastonMed is the Best Medical Equipment Supplier in UAE. Providing MoHAP & DHA approved hospital supplies, ICU ventilators, patient monitors, and biomedical support.',
     images: [
       {
         url: 'https://www.fastonmed.com/fastonmed-logo.png',
         width: 1200,
         height: 630,
-        alt: 'FastOnMed - Best Medical Equipment Supplier in UAE'
+        alt: 'FastonMed - Best Medical Equipment Supplier in UAE'
       }
     ]
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'FastOnMed | Best Medical Equipment Supplier in UAE',
+    title: 'FastonMed | Best Medical Equipment Supplier in UAE',
     description:
-      'FastOnMed is the Best Medical Equipment Supplier in UAE. Official warranty, same-day delivery across UAE, and biomedical technical support.',
+      'FastonMed is the Best Medical Equipment Supplier in UAE. Official warranty, same-day delivery across UAE, and biomedical technical support.',
     images: ['https://www.fastonmed.com/fastonmed-logo.png']
   },
   icons: {
@@ -82,7 +82,7 @@ export const metadata: Metadata = {
 const orgSchema = {
   '@context': 'https://schema.org',
   '@type': 'MedicalBusiness',
-  name: 'FastOnMed Healthcare Equipment & Medical Solutions LLC',
+  name: 'FastonMed Healthcare Equipment & Medical Solutions LLC',
   url: 'https://www.fastonmed.com',
   logo: 'https://www.fastonmed.com/fastonmed-logo.png',
   image: 'https://www.fastonmed.com/fastonmed-logo.png',

@@ -14,17 +14,17 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const post = await getPost(slug);
   if (!post) {
     return {
-      title: 'Article Not Found | Best Medical Equipment Supplier in UAE | FastOnMed',
-      description: 'The requested healthcare article could not be found on FastOnMed.',
+      title: 'Article Not Found | Best Medical Equipment Supplier in UAE | FastonMed',
+      description: 'The requested healthcare article could not be found on FastonMed.',
       robots: { index: false, follow: true }
     };
   }
 
-  const title = post.seoTitle || `${post.title} | Best Medical Equipment Supplier in UAE | FastOnMed`;
+  const title = post.seoTitle || `${post.title} | Best Medical Equipment Supplier in UAE | FastonMed`;
   const description =
     post.seoDescription ||
     post.excerpt ||
-    `Read ${post.title} on FastOnMed, the Best Medical Equipment Supplier in UAE. Insights into hospital technology and biomedical engineering.`;
+    `Read ${post.title} on FastonMed, the Best Medical Equipment Supplier in UAE. Insights into hospital technology and biomedical engineering.`;
   const canonicalUrl = `https://www.fastonmed.com/blog/${slug}`;
 
   return {
@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       'Best Medical Equipment Supplier in UAE',
       'Biomedical Engineering UAE',
       'Hospital Equipment Dubai',
-      'FastOnMed Journal'
+      'FastonMed Journal'
     ],
     alternates: {
       canonical: canonicalUrl
@@ -45,7 +45,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       title,
       description,
       url: canonicalUrl,
-      siteName: 'FastOnMed Healthcare Equipment LLC',
+      siteName: 'FastonMed Healthcare Equipment LLC',
       locale: 'en_AE',
       type: 'article',
       images: post.featuredImage ? [{ url: post.featuredImage, alt: post.title }] : []

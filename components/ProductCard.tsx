@@ -25,7 +25,7 @@ export default function ProductCard({ product, showActions = false }: ProductCar
   // WhatsApp prefilled message for direct enquiry
   const priceLine = price && price > 0 ? `Price: AED ${price.toLocaleString()}\n` : '';
   const waText = encodeURIComponent(
-    `Hello FastOnMed Sales Team,\nI would like to make an enquiry regarding:\n*${product.name}*\nSKU: ${product.sku || product.id}\n${priceLine}https://www.fastonmed.com/product/${product.slug}`
+    `Hello FastonMed Sales Team,\nI would like to make an enquiry regarding:\n*${product.name}*\nSKU: ${product.sku || product.id}\n${priceLine}https://www.fastonmed.com/product/${product.slug}`
   );
   const waUrl = `https://wa.me/971508893589?text=${waText}`;
 

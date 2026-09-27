@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 import React from 'react';
 
 export const metadata: Metadata = {
-  title: 'Contact Us | Best Medical Equipment Supplier in UAE | FastOnMed',
+  title: 'Contact Us | Best Medical Equipment Supplier in UAE | FastonMed',
   description:
-    'Contact FastOnMed, the Best Medical Equipment Supplier in UAE. Request fast quotations, turnkey hospital project consultations, and 24/7 biomedical engineering maintenance across Dubai, Abu Dhabi, and the Northern Emirates.',
+    'Contact FastonMed, the Best Medical Equipment Supplier in UAE. Request fast quotations, turnkey hospital project consultations, and 24/7 biomedical engineering maintenance across Dubai, Abu Dhabi, and the Northern Emirates.',
   keywords: [
-    'Contact FastOnMed',
+    'Contact FastonMed',
     'Best Medical Equipment Supplier in UAE',
     'Medical Equipment Inquiries Dubai',
     'Hospital Equipment Quotations UAE',
@@ -17,19 +17,19 @@ export const metadata: Metadata = {
     canonical: 'https://www.fastonmed.com/contact'
   },
   openGraph: {
-    title: 'Contact FastOnMed | Best Medical Equipment Supplier in UAE',
+    title: 'Contact FastonMed | Best Medical Equipment Supplier in UAE',
     description:
-      'FastOnMed is the Best Medical Equipment Supplier in UAE. Inquire now for certified hospital equipment, ICU systems, and clinical services.',
+      'FastonMed is the Best Medical Equipment Supplier in UAE. Inquire now for certified hospital equipment, ICU systems, and clinical services.',
     url: 'https://www.fastonmed.com/contact',
-    siteName: 'FastOnMed Healthcare Equipment LLC',
+    siteName: 'FastonMed Healthcare Equipment LLC',
     locale: 'en_AE',
     type: 'website'
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Contact FastOnMed | Best Medical Equipment Supplier in UAE',
+    title: 'Contact FastonMed | Best Medical Equipment Supplier in UAE',
     description:
-      'FastOnMed: Best Medical Equipment Supplier in UAE. Reach our clinical sales and biomedical engineers in Dubai.'
+      'FastonMed: Best Medical Equipment Supplier in UAE. Reach our clinical sales and biomedical engineers in Dubai.'
   }
 };
 
