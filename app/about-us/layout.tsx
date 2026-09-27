@@ -13,7 +13,7 @@ export async function generateMetadata(): Promise<Metadata> {
     : 'About FastonMed | Best Medical Equipment Supplier in UAE | FastonMed';
   const description = isAr
     ? 'تعرف على فاستونميد (شركة فاستونميد للتجارة ش.ذ.م.م) - المورد الرائد للمعدات والأجهزة الطبية السريرية المعتمدة في دبي ودولة الإمارات العربية المتحدة.'
-    : 'Learn about FastonMed, the Best Medical Equipment Supplier in UAE. Based in Dubai Healthcare City (DHCC), supplying certified hospital equipment, ICU ventilators, diagnostics, and biomedical engineering services across the UAE.';
+    : 'Learn about FastonMed, the Best Medical Equipment Supplier in UAE. Based in DIP-1, Dubai, supplying certified hospital equipment, ICU ventilators, diagnostics, and biomedical engineering services across the UAE.';
 
   return {
     title,
@@ -24,7 +24,7 @@ export async function generateMetadata(): Promise<Metadata> {
       'Medical Equipment Supplier Dubai',
       'Hospital Equipment Supplier UAE',
       'Biomedical Engineering Services UAE',
-      'Dubai Healthcare City DHCC',
+      'Dubai Investments Park DIP',
       'Certified Medical Devices UAE'
     ],
     alternates: {

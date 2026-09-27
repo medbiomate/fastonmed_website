@@ -48,7 +48,7 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
   // Manual SEO description overrides automatic default
   const defaultEnDescription = cleanDescription.length > 20
     ? `${cleanDescription} FastonMed is the Best Medical Equipment Supplier in UAE. Official warranty & fast delivery across UAE.`
-    : `Buy ${product.name} from FastonMed, the Best Medical Equipment Supplier in UAE. Official distributor in Dubai Healthcare City (DHCC) with warranty and biomedical support.`;
+    : `Buy ${product.name} from FastonMed, the Best Medical Equipment Supplier in UAE. Official distributor in DIP-1, Dubai with warranty and biomedical support.`;
 
   const defaultEnSeoDescription = (product.seoDescription && product.seoDescription.trim().length > 0)
     ? product.seoDescription.trim()
@@ -81,7 +81,7 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
       'Medical Equipment Dubai',
       'Healthcare Supplies UAE',
       'Buy Hospital Equipment Dubai',
-      'Dubai Healthcare City DHCC',
+      'Dubai Investments Park DIP',
       'FastonMed'
     ],
     alternates: {
@@ -198,7 +198,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
         telephone: '+971508893589',
         address: {
           '@type': 'PostalAddress',
-          streetAddress: 'Dubai Healthcare City (DHCC)',
+          streetAddress: 'OFF215 - Arjumand Building, Green Community Village, DIP-1',
           addressLocality: 'Dubai',
           addressCountry: 'AE'
         }
@@ -267,7 +267,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
         name: `What warranty and service comes with ${product.name}?`,
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'FastonMed provides an official 1-year warranty along with certified biomedical calibration and maintenance from our Dubai Healthcare City engineering center.'
+          text: 'FastonMed provides an official 1-year warranty along with certified biomedical calibration and maintenance from our DIP-1, Dubai engineering center.'
         }
       },
       {

@@ -845,7 +845,7 @@ export default function Footer() {
             </div>
 
             <p style={{ margin: '0 0 12px 0' }}>
-              FASTONMED TRADING L.L.C | Corporate Office Address: Dubai Healthcare City (DHCC) & Al Qusais Industrial Area, Dubai, United Arab Emirates | P.O. Box 23881, Dubai, UAE | Official Biomedical Helpline: +971 50 889 3589 / +971 50 889 3586 | Email: sales@fastonmed.com | Calibration Support: service@fastonmed.com.
+              FASTONMED TRADING L.L.C | Official Address: OFF215 - Arjumand Building, Green Community Village, DIP-1, Dubai, United Arab Emirates | Official Biomedical Helpline: +971 50 889 3589 / +971 50 889 3586 | Email: sales@fastonmed.com | Calibration Support: service@fastonmed.com.
             </p>
             <p style={{ margin: '0 0 16px 0', fontSize: '0.72rem', color: '#475569' }}>
               FastonMed is the Best Medical Equipment Supplier in UAE. Distributor of certified biomedical technology, ICU ventilators, multi-parameter patient monitors, hospital furniture, surgical lighting, medical cold storage, and clinical laboratory equipment across Dubai, Abu Dhabi, Sharjah, Ajman, Ras Al Khaimah, Fujairah, and Umm Al Quwain. All brand logos, trademarks, and registered marks displayed on this platform belong to their respective corporate manufacturers.

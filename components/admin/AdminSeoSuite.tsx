@@ -164,7 +164,7 @@ export default function AdminSeoSuite() {
             title: 'About Us',
             slug: 'about-us',
             url: '/about-us',
-            description: 'About FastonMed, biomedical solutions and healthcare technology distributor in Dubai Healthcare City.',
+            description: 'About FastonMed, biomedical solutions and healthcare technology distributor in DIP-1, Dubai.',
             seoTitle: 'About FastonMed | Medical Equipment Supplier in UAE',
             seoDescription: 'Learn about FastonMed, trusted biomedical engineering and healthcare equipment supplier serving Dubai, Abu Dhabi, and UAE hospitals.',
             canonicalUrl: 'https://www.fastonmed.com/about-us'

@@ -61,13 +61,13 @@ export default function ContactClientView({ isAr: propIsAr }: { isAr?: boolean }
                   <div style={{ color: '#64748b', fontSize: '0.9rem', lineHeight: 1.5 }}>
                     {isAr ? (
                       <>
-                        مبنى 27، مدينة دبي الطبية (DHCC)<br />
-                        دبي، الإمارات العربية المتحدة
+                        مكتب 215 - مبنى أرجومند، قرية جرين كوميونيتي<br />
+                        مجمع دبي للاستثمار 1 (DIP-1)، دبي، الإمارات العربية المتحدة
                       </>
                     ) : (
                       <>
-                        Building 27, Dubai Healthcare City (DHCC)<br />
-                        Dubai, United Arab Emirates
+                        OFF215 - Arjumand Building, Green Community Village<br />
+                        DIP-1, Dubai, United Arab Emirates
                       </>
                     )}
                   </div>

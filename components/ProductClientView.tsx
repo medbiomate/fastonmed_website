@@ -83,7 +83,7 @@ export default function ProductClientView({ product, similarProducts }: ProductC
     ['Warranty', product.warrantyPeriod || '1 Year Biomedical Warranty'],
     ['Supply Voltage / Power', '220V - 240V / 50-60Hz (UAE Standard)'],
     ['Clinical Application', 'Hospital Inpatient, ICU, Clinic & Homecare'],
-    ['After-Sales Service', 'FastonMed Dubai Healthcare City Service Center']
+    ['After-Sales Service', 'FastonMed DIP-1 Engineering Center']
   ];
 
   return (
@@ -601,7 +601,7 @@ export default function ProductClientView({ product, similarProducts }: ProductC
                   },
                   {
                     q: 'How does FastonMed handle warranty, maintenance, and calibration?',
-                    a: 'FastonMed provides an official 1-year warranty on equipment. Our Dubai Healthcare City biomedical engineers provide preventative maintenance, calibration certificates, and 24-48 hour on-site technical support.'
+                    a: 'FastonMed provides an official 1-year warranty on equipment. Our DIP-1, Dubai biomedical engineers provide preventative maintenance, calibration certificates, and 24-48 hour on-site technical support.'
                   },
                   {
                     q: 'What is the delivery timeline for orders across the UAE?',
@@ -791,7 +791,7 @@ export default function ProductClientView({ product, similarProducts }: ProductC
             </h3>
 
             <p style={{ color: '#e2e8f0', fontSize: '0.96rem', lineHeight: 1.6, margin: '0 0 16px', opacity: 0.95 }}>
-              Speak directly with FastonMed’s biomedical engineering desk in Dubai Healthcare City for turnkey department packages, institutional bulk discounts, and localized AMC support.
+              Speak directly with FastonMed’s biomedical engineering desk in DIP-1, Dubai for turnkey department packages, institutional bulk discounts, and localized AMC support.
             </p>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '18px', flexWrap: 'wrap', fontSize: '0.80rem', fontWeight: 600, color: '#bbf7d0' }}>

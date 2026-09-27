@@ -109,15 +109,15 @@ const orgSchema = {
   email: 'info@fastonmed.com',
   address: {
     '@type': 'PostalAddress',
-    streetAddress: 'Dubai Healthcare City (DHCC)',
+    streetAddress: 'OFF215 - Arjumand Building, Green Community Village, DIP-1',
     addressLocality: 'Dubai',
     addressRegion: 'Dubai',
     addressCountry: 'AE'
   },
   geo: {
     '@type': 'GeoCoordinates',
-    latitude: 25.2343,
-    longitude: 55.3217
+    latitude: 25.0062,
+    longitude: 55.1764
   },
   openingHoursSpecification: [
     {
