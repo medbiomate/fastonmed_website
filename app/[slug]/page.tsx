@@ -56,7 +56,8 @@ export async function generateMetadata({
       'Medical Equipment Supplier in UAE',
       'Hospital Supplies UAE',
       'Biomedical Engineering UAE',
-      'FastonMed Healthcare'
+      'FastonMed',
+      'FASTONMED TRADING L.L.C'
     ],
     alternates: {
       canonical: canonicalUrl,
@@ -65,7 +66,7 @@ export async function generateMetadata({
       title,
       description,
       url: canonicalUrl,
-      siteName: 'FastonMed Healthcare Equipment LLC',
+      siteName: 'FastonMed',
       locale: 'en_AE',
       type: 'article',
     },

@@ -4,7 +4,7 @@ import AdminClientLayout from './AdminClientLayout';
 
 export const metadata: Metadata = {
   title: 'FastonMed Staff Administration Portal',
-  description: 'Internal biomedical and catalog management system for FastonMed Healthcare Solutions.',
+  description: 'Internal biomedical and catalog management system for FastonMed (FASTONMED TRADING L.L.C).',
   robots: {
     index: false,
     follow: false,

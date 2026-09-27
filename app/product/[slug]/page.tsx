@@ -72,7 +72,7 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
       title: seoTitle,
       description: seoDescription,
       url: canonicalUrl,
-      siteName: 'FastonMed Healthcare Equipment LLC',
+      siteName: 'FastonMed',
       locale: 'en_AE',
       type: 'website',
       images: [
@@ -80,7 +80,7 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
           url: imgUrl,
           width: 800,
           height: 800,
-          alt: `${product.name} - FastonMed Healthcare UAE`
+          alt: `${product.name} - FastonMed UAE`
         }
       ]
     },
@@ -151,7 +151,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
       availability: product.stockStatus === 'out_of_stock' ? 'https://schema.org/OutOfStock' : 'https://schema.org/InStock',
       seller: {
         '@type': 'MedicalBusiness',
-        name: 'FastonMed Healthcare Equipment LLC',
+        name: 'FASTONMED TRADING L.L.C',
         telephone: '+971508893589',
         address: {
           '@type': 'PostalAddress',

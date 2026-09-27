@@ -109,8 +109,8 @@ const DEFAULT_CORE_PAGES: AdminPageItem[] = [
   {
     id: 'core-about',
     slug: 'about-us',
-    title: 'About Us — Fastonmed Medical Solution Dubai',
-    eyebrow: 'About Fastonmed',
+    title: 'About Us — FastonMed Dubai',
+    eyebrow: 'About FastonMed',
     description: 'Empowering healthcare providers in Dubai and the UAE with cutting-edge medical devices and biomedical support services.',
     pageGroup: 'core',
     status: 'published',
@@ -118,17 +118,17 @@ const DEFAULT_CORE_PAGES: AdminPageItem[] = [
       {
         title: 'Our Mission & Commitment',
         paragraphs: [
-          'Fastonmed Medical Solution was established with a singular focus: to elevate patient care by supplying reliable, certified medical technology alongside uncompromising maintenance and engineering services.',
+          'FastonMed (FASTONMED TRADING L.L.C) was established with a singular focus: to elevate patient care by supplying reliable, certified medical technology alongside uncompromising maintenance and engineering services.',
           'Our team of certified biomedical engineers and clinical consultants works closely with healthcare facilities to ensure operational excellence.'
         ],
         points: ['Certified Healthcare Supplier', 'Authorized Global Brand Partner', 'ISO Certified Quality Standards']
       }
     ],
     faqs: [
-      { question: 'Where is Fastonmed located in Dubai?', answer: 'Our main office and biomedical engineering center is situated in Dubai, UAE, with dedicated regional distribution channels.' }
+      { question: 'Where is FastonMed located in Dubai?', answer: 'Our main office and biomedical engineering center is situated in Dubai, UAE, with dedicated regional distribution channels.' }
     ],
-    seoTitle: 'About Fastonmed Medical Solution | Dubai Healthcare Partner',
-    seoDescription: 'Learn about Fastonmed Medical Solution, Dubai\'s leading medical equipment supplier, biomedical engineering provider, and trusted healthcare partner.'
+    seoTitle: 'About FastonMed | Dubai Healthcare Partner',
+    seoDescription: 'Learn about FastonMed (FASTONMED TRADING L.L.C), Dubai\'s leading medical equipment supplier, biomedical engineering provider, and trusted healthcare partner.'
   },
   {
     id: 'core-contact',
@@ -175,21 +175,21 @@ const DEFAULT_OTHER_PAGES: AdminPageItem[] = [
     id: 'other-privacy',
     slug: 'privacy-policy',
     title: 'Privacy Policy',
-    eyebrow: 'Fastonmed UAE',
-    description: 'Fastonmed Medical Solution privacy guidelines, data handling procedures, and client confidentiality policy.',
+    eyebrow: 'FastonMed UAE',
+    description: 'FastonMed (FASTONMED TRADING L.L.C) privacy guidelines, data handling procedures, and client confidentiality policy.',
     pageGroup: 'other',
     status: 'published',
     sections: [
       {
         title: 'Privacy & Data Protection Policy',
         paragraphs: [
-          'Fastonmed Medical Solution is committed to safeguarding your privacy and protecting any personal or institutional data provided through our website or customer service interactions.',
+          'FastonMed (FASTONMED TRADING L.L.C) is committed to safeguarding your privacy and protecting any personal or institutional data provided through our website or customer service interactions.',
           'We do not sell, rent, or distribute client contact information to unauthorized third parties. All transaction and enquiry details are kept strictly confidential.'
         ]
       }
     ],
-    seoTitle: 'Privacy Policy | Fastonmed Medical Solution UAE',
-    seoDescription: 'Fastonmed Medical Solution privacy policy, customer data protection, and confidentiality commitments in Dubai & UAE.'
+    seoTitle: 'Privacy Policy | FastonMed UAE',
+    seoDescription: 'FastonMed (FASTONMED TRADING L.L.C) privacy policy, customer data protection, and confidentiality commitments in Dubai & UAE.'
   },
   {
     id: 'other-terms',

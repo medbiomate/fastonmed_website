@@ -60,7 +60,7 @@ export async function GET() {
   const xmlContent = `<?xml version="1.0" encoding="UTF-8"?>
 <rss xmlns:g="http://base.google.com/ns/1.0" version="2.0">
   <channel>
-    <title>FastonMed Healthcare Equipment - Google Merchant Feed</title>
+    <title>FastonMed (FASTONMED TRADING L.L.C) - Google Merchant Feed</title>
     <link>${SITE_URL}</link>
     <description>FastonMed is the Best Medical Equipment Supplier in UAE. Certified biomedical and healthcare equipment.</description>
 ${items}

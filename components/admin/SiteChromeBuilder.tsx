@@ -120,7 +120,7 @@ export default function SiteChromeBuilder({ initialPanel = 'header' }: Props) {
       footerBg: '#0f172a',
       footerText: '#ffffff',
       footerLink: '#94a3b8',
-      footerCopyright: '© 2026 Fastonmed Medical Solution. All Rights Reserved.'
+      footerCopyright: '© 2026 FastonMed (FASTONMED TRADING L.L.C). All Rights Reserved.'
     }));
   };
 

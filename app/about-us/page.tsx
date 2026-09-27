@@ -16,7 +16,7 @@ export default function AboutPage() {
             Empowering Healthcare Through Precision Engineering & Certified Supply
           </h1>
           <p style={{ color: '#64748b', fontSize: '1.05rem', lineHeight: 1.6, marginTop: '16px' }}>
-            Based in Dubai Healthcare City (DHCC), UAE, FastonMed Healthcare Equipment & Medical Solutions LLC is a leading distributor of capital clinical equipment, temperature-controlled laboratory cold-chain systems, and biomedical maintenance contracts across the GCC region.
+            Based in Dubai, UAE, FastonMed (FASTONMED TRADING L.L.C) is a leading distributor of capital clinical equipment, temperature-controlled laboratory cold-chain systems, and biomedical maintenance contracts across the GCC region.
           </p>
         </div>
 

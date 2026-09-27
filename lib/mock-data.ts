@@ -1319,8 +1319,8 @@ export const initialPages: PageContent[] = [
 Our certified biomedical engineers provide not only equipment procurement but also turnkey installation, testing, staff clinical training, preventive maintenance, and calibration services.`,
     status: 'published',
     updatedAt: '2026-09-24T12:00:00Z',
-    seoTitle: 'About Fastonmed Medical Solution Dubai UAE',
-    seoDescription: 'Learn about Fastonmed, UAE leading medical equipment distributor and biomedical engineering partner.'
+    seoTitle: 'About FastonMed Dubai UAE',
+    seoDescription: 'Learn about FastonMed, UAE leading medical equipment distributor and biomedical engineering partner.'
   },
   {
     id: 'pg-contact',
@@ -1332,13 +1332,13 @@ Email: sales@fastonmed.com
 Office: Business Bay / Al Quoz, Dubai, United Arab Emirates.`,
     status: 'published',
     updatedAt: '2026-09-24T12:00:00Z',
-    seoTitle: 'Contact Fastonmed - Medical Equipment Supplier Dubai UAE',
-    seoDescription: 'Contact Fastonmed for medical equipment enquiries, quotations, or maintenance services in Dubai & UAE. Call +971 508 893 589.'
+    seoTitle: 'Contact FastonMed - Medical Equipment Supplier Dubai UAE',
+    seoDescription: 'Contact FastonMed for medical equipment enquiries, quotations, or maintenance services in Dubai & UAE. Call +971 508 893 589.'
   }
 ];
 
 export const initialStoreSettings: StoreSettings = {
-  storeName: 'FastonMed Medical Solution',
+  storeName: 'FastonMed (FASTONMED TRADING L.L.C)',
   supportPhone: '+971 508 893 589',
   salesEmail: 'sales@fastonmed.com',
   whatsappNumber: '+971508893589',

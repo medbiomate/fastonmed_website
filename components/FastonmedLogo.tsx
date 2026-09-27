@@ -21,7 +21,7 @@ export default function FastonmedLogo({
     <div className={className} style={{ display: 'inline-flex', alignItems: 'center', lineHeight: 0 }}>
       <img
         src={src}
-        alt="FastonMed Healthcare Equipment LLC"
+        alt="FastonMed - FASTONMED TRADING L.L.C"
         width={width}
         height={height}
         style={{

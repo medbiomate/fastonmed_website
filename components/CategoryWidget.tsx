@@ -409,7 +409,7 @@ export default function CategoryWidget({
               >
                 <Image
                   src={imgSrc}
-                  alt={`${displayName} - FastonMed Healthcare UAE`}
+                  alt={`${displayName} - FastonMed UAE`}
                   fill
                   className="cat-widget-img"
                   style={{ objectFit: 'contain', padding: '6px', transition: 'transform 0.3s ease' }}

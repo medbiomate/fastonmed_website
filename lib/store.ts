@@ -68,7 +68,7 @@ export const defaultSiteChromeSettings: SiteChromeSettings = {
     { label: "Shipping & Delivery UAE", url: "/shipping-delivery" },
     { label: "Warranty & Returns", url: "/returns-exchanges" }
   ],
-  footerCopyright: "© 2026 FastonMed Healthcare Solutions. All Rights Reserved.",
+  footerCopyright: "© 2026 FastonMed (FASTONMED TRADING L.L.C). All Rights Reserved.",
   footerBg: "#0f172a",
   footerText: "#ffffff",
   footerLink: "#94a3b8"

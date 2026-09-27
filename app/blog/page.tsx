@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     description:
       'Clinical technology insights and equipment guides from FastonMed, the Best Medical Equipment Supplier in UAE.',
     url: 'https://www.fastonmed.com/blog',
-    siteName: 'FastonMed Healthcare Equipment LLC',
+    siteName: 'FastonMed',
     locale: 'en_AE',
     type: 'website'
   },

@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     description:
       'FastonMed is the Best Medical Equipment Supplier in UAE. Discover our biomedical expertise, certified clinical equipment, and dedicated support across the UAE.',
     url: 'https://www.fastonmed.com/about-us',
-    siteName: 'FastonMed Healthcare Equipment LLC',
+    siteName: 'FastonMed',
     locale: 'en_AE',
     type: 'website'
   },

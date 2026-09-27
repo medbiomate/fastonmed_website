@@ -1,6 +1,6 @@
-# FastOnMed Website & Healthcare E-Commerce Platform
+# FastonMed Website & Healthcare E-Commerce Platform
 
-The official modern web portal for **FastOnMed Healthcare Equipment Trading LLC** (Dubai, UAE). Built with Next.js 15, React 19, TypeScript, and custom styling.
+The official modern web portal for **FastonMed (FASTONMED TRADING L.L.C)** (Dubai, UAE). Built with Next.js 15, React 19, TypeScript, and custom styling.
 
 ## Features
 

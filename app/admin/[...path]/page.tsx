@@ -210,7 +210,7 @@ export default async function AdminSection({
       },
       {
         id: 'core-about',
-        title: 'About Us — Fastonmed Medical Solution Dubai',
+        title: 'About Us — FastonMed Dubai',
         description: '/about-us',
         type: 'Core Page',
         status: 'Live',

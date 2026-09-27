@@ -46,7 +46,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       title,
       description,
       url: canonicalUrl,
-      siteName: 'FastonMed Healthcare Equipment LLC',
+      siteName: 'FastonMed',
       locale: 'en_AE',
       type: 'article',
       images: post.featuredImage ? [{ url: post.featuredImage, alt: post.title }] : []
