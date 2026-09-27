@@ -6,12 +6,14 @@ import SiteShell from '@/components/SiteShell';
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.fastonmed.com'),
   title: {
-    default: 'Medical Equipment Supplier in UAE & Dubai | FastonMed',
+    default: 'Best Medical Equipment Supplier in UAE & Dubai | FastonMed',
     template: '%s'
   },
   description:
-    'FastonMed is a leading medical equipment supplier in UAE & Dubai. Supplying hospitals, clinics, and healthcare facilities with certified biomedical devices, ICU systems, and medical supplies.',
+    'FastonMed is the best medical equipment supplier in UAE & Dubai. Supplying hospitals, clinics, and healthcare facilities with certified biomedical devices, ICU systems, and medical supplies.',
   keywords: [
+    'Best Medical Equipment Supplier in UAE & Dubai',
+    'Best Medical Equipment Supplier in UAE',
     'Medical Equipment Supplier in UAE',
     'Medical Equipment Dubai',
     'Hospital Equipment UAE',
@@ -31,23 +33,23 @@ export const metadata: Metadata = {
     locale: 'en_AE',
     url: 'https://www.fastonmed.com',
     siteName: 'FastonMed',
-    title: 'Medical Equipment Supplier in UAE & Dubai | FastonMed',
+    title: 'Best Medical Equipment Supplier in UAE & Dubai | FastonMed',
     description:
-      'FastonMed is a leading medical equipment supplier in UAE & Dubai. Supplying hospitals, clinics, and healthcare facilities with certified biomedical devices, ICU systems, and medical supplies.',
+      'FastonMed is the best medical equipment supplier in UAE & Dubai. Supplying hospitals, clinics, and healthcare facilities with certified biomedical devices, ICU systems, and medical supplies.',
     images: [
       {
         url: 'https://www.fastonmed.com/fastonmed-logo.png',
         width: 1200,
         height: 630,
-        alt: 'FastonMed - Medical Equipment Supplier in UAE'
+        alt: 'FastonMed - Best Medical Equipment Supplier in UAE & Dubai'
       }
     ]
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Medical Equipment Supplier in UAE & Dubai | FastonMed',
+    title: 'Best Medical Equipment Supplier in UAE & Dubai | FastonMed',
     description:
-      'FastonMed is a leading medical equipment supplier in UAE & Dubai. Official warranty, fast delivery across UAE, and biomedical technical support.',
+      'FastonMed is the best medical equipment supplier in UAE & Dubai. Official warranty, fast delivery across UAE, and biomedical technical support.',
     images: ['https://www.fastonmed.com/fastonmed-logo.png']
   },
   icons: {
