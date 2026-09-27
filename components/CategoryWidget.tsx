@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import { ProductCategory } from '@/lib/types';
 import {
@@ -73,13 +73,70 @@ export default function CategoryWidget({
   totalProducts
 }: CategoryWidgetProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [isPaused, setIsPaused] = useState(false);
+  const pauseTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  const scroll = (direction: 'left' | 'right') => {
+  const pauseTemporarily = useCallback((ms = 4000) => {
+    setIsPaused(true);
+    if (pauseTimerRef.current) clearTimeout(pauseTimerRef.current);
+    pauseTimerRef.current = setTimeout(() => {
+      setIsPaused(false);
+    }, ms);
+  }, []);
+
+  const scroll = useCallback((direction: 'left' | 'right') => {
+    pauseTemporarily(4000);
     if (scrollContainerRef.current) {
-      const amount = direction === 'left' ? -340 : 340;
-      scrollContainerRef.current.scrollBy({ left: amount, behavior: 'smooth' });
+      const container = scrollContainerRef.current;
+      const card = container.querySelector('.cat-card-widget') as HTMLElement | null;
+      const cardWidth = card ? card.offsetWidth : 160;
+      const gap = 14;
+      const amount = (cardWidth + gap) * 2;
+
+      if (direction === 'right') {
+        const isAtEnd = container.scrollLeft + container.clientWidth >= container.scrollWidth - 20;
+        if (isAtEnd) {
+          container.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          container.scrollBy({ left: amount, behavior: 'smooth' });
+        }
+      } else {
+        const isAtStart = container.scrollLeft <= 15;
+        if (isAtStart) {
+          container.scrollTo({ left: container.scrollWidth, behavior: 'smooth' });
+        } else {
+          container.scrollBy({ left: -amount, behavior: 'smooth' });
+        }
+      }
     }
-  };
+  }, [pauseTemporarily]);
+
+  // Smooth Auto-sliding
+  useEffect(() => {
+    if (isPaused) return;
+
+    const interval = setInterval(() => {
+      if (scrollContainerRef.current) {
+        const container = scrollContainerRef.current;
+        const card = container.querySelector('.cat-card-widget') as HTMLElement | null;
+        const step = card ? card.offsetWidth + 14 : 174;
+
+        if (container.scrollLeft + container.clientWidth >= container.scrollWidth - 25) {
+          container.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          container.scrollBy({ left: step, behavior: 'smooth' });
+        }
+      }
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [isPaused]);
+
+  useEffect(() => {
+    return () => {
+      if (pauseTimerRef.current) clearTimeout(pauseTimerRef.current);
+    };
+  }, []);
 
   // Top featured categories to display in cards (excluding Uncategorized)
   const topCategories = categories
@@ -91,6 +148,10 @@ export default function CategoryWidget({
     <section
       aria-label="Medical Specialties & Departments"
       className="cat-widget-section"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+      onTouchStart={() => setIsPaused(true)}
+      onTouchEnd={() => pauseTemporarily(3000)}
       style={{
         backgroundColor: '#ffffff',
         borderRadius: '16px',
