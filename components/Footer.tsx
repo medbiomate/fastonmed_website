@@ -14,8 +14,7 @@ import {
   ShieldCheck,
   Award,
   Clock,
-  Sparkles,
-  QrCode
+  Sparkles
 } from 'lucide-react';
 import FastonmedLogo from './FastonmedLogo';
 import { store } from '@/lib/store';
@@ -152,10 +151,6 @@ export default function Footer() {
             flex-direction: column !important;
             align-items: flex-start !important;
             gap: 14px !important;
-          }
-          .fm-bottom-qr-wrap {
-            width: 100% !important;
-            justify-content: flex-start !important;
           }
         }
       `}</style>
@@ -771,43 +766,6 @@ export default function Footer() {
               <Link href="/contact" className="fm-legal-link">24/7 Biomedical Support</Link>
               <span style={{ color: '#334155' }}>|</span>
               <Link href="/store-locations" className="fm-legal-link">Dubai Store</Link>
-            </div>
-
-            {/* QR Code Verification Widget (Styled like Digit QR Code) */}
-            <div
-              className="fm-bottom-qr-wrap"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '12px',
-                backgroundColor: 'rgba(255, 255, 255, 0.04)',
-                border: '1px solid rgba(255, 255, 255, 0.12)',
-                padding: '6px 12px',
-                borderRadius: '8px'
-              }}
-            >
-              <div
-                style={{
-                  width: '38px',
-                  height: '38px',
-                  backgroundColor: '#ffffff',
-                  borderRadius: '4px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: '#0f172a'
-                }}
-              >
-                <QrCode size={28} />
-              </div>
-              <div style={{ lineHeight: 1.3 }}>
-                <div style={{ fontSize: '0.74rem', fontWeight: 700, color: '#f8fafc' }}>
-                  Verify FastonMed UAE
-                </div>
-                <div style={{ fontSize: '0.68rem', color: '#64748b' }}>
-                  License: 1606077 • TRN: 105373862900003
-                </div>
-              </div>
             </div>
           </div>
 
