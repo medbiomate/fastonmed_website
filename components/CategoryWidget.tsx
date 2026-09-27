@@ -90,12 +90,13 @@ export default function CategoryWidget({
   return (
     <section
       aria-label="Medical Specialties & Departments"
+      className="cat-widget-section"
       style={{
         backgroundColor: '#ffffff',
         borderRadius: '16px',
         border: '1px solid #e5ede9',
-        padding: '24px 20px 20px',
-        marginBottom: '36px',
+        padding: '16px 20px 18px',
+        marginBottom: '28px',
         boxShadow: '0 2px 10px rgba(0, 0, 0, 0.02)'
       }}
     >
@@ -105,7 +106,7 @@ export default function CategoryWidget({
           gap: 14px;
           overflow-x: auto;
           scroll-behavior: smooth;
-          padding: 8px 4px 16px 4px;
+          padding: 4px 2px 12px 2px;
           scrollbar-width: none;
           -ms-overflow-style: none;
         }
@@ -113,7 +114,7 @@ export default function CategoryWidget({
           display: none;
         }
         .cat-card-widget {
-          flex: 0 0 172px;
+          flex: 0 0 160px;
           background: #ffffff;
           border: 1px solid #e2e8f0;
           border-radius: 14px;
@@ -150,27 +151,45 @@ export default function CategoryWidget({
           color: #ffffff !important;
           border-color: #51b291 !important;
         }
-
+        @media (max-width: 768px) {
+          .cat-widget-section {
+            padding: 12px 10px 10px !important;
+            margin-bottom: 20px !important;
+            border-radius: 14px !important;
+          }
+          .cat-widget-header {
+            display: none !important;
+          }
+          .cat-scroll-track {
+            padding: 2px 2px 6px 2px !important;
+            gap: 10px !important;
+          }
+          .cat-card-widget {
+            flex: 0 0 126px !important;
+            padding: 10px 8px !important;
+            border-radius: 12px !important;
+          }
+          .cat-widget-img-box {
+            height: 78px !important;
+            margin-bottom: 8px !important;
+          }
+          .cat-widget-title {
+            font-size: 0.78rem !important;
+            min-height: 2.2em !important;
+            margin-bottom: 4px !important;
+          }
+        }
       `}</style>
 
-      {/* Header with Navigation Controls */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
-        <div>
-          <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#51b291', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
-            Medical Specialties
-          </span>
-          <h2 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#0f172a', margin: '2px 0 0 0' }}>
-            Browse by Department & Category
-          </h2>
-        </div>
-
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+      {/* Desktop Prev/Next Controls (Hidden on Mobile) */}
+      <div className="cat-widget-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', marginBottom: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
           <button
             onClick={() => scroll('left')}
             aria-label="Scroll left categories"
             style={{
-              width: '36px',
-              height: '36px',
+              width: '30px',
+              height: '30px',
               borderRadius: '50%',
               backgroundColor: '#ffffff',
               border: '1px solid #e2e8f0',
@@ -185,14 +204,14 @@ export default function CategoryWidget({
             onMouseEnter={e => { e.currentTarget.style.borderColor = '#51b291'; e.currentTarget.style.color = '#51b291'; }}
             onMouseLeave={e => { e.currentTarget.style.borderColor = '#e2e8f0'; e.currentTarget.style.color = '#475569'; }}
           >
-            <ChevronLeft size={18} />
+            <ChevronLeft size={16} />
           </button>
           <button
             onClick={() => scroll('right')}
             aria-label="Scroll right categories"
             style={{
-              width: '36px',
-              height: '36px',
+              width: '30px',
+              height: '30px',
               borderRadius: '50%',
               backgroundColor: '#ffffff',
               border: '1px solid #e2e8f0',
@@ -207,7 +226,7 @@ export default function CategoryWidget({
             onMouseEnter={e => { e.currentTarget.style.borderColor = '#51b291'; e.currentTarget.style.color = '#51b291'; }}
             onMouseLeave={e => { e.currentTarget.style.borderColor = '#e2e8f0'; e.currentTarget.style.color = '#475569'; }}
           >
-            <ChevronRight size={18} />
+            <ChevronRight size={16} />
           </button>
         </div>
       </div>
@@ -220,6 +239,7 @@ export default function CategoryWidget({
           className={`cat-card-widget ${!selectedCategory ? 'active' : ''}`}
         >
           <div
+            className="cat-widget-img-box"
             style={{
               position: 'relative',
               width: '100%',
@@ -311,6 +331,7 @@ export default function CategoryWidget({
               className={`cat-card-widget ${isSelected ? 'active' : ''}`}
             >
               <div
+                className="cat-widget-img-box"
                 style={{
                   position: 'relative',
                   width: '100%',

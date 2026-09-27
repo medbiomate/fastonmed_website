@@ -33,16 +33,40 @@ export default function CatalogSearchHeader({
 
   return (
     <div style={{ marginBottom: '28px' }}>
-      {/* Breadcrumb Navigation */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', color: '#64748b', marginBottom: '12px' }}>
-        <Link href="/" style={{ color: '#64748b', textDecoration: 'none' }}>Home</Link>
-        <ChevronRight size={14} />
-        <span style={{ color: '#0f172a', fontWeight: 600 }}>Medical Catalog</span>
-      </div>
+      {/* Low-Profile Breadcrumb Navigation (For SEO Hierarchy) */}
+      <nav
+        aria-label="Breadcrumb"
+        className="seo-breadcrumb"
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '5px',
+          fontSize: '0.68rem',
+          color: '#94a3b8',
+          marginBottom: '6px',
+          lineHeight: 1.2
+        }}
+      >
+        <Link href="/" style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500 }}>
+          Home
+        </Link>
+        <ChevronRight size={10} color="#cbd5e1" />
+        <span style={{ color: '#64748b', fontWeight: 500 }}>Medical Catalog</span>
+      </nav>
 
       {/* Page Title & Search Bar */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', maxWidth: '720px' }}>
-        <h1 style={{ fontSize: '1.9rem', fontWeight: 800, color: '#0f172a', margin: 0, letterSpacing: '-0.02em' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', maxWidth: '720px' }}>
+        <h1
+          id="catalog-search-title"
+          style={{
+            fontSize: '1.85rem',
+            fontWeight: 800,
+            color: '#0f172a',
+            margin: 0,
+            letterSpacing: '-0.02em',
+            lineHeight: 1.22
+          }}
+        >
           Medical Equipment & Supplies
         </h1>
 
@@ -123,6 +147,15 @@ export default function CatalogSearchHeader({
           </div>
         </form>
       </div>
+
+      <style>{`
+        @media (max-width: 640px) {
+          #catalog-search-title {
+            font-size: 1.45rem !important;
+            line-height: 1.25 !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }

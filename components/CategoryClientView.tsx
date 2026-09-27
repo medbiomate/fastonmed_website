@@ -136,27 +136,29 @@ export default function CategoryClientView({
         }}
       >
         <div className="container" style={{ maxWidth: '1240px', margin: '0 auto', padding: '0 20px' }}>
-          {/* Breadcrumbs */}
+          {/* Low-Profile Breadcrumbs (For SEO Hierarchy) */}
           <nav
             aria-label="Breadcrumb"
+            className="seo-breadcrumb"
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '8px',
-              fontSize: '0.84rem',
-              color: '#64748b',
-              marginBottom: '20px'
+              gap: '6px',
+              fontSize: '0.68rem',
+              color: '#94a3b8',
+              marginBottom: '10px',
+              lineHeight: 1.2
             }}
           >
-            <Link href="/" style={{ color: '#64748b', textDecoration: 'none' }}>
+            <Link href="/" style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500 }}>
               Home
             </Link>
-            <span>/</span>
-            <Link href="/shop" style={{ color: '#64748b', textDecoration: 'none' }}>
+            <span style={{ color: '#cbd5e1' }}>/</span>
+            <Link href="/shop" style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500 }}>
               Specialties
             </Link>
-            <span>/</span>
-            <span style={{ color: '#0f172a', fontWeight: 600 }}>{categoryTitle}</span>
+            <span style={{ color: '#cbd5e1' }}>/</span>
+            <span style={{ color: '#64748b', fontWeight: 500 }}>{categoryTitle}</span>
           </nav>
 
           <div

@@ -219,35 +219,38 @@ export default async function EditorialPage({
 
   return (
     <main style={{ backgroundColor: '#ffffff', minHeight: '100vh' }}>
-      {/* BREADCRUMB STRIP */}
+      {/* BREADCRUMB STRIP (Low-Profile SEO Hierarchy) */}
       <div
         style={{
-          backgroundColor: '#f1f5f9',
-          borderBottom: '1px solid #e2e8f0',
-          padding: '12px 0',
+          backgroundColor: '#f8fafc',
+          borderBottom: '1px solid #eef2f6',
+          padding: '6px 0',
         }}
       >
         <div className="container" style={{ maxWidth: 1200, margin: '0 auto', padding: '0 20px' }}>
-          <div
+          <nav
+            aria-label="Breadcrumb"
+            className="seo-breadcrumb"
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: 8,
-              fontSize: '0.8rem',
-              color: '#64748b',
+              gap: 5,
+              fontSize: '0.68rem',
+              color: '#94a3b8',
               flexWrap: 'wrap',
+              lineHeight: 1.2
             }}
           >
-            <Link href="/" style={{ color: '#0f766e', textDecoration: 'none', fontWeight: 600 }}>
+            <Link href="/" style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500 }}>
               Home
             </Link>
-            <ChevronRight size={14} color="#94a3b8" />
-            <Link href="/shop" style={{ color: '#0f766e', textDecoration: 'none', fontWeight: 600 }}>
+            <ChevronRight size={10} color="#cbd5e1" />
+            <Link href="/shop" style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500 }}>
               Equipment & Solutions
             </Link>
-            <ChevronRight size={14} color="#94a3b8" />
-            <span style={{ color: '#334155', fontWeight: 600 }}>{page.title}</span>
-          </div>
+            <ChevronRight size={10} color="#cbd5e1" />
+            <span style={{ color: '#64748b', fontWeight: 500 }}>{page.title}</span>
+          </nav>
         </div>
       </div>
 

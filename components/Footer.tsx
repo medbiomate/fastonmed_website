@@ -44,9 +44,21 @@ export default function Footer() {
       <style>{`
         @media (max-width: 768px) {
           .footer-main-grid {
-            grid-template-columns: 1fr !important;
-            gap: 28px !important;
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 30px 20px !important;
             margin-bottom: 32px !important;
+          }
+          .footer-col-brand {
+            grid-column: 1 / -1 !important;
+          }
+          .footer-col-help {
+            grid-column: 1 / 2 !important;
+          }
+          .footer-col-links {
+            grid-column: 2 / 3 !important;
+          }
+          .footer-col-newsletter {
+            grid-column: 1 / -1 !important;
           }
           .footer-bottom-bar {
             flex-direction: column !important;
@@ -66,7 +78,7 @@ export default function Footer() {
           }}
         >
           {/* Column 1: Brand & Contact Info */}
-          <div>
+          <div className="footer-col-brand">
             <div style={{ marginBottom: '20px' }}>
               <FastonmedLogo height={42} theme={isDark ? 'dark' : 'light'} />
             </div>
@@ -178,7 +190,7 @@ export default function Footer() {
           </div>
 
           {/* Column 2: Help */}
-          <div>
+          <div className="footer-col-help">
             <h4 style={{ fontSize: '1rem', fontWeight: 700, color: '#0f172a', marginBottom: '20px' }}>
               Help
             </h4>
@@ -207,7 +219,7 @@ export default function Footer() {
           </div>
 
           {/* Column 3: Useful Links */}
-          <div>
+          <div className="footer-col-links">
             <h4 style={{ fontSize: '1rem', fontWeight: 700, color: '#0f172a', marginBottom: '20px' }}>
               Useful Links
             </h4>
@@ -241,7 +253,7 @@ export default function Footer() {
           </div>
 
           {/* Column 4: Newsletter */}
-          <div>
+          <div className="footer-col-newsletter">
             <h4 style={{ fontSize: '1rem', fontWeight: 700, color: '#0f172a', marginBottom: '14px' }}>
               Sign Up for Email
             </h4>

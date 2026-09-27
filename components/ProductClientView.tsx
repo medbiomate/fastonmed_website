@@ -114,21 +114,21 @@ export default function ProductClientView({ product, similarProducts }: ProductC
         </div>
       )}
 
-      {/* Breadcrumbs Navigation */}
-      <nav aria-label="Breadcrumbs" style={{ borderBottom: '1px solid #eef2f6', backgroundColor: '#fcfdfd', padding: '14px 0' }}>
-        <div className="container" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', color: '#64748b', flexWrap: 'wrap' }}>
-          <Link href="/" style={{ color: '#64748b', textDecoration: 'none', transition: 'color 0.2s' }}>Home</Link>
-          <ChevronRight size={14} />
-          <Link href="/shop" style={{ color: '#64748b', textDecoration: 'none', transition: 'color 0.2s' }}>Medical Equipment</Link>
-          <ChevronRight size={14} />
+      {/* Low-Profile Breadcrumbs Navigation (For SEO Hierarchy) */}
+      <nav aria-label="Breadcrumbs" className="seo-breadcrumb" style={{ borderBottom: '1px solid #eef2f6', backgroundColor: '#fcfdfd', padding: '6px 0' }}>
+        <div className="container" style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '0.68rem', color: '#94a3b8', flexWrap: 'wrap', lineHeight: 1.2 }}>
+          <Link href="/" style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500 }}>Home</Link>
+          <ChevronRight size={10} color="#cbd5e1" />
+          <Link href="/shop" style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500 }}>Medical Equipment</Link>
+          <ChevronRight size={10} color="#cbd5e1" />
           <Link
             href={`/shop?category=${encodeURIComponent(product.category)}`}
-            style={{ color: '#64748b', textDecoration: 'none', transition: 'color 0.2s' }}
+            style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500 }}
           >
             {product.category}
           </Link>
-          <ChevronRight size={14} />
-          <span style={{ color: '#0f172a', fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '300px' }}>
+          <ChevronRight size={10} color="#cbd5e1" />
+          <span style={{ color: '#64748b', fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '300px' }}>
             {product.name}
           </span>
         </div>

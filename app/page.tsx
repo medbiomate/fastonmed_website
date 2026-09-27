@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import {
@@ -568,6 +568,30 @@ export default function HomePage() {
     return () => clearInterval(timer);
   }, []);
 
+  // Healthcare facilities slider state & handlers (for mobile slider)
+  const facilitiesScrollRef = useRef<HTMLDivElement>(null);
+  const [activeFacilityIndex, setActiveFacilityIndex] = useState(0);
+
+  const handleFacilitiesScroll = () => {
+    if (!facilitiesScrollRef.current) return;
+    const el = facilitiesScrollRef.current;
+    const card = el.firstElementChild as HTMLElement;
+    const cardWidth = card ? card.offsetWidth + 14 : 280;
+    const newIdx = Math.round(el.scrollLeft / cardWidth);
+    setActiveFacilityIndex(Math.min(Math.max(newIdx, 0), healthcareFacilitiesServed.length - 1));
+  };
+
+  const scrollFacilities = (direction: 'left' | 'right') => {
+    if (!facilitiesScrollRef.current) return;
+    const el = facilitiesScrollRef.current;
+    const card = el.firstElementChild as HTMLElement;
+    const cardWidth = card ? card.offsetWidth + 14 : 280;
+    el.scrollBy({
+      left: direction === 'left' ? -cardWidth : cardWidth,
+      behavior: 'smooth'
+    });
+  };
+
   // Dynamic category products cache
   const [categoryCache, setCategoryCache] = useState<Record<string, Product[]>>({
     all: initialBentoProducts
@@ -907,7 +931,8 @@ export default function HomePage() {
                   className="hero-nav-btn-primary"
                 >
                   <Calendar size={18} color="#42B69C" strokeWidth={2.4} className="hero-btn-icon" />
-                  <span>Explore Equipment</span>
+                  <span className="hero-btn-text-full">Explore Equipment</span>
+                  <span className="hero-btn-text-compact">Explore All</span>
                   <ArrowRight size={17} color="#ffffff" strokeWidth={2.4} className="hero-btn-arrow" />
                 </Link>
 
@@ -931,7 +956,7 @@ export default function HomePage() {
                   }}
                   className="hero-nav-btn-secondary"
                 >
-                  <Phone size={18} color="#42B69C" fill="#42B69C" strokeWidth={1} className="hero-btn-icon" />
+                  <Phone size={18} color="#42B69C" fill="#42B69C" strokeWidth={1} className="hero-btn-icon hero-btn-icon-phone" />
                   <span>Call Now</span>
                 </a>
               </div>
@@ -991,6 +1016,19 @@ export default function HomePage() {
             from { opacity: 0; transform: scale(0.97); }
             to { opacity: 1; transform: scale(1); }
           }
+          @keyframes heroBtnShimmer {
+            0% { left: -60%; }
+            35% { left: 130%; }
+            100% { left: 130%; }
+          }
+          @keyframes phoneWiggle {
+            0%, 65%, 100% { transform: rotate(0deg); }
+            70% { transform: rotate(-14deg); }
+            75% { transform: rotate(14deg); }
+            80% { transform: rotate(-10deg); }
+            85% { transform: rotate(8deg); }
+            90% { transform: rotate(0deg); }
+          }
           .hero-auto-image {
             animation: heroImgFadeIn 0.4s ease;
           }
@@ -1013,6 +1051,24 @@ export default function HomePage() {
             background-color: #002845;
             color: #ffffff;
             transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+          }
+          .hero-nav-btn-primary::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 40%;
+            height: 200%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+            transform: rotate(25deg);
+            animation: heroBtnShimmer 3.2s infinite ease-in-out;
+            pointer-events: none;
+          }
+          .hero-btn-icon-phone {
+            animation: phoneWiggle 3.2s infinite ease-in-out;
+            transform-origin: center;
           }
           .hero-nav-btn-primary:hover,
           .hero-nav-btn-secondary:hover {
@@ -1024,35 +1080,56 @@ export default function HomePage() {
           .hero-nav-btn-secondary:active {
             transform: translateY(0);
           }
+          .hero-btn-text-compact {
+            display: none;
+          }
           .hero-desc-mobile {
             display: none;
           }
           @media (max-width: 900px) {
             #medinova-hero-section {
-              padding: 16px 0 20px !important;
+              padding: 14px 0 18px !important;
+              background: #f1f8f5 !important;
+            }
+            #medinova-hero-section .container {
+              padding: 0 14px !important;
             }
             #hero-two-col-grid {
               display: flex !important;
               flex-direction: column !important;
               gap: 0 !important;
+              background: #ffffff !important;
+              border: 1px solid #e2e8f0 !important;
+              border-radius: 20px !important;
+              padding: 20px 14px 18px !important;
+              box-shadow: 0 10px 28px -6px rgba(0, 40, 69, 0.08), 0 4px 10px rgba(0, 135, 90, 0.04) !important;
             }
             #hero-left-content {
               display: contents !important;
             }
             #hero-main-title {
               order: 1 !important;
-              font-size: 1.58rem !important;
-              line-height: 1.2 !important;
-              margin-bottom: 6px !important;
-              letter-spacing: -0.02em !important;
+              font-size: 1.55rem !important;
+              line-height: 1.22 !important;
+              margin: 0 0 8px 0 !important;
+              letter-spacing: -0.025em !important;
               text-align: left !important;
+              width: 100% !important;
+              padding: 0 !important;
             }
             #hero-credibility-statement {
               order: 2 !important;
-              font-size: 0.88rem !important;
-              line-height: 1.35 !important;
-              margin-bottom: 12px !important;
+              display: inline-flex !important;
+              align-items: center !important;
+              align-self: flex-start !important;
+              font-size: 0.74rem !important;
+              font-weight: 700 !important;
               color: #00875a !important;
+              background: #eaf7f2 !important;
+              border: 1px solid #cceee1 !important;
+              padding: 4px 10px !important;
+              border-radius: 6px !important;
+              margin: 0 0 14px 0 !important;
               text-align: left !important;
             }
             #hero-image-col {
@@ -1060,26 +1137,31 @@ export default function HomePage() {
               max-width: 100% !important;
               width: 100% !important;
               margin: 0 0 14px !important;
+              padding: 0 !important;
             }
             #hero-image-col > div {
-              padding: 6px !important;
-              border-radius: 16px !important;
-              background: #ffffff !important;
-              border: 1px solid #e2e8f0 !important;
-              box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.06) !important;
+              padding: 0 !important;
+              border-radius: 0 !important;
+              background: transparent !important;
+              border: none !important;
+              box-shadow: none !important;
+              max-width: 100% !important;
             }
             .hero-showcase-main-img {
-              height: 200px !important;
-              padding: 8px !important;
-              border-radius: 12px !important;
-              background: radial-gradient(circle at center, #ffffff 40%, #f1f5f9 100%) !important;
-              border: none !important;
+              height: 195px !important;
+              padding: 10px !important;
+              border-radius: 14px !important;
+              background: #f8fafc !important;
+              border: 1px solid #eef2f6 !important;
+              display: flex !important;
+              align-items: center !important;
+              justify-content: center !important;
             }
             .hero-auto-image {
               max-height: 100% !important;
               max-width: 100% !important;
               object-fit: contain !important;
-              filter: drop-shadow(0 8px 16px rgba(0, 40, 69, 0.14)) !important;
+              filter: drop-shadow(0 6px 14px rgba(0, 40, 69, 0.12)) !important;
             }
             .hero-desc-desktop {
               display: none !important;
@@ -1087,10 +1169,12 @@ export default function HomePage() {
             .hero-desc-mobile {
               order: 4 !important;
               display: block !important;
-              font-size: 0.85rem !important;
+              font-size: 0.84rem !important;
               line-height: 1.45 !important;
-              margin-bottom: 14px !important;
+              color: #475569 !important;
+              margin: 0 0 16px 0 !important;
               text-align: left !important;
+              padding: 0 !important;
             }
             #hero-actions-container {
               order: 5 !important;
@@ -1098,27 +1182,51 @@ export default function HomePage() {
               flex-direction: row !important;
               width: 100% !important;
               gap: 8px !important;
-              margin-bottom: 4px !important;
+              margin: 0 !important;
             }
-            .hero-nav-btn-primary,
-            .hero-nav-btn-secondary {
-              flex: 1 1 0 !important;
+            .hero-nav-btn-primary {
+              flex: 1.4 !important;
               width: auto !important;
               min-width: 0 !important;
               height: 44px !important;
-              padding: 0 10px !important;
-              font-size: 0.82rem !important;
-              border-radius: 10px !important;
+              padding: 0 8px !important;
+              font-size: 0.78rem !important;
+              border-radius: 11px !important;
               white-space: nowrap !important;
-              gap: 6px !important;
+              gap: 5px !important;
+              background: #00875a !important;
+              color: #ffffff !important;
+              box-shadow: 0 4px 14px rgba(0, 135, 90, 0.28) !important;
+            }
+            .hero-nav-btn-secondary {
+              flex: 1 !important;
+              width: auto !important;
+              min-width: 0 !important;
+              height: 44px !important;
+              padding: 0 8px !important;
+              font-size: 0.78rem !important;
+              border-radius: 11px !important;
+              white-space: nowrap !important;
+              gap: 5px !important;
+              background: #002845 !important;
+              color: #ffffff !important;
+              box-shadow: 0 4px 14px rgba(0, 40, 69, 0.2) !important;
             }
             .hero-btn-arrow {
               display: none !important;
             }
             .hero-btn-icon {
-              width: 16px !important;
-              height: 16px !important;
+              width: 15px !important;
+              height: 15px !important;
               flex-shrink: 0 !important;
+            }
+          }
+          @media (max-width: 350px) {
+            .hero-btn-text-full {
+              display: none !important;
+            }
+            .hero-btn-text-compact {
+              display: inline !important;
             }
           }
         `}</style>
@@ -1728,7 +1836,7 @@ export default function HomePage() {
       </section>
 
       {/* SECTION 6: HEALTHCARE FACILITIES & FIRMS WE EQUIP */}
-      <section style={{ backgroundColor: '#ffffff', padding: '84px 0 90px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+      <section id="facilities-section" style={{ backgroundColor: '#ffffff', padding: '84px 0 90px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
         <div className="container" style={{ maxWidth: '1240px', margin: '0 auto', padding: '0 20px' }}>
           {/* Header */}
           <div style={{ marginBottom: '38px', maxWidth: '820px' }}>
@@ -1763,6 +1871,7 @@ export default function HomePage() {
               Healthcare Facilities & Sectors We Deliver To
             </h2>
             <p
+              id="facilities-subtext"
               style={{
                 fontSize: '0.94rem',
                 color: '#64748b',
@@ -1775,9 +1884,11 @@ export default function HomePage() {
             </p>
           </div>
 
-          {/* 8 Healthcare Delivery Facilities Cards Grid */}
+          {/* 8 Healthcare Delivery Facilities Cards Grid / Mobile Touch Slider */}
           <div
             id="facilities-cards-grid"
+            ref={facilitiesScrollRef}
+            onScroll={handleFacilitiesScroll}
             style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(4, 1fr)',
@@ -1788,91 +1899,186 @@ export default function HomePage() {
               <Link
                 key={facility.id}
                 href={facility.href}
+                style={{
+                  backgroundColor: '#ffffff',
+                  borderRadius: '16px',
+                  border: '1px solid #e2e8f0',
+                  overflow: 'hidden',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  textDecoration: 'none',
+                  boxShadow: '0 2px 10px rgba(0, 0, 0, 0.03)',
+                  transition: 'all 0.25s ease',
+                  fontFamily: 'Arial, Helvetica, sans-serif'
+                }}
+                className="facility-card-hover"
+              >
+                {/* Real Facility Photograph Header */}
+                <div
                   style={{
-                    backgroundColor: '#ffffff',
-                    borderRadius: '16px',
-                    border: '1px solid #e2e8f0',
+                    position: 'relative',
+                    width: '100%',
+                    height: '160px',
                     overflow: 'hidden',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    textDecoration: 'none',
-                    boxShadow: '0 2px 10px rgba(0, 0, 0, 0.03)',
-                    transition: 'all 0.25s ease',
-                    fontFamily: 'Arial, Helvetica, sans-serif'
+                    backgroundColor: '#f1f5f9'
                   }}
-                  className="facility-card-hover"
                 >
-                  {/* Real Facility Photograph Header */}
-                  <div
+                  <Image
+                    src={facility.image}
+                    alt={facility.title}
+                    fill
+                    sizes="(max-width: 640px) 80vw, (max-width: 1024px) 50vw, 25vw"
                     style={{
-                      position: 'relative',
-                      width: '100%',
-                      height: '160px',
-                      overflow: 'hidden',
-                      backgroundColor: '#f1f5f9'
+                      objectFit: 'cover',
+                      transition: 'transform 0.4s ease'
+                    }}
+                    className="facility-image-zoom"
+                  />
+                </div>
+
+                {/* Card Content Body */}
+                <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', flex: 1 }}>
+                  <h3
+                    style={{
+                      fontSize: '1.02rem',
+                      fontWeight: 800,
+                      color: '#0f172a',
+                      lineHeight: 1.35,
+                      margin: '0 0 8px',
+                      fontFamily: 'Arial, Helvetica, sans-serif'
                     }}
                   >
-                    <Image
-                      src={facility.image}
-                      alt={facility.title}
-                      fill
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                      style={{
-                        objectFit: 'cover',
-                        transition: 'transform 0.4s ease'
-                      }}
-                      className="facility-image-zoom"
-                    />
+                    {facility.title}
+                  </h3>
+
+                  <p
+                    style={{
+                      fontSize: '0.78rem',
+                      color: '#64748b',
+                      lineHeight: 1.45,
+                      margin: '0 0 16px',
+                      fontFamily: 'Arial, Helvetica, sans-serif'
+                    }}
+                  >
+                    {facility.desc}
+                  </p>
+
+                  {/* View Supplies Link */}
+                  <div
+                    style={{
+                      marginTop: 'auto',
+                      paddingTop: '12px',
+                      fontSize: '0.82rem',
+                      fontWeight: 700,
+                      color: '#00875a',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                      fontFamily: 'Arial, Helvetica, sans-serif'
+                    }}
+                  >
+                    <span>Explore Equipment</span>
+                    <ArrowRight size={14} />
                   </div>
+                </div>
+              </Link>
+            ))}
+          </div>
 
-                  {/* Card Content Body */}
-                  <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', flex: 1 }}>
-                    <h3
-                      style={{
-                        fontSize: '1.02rem',
-                        fontWeight: 800,
-                        color: '#0f172a',
-                        lineHeight: 1.35,
-                        margin: '0 0 8px',
-                        fontFamily: 'Arial, Helvetica, sans-serif'
-                      }}
-                    >
-                      {facility.title}
-                    </h3>
-
-                    <p
-                      style={{
-                        fontSize: '0.78rem',
-                        color: '#64748b',
-                        lineHeight: 1.45,
-                        margin: '0 0 16px',
-                        fontFamily: 'Arial, Helvetica, sans-serif'
-                      }}
-                    >
-                      {facility.desc}
-                    </p>
-
-                    {/* View Supplies Link */}
-                    <div
-                      style={{
-                        marginTop: 'auto',
-                        paddingTop: '12px',
-                        fontSize: '0.82rem',
-                        fontWeight: 700,
-                        color: '#00875a',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '6px',
-                        fontFamily: 'Arial, Helvetica, sans-serif'
-                      }}
-                    >
-                      <span>Explore Equipment</span>
-                      <ArrowRight size={14} />
-                    </div>
-                  </div>
-                </Link>
+          {/* Mobile Slider Controls & Indicators */}
+          <div
+            id="facilities-mobile-controls"
+            style={{
+              display: 'none',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              marginTop: '16px',
+              padding: '0 4px'
+            }}
+          >
+            {/* Dots */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+              {healthcareFacilitiesServed.map((_, dotIdx) => (
+                <button
+                  key={dotIdx}
+                  type="button"
+                  onClick={() => {
+                    if (facilitiesScrollRef.current) {
+                      const card = facilitiesScrollRef.current.children[dotIdx] as HTMLElement;
+                      if (card) {
+                        facilitiesScrollRef.current.scrollTo({
+                          left: card.offsetLeft - 20,
+                          behavior: 'smooth'
+                        });
+                      }
+                    }
+                  }}
+                  aria-label={`Go to sector ${dotIdx + 1}`}
+                  style={{
+                    width: activeFacilityIndex === dotIdx ? '22px' : '6px',
+                    height: '6px',
+                    borderRadius: '999px',
+                    backgroundColor: activeFacilityIndex === dotIdx ? '#00875a' : '#cbd5e1',
+                    border: 'none',
+                    padding: 0,
+                    cursor: 'pointer',
+                    transition: 'all 0.25s ease'
+                  }}
+                />
               ))}
             </div>
+
+            {/* Left / Right Nav Arrows */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#64748b', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                {activeFacilityIndex + 1} / {healthcareFacilitiesServed.length}
+              </span>
+              <button
+                type="button"
+                onClick={() => scrollFacilities('left')}
+                aria-label="Previous sector"
+                disabled={activeFacilityIndex === 0}
+                style={{
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '50%',
+                  border: '1px solid #e2e8f0',
+                  backgroundColor: '#ffffff',
+                  color: activeFacilityIndex === 0 ? '#cbd5e1' : '#0f172a',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: activeFacilityIndex === 0 ? 'not-allowed' : 'pointer',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+                  transition: 'all 0.2s ease'
+                }}
+              >
+                <ChevronLeft size={16} />
+              </button>
+              <button
+                type="button"
+                onClick={() => scrollFacilities('right')}
+                aria-label="Next sector"
+                disabled={activeFacilityIndex === healthcareFacilitiesServed.length - 1}
+                style={{
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '50%',
+                  border: '1px solid #e2e8f0',
+                  backgroundColor: '#ffffff',
+                  color: activeFacilityIndex === healthcareFacilitiesServed.length - 1 ? '#cbd5e1' : '#0f172a',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: activeFacilityIndex === healthcareFacilitiesServed.length - 1 ? 'not-allowed' : 'pointer',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+                  transition: 'all 0.2s ease'
+                }}
+              >
+                <ChevronRight size={16} />
+              </button>
+            </div>
+          </div>
         </div>
 
         <style>{`
@@ -1890,25 +2096,54 @@ export default function HomePage() {
             }
           }
           @media (max-width: 768px) {
+            #facilities-section {
+              padding: 44px 0 50px !important;
+            }
             #facilities-heading {
               font-size: 1.38rem !important;
               line-height: 1.25 !important;
               margin-bottom: 8px !important;
             }
-          }
-          @media (max-width: 640px) {
+            #facilities-subtext {
+              font-size: 0.84rem !important;
+              line-height: 1.45 !important;
+            }
             #facilities-cards-grid {
-              grid-template-columns: 1fr !important;
-              gap: 12px !important;
+              display: flex !important;
+              flex-direction: row !important;
+              overflow-x: auto !important;
+              scroll-snap-type: x mandatory !important;
+              -webkit-overflow-scrolling: touch !important;
+              gap: 14px !important;
+              padding: 6px 20px 18px !important;
+              margin: 0 -20px !important;
+              width: calc(100% + 40px) !important;
+              scrollbar-width: none !important;
+              -ms-overflow-style: none !important;
+            }
+            #facilities-cards-grid::-webkit-scrollbar {
+              display: none !important;
+            }
+            .facility-card-hover {
+              flex: 0 0 82vw !important;
+              max-width: 310px !important;
+              min-width: 260px !important;
+              scroll-snap-align: start !important;
+              scroll-snap-stop: normal !important;
+              border-radius: 14px !important;
+            }
+            #facilities-mobile-controls {
+              display: flex !important;
             }
           }
         `}</style>
       </section>
 
       {/* SECTION 7: INTERACTIVE PRODUCT CATALOG (Browse & Order) */}
-      <section style={{ backgroundColor: '#f1f5f9', padding: '74px 0 84px', borderTop: '1px solid #e2e8f0', borderBottom: '1px solid #e2e8f0', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+      <section id="catalog-section" style={{ backgroundColor: '#f1f5f9', padding: '74px 0 84px', borderTop: '1px solid #e2e8f0', borderBottom: '1px solid #e2e8f0', fontFamily: 'Arial, Helvetica, sans-serif' }}>
         <div className="container" style={{ maxWidth: '1240px', margin: '0 auto', padding: '0 20px' }}>
           <div
+            id="catalog-header-bar"
             style={{
               display: 'flex',
               alignItems: 'flex-end',
@@ -1953,6 +2188,7 @@ export default function HomePage() {
 
             {/* Segmented Category Pill Tabs */}
             <div
+              className="catalog-category-tabs-bar"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -1974,6 +2210,7 @@ export default function HomePage() {
                     key={cat.id}
                     type="button"
                     onClick={() => handleCategorySelect(cat.id)}
+                    className={`catalog-pill-btn ${isSelected ? 'active' : ''}`}
                     style={{
                       backgroundColor: isSelected ? '#00875a' : 'transparent',
                       color: isSelected ? '#ffffff' : '#475569',
@@ -2108,6 +2345,7 @@ export default function HomePage() {
 
                   {/* Product Info */}
                   <div
+                    className="product-info-box"
                     style={{
                       padding: '16px',
                       display: 'flex',
@@ -2132,6 +2370,7 @@ export default function HomePage() {
 
                     <Link
                       href={`/product/${product.slug}`}
+                      className="product-card-title"
                       style={{
                         fontSize: '0.92rem',
                         fontWeight: 700,
@@ -2232,6 +2471,14 @@ export default function HomePage() {
         </div>
 
         <style>{`
+          .catalog-category-tabs-bar {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            -webkit-overflow-scrolling: touch;
+          }
+          .catalog-category-tabs-bar::-webkit-scrollbar {
+            display: none !important;
+          }
           .product-card-modern:hover {
             box-shadow: 0 12px 28px -8px rgba(0, 135, 90, 0.12) !important;
             transform: translateY(-3px);
@@ -2251,14 +2498,68 @@ export default function HomePage() {
             }
           }
           @media (max-width: 768px) {
+            #catalog-section {
+              padding: 38px 0 46px !important;
+            }
+            #catalog-header-bar {
+              margin-bottom: 18px !important;
+              gap: 12px !important;
+              flex-direction: column !important;
+              align-items: flex-start !important;
+            }
             #catalog-heading {
-              font-size: 1.38rem !important;
+              font-size: 1.45rem !important;
               line-height: 1.25 !important;
-              margin-bottom: 6px !important;
+              margin-bottom: 0 !important;
+            }
+            .catalog-category-tabs-bar {
+              display: flex !important;
+              width: calc(100% + 28px) !important;
+              margin: 0 -14px !important;
+              padding: 4px 14px 6px !important;
+              background: transparent !important;
+              border: none !important;
+              border-radius: 0 !important;
+              box-shadow: none !important;
+              gap: 8px !important;
+              overflow-x: auto !important;
+              flex-wrap: nowrap !important;
+            }
+            .catalog-pill-btn {
+              padding: 7px 15px !important;
+              font-size: 0.79rem !important;
+              border-radius: 999px !important;
+              background-color: #ffffff !important;
+              border: 1px solid #cbd5e1 !important;
+              box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05) !important;
+              flex-shrink: 0 !important;
+            }
+            .catalog-pill-btn.active {
+              background-color: #00875a !important;
+              border-color: #00875a !important;
+              color: #ffffff !important;
+              box-shadow: 0 3px 10px rgba(0, 135, 90, 0.28) !important;
             }
             .recommended-product-grid {
               grid-template-columns: repeat(2, 1fr) !important;
               gap: 10px !important;
+            }
+            .product-card-modern {
+              border-radius: 14px !important;
+            }
+            .product-img-box {
+              height: 135px !important;
+              margin: 8px 8px 0 !important;
+              padding: 8px !important;
+            }
+            .product-info-box {
+              padding: 10px !important;
+            }
+            .product-card-title {
+              font-size: 0.80rem !important;
+              line-height: 1.3 !important;
+              height: 32px !important;
+              margin-bottom: 6px !important;
             }
           }
         `}</style>
@@ -2315,6 +2616,7 @@ export default function HomePage() {
               </h2>
 
               <p
+                id="rfq-main-desc"
                 style={{
                   fontSize: '0.92rem',
                   color: '#64748b',
@@ -2327,7 +2629,7 @@ export default function HomePage() {
               </p>
 
               {/* 3 Key Trust Pillars */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '28px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '26px' }}>
                 <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
                   <div
                     style={{
@@ -2410,7 +2712,7 @@ export default function HomePage() {
               {/* Direct Urgent Contact Box */}
               <div
                 style={{
-                  backgroundColor: '#ffffff',
+                  backgroundColor: '#f8fafc',
                   border: '1px solid #e2e8f0',
                   borderRadius: '12px',
                   padding: '16px 20px',
@@ -2427,7 +2729,7 @@ export default function HomePage() {
                     Need Immediate Urgent Assistance?
                   </div>
                   <div style={{ fontSize: '1rem', fontWeight: 700, color: '#0f172a', marginTop: '2px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                    +971 4 238 4111 / +971 50 123 4567
+                    <a href="tel:+97142384111" style={{ color: '#0f172a', textDecoration: 'none' }}>+971 4 238 4111</a> / <a href="tel:+971501234567" style={{ color: '#0f172a', textDecoration: 'none' }}>+971 50 123 4567</a>
                   </div>
                 </div>
                 <a
@@ -2877,14 +3179,22 @@ export default function HomePage() {
             box-shadow: 0 0 0 3px rgba(0, 135, 90, 0.08) !important;
           }
           @media (max-width: 960px) {
-            #rfq-main-heading {
-              font-size: 1.38rem !important;
-              line-height: 1.25 !important;
-              margin-bottom: 10px !important;
+            #rfq-crm-section {
+              padding: 44px 0 54px !important;
             }
             #rfq-two-column-layout {
               grid-template-columns: 1fr !important;
               gap: 24px !important;
+            }
+            #rfq-main-heading {
+              font-size: 1.48rem !important;
+              line-height: 1.25 !important;
+              margin-bottom: 10px !important;
+            }
+            #rfq-main-desc {
+              font-size: 0.85rem !important;
+              line-height: 1.5 !important;
+              margin-bottom: 16px !important;
             }
           }
           @media (max-width: 600px) {

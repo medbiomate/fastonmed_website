@@ -982,3 +982,60 @@ html,body{overflow-x:hidden;max-width:100vw}
   }
 }
 
+/* ==========================================================================
+   Universal Low-Profile SEO Breadcrumbs
+   Very small, muted, minimal vertical footprint for SEO hierarchy across all views
+   ========================================================================== */
+nav[aria-label="Breadcrumb"],
+nav[aria-label="Breadcrumbs"],
+.seo-breadcrumb,
+.shop-breadcrumb,
+.fm-breadcrumb {
+  font-size: 0.68rem !important;
+  color: #94a3b8 !important;
+  line-height: 1.25 !important;
+  margin-bottom: 8px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+}
+
+nav[aria-label="Breadcrumb"] a,
+nav[aria-label="Breadcrumbs"] a,
+.seo-breadcrumb a,
+.shop-breadcrumb a,
+.fm-breadcrumb a {
+  color: #94a3b8 !important;
+  font-size: 0.68rem !important;
+  text-decoration: none !important;
+  font-weight: 500 !important;
+  transition: color 0.15s ease !important;
+}
+
+nav[aria-label="Breadcrumb"] a:hover,
+nav[aria-label="Breadcrumbs"] a:hover,
+.seo-breadcrumb a:hover,
+.shop-breadcrumb a:hover,
+.fm-breadcrumb a:hover {
+  color: #00875a !important;
+}
+
+nav[aria-label="Breadcrumb"] span,
+nav[aria-label="Breadcrumbs"] span,
+.seo-breadcrumb span {
+  font-size: 0.68rem !important;
+  color: #64748b !important;
+  font-weight: 500 !important;
+}
+
+nav[aria-label="Breadcrumb"] svg,
+nav[aria-label="Breadcrumbs"] svg,
+.seo-breadcrumb svg,
+.shop-breadcrumb svg {
+  width: 10px !important;
+  height: 10px !important;
+  color: #cbd5e1 !important;
+  opacity: 0.8 !important;
+  flex-shrink: 0 !important;
+}
+
