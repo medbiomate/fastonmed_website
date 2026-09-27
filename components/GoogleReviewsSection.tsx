@@ -99,8 +99,8 @@ export default function GoogleReviewsSection() {
       .google-reviews-section{padding:72px 0;background:#fff;border-block:1px solid #eef2f6;font-family:Arial,Helvetica,sans-serif}
       .google-reviews-heading{text-align:center;max-width:760px;margin:0 auto 34px}
       .google-reviews-kicker{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;color:#00875a;background:#eaf7f2;font-size:.76rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
-      .google-reviews-heading h2{margin:13px 0 10px;font-size:clamp(1.7rem,3.2vw,2.35rem);letter-spacing:-.03em;color:#0f172a}
-      .google-reviews-heading p{color:#64748b;line-height:1.7;font-size:.93rem}
+      .google-reviews-heading h2{margin:10px 0 8px;font-size:clamp(1.35rem,2.8vw,2.1rem);line-height:1.25;letter-spacing:-.025em;color:#0f172a}
+      .google-reviews-heading p{color:#64748b;line-height:1.6;font-size:.88rem}
       .google-review-summary{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:26px 30px;margin-bottom:32px;border:1px solid #dfe7ef;border-radius:16px;background:#f8fafc;box-shadow:0 8px 24px rgba(15,23,42,.04)}
       .google-review-business{display:flex;align-items:center;gap:18px}
       .google-review-logo{width:62px;height:62px;display:grid;place-items:center;flex:none;border:1px solid #e1e8ef;border-radius:14px;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.04)}
@@ -141,19 +141,29 @@ export default function GoogleReviewsSection() {
       .google-slider-dot{width:9px;height:9px;padding:0;border:0;border-radius:99px;background:#cbd5e1;cursor:pointer;transition:all .25s ease}
       .google-slider-dot:hover{background:#94a3b8}
       .google-slider-dot.active{width:26px;background:#00875a}
-      .google-review-source{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:22px;color:#64748b;font-size:.78rem}
-      .google-review-source a{color:#00875a;font-weight:800;text-decoration:none}
-      .google-review-source a:hover{text-decoration:underline}
-      .google-review-disclosure{max-width:780px;margin:14px auto 0;text-align:center;color:#94a3b8;font-size:.7rem;line-height:1.5}
+      .google-review-source{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:22px;color:#64748b;font-size:.82rem}
+      .google-review-source-note{display:inline-flex;align-items:center;gap:7px;color:#475569;font-weight:500}
+      .google-review-source-link{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;border-radius:999px;background:#f0fdf4;border:1px solid #bbf7d0;color:#00875a;font-weight:700;font-size:.78rem;text-decoration:none;transition:all .2s ease}
+      .google-review-source-link:hover{background:#dcfce7;border-color:#86efac;text-decoration:none}
+      .google-review-disclosure{max-width:780px;margin:12px auto 0;text-align:center;color:#94a3b8;font-size:.7rem;line-height:1.4}
       @media(max-width:960px){
         .google-review-card{flex:0 0 calc(50% - 9px);min-width:280px}
       }
       @media(max-width:680px){
-        .google-reviews-section{padding:52px 0}
-        .google-review-summary{padding:20px;align-items:flex-start;flex-direction:column}
+        .google-reviews-section{padding:34px 0}
+        .google-review-summary{padding:18px;align-items:flex-start;flex-direction:column}
         .google-review-actions{width:100%;flex-direction:column}
         .google-review-actions a{justify-content:center}
-        .google-review-card{flex:0 0 86vw;max-width:320px;min-width:260px}
+        .google-review-card{flex:0 0 86vw;max-width:320px;min-width:260px;padding:18px}
+        .google-slider-controls{margin-top:16px;gap:10px}
+        .google-slider-arrow{width:36px;height:36px}
+        .google-slider-dots{gap:6px}
+        .google-slider-dot{width:7px;height:7px}
+        .google-slider-dot.active{width:20px}
+        .google-review-source{flex-direction:column;gap:8px;margin-top:16px;text-align:center}
+        .google-review-source-note{font-size:.74rem}
+        .google-review-source-link{font-size:.74rem;padding:7px 16px}
+        .google-review-disclosure{font-size:.64rem;max-width:300px;margin:8px auto 0;line-height:1.35;opacity:.85}
       }
     `}</style>
     <div className="container">
@@ -252,8 +262,15 @@ export default function GoogleReviewsSection() {
         </div>
       </div>
 
-      <p className="google-review-source"><GoogleMark size={16} /> Rating and reviewer details verified against the public Google listing. <a href={GOOGLE_REVIEWS_URL} target="_blank" rel="noopener noreferrer">Read every review on Google <ExternalLink size={11} /></a></p>
-      <p className="google-review-disclosure">Short excerpts are reproduced as published. No job titles, organizations, buyer-verification claims, or reviewer locations have been added.</p>
+      <div className="google-review-source">
+        <span className="google-review-source-note">
+          <GoogleMark size={16} /> Verified Google Business Reviews
+        </span>
+        <a href={GOOGLE_REVIEWS_URL} target="_blank" rel="noopener noreferrer" className="google-review-source-link">
+          Read all on Google <ExternalLink size={12} />
+        </a>
+      </div>
+      <p className="google-review-disclosure">Short excerpts reproduced directly from public Google listing.</p>
     </div>
   </section>;
 }

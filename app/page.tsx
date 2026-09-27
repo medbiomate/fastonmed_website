@@ -659,7 +659,7 @@ export default function HomePage() {
 
   const handleAddToCart = (product: Product) => {
     addToCart(product, 1);
-    setToastMessage(`Added "${product.name}" to cart`);
+    setToastMessage(`Added "${product.name}" to enquiry list`);
     setTimeout(() => setToastMessage(null), 3000);
   };
 
@@ -821,37 +821,16 @@ export default function HomePage() {
           >
             {/* Left Column: Headline & Content */}
             <div id="hero-left-content">
-              {/* Trust Badge with Primary SEO Keyword */}
-              <div
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  backgroundColor: '#e6f7f0',
-                  color: '#00875a',
-                  padding: '6px 14px',
-                  borderRadius: '999px',
-                  fontSize: '0.78rem',
-                  fontWeight: 800,
-                  letterSpacing: '0.05em',
-                  textTransform: 'uppercase',
-                  marginBottom: '20px',
-                  fontFamily: 'Arial, Helvetica, sans-serif'
-                }}
-              >
-                <span>MoHAP Licensed · Best Medical Equipment Supplier in UAE</span>
-              </div>
-
               {/* Main H1: Best Medical Equipment Supplier in UAE */}
               <h1
                 id="hero-main-title"
                 style={{
-                  fontSize: '3.3rem',
+                  fontSize: '3.2rem',
                   fontWeight: 800,
                   color: '#0f172a',
-                  lineHeight: 1.14,
+                  lineHeight: 1.15,
                   letterSpacing: '-0.025em',
-                  margin: '0 0 16px',
+                  margin: '0 0 14px',
                   fontFamily: 'Arial, Helvetica, sans-serif'
                 }}
               >
@@ -863,31 +842,44 @@ export default function HomePage() {
               <div
                 id="hero-credibility-statement"
                 style={{
-                  fontSize: '1.25rem',
-                  fontWeight: 800,
+                  fontSize: '1.15rem',
+                  fontWeight: 700,
                   color: '#0f172a',
                   lineHeight: 1.35,
-                  margin: '0 0 16px',
+                  margin: '0 0 14px',
                   letterSpacing: '-0.01em',
                   fontFamily: 'Arial, Helvetica, sans-serif'
                 }}
               >
-                Since 2024. 10,000+ Devices. 100% Certified.
+                Since 2024 · 10,000+ Devices · 100% Certified
               </div>
 
               {/* Subtitle with SEO sub-keywords */}
               <p
                 id="hero-main-subtitle"
+                className="hero-desc-desktop"
                 style={{
-                  fontSize: '1rem',
+                  fontSize: '0.98rem',
                   color: '#475569',
-                  lineHeight: 1.65,
-                  margin: '0 0 28px',
+                  lineHeight: 1.6,
+                  margin: '0 0 24px',
                   maxWidth: '540px',
                   fontFamily: 'Arial, Helvetica, sans-serif'
                 }}
               >
-                FastOnMed is the premier medical equipment supplier in UAE. We deliver MoHAP-licensed biomedical technology, ICU ventilators, patient monitors, diagnostic devices, and clinical consumables to leading hospitals, clinics, and laboratories across Dubai, Abu Dhabi, and the Northern Emirates.
+                FastOnMed is the premier medical equipment supplier in UAE, delivering MoHAP-licensed biomedical technology, ICU systems, and clinical supplies across all 7 Emirates.
+              </p>
+              <p
+                className="hero-desc-mobile"
+                style={{
+                  fontSize: '0.86rem',
+                  color: '#64748b',
+                  lineHeight: 1.45,
+                  margin: '0 0 16px',
+                  fontFamily: 'Arial, Helvetica, sans-serif'
+                }}
+              >
+                MoHAP-certified biomedical systems & clinical supplies across the UAE.
               </p>
 
               {/* Action Buttons: In-line on Laptop, Stacked on Mobile, Icon matching Logo Color #42B69C */}
@@ -1032,51 +1024,85 @@ export default function HomePage() {
           .hero-nav-btn-secondary:active {
             transform: translateY(0);
           }
+          .hero-desc-mobile {
+            display: none;
+          }
           @media (max-width: 900px) {
             #medinova-hero-section {
-              padding: 28px 0 36px !important;
+              padding: 16px 0 24px !important;
             }
             #hero-two-col-grid {
-              grid-template-columns: 1fr !important;
-              gap: 28px !important;
+              display: flex !important;
+              flex-direction: column !important;
+              gap: 0 !important;
             }
             #hero-left-content {
-              text-align: left !important;
+              display: contents !important;
             }
             #hero-main-title {
-              font-size: 2.35rem !important;
-              line-height: 1.14 !important;
-              margin-bottom: 14px !important;
+              order: 1 !important;
+              font-size: 1.58rem !important;
+              line-height: 1.2 !important;
+              margin-bottom: 6px !important;
               letter-spacing: -0.02em !important;
+              text-align: left !important;
             }
             #hero-credibility-statement {
-              font-size: 1.15rem !important;
+              order: 2 !important;
+              font-size: 0.88rem !important;
               line-height: 1.35 !important;
-              margin-bottom: 14px !important;
-            }
-            #hero-main-subtitle {
-              font-size: 0.95rem !important;
-              line-height: 1.6 !important;
-              margin-bottom: 22px !important;
-            }
-            #hero-actions-container {
-              flex-direction: column !important;
-              width: 100% !important;
-              gap: 12px !important;
-            }
-            .hero-nav-btn-primary, .hero-nav-btn-secondary {
-              width: 100% !important;
-              height: 52px !important;
-              font-size: 0.98rem !important;
+              margin-bottom: 12px !important;
+              color: #00875a !important;
+              text-align: left !important;
             }
             #hero-image-col {
-              max-width: 540px !important;
+              order: 3 !important;
+              max-width: 100% !important;
               width: 100% !important;
-              margin: 0 auto !important;
+              margin: 0 0 14px !important;
+            }
+            #hero-image-col > div {
+              padding: 12px !important;
+              border-radius: 16px !important;
             }
             .hero-showcase-main-img {
-              height: 290px !important;
-              padding: 18px !important;
+              height: 230px !important;
+              padding: 12px !important;
+              border-radius: 12px !important;
+            }
+            .hero-desc-desktop {
+              display: none !important;
+            }
+            .hero-desc-mobile {
+              order: 4 !important;
+              display: block !important;
+              font-size: 0.85rem !important;
+              line-height: 1.45 !important;
+              margin-bottom: 14px !important;
+              text-align: left !important;
+            }
+            #hero-actions-container {
+              order: 5 !important;
+              display: flex !important;
+              flex-direction: row !important;
+              width: 100% !important;
+              gap: 8px !important;
+            }
+            .hero-nav-btn-primary {
+              flex: 1.2 !important;
+              width: auto !important;
+              height: 44px !important;
+              padding: 0 12px !important;
+              font-size: 0.84rem !important;
+              border-radius: 8px !important;
+            }
+            .hero-nav-btn-secondary {
+              flex: 1 !important;
+              width: auto !important;
+              height: 44px !important;
+              padding: 0 12px !important;
+              font-size: 0.84rem !important;
+              border-radius: 8px !important;
             }
           }
         `}</style>
@@ -1155,13 +1181,25 @@ export default function HomePage() {
           @media (max-width: 900px) {
             #medinova-trust-cards {
               grid-template-columns: repeat(2, 1fr) !important;
-              padding: 20px !important;
-              gap: 18px !important;
+              padding: 16px 14px !important;
+              gap: 12px !important;
+              margin-top: -16px !important;
+              border-radius: 14px !important;
+            }
+            #medinova-trust-cards h4 {
+              font-size: 0.82rem !important;
+              margin-bottom: 2px !important;
+            }
+            #medinova-trust-cards p {
+              font-size: 0.72rem !important;
+              line-height: 1.35 !important;
             }
           }
           @media (max-width: 580px) {
             #medinova-trust-cards {
               grid-template-columns: 1fr !important;
+              gap: 10px !important;
+              padding: 14px !important;
             }
           }
         `}</style>
@@ -1334,15 +1372,17 @@ export default function HomePage() {
         <style>{`
           @media (max-width: 900px) {
             #about-us-card-box {
-              padding: 30px 20px !important;
-              border-radius: 18px !important;
+              padding: 22px 16px !important;
+              border-radius: 16px !important;
             }
             #about-two-col-grid {
               grid-template-columns: 1fr !important;
-              gap: 36px !important;
+              gap: 22px !important;
             }
             #about-headline {
-              font-size: 1.85rem !important;
+              font-size: 1.38rem !important;
+              line-height: 1.25 !important;
+              margin-bottom: 10px !important;
             }
           }
         `}</style>
@@ -1371,6 +1411,7 @@ export default function HomePage() {
               OUR SPECIALTIES
             </div>
             <h2
+              id="specialties-heading"
               style={{
                 fontSize: '2.3rem',
                 fontWeight: 800,
@@ -1496,10 +1537,15 @@ export default function HomePage() {
               grid-template-columns: repeat(3, 1fr) !important;
             }
           }
-          @media (max-width: 640px) {
+          @media (max-width: 768px) {
+            #specialties-heading {
+              font-size: 1.38rem !important;
+              line-height: 1.25 !important;
+              margin-bottom: 6px !important;
+            }
             #therapeutic-cards-grid {
               grid-template-columns: repeat(2, 1fr) !important;
-              gap: 10px !important;
+              gap: 8px !important;
             }
           }
         `}</style>
@@ -1520,53 +1566,142 @@ export default function HomePage() {
             style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(4, 1fr)',
-              gap: '24px',
+              gap: '20px',
               textAlign: 'center'
             }}
           >
             {/* Stat 1 */}
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <div style={{ marginBottom: '8px', opacity: 0.9 }}>
-                <Globe size={28} color="#ffffff" />
+            <div className="metric-stat-box">
+              <div className="metric-stat-icon">
+                <Globe size={24} color="#ffffff" />
               </div>
-              <div style={{ fontSize: '2.5rem', fontWeight: 800, lineHeight: 1.1, fontFamily: 'Arial, Helvetica, sans-serif' }}>7</div>
-              <div style={{ fontSize: '0.84rem', opacity: 0.85, marginTop: '4px', fontFamily: 'Arial, Helvetica, sans-serif' }}>Emirates Covered</div>
+              <div className="metric-stat-number">7</div>
+              <div className="metric-stat-label">Emirates Covered</div>
             </div>
 
             {/* Stat 2 */}
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <div style={{ marginBottom: '8px', opacity: 0.9 }}>
-                <Package size={28} color="#ffffff" />
+            <div className="metric-stat-box">
+              <div className="metric-stat-icon">
+                <Package size={24} color="#ffffff" />
               </div>
-              <div style={{ fontSize: '2.5rem', fontWeight: 800, lineHeight: 1.1, fontFamily: 'Arial, Helvetica, sans-serif' }}>500+</div>
-              <div style={{ fontSize: '0.84rem', opacity: 0.85, marginTop: '4px', fontFamily: 'Arial, Helvetica, sans-serif' }}>Quality Medical Devices</div>
+              <div className="metric-stat-number">500+</div>
+              <div className="metric-stat-label">Quality Medical Devices</div>
             </div>
 
             {/* Stat 3 */}
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <div style={{ marginBottom: '8px', opacity: 0.9 }}>
-                <Users size={28} color="#ffffff" />
+            <div className="metric-stat-box">
+              <div className="metric-stat-icon">
+                <Users size={24} color="#ffffff" />
               </div>
-              <div style={{ fontSize: '2.5rem', fontWeight: 800, lineHeight: 1.1, fontFamily: 'Arial, Helvetica, sans-serif' }}>300+</div>
-              <div style={{ fontSize: '0.84rem', opacity: 0.85, marginTop: '4px', fontFamily: 'Arial, Helvetica, sans-serif' }}>Hospitals & Clinics</div>
+              <div className="metric-stat-number">300+</div>
+              <div className="metric-stat-label">Hospitals & Clinics</div>
             </div>
 
             {/* Stat 4 */}
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <div style={{ marginBottom: '8px', opacity: 0.9 }}>
-                <Award size={28} color="#ffffff" />
+            <div className="metric-stat-box">
+              <div className="metric-stat-icon">
+                <Award size={24} color="#ffffff" />
               </div>
-              <div style={{ fontSize: '2.5rem', fontWeight: 800, lineHeight: 1.1, fontFamily: 'Arial, Helvetica, sans-serif' }}>2024</div>
-              <div style={{ fontSize: '0.84rem', opacity: 0.85, marginTop: '4px', fontFamily: 'Arial, Helvetica, sans-serif' }}>Since Established in UAE</div>
+              <div className="metric-stat-number">2024</div>
+              <div className="metric-stat-label">Since Established in UAE</div>
             </div>
           </div>
         </div>
 
         <style>{`
+          .metric-stat-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justifyContent: center;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            border-radius: 16px;
+            padding: 24px 18px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: transform 0.2s ease, background 0.2s ease;
+          }
+          .metric-stat-box:hover {
+            background: rgba(255, 255, 255, 0.18);
+            transform: translateY(-3px);
+          }
+          .metric-stat-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.16);
+            display: grid;
+            place-items: center;
+            line-height: 0;
+            margin: 0 auto 12px auto;
+          }
+          .metric-stat-icon svg {
+            display: block;
+            margin: auto;
+          }
+          .metric-stat-number {
+            font-size: 2.2rem;
+            font-weight: 800;
+            line-height: 1.1;
+            color: #ffffff;
+            font-family: Arial, Helvetica, sans-serif;
+            letter-spacing: -0.02em;
+            text-align: center;
+            width: 100%;
+          }
+          .metric-stat-label {
+            font-size: 0.85rem;
+            color: #f1fdf8;
+            font-weight: 600;
+            margin-top: 6px;
+            font-family: Arial, Helvetica, sans-serif;
+            letter-spacing: 0.01em;
+            text-align: center;
+            width: 100%;
+          }
           @media (max-width: 768px) {
             #metrics-ribbon-grid {
               grid-template-columns: repeat(2, 1fr) !important;
-              gap: 28px 16px !important;
+              gap: 12px !important;
+            }
+            .metric-stat-box {
+              display: flex !important;
+              flex-direction: column !important;
+              align-items: center !important;
+              justify-content: center !important;
+              text-align: center !important;
+              padding: 18px 12px !important;
+              border-radius: 14px !important;
+              background: rgba(255, 255, 255, 0.14) !important;
+              border: 1px solid rgba(255, 255, 255, 0.25) !important;
+            }
+            .metric-stat-icon {
+              width: 42px !important;
+              height: 42px !important;
+              margin: 0 auto 8px auto !important;
+              border-radius: 10px !important;
+              display: grid !important;
+              place-items: center !important;
+              line-height: 0 !important;
+            }
+            .metric-stat-icon svg {
+              display: block !important;
+              margin: auto !important;
+              width: 22px !important;
+              height: 22px !important;
+            }
+            .metric-stat-number {
+              font-size: 1.75rem !important;
+              text-align: center !important;
+            }
+            .metric-stat-label {
+              font-size: 0.78rem !important;
+              margin-top: 4px !important;
+              opacity: 0.95 !important;
+              text-align: center !important;
             }
           }
         `}</style>
@@ -1595,6 +1730,7 @@ export default function HomePage() {
               WHO WE SUPPLY & DELIVER TO
             </div>
             <h2
+              id="facilities-heading"
               style={{
                 fontSize: '2.3rem',
                 fontWeight: 800,
@@ -1628,12 +1764,10 @@ export default function HomePage() {
               gap: '20px'
             }}
           >
-            {healthcareFacilitiesServed.map(facility => {
-              const IconComp = facility.icon;
-              return (
-                <Link
-                  key={facility.id}
-                  href={facility.href}
+            {healthcareFacilitiesServed.map(facility => (
+              <Link
+                key={facility.id}
+                href={facility.href}
                   style={{
                     backgroundColor: '#ffffff',
                     borderRadius: '16px',
@@ -1669,54 +1803,6 @@ export default function HomePage() {
                       }}
                       className="facility-image-zoom"
                     />
-                    <div
-                      style={{
-                        position: 'absolute',
-                        inset: 0,
-                        background: 'linear-gradient(to top, rgba(15, 23, 42, 0.45) 0%, transparent 60%)'
-                      }}
-                    />
-
-                    {/* Floating Sector Badge */}
-                    <span
-                      style={{
-                        position: 'absolute',
-                        top: '12px',
-                        right: '12px',
-                        fontSize: '0.68rem',
-                        fontWeight: 700,
-                        backgroundColor: 'rgba(255, 255, 255, 0.92)',
-                        backdropFilter: 'blur(6px)',
-                        color: '#0f172a',
-                        padding: '4px 10px',
-                        borderRadius: '999px',
-                        letterSpacing: '0.02em',
-                        boxShadow: '0 2px 6px rgba(0, 0, 0, 0.12)',
-                        fontFamily: 'Arial, Helvetica, sans-serif'
-                      }}
-                    >
-                      {facility.badge}
-                    </span>
-
-                    {/* Floating Icon Indicator */}
-                    <div
-                      style={{
-                        position: 'absolute',
-                        bottom: '12px',
-                        left: '14px',
-                        width: '36px',
-                        height: '36px',
-                        borderRadius: '10px',
-                        backgroundColor: '#ffffff',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        color: '#00875a',
-                        boxShadow: '0 4px 10px rgba(0, 0, 0, 0.15)'
-                      }}
-                    >
-                      <IconComp size={19} />
-                    </div>
                   </div>
 
                   {/* Card Content Body */}
@@ -1765,9 +1851,8 @@ export default function HomePage() {
                     </div>
                   </div>
                 </Link>
-              );
-            })}
-          </div>
+              ))}
+            </div>
         </div>
 
         <style>{`
@@ -1784,9 +1869,17 @@ export default function HomePage() {
               grid-template-columns: repeat(2, 1fr) !important;
             }
           }
+          @media (max-width: 768px) {
+            #facilities-heading {
+              font-size: 1.38rem !important;
+              line-height: 1.25 !important;
+              margin-bottom: 8px !important;
+            }
+          }
           @media (max-width: 640px) {
             #facilities-cards-grid {
               grid-template-columns: 1fr !important;
+              gap: 12px !important;
             }
           }
         `}</style>
@@ -1824,6 +1917,7 @@ export default function HomePage() {
                 LIVE CATALOG
               </div>
               <h2
+                id="catalog-heading"
                 style={{
                   fontSize: '2.1rem',
                   fontWeight: 800,
@@ -2036,57 +2130,52 @@ export default function HomePage() {
                       {product.name}
                     </Link>
 
-                    {/* Price and RFQ Action */}
+                    {/* Action Button: Single Full-Width Enquiry */}
                     <div
                       style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
                         marginTop: 'auto',
-                        paddingTop: '12px',
+                        paddingTop: '10px',
                         borderTop: '1px solid #f1f5f9'
                       }}
                     >
-                      <div>
-                        {price > 0 ? (
-                          <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px' }}>
-                            <span style={{ fontSize: '1.05rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                              AED {price.toLocaleString()}
-                            </span>
-                            {hasDiscount && (
-                              <span style={{ fontSize: '0.75rem', color: '#94a3b8', textDecoration: 'line-through', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                                AED {product.regularPrice.toLocaleString()}
-                              </span>
-                            )}
-                          </div>
-                        ) : (
-                          <span style={{ fontSize: '0.84rem', fontWeight: 700, color: '#00875a', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                            Quote on Request
+                      {price > 0 && (
+                        <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px', marginBottom: '8px' }}>
+                          <span style={{ fontSize: '0.98rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                            AED {price.toLocaleString()}
                           </span>
-                        )}
-                      </div>
+                          {hasDiscount && (
+                            <span style={{ fontSize: '0.72rem', color: '#94a3b8', textDecoration: 'line-through', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                              AED {product.regularPrice.toLocaleString()}
+                            </span>
+                          )}
+                        </div>
+                      )}
 
                       <button
                         type="button"
                         onClick={() => handleAddToCart(product)}
+                        className="product-enquiry-btn"
                         style={{
+                          width: '100%',
                           backgroundColor: '#00875a',
                           color: '#ffffff',
                           border: 'none',
-                          padding: '7px 14px',
+                          padding: '8px 12px',
                           borderRadius: '8px',
                           fontWeight: 700,
-                          fontSize: '0.78rem',
+                          fontSize: '0.82rem',
                           cursor: 'pointer',
-                          display: 'inline-flex',
+                          display: 'flex',
                           alignItems: 'center',
-                          gap: '4px',
-                          transition: 'all 0.2s',
-                          fontFamily: 'Arial, Helvetica, sans-serif'
+                          justifyContent: 'center',
+                          gap: '6px',
+                          transition: 'all 0.2s ease',
+                          fontFamily: 'Arial, Helvetica, sans-serif',
+                          boxShadow: '0 2px 6px rgba(0, 135, 90, 0.18)'
                         }}
                       >
-                        <span>RFQ</span>
-                        <ChevronRight size={13} />
+                        <span>Enquiry</span>
+                        <ChevronRight size={14} />
                       </button>
                     </div>
                   </div>
@@ -2131,12 +2220,22 @@ export default function HomePage() {
           .product-card-modern:hover .product-img {
             transform: scale(1.04);
           }
+          .product-enquiry-btn:hover {
+            background-color: #00714b !important;
+            box-shadow: 0 4px 10px rgba(0, 135, 90, 0.28) !important;
+            transform: translateY(-1px);
+          }
           @media (max-width: 1024px) {
             .recommended-product-grid {
               grid-template-columns: repeat(3, 1fr) !important;
             }
           }
           @media (max-width: 768px) {
+            #catalog-heading {
+              font-size: 1.38rem !important;
+              line-height: 1.25 !important;
+              margin-bottom: 6px !important;
+            }
             .recommended-product-grid {
               grid-template-columns: repeat(2, 1fr) !important;
               gap: 10px !important;
@@ -2152,8 +2251,8 @@ export default function HomePage() {
             id="rfq-two-column-layout"
             style={{
               display: 'grid',
-              gridTemplateColumns: '1fr 1.25fr',
-              gap: '48px',
+              gridTemplateColumns: '1fr 1.15fr',
+              gap: '40px',
               alignItems: 'start'
             }}
           >
@@ -2166,28 +2265,29 @@ export default function HomePage() {
                   gap: '6px',
                   backgroundColor: '#e6f7f0',
                   color: '#00875a',
-                  padding: '5px 14px',
+                  padding: '5px 12px',
                   borderRadius: '999px',
-                  fontSize: '0.76rem',
-                  fontWeight: 800,
+                  fontSize: '0.74rem',
+                  fontWeight: 700,
                   textTransform: 'uppercase',
                   letterSpacing: '0.04em',
                   marginBottom: '14px',
                   fontFamily: 'Arial, Helvetica, sans-serif'
                 }}
               >
-                <Zap size={14} color="#00875a" />
+                <Zap size={13} color="#00875a" />
                 <span>DIRECT CRM INTEGRATION • FAST 2-HR RESPONSE</span>
               </div>
 
               <h2
+                id="rfq-main-heading"
                 style={{
-                  fontSize: '2.3rem',
+                  fontSize: '2.1rem',
                   fontWeight: 800,
                   color: '#0f172a',
                   letterSpacing: '-0.02em',
-                  lineHeight: 1.2,
-                  margin: '0 0 16px',
+                  lineHeight: 1.25,
+                  margin: '0 0 14px',
                   fontFamily: 'Arial, Helvetica, sans-serif'
                 }}
               >
@@ -2196,24 +2296,24 @@ export default function HomePage() {
 
               <p
                 style={{
-                  fontSize: '0.94rem',
+                  fontSize: '0.92rem',
                   color: '#64748b',
                   lineHeight: 1.6,
-                  margin: '0 0 28px',
+                  margin: '0 0 24px',
                   fontFamily: 'Arial, Helvetica, sans-serif'
                 }}
               >
-                Submit your procurement specifications directly into the FastOnMed Biomedical CRM platform. Our certified clinical engineers evaluate your facility requirements, provide official manufacturer quotations, and dispatch certified equipment across all 7 Emirates.
+                Submit your procurement specifications directly to our UAE biomedical engineering team for official manufacturer quotations and fast dispatch across all 7 Emirates.
               </p>
 
               {/* 3 Key Trust Pillars */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '32px' }}>
-                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '14px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '28px' }}>
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
                   <div
                     style={{
-                      width: '38px',
-                      height: '38px',
-                      borderRadius: '10px',
+                      width: '36px',
+                      height: '36px',
+                      borderRadius: '8px',
                       backgroundColor: '#e6f7f0',
                       display: 'flex',
                       alignItems: 'center',
@@ -2222,24 +2322,24 @@ export default function HomePage() {
                       flexShrink: 0
                     }}
                   >
-                    <CheckCircle2 size={20} />
+                    <CheckCircle2 size={18} />
                   </div>
                   <div>
-                    <div style={{ fontSize: '0.94rem', fontWeight: 800, color: '#0f172a', marginBottom: '2px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                      Real-Time CRM Pipeline Assignment
+                    <div style={{ fontSize: '0.92rem', fontWeight: 700, color: '#0f172a', marginBottom: '2px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                      Real-Time CRM Assignment
                     </div>
-                    <div style={{ fontSize: '0.8rem', color: '#64748b', lineHeight: 1.45, fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                      Your inquiry is instantly ticketed and routed to specialized biomedical engineers in Dubai.
+                    <div style={{ fontSize: '0.8rem', color: '#64748b', lineHeight: 1.4, fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                      Instant ticket routing to biomedical engineers in Dubai.
                     </div>
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '14px' }}>
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
                   <div
                     style={{
-                      width: '38px',
-                      height: '38px',
-                      borderRadius: '10px',
+                      width: '36px',
+                      height: '36px',
+                      borderRadius: '8px',
                       backgroundColor: '#e6f7f0',
                       display: 'flex',
                       alignItems: 'center',
@@ -2248,24 +2348,24 @@ export default function HomePage() {
                       flexShrink: 0
                     }}
                   >
-                    <ShieldCheck size={20} />
+                    <ShieldCheck size={18} />
                   </div>
                   <div>
-                    <div style={{ fontSize: '0.94rem', fontWeight: 800, color: '#0f172a', marginBottom: '2px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                    <div style={{ fontSize: '0.92rem', fontWeight: 700, color: '#0f172a', marginBottom: '2px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
                       MoHAP & DHA Certified Documentation
                     </div>
-                    <div style={{ fontSize: '0.8rem', color: '#64748b', lineHeight: 1.45, fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                      Complete compliance certificates, factory calibration reports, and official warranty terms.
+                    <div style={{ fontSize: '0.8rem', color: '#64748b', lineHeight: 1.4, fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                      Official compliance certificates, factory calibration, and warranty.
                     </div>
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '14px' }}>
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
                   <div
                     style={{
-                      width: '38px',
-                      height: '38px',
-                      borderRadius: '10px',
+                      width: '36px',
+                      height: '36px',
+                      borderRadius: '8px',
                       backgroundColor: '#e6f7f0',
                       display: 'flex',
                       alignItems: 'center',
@@ -2274,14 +2374,14 @@ export default function HomePage() {
                       flexShrink: 0
                     }}
                   >
-                    <Truck size={20} />
+                    <Truck size={18} />
                   </div>
                   <div>
-                    <div style={{ fontSize: '0.94rem', fontWeight: 800, color: '#0f172a', marginBottom: '2px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                      Immediate UAE Stock & Turnkey Deployment
+                    <div style={{ fontSize: '0.92rem', fontWeight: 700, color: '#0f172a', marginBottom: '2px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                      Immediate UAE Stock & Deployment
                     </div>
-                    <div style={{ fontSize: '0.8rem', color: '#64748b', lineHeight: 1.45, fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                      Direct dispatch from our UAE fulfillment centers with professional on-site biomedical installation.
+                    <div style={{ fontSize: '0.8rem', color: '#64748b', lineHeight: 1.4, fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                      Direct dispatch from UAE fulfillment centers with biomedical installation.
                     </div>
                   </div>
                 </div>
@@ -2290,22 +2390,23 @@ export default function HomePage() {
               {/* Direct Urgent Contact Box */}
               <div
                 style={{
-                  backgroundColor: '#f8fafc',
+                  backgroundColor: '#ffffff',
                   border: '1px solid #e2e8f0',
-                  borderRadius: '14px',
-                  padding: '18px 20px',
+                  borderRadius: '12px',
+                  padding: '16px 20px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
                   flexWrap: 'wrap',
-                  gap: '12px'
+                  gap: '12px',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.02)'
                 }}
               >
                 <div>
-                  <div style={{ fontSize: '0.72rem', fontWeight: 800, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.04em', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                  <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.04em', fontFamily: 'Arial, Helvetica, sans-serif' }}>
                     Need Immediate Urgent Assistance?
                   </div>
-                  <div style={{ fontSize: '1.05rem', fontWeight: 800, color: '#0f172a', marginTop: '2px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                  <div style={{ fontSize: '1rem', fontWeight: 700, color: '#0f172a', marginTop: '2px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
                     +971 4 238 4111 / +971 50 123 4567
                   </div>
                 </div>
@@ -2336,11 +2437,11 @@ export default function HomePage() {
             {/* Right Column: Modern CRM Lead Capture Form */}
             <div
               style={{
-                backgroundColor: '#f8fafc',
-                borderRadius: '20px',
-                border: '1.5px solid #e2e8f0',
-                padding: '36px 32px',
-                boxShadow: '0 8px 30px rgba(0, 0, 0, 0.04)',
+                backgroundColor: '#ffffff',
+                borderRadius: '16px',
+                border: '1px solid #e2e8f0',
+                padding: '30px 28px',
+                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.04)',
                 fontFamily: 'Arial, Helvetica, sans-serif'
               }}
             >
@@ -2348,28 +2449,28 @@ export default function HomePage() {
                 <div style={{ textAlign: 'center', padding: '36px 12px' }}>
                   <div
                     style={{
-                      width: '68px',
-                      height: '68px',
+                      width: '64px',
+                      height: '64px',
                       borderRadius: '50%',
                       backgroundColor: '#e6f7f0',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      margin: '0 auto 20px',
+                      margin: '0 auto 18px',
                       color: '#00875a'
                     }}
                   >
-                    <CheckCircle2 size={38} />
+                    <CheckCircle2 size={34} />
                   </div>
-                  <h3 style={{ fontSize: '1.45rem', fontWeight: 800, color: '#0f172a', margin: '0 0 8px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                  <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#0f172a', margin: '0 0 8px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
                     Inquiry Forwarded to FastOnMed CRM!
                   </h3>
                   {leadRefId && (
                     <div
                       style={{
                         display: 'inline-block',
-                        backgroundColor: '#ffffff',
-                        border: '1px solid #cbd5e1',
+                        backgroundColor: '#f8fafc',
+                        border: '1px solid #e2e8f0',
                         padding: '4px 14px',
                         borderRadius: '999px',
                         fontSize: '0.8rem',
@@ -2394,7 +2495,7 @@ export default function HomePage() {
                         backgroundColor: '#25D366',
                         color: '#ffffff',
                         padding: '10px 20px',
-                        borderRadius: '10px',
+                        borderRadius: '8px',
                         fontSize: '0.86rem',
                         fontWeight: 700,
                         textDecoration: 'none',
@@ -2427,7 +2528,7 @@ export default function HomePage() {
                         border: '1px solid #cbd5e1',
                         color: '#0f172a',
                         padding: '10px 20px',
-                        borderRadius: '10px',
+                        borderRadius: '8px',
                         fontSize: '0.86rem',
                         fontWeight: 700,
                         cursor: 'pointer',
@@ -2440,11 +2541,11 @@ export default function HomePage() {
                 </div>
               ) : (
                 <form onSubmit={handleLeadSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                  <div style={{ borderBottom: '1px solid #e2e8f0', paddingBottom: '14px', marginBottom: '4px' }}>
-                    <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0f172a', margin: '0 0 4px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                  <div style={{ borderBottom: '1px solid #f1f5f9', paddingBottom: '12px', marginBottom: '2px' }}>
+                    <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#0f172a', margin: '0 0 4px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
                       Fast Equipment RFQ & Consultation
                     </h3>
-                    <p style={{ fontSize: '0.78rem', color: '#64748b', margin: 0, fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                    <p style={{ fontSize: '0.8rem', color: '#64748b', margin: 0, fontFamily: 'Arial, Helvetica, sans-serif' }}>
                       Fill in your facility details below. Leads are directly dispatched to our UAE CRM team.
                     </p>
                   </div>
@@ -2469,51 +2570,55 @@ export default function HomePage() {
                   {/* Row 1: Contact Name & Phone */}
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }} className="rfq-form-row">
                     <div>
-                      <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 700, color: '#334155', marginBottom: '6px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                      <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 600, color: '#475569', marginBottom: '6px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
                         Contact Person Name *
                       </label>
                       <input
                         type="text"
                         required
-                        placeholder="e.g. Dr. Ahmed / Eng. Bilal"
+                        placeholder="Full name"
+                        className="rfq-field-input"
                         value={leadForm.name}
                         onChange={e => setLeadForm({ ...leadForm, name: e.target.value })}
                         style={{
                           width: '100%',
-                          padding: '10px 14px',
+                          padding: '9px 12px',
                           borderRadius: '8px',
-                          border: '1.5px solid #cbd5e1',
-                          backgroundColor: '#ffffff',
-                          fontSize: '0.85rem',
+                          border: '1px solid #e2e8f0',
+                          backgroundColor: '#f8fafc',
+                          fontSize: '0.84rem',
                           color: '#0f172a',
                           outline: 'none',
                           boxSizing: 'border-box',
-                          fontFamily: 'Arial, Helvetica, sans-serif'
+                          fontFamily: 'Arial, Helvetica, sans-serif',
+                          transition: 'all 0.15s ease'
                         }}
                       />
                     </div>
 
                     <div>
-                      <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 700, color: '#334155', marginBottom: '6px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                      <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 600, color: '#475569', marginBottom: '6px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
                         Phone / WhatsApp *
                       </label>
                       <input
                         type="tel"
                         required
-                        placeholder="+971 50 123 4567"
+                        placeholder="+971 50 000 0000"
+                        className="rfq-field-input"
                         value={leadForm.phone}
                         onChange={e => setLeadForm({ ...leadForm, phone: e.target.value })}
                         style={{
                           width: '100%',
-                          padding: '10px 14px',
+                          padding: '9px 12px',
                           borderRadius: '8px',
-                          border: '1.5px solid #cbd5e1',
-                          backgroundColor: '#ffffff',
-                          fontSize: '0.85rem',
+                          border: '1px solid #e2e8f0',
+                          backgroundColor: '#f8fafc',
+                          fontSize: '0.84rem',
                           color: '#0f172a',
                           outline: 'none',
                           boxSizing: 'border-box',
-                          fontFamily: 'Arial, Helvetica, sans-serif'
+                          fontFamily: 'Arial, Helvetica, sans-serif',
+                          transition: 'all 0.15s ease'
                         }}
                       />
                     </div>
@@ -2522,50 +2627,54 @@ export default function HomePage() {
                   {/* Row 2: Email & Healthcare Facility Name */}
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }} className="rfq-form-row">
                     <div>
-                      <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 700, color: '#334155', marginBottom: '6px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                      <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 600, color: '#475569', marginBottom: '6px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
                         Official Email Address *
                       </label>
                       <input
                         type="email"
                         required
-                        placeholder="procurement@hospital.ae"
+                        placeholder="name@organization.ae"
+                        className="rfq-field-input"
                         value={leadForm.email}
                         onChange={e => setLeadForm({ ...leadForm, email: e.target.value })}
                         style={{
                           width: '100%',
-                          padding: '10px 14px',
+                          padding: '9px 12px',
                           borderRadius: '8px',
-                          border: '1.5px solid #cbd5e1',
-                          backgroundColor: '#ffffff',
-                          fontSize: '0.85rem',
+                          border: '1px solid #e2e8f0',
+                          backgroundColor: '#f8fafc',
+                          fontSize: '0.84rem',
                           color: '#0f172a',
                           outline: 'none',
                           boxSizing: 'border-box',
-                          fontFamily: 'Arial, Helvetica, sans-serif'
+                          fontFamily: 'Arial, Helvetica, sans-serif',
+                          transition: 'all 0.15s ease'
                         }}
                       />
                     </div>
 
                     <div>
-                      <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 700, color: '#334155', marginBottom: '6px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                      <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 600, color: '#475569', marginBottom: '6px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
                         Healthcare Facility / Firm Name
                       </label>
                       <input
                         type="text"
-                        placeholder="e.g. Aster Clinic / Al Zahra Hospital"
+                        placeholder="Clinic or hospital name"
+                        className="rfq-field-input"
                         value={leadForm.facilityName}
                         onChange={e => setLeadForm({ ...leadForm, facilityName: e.target.value })}
                         style={{
                           width: '100%',
-                          padding: '10px 14px',
+                          padding: '9px 12px',
                           borderRadius: '8px',
-                          border: '1.5px solid #cbd5e1',
-                          backgroundColor: '#ffffff',
-                          fontSize: '0.85rem',
+                          border: '1px solid #e2e8f0',
+                          backgroundColor: '#f8fafc',
+                          fontSize: '0.84rem',
                           color: '#0f172a',
                           outline: 'none',
                           boxSizing: 'border-box',
-                          fontFamily: 'Arial, Helvetica, sans-serif'
+                          fontFamily: 'Arial, Helvetica, sans-serif',
+                          transition: 'all 0.15s ease'
                         }}
                       />
                     </div>
@@ -2574,23 +2683,25 @@ export default function HomePage() {
                   {/* Row 3: Facility Type & Equipment Category */}
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }} className="rfq-form-row">
                     <div>
-                      <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 700, color: '#334155', marginBottom: '6px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                      <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 600, color: '#475569', marginBottom: '6px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
                         Facility Type
                       </label>
                       <select
                         value={leadForm.facilityType}
                         onChange={e => setLeadForm({ ...leadForm, facilityType: e.target.value })}
+                        className="rfq-field-input"
                         style={{
                           width: '100%',
-                          padding: '10px 14px',
+                          padding: '9px 12px',
                           borderRadius: '8px',
-                          border: '1.5px solid #cbd5e1',
-                          backgroundColor: '#ffffff',
-                          fontSize: '0.85rem',
+                          border: '1px solid #e2e8f0',
+                          backgroundColor: '#f8fafc',
+                          fontSize: '0.84rem',
                           color: '#0f172a',
                           outline: 'none',
                           boxSizing: 'border-box',
-                          fontFamily: 'Arial, Helvetica, sans-serif'
+                          fontFamily: 'Arial, Helvetica, sans-serif',
+                          transition: 'all 0.15s ease'
                         }}
                       >
                         <option value="Hospital & Medical Center">Hospital & Medical Center</option>
@@ -2606,23 +2717,25 @@ export default function HomePage() {
                     </div>
 
                     <div>
-                      <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 700, color: '#334155', marginBottom: '6px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                      <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 600, color: '#475569', marginBottom: '6px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
                         Equipment Category of Interest
                       </label>
                       <select
                         value={leadForm.equipmentInterest}
                         onChange={e => setLeadForm({ ...leadForm, equipmentInterest: e.target.value })}
+                        className="rfq-field-input"
                         style={{
                           width: '100%',
-                          padding: '10px 14px',
+                          padding: '9px 12px',
                           borderRadius: '8px',
-                          border: '1.5px solid #cbd5e1',
-                          backgroundColor: '#ffffff',
-                          fontSize: '0.85rem',
+                          border: '1px solid #e2e8f0',
+                          backgroundColor: '#f8fafc',
+                          fontSize: '0.84rem',
                           color: '#0f172a',
                           outline: 'none',
                           boxSizing: 'border-box',
-                          fontFamily: 'Arial, Helvetica, sans-serif'
+                          fontFamily: 'Arial, Helvetica, sans-serif',
+                          transition: 'all 0.15s ease'
                         }}
                       >
                         <option value="ICU & Mechanical Ventilators">ICU & Mechanical Ventilators</option>
@@ -2639,23 +2752,25 @@ export default function HomePage() {
 
                   {/* Row 4: Delivery Timeline */}
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 700, color: '#334155', marginBottom: '6px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                    <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 600, color: '#475569', marginBottom: '6px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
                       Delivery / Procurement Timeline
                     </label>
                     <select
                       value={leadForm.timeline}
                       onChange={e => setLeadForm({ ...leadForm, timeline: e.target.value })}
+                      className="rfq-field-input"
                       style={{
                         width: '100%',
-                        padding: '10px 14px',
+                        padding: '9px 12px',
                         borderRadius: '8px',
-                        border: '1.5px solid #cbd5e1',
-                        backgroundColor: '#ffffff',
-                        fontSize: '0.85rem',
+                        border: '1px solid #e2e8f0',
+                        backgroundColor: '#f8fafc',
+                        fontSize: '0.84rem',
                         color: '#0f172a',
                         outline: 'none',
                         boxSizing: 'border-box',
-                        fontFamily: 'Arial, Helvetica, sans-serif'
+                        fontFamily: 'Arial, Helvetica, sans-serif',
+                        transition: 'all 0.15s ease'
                       }}
                     >
                       <option value="Immediate (Ex-Stock UAE)">Immediate (Ex-Stock UAE - Next 48 Hours)</option>
@@ -2667,26 +2782,28 @@ export default function HomePage() {
 
                   {/* Row 5: Notes / Specifications */}
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 700, color: '#334155', marginBottom: '6px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                    <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 600, color: '#475569', marginBottom: '6px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
                       Specific Models, Quantities or Requirements
                     </label>
                     <textarea
-                      rows={3}
-                      placeholder="e.g. Need 4x ICU patient monitors and 2x motorized hospital beds with installation in Dubai..."
+                      rows={2}
+                      placeholder="Brief details or specific items..."
+                      className="rfq-field-input"
                       value={leadForm.message}
                       onChange={e => setLeadForm({ ...leadForm, message: e.target.value })}
                       style={{
                         width: '100%',
-                        padding: '10px 14px',
+                        padding: '9px 12px',
                         borderRadius: '8px',
-                        border: '1.5px solid #cbd5e1',
-                        backgroundColor: '#ffffff',
-                        fontSize: '0.85rem',
+                        border: '1px solid #e2e8f0',
+                        backgroundColor: '#f8fafc',
+                        fontSize: '0.84rem',
                         color: '#0f172a',
                         outline: 'none',
                         resize: 'vertical',
                         boxSizing: 'border-box',
-                        fontFamily: 'Arial, Helvetica, sans-serif'
+                        fontFamily: 'Arial, Helvetica, sans-serif',
+                        transition: 'all 0.15s ease'
                       }}
                     />
                   </div>
@@ -2699,24 +2816,24 @@ export default function HomePage() {
                       backgroundColor: '#00875a',
                       color: '#ffffff',
                       border: 'none',
-                      borderRadius: '10px',
-                      padding: '14px 24px',
-                      fontSize: '0.94rem',
-                      fontWeight: 800,
+                      borderRadius: '8px',
+                      padding: '13px 22px',
+                      fontSize: '0.92rem',
+                      fontWeight: 700,
                       cursor: isLeadSubmitting ? 'not-allowed' : 'pointer',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       gap: '8px',
-                      boxShadow: '0 4px 14px rgba(0, 135, 90, 0.28)',
+                      boxShadow: '0 4px 12px rgba(0, 135, 90, 0.22)',
                       transition: 'all 0.2s ease',
-                      marginTop: '6px',
+                      marginTop: '4px',
                       opacity: isLeadSubmitting ? 0.75 : 1,
                       fontFamily: 'Arial, Helvetica, sans-serif'
                     }}
                   >
                     <span>{isLeadSubmitting ? 'Synchronizing to CRM...' : 'Submit RFQ to FastOnMed CRM'}</span>
-                    <Send size={16} />
+                    <Send size={15} />
                   </button>
 
                   <div style={{ textAlign: 'center', fontSize: '0.7rem', color: '#94a3b8', marginTop: '2px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
@@ -2729,10 +2846,25 @@ export default function HomePage() {
         </div>
 
         <style>{`
+          .rfq-field-input::placeholder {
+            color: #94a3b8 !important;
+            font-weight: 400 !important;
+            opacity: 0.7 !important;
+          }
+          .rfq-field-input:focus {
+            border-color: #00875a !important;
+            background-color: #ffffff !important;
+            box-shadow: 0 0 0 3px rgba(0, 135, 90, 0.08) !important;
+          }
           @media (max-width: 960px) {
+            #rfq-main-heading {
+              font-size: 1.38rem !important;
+              line-height: 1.25 !important;
+              margin-bottom: 10px !important;
+            }
             #rfq-two-column-layout {
               grid-template-columns: 1fr !important;
-              gap: 36px !important;
+              gap: 24px !important;
             }
           }
           @media (max-width: 600px) {

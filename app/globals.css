@@ -936,9 +936,42 @@ html,body{overflow-x:hidden;max-width:100vw}
 .fm-blog-page{background:#f7faf9;min-height:70vh;padding:65px 22px 100px}.fm-blog-page article{max-width:900px;margin:auto}.fm-blog-back{color:#328d70;text-decoration:none}.fm-preview-banner{margin:20px 0;background:#fff7d6;border:1px solid #f3d675;color:#775d00;padding:12px 15px;border-radius:8px}.fm-blog-category{display:block;color:#319273;font-weight:800;letter-spacing:.12em;font-size:12px;margin-top:45px}.fm-blog-page h1{font-size:clamp(2.4rem,6vw,4.5rem);line-height:1.05;color:#112d28;margin:14px 0}.fm-blog-excerpt{font-size:20px;line-height:1.7;color:#5e706b}.fm-public-byline{display:flex;gap:35px;border-block:1px solid #dfe8e4;padding:18px 0;margin:28px 0}.fm-public-byline-item{display:flex!important;align-items:center;gap:12px}.fm-public-byline-avatar{width:42px;height:42px;border-radius:50%;object-fit:cover;border:1px solid #dce4e0}.fm-public-byline div{display:grid}.fm-public-byline span,.fm-public-byline small{font-size:12px;color:#73837e}.fm-blog-hero{width:100%;max-height:520px;object-fit:cover;border-radius:18px;margin:20px 0 40px}.fm-blog-content{font-size:17px;line-height:1.85;color:#384c46}.fm-blog-content h2{font-size:30px;color:#15342d;margin-top:40px}.fm-blog-content img{max-width:100%;border-radius:12px}.fm-blog-content blockquote{border-left:4px solid #4fb18f;margin:30px 0;padding:12px 22px;background:#edf8f4}.fm-blog-index{max-width:1200px;margin:auto;padding:70px 24px 100px}.fm-blog-index>header{text-align:center;max-width:760px;margin:0 auto 45px}.fm-blog-index>header span{color:#319273;font-weight:800;letter-spacing:.14em}.fm-blog-index h1{font-size:clamp(2.3rem,5vw,4rem);color:#112d28;margin:12px}.fm-blog-index>header p{color:#657771;font-size:18px}.fm-blog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}.fm-blog-grid>a{background:#fff;border:1px solid #e0e9e5;border-radius:15px;overflow:hidden;text-decoration:none;color:#172f29}.fm-blog-grid img{width:100%;height:210px;object-fit:cover}.fm-blog-grid>a>div{padding:23px}.fm-blog-grid small{color:#319273;font-weight:800}.fm-blog-grid h2{font-size:21px;margin:9px 0}.fm-blog-grid p{color:#657771;line-height:1.6}.fm-blog-grid b{color:#2b8b69}@media(max-width:850px){.fm-blog-grid{grid-template-columns:1fr}.fm-public-byline{flex-direction:column;gap:13px}}
 
 /* ==========================================================================
-   Universal Mobile Product Grids: Always 2 Columns per row on mobile
+   Universal Mobile Product Grids & Responsive Typography De-Congestion
    ========================================================================== */
 @media (max-width: 768px) {
+  /* Prevent oversized headings on mobile view */
+  h1 {
+    font-size: 1.6rem !important;
+    line-height: 1.22 !important;
+    letter-spacing: -0.02em !important;
+  }
+  h2 {
+    font-size: 1.38rem !important;
+    line-height: 1.25 !important;
+    letter-spacing: -0.02em !important;
+  }
+  h3 {
+    font-size: 1.1rem !important;
+    line-height: 1.3 !important;
+  }
+  h4 {
+    font-size: 0.9rem !important;
+    line-height: 1.35 !important;
+  }
+
+  /* Universal section breathing room on mobile - prevent vertical congestion */
+  section {
+    padding-top: 38px !important;
+    padding-bottom: 42px !important;
+  }
+
+  /* Mobile container padding */
+  .container {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  /* Product grids: 2 columns on mobile */
   .shop-product-grid,
   .category-product-grid,
   .recommended-product-grid,
@@ -948,3 +981,4 @@ html,body{overflow-x:hidden;max-width:100vw}
     gap: 10px !important;
   }
 }
+
