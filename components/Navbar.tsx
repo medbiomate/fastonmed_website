@@ -1,12 +1,13 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Search, ShoppingBag, Heart, Menu, X, Phone, Mail, User, ShieldCheck, MapPin, Clock } from 'lucide-react';
+import { Search, ShoppingBag, Heart, Menu, X, Phone, Mail, User, ShieldCheck, MapPin, Clock, ChevronDown } from 'lucide-react';
 import { useApp } from '@/lib/context';
 import { store } from '@/lib/store';
 import FastonmedLogo from './FastonmedLogo';
+import ShopMegaMenu from './ShopMegaMenu';
 
 const tickerMessages = [
   'Free UAE Delivery on Orders Over AED 500',
@@ -22,6 +23,31 @@ export default function Navbar() {
   const [searchModalOpen, setSearchModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [tickerIndex, setTickerIndex] = useState(0);
+  const [megaMenuOpen, setMegaMenuOpen] = useState(false);
+  const [mobileShopExpanded, setMobileShopExpanded] = useState(false);
+  const megaMenuTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const handleShopMouseEnter = () => {
+    if (megaMenuTimeoutRef.current) {
+      clearTimeout(megaMenuTimeoutRef.current);
+      megaMenuTimeoutRef.current = null;
+    }
+    setMegaMenuOpen(true);
+  };
+
+  const handleShopMouseLeave = () => {
+    if (megaMenuTimeoutRef.current) {
+      clearTimeout(megaMenuTimeoutRef.current);
+    }
+    megaMenuTimeoutRef.current = setTimeout(() => {
+      setMegaMenuOpen(false);
+    }, 180);
+  };
+
+  useEffect(() => {
+    setMegaMenuOpen(false);
+    setMobileMenuOpen(false);
+  }, [pathname]);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -305,7 +331,62 @@ export default function Navbar() {
             id="desktop-nav"
           >
             {navLinks.map(link => {
-              const isActive = pathname === link.href;
+              const isShop = link.label.toLowerCase() === 'shop' || link.href === '/shop';
+              const isActive = pathname === link.href || (isShop && pathname.startsWith('/product-category'));
+
+              if (isShop) {
+                return (
+                  <div
+                    key={link.href}
+                    onMouseEnter={handleShopMouseEnter}
+                    onMouseLeave={handleShopMouseLeave}
+                    style={{ position: 'relative', display: 'flex', alignItems: 'center' }}
+                  >
+                    <Link
+                      href={link.href}
+                      onClick={() => setMegaMenuOpen(false)}
+                      style={{
+                        fontSize: '0.92rem',
+                        fontWeight: isActive || megaMenuOpen ? 700 : 500,
+                        color: isActive || megaMenuOpen ? '#00875a' : '#334155',
+                        textDecoration: 'none',
+                        letterSpacing: '0.01em',
+                        transition: 'color 0.2s ease',
+                        position: 'relative',
+                        padding: '8px 0',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '4px',
+                        fontFamily: 'Arial, Helvetica, sans-serif'
+                      }}
+                    >
+                      <span>{link.label}</span>
+                      <ChevronDown
+                        size={14}
+                        style={{
+                          transition: 'transform 0.2s ease',
+                          transform: megaMenuOpen ? 'rotate(180deg)' : 'none',
+                          color: megaMenuOpen ? '#00875a' : '#94a3b8'
+                        }}
+                      />
+                      {(isActive || megaMenuOpen) && (
+                        <span
+                          style={{
+                            position: 'absolute',
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            height: '2.5px',
+                            backgroundColor: '#00875a',
+                            borderRadius: '2px'
+                          }}
+                        />
+                      )}
+                    </Link>
+                  </div>
+                );
+              }
+
               return (
                 <Link
                   key={link.href}
@@ -496,6 +577,14 @@ export default function Navbar() {
             </Link>
           </div>
         </div>
+
+        {/* Shop Mega Menu Dropdown */}
+        <ShopMegaMenu
+          isOpen={megaMenuOpen}
+          onClose={() => setMegaMenuOpen(false)}
+          onMouseEnter={handleShopMouseEnter}
+          onMouseLeave={handleShopMouseLeave}
+        />
       </header>
 
 
@@ -666,23 +755,138 @@ export default function Navbar() {
             </div>
 
             <nav style={{ display: 'flex', flexDirection: 'column', gap: '4px', flex: 1 }}>
-              {navLinks.map(l => (
-                <Link
-                  key={l.href}
-                  href={l.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  style={{
-                    fontSize: '1rem',
-                    fontWeight: pathname === l.href ? 700 : 500,
-                    color: pathname === l.href ? '#51b291' : '#0f172a',
-                    textDecoration: 'none',
-                    padding: '10px 4px',
-                    borderBottom: '1px solid #f8fafc'
-                  }}
-                >
-                  {l.label}
-                </Link>
-              ))}
+              {navLinks.map(l => {
+                const isShop = l.label.toLowerCase() === 'shop' || l.href === '/shop';
+                if (isShop) {
+                  return (
+                    <div key={l.href} style={{ borderBottom: '1px solid #f8fafc' }}>
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          padding: '10px 4px'
+                        }}
+                      >
+                        <Link
+                          href={l.href}
+                          onClick={() => setMobileMenuOpen(false)}
+                          style={{
+                            fontSize: '1rem',
+                            fontWeight: 700,
+                            color: pathname.startsWith('/shop') || pathname.startsWith('/product-category') ? '#00875a' : '#0f172a',
+                            textDecoration: 'none'
+                          }}
+                        >
+                          Shop Equipment
+                        </Link>
+                        <button
+                          type="button"
+                          onClick={() => setMobileShopExpanded(prev => !prev)}
+                          style={{
+                            background: 'none',
+                            border: 'none',
+                            padding: '4px 8px',
+                            cursor: 'pointer',
+                            color: '#00875a'
+                          }}
+                          aria-label="Toggle categories"
+                        >
+                          <ChevronDown
+                            size={18}
+                            style={{
+                              transform: mobileShopExpanded ? 'rotate(180deg)' : 'none',
+                              transition: 'transform 0.2s ease'
+                            }}
+                          />
+                        </button>
+                      </div>
+
+                      {mobileShopExpanded && (
+                        <div
+                          style={{
+                            backgroundColor: '#f8fafc',
+                            borderRadius: '8px',
+                            padding: '10px 12px',
+                            margin: '4px 0 10px 0',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '8px'
+                          }}
+                        >
+                          <Link
+                            href="/product-category/icu-equipment"
+                            onClick={() => setMobileMenuOpen(false)}
+                            style={{ fontSize: '0.85rem', color: '#334155', textDecoration: 'none', fontWeight: 600 }}
+                          >
+                            • ICU & Critical Care
+                          </Link>
+                          <Link
+                            href="/product-category/patient-monitoring"
+                            onClick={() => setMobileMenuOpen(false)}
+                            style={{ fontSize: '0.85rem', color: '#334155', textDecoration: 'none', fontWeight: 600 }}
+                          >
+                            • Patient Monitoring & ECG
+                          </Link>
+                          <Link
+                            href="/product-category/pharmacy-refrigerators"
+                            onClick={() => setMobileMenuOpen(false)}
+                            style={{ fontSize: '0.85rem', color: '#334155', textDecoration: 'none', fontWeight: 600 }}
+                          >
+                            • Medical Cold Storage (2–8°C)
+                          </Link>
+                          <Link
+                            href="/product-category/radiology-equipments"
+                            onClick={() => setMobileMenuOpen(false)}
+                            style={{ fontSize: '0.85rem', color: '#334155', textDecoration: 'none', fontWeight: 600 }}
+                          >
+                            • Ultrasound & Radiology
+                          </Link>
+                          <Link
+                            href="/product-category/laboratory-equipment"
+                            onClick={() => setMobileMenuOpen(false)}
+                            style={{ fontSize: '0.85rem', color: '#334155', textDecoration: 'none', fontWeight: 600 }}
+                          >
+                            • Clinical Laboratory
+                          </Link>
+                          <Link
+                            href="/product-category/hospital-furniture"
+                            onClick={() => setMobileMenuOpen(false)}
+                            style={{ fontSize: '0.85rem', color: '#334155', textDecoration: 'none', fontWeight: 600 }}
+                          >
+                            • Hospital Furniture & Couches
+                          </Link>
+                          <Link
+                            href="/shop"
+                            onClick={() => setMobileMenuOpen(false)}
+                            style={{ fontSize: '0.84rem', color: '#00875a', textDecoration: 'none', fontWeight: 700, paddingTop: '6px', borderTop: '1px solid #e2e8f0' }}
+                          >
+                            View Full 2,700+ Catalog →
+                          </Link>
+                        </div>
+                      )}
+                    </div>
+                  );
+                }
+
+                return (
+                  <Link
+                    key={l.href}
+                    href={l.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    style={{
+                      fontSize: '1rem',
+                      fontWeight: pathname === l.href ? 700 : 500,
+                      color: pathname === l.href ? '#00875a' : '#0f172a',
+                      textDecoration: 'none',
+                      padding: '10px 4px',
+                      borderBottom: '1px solid #f8fafc'
+                    }}
+                  >
+                    {l.label}
+                  </Link>
+                );
+              })}
 
               <Link
                 href="/wishlist"
