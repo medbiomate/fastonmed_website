@@ -653,7 +653,6 @@ export default function ProductClientView({ product, similarProducts }: ProductC
               </div>
             </div>
           )}
-        </div>
 
         {/* Similar & Related Medical Equipment Section */}
         {similarProducts.length > 0 && (
@@ -720,6 +719,9 @@ export default function ProductClientView({ product, similarProducts }: ProductC
                   grid-template-columns: repeat(2, 1fr) !important;
                   gap: 12px !important;
                 }
+                .hospital-rfq-banner {
+                  padding: 28px 20px !important;
+                }
               }
             `}</style>
           </section>
@@ -727,6 +729,7 @@ export default function ProductClientView({ product, similarProducts }: ProductC
 
         {/* Hospital Bulk RFQ Consultation Banner */}
         <div
+          className="hospital-rfq-banner"
           style={{
             marginTop: '64px',
             background: 'linear-gradient(135deg, #063d2f 0%, #005a3e 50%, #00875a 100%)',
@@ -828,5 +831,6 @@ export default function ProductClientView({ product, similarProducts }: ProductC
           </div>
         </div>
       </div>
+    </div>
   );
 }
