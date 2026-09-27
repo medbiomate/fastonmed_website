@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Search, ShoppingBag, Heart, Menu, X, Phone, Mail, User } from 'lucide-react';
+import { Search, ShoppingBag, Heart, Menu, X, Phone, Mail, User, ShieldCheck, MapPin, Clock } from 'lucide-react';
 import { useApp } from '@/lib/context';
 import { store } from '@/lib/store';
 import FastonmedLogo from './FastonmedLogo';
@@ -68,20 +68,21 @@ export default function Navbar() {
         style={{
           backgroundColor: '#00875a',
           color: '#ffffff',
-          fontSize: '0.84rem',
+          fontSize: '0.80rem',
           height: '38px',
           display: 'flex',
           alignItems: 'center',
           position: 'relative',
-          zIndex: 101
+          zIndex: 101,
+          fontFamily: 'Arial, Helvetica, sans-serif'
         }}
       >
         <div
           className="container"
           style={{
-            display: 'flex',
+            display: 'grid',
+            gridTemplateColumns: '1fr auto 1fr',
             alignItems: 'center',
-            justifyContent: 'space-between',
             padding: '0 20px',
             width: '100%'
           }}
@@ -92,72 +93,147 @@ export default function Navbar() {
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '20px',
-              fontWeight: 500
+              gap: '14px',
+              fontWeight: 500,
+              justifySelf: 'start'
             }}
           >
             <a
-              href="tel:+971 508 893 589"
+              href="tel:+971508893589"
               style={{
-                color: isDarkHeader ? '#94a3b8' : '#ffffff',
+                color: '#ffffff',
                 textDecoration: 'none',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '6px',
-                transition: 'color 0.2s'
+                opacity: 0.95,
+                transition: 'opacity 0.2s'
               }}
+              onMouseEnter={(e) => (e.currentTarget.style.opacity = '1')}
+              onMouseLeave={(e) => (e.currentTarget.style.opacity = '0.95')}
             >
-              <Phone size={13} />
+              <Phone size={13} strokeWidth={2.2} />
               <span>+971 508 893 589</span>
             </a>
+
+            <span style={{ opacity: 0.35, fontSize: '0.75rem' }}>|</span>
+
             <a
               href="mailto:sales@fastonmed.com"
               style={{
-                color: isDarkHeader ? '#94a3b8' : '#ffffff',
+                color: '#ffffff',
                 textDecoration: 'none',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '6px',
-                transition: 'color 0.2s'
+                opacity: 0.95,
+                transition: 'opacity 0.2s'
               }}
+              onMouseEnter={(e) => (e.currentTarget.style.opacity = '1')}
+              onMouseLeave={(e) => (e.currentTarget.style.opacity = '0.95')}
             >
-              <Mail size={13} />
+              <Mail size={13} strokeWidth={2.2} />
               <span>sales@fastonmed.com</span>
             </a>
           </div>
 
-          {/* Center: Live Ticker Slide */}
+          {/* Center: Exactly Centered Live Ticker */}
           <div
             id="topbar-ticker"
             style={{
-              flex: 1,
-              textAlign: 'center',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '7px',
               fontWeight: 600,
+              fontSize: '0.80rem',
               letterSpacing: '0.01em',
-              transition: 'opacity 0.3s ease',
-              color: isDarkHeader ? '#e2e8f0' : '#ffffff'
+              textAlign: 'center',
+              justifySelf: 'center',
+              color: '#ffffff',
+              padding: '0 12px',
+              whiteSpace: 'nowrap'
             }}
           >
+            <ShieldCheck size={14} strokeWidth={2.2} color="#bbf7d0" />
             <span>{tickerMessages[tickerIndex]}</span>
           </div>
 
-          {/* Right Spacer for balance */}
-          <div id="topbar-spacer" style={{ width: '180px', display: 'none' }} />
+          {/* Right: UAE Presence & Business Hours for visual balance */}
+          <div
+            id="topbar-right"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '14px',
+              justifySelf: 'end',
+              fontWeight: 500,
+              fontSize: '0.78rem'
+            }}
+          >
+            <span
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '5px',
+                opacity: 0.95
+              }}
+            >
+              <MapPin size={13} strokeWidth={2.2} />
+              <span>Dubai, UAE</span>
+            </span>
+
+            <span style={{ opacity: 0.35, fontSize: '0.75rem' }}>|</span>
+
+            <span
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '5px',
+                opacity: 0.95
+              }}
+            >
+              <Clock size={13} strokeWidth={2.2} />
+              <span>Mon – Sat: 8:30 AM – 6:00 PM</span>
+            </span>
+          </div>
         </div>
+
         <style>{`
-          @media (max-width: 900px) {
-            #topbar {
-              height: 32px !important;
+          @media (max-width: 1100px) {
+            #topbar-right {
+              display: none !important;
             }
-            #topbar-contacts { display: none !important; }
+            #topbar .container {
+              display: flex !important;
+              justify-content: space-between !important;
+              grid-template-columns: none !important;
+            }
             #topbar-ticker {
+              justify-self: auto !important;
+              text-align: right !important;
+            }
+          }
+          @media (max-width: 820px) {
+            #topbar {
+              height: 34px !important;
+            }
+            #topbar-contacts {
+              display: none !important;
+            }
+            #topbar .container {
+              display: flex !important;
+              justify-content: center !important;
+              padding: 0 10px !important;
+            }
+            #topbar-ticker {
+              justify-self: center !important;
               text-align: center !important;
-              font-size: 0.73rem !important;
-              font-weight: 600 !important;
+              font-size: 0.74rem !important;
               white-space: nowrap !important;
               overflow: hidden !important;
               text-overflow: ellipsis !important;
-              padding: 0 10px !important;
+              width: 100% !important;
             }
           }
         `}</style>

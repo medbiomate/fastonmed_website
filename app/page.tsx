@@ -386,42 +386,42 @@ const therapeuticAreas = [
     title: 'ICU & Critical Care',
     desc: 'High-acuity ICU ventilators, infusion pumps & defibrillators.',
     image: '/images/illustrations/icu-care.svg',
-    href: '/shop?category=icu-equipment'
+    href: '/product-category/icu-equipment'
   },
   {
     id: 'patient-monitoring',
     title: 'Patient Monitoring',
     desc: 'Multi-parameter monitors, ECG & wireless telemetry units.',
     image: '/images/illustrations/patient-monitoring.svg',
-    href: '/shop?category=patient-monitoring'
+    href: '/product-category/patient-monitoring'
   },
   {
     id: 'pharmacy-refrigerators',
     title: 'Medical Cold Storage',
     desc: 'MoHAP compliant 2–8°C pharmacy fridges & biofreezers.',
     image: '/images/illustrations/medical-cold-storage.svg',
-    href: '/shop?category=pharmacy-refrigerators'
+    href: '/product-category/pharmacy-refrigerators'
   },
   {
     id: 'radiology-equipments',
     title: 'Ultrasound & Radiology',
     desc: 'Color Doppler ultrasound systems & mobile digital X-ray.',
     image: '/images/illustrations/ultrasound-radiology.svg',
-    href: '/shop?category=radiology-equipments'
+    href: '/product-category/radiology-equipments'
   },
   {
     id: 'laboratory-equipment',
     title: 'Clinical Laboratory',
     desc: 'Biochemistry analyzers, centrifuges & biosafety cabinets.',
     image: '/images/illustrations/clinical-laboratory.svg',
-    href: '/shop?category=laboratory-equipment'
+    href: '/product-category/laboratory-equipment'
   },
   {
     id: 'hospital-furniture',
     title: 'Hospital Furniture',
     desc: 'Electric hospital beds, examination couches & dental units.',
     image: '/images/illustrations/hospital-furniture.svg',
-    href: '/shop?category=hospital-furniture'
+    href: '/product-category/hospital-furniture'
   }
 ];
 
@@ -433,6 +433,7 @@ const healthcareFacilitiesServed = [
     desc: 'Equipping inpatient wards, emergency rooms, and surgical suites with MoHAP/DHA compliant equipment.',
     equipment: ['Hospital Ward Beds', 'OT Lights & Tables', 'Patient Monitors', 'Infusion Pumps'],
     icon: Hospital,
+    image: '/images/facilities/hospitals.jpg',
     href: '/shop?category=hospital-furniture'
   },
   {
@@ -442,6 +443,7 @@ const healthcareFacilitiesServed = [
     desc: 'Supplying consulting suites, diagnostic instruments, and tabletop autoclaves for specialty clinics.',
     equipment: ['Examination Couches', 'Sterilizers & Autoclaves', 'Vital Signs Monitors', 'Diagnostic Sets'],
     icon: Building2,
+    image: '/images/facilities/polyclinics.jpg',
     href: '/shop?category=patient-monitoring'
   },
   {
@@ -451,6 +453,7 @@ const healthcareFacilitiesServed = [
     desc: 'Outfitting clinical pathology and research laboratories with precision cold-chain and containment systems.',
     equipment: ['Biosafety Cabinets', 'Lab Centrifuges', 'Specimen Transport Boxes', 'Laboratory Fridges'],
     icon: FlaskConical,
+    image: '/images/facilities/laboratories.jpg',
     href: '/shop?category=laboratory-equipment'
   },
   {
@@ -460,6 +463,7 @@ const healthcareFacilitiesServed = [
     desc: 'Delivering life-support mechanical ventilators, emergency biphasic defibrillators, and mobile crash carts.',
     equipment: ['ICU Ventilators', 'Defibrillators (AED)', 'Emergency Spill Kits', 'Syringe Pumps'],
     icon: HeartPulse,
+    image: '/images/facilities/icu-emergency.jpg',
     href: '/shop?category=icu-equipment'
   },
   {
@@ -469,6 +473,7 @@ const healthcareFacilitiesServed = [
     desc: 'Delivering Color Doppler ultrasound systems, imaging transducers, mobile carts, and radiation protection.',
     equipment: ['Color Doppler Ultrasound', 'Ultrasound Probes', 'Ultrasound Carts', 'Radiation PPE'],
     icon: Radio,
+    image: '/images/facilities/radiology.jpg',
     href: '/shop?category=radiology-equipments'
   },
   {
@@ -478,6 +483,7 @@ const healthcareFacilitiesServed = [
     desc: 'Complete delivery of clinical dental operatories, sterilization packaging reels, and suction accessories.',
     equipment: ['Dental Treatment Chairs', 'Sterilization Reels', 'Ultrasonic Scalers', 'Autoclave Pouches'],
     icon: Smile,
+    image: '/images/facilities/dental.jpg',
     href: '/shop?category=consumables'
   },
   {
@@ -487,6 +493,7 @@ const healthcareFacilitiesServed = [
     desc: 'Equipping rehabilitation gymnasiums, sports medicine facilities, and mobility patient transfer care.',
     equipment: ['Shockwave Therapy Units', 'Combo Electrotherapy', 'Foldable Wheelchairs', 'Transfer Chairs'],
     icon: Accessibility,
+    image: '/images/facilities/physiotherapy.jpg',
     href: '/shop?category=hospital-furniture'
   },
   {
@@ -496,6 +503,7 @@ const healthcareFacilitiesServed = [
     desc: 'Furnishing hospital and retail pharmacies with MoHAP compliant 2–8°C refrigerators and vaccine loggers.',
     equipment: ['Pharmacy Refrigerators', 'Vaccine Freezers', 'Temperature Loggers', 'Dispensing Trolleys'],
     icon: Activity,
+    image: '/images/facilities/pharmacies.jpg',
     href: '/shop?category=pharmacy-refrigerators'
   }
 ];
@@ -1630,7 +1638,7 @@ export default function HomePage() {
                     backgroundColor: '#ffffff',
                     borderRadius: '16px',
                     border: '1px solid #e2e8f0',
-                    padding: '22px',
+                    overflow: 'hidden',
                     display: 'flex',
                     flexDirection: 'column',
                     textDecoration: 'none',
@@ -1640,114 +1648,120 @@ export default function HomePage() {
                   }}
                   className="facility-card-hover"
                 >
-                  {/* Top Bar: Icon + Badge */}
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
+                  {/* Real Facility Photograph Header */}
+                  <div
+                    style={{
+                      position: 'relative',
+                      width: '100%',
+                      height: '160px',
+                      overflow: 'hidden',
+                      backgroundColor: '#f1f5f9'
+                    }}
+                  >
+                    <Image
+                      src={facility.image}
+                      alt={facility.title}
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                      style={{
+                        objectFit: 'cover',
+                        transition: 'transform 0.4s ease'
+                      }}
+                      className="facility-image-zoom"
+                    />
                     <div
                       style={{
-                        width: '46px',
-                        height: '46px',
-                        borderRadius: '12px',
-                        backgroundColor: '#e6f7f0',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        color: '#00875a'
+                        position: 'absolute',
+                        inset: 0,
+                        background: 'linear-gradient(to top, rgba(15, 23, 42, 0.45) 0%, transparent 60%)'
                       }}
-                    >
-                      <IconComp size={24} />
-                    </div>
+                    />
 
+                    {/* Floating Sector Badge */}
                     <span
                       style={{
+                        position: 'absolute',
+                        top: '12px',
+                        right: '12px',
                         fontSize: '0.68rem',
                         fontWeight: 700,
-                        backgroundColor: '#f1f5f9',
-                        color: '#475569',
+                        backgroundColor: 'rgba(255, 255, 255, 0.92)',
+                        backdropFilter: 'blur(6px)',
+                        color: '#0f172a',
                         padding: '4px 10px',
                         borderRadius: '999px',
                         letterSpacing: '0.02em',
+                        boxShadow: '0 2px 6px rgba(0, 0, 0, 0.12)',
                         fontFamily: 'Arial, Helvetica, sans-serif'
                       }}
                     >
                       {facility.badge}
                     </span>
-                  </div>
 
-                  {/* Title & Description */}
-                  <h3
-                    style={{
-                      fontSize: '1.02rem',
-                      fontWeight: 800,
-                      color: '#0f172a',
-                      lineHeight: 1.35,
-                      margin: '0 0 8px',
-                      fontFamily: 'Arial, Helvetica, sans-serif'
-                    }}
-                  >
-                    {facility.title}
-                  </h3>
-
-                  <p
-                    style={{
-                      fontSize: '0.78rem',
-                      color: '#64748b',
-                      lineHeight: 1.45,
-                      margin: '0 0 16px',
-                      fontFamily: 'Arial, Helvetica, sans-serif'
-                    }}
-                  >
-                    {facility.desc}
-                  </p>
-
-                  {/* Delivered Equipment Chips */}
-                  <div style={{ marginTop: 'auto', paddingTop: '14px', borderTop: '1px solid #f1f5f9' }}>
+                    {/* Floating Icon Indicator */}
                     <div
                       style={{
-                        fontSize: '0.68rem',
-                        fontWeight: 800,
+                        position: 'absolute',
+                        bottom: '12px',
+                        left: '14px',
+                        width: '36px',
+                        height: '36px',
+                        borderRadius: '10px',
+                        backgroundColor: '#ffffff',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
                         color: '#00875a',
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.04em',
-                        marginBottom: '8px',
+                        boxShadow: '0 4px 10px rgba(0, 0, 0, 0.15)'
+                      }}
+                    >
+                      <IconComp size={19} />
+                    </div>
+                  </div>
+
+                  {/* Card Content Body */}
+                  <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', flex: 1 }}>
+                    <h3
+                      style={{
+                        fontSize: '1.02rem',
+                        fontWeight: 800,
+                        color: '#0f172a',
+                        lineHeight: 1.35,
+                        margin: '0 0 8px',
                         fontFamily: 'Arial, Helvetica, sans-serif'
                       }}
                     >
-                      Equipment Delivered
-                    </div>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '14px' }}>
-                      {facility.equipment.map((item, idx) => (
-                        <span
-                          key={idx}
-                          style={{
-                            fontSize: '0.7rem',
-                            fontWeight: 600,
-                            color: '#334155',
-                            backgroundColor: '#f8fafc',
-                            border: '1px solid #e2e8f0',
-                            padding: '3px 8px',
-                            borderRadius: '6px',
-                            fontFamily: 'Arial, Helvetica, sans-serif'
-                          }}
-                        >
-                          {item}
-                        </span>
-                      ))}
-                    </div>
+                      {facility.title}
+                    </h3>
+
+                    <p
+                      style={{
+                        fontSize: '0.78rem',
+                        color: '#64748b',
+                        lineHeight: 1.45,
+                        margin: '0 0 16px',
+                        fontFamily: 'Arial, Helvetica, sans-serif'
+                      }}
+                    >
+                      {facility.desc}
+                    </p>
 
                     {/* View Supplies Link */}
                     <div
                       style={{
-                        fontSize: '0.8rem',
+                        marginTop: 'auto',
+                        paddingTop: '12px',
+                        fontSize: '0.82rem',
                         fontWeight: 700,
                         color: '#00875a',
                         display: 'flex',
                         alignItems: 'center',
-                        gap: '5px',
+                        gap: '6px',
                         fontFamily: 'Arial, Helvetica, sans-serif'
                       }}
                     >
                       <span>Explore Equipment</span>
-                      <ArrowRight size={13} />
+                      <ArrowRight size={14} />
                     </div>
                   </div>
                 </Link>
@@ -1761,6 +1775,9 @@ export default function HomePage() {
             transform: translateY(-4px);
             box-shadow: 0 14px 28px -6px rgba(0, 135, 90, 0.14) !important;
             border-color: #00875a !important;
+          }
+          .facility-card-hover:hover .facility-image-zoom {
+            transform: scale(1.06);
           }
           @media (max-width: 1024px) {
             #facilities-cards-grid {

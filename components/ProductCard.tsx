@@ -23,8 +23,9 @@ export default function ProductCard({ product, showActions = false }: ProductCar
     : 0;
 
   // WhatsApp prefilled message for direct enquiry
+  const priceLine = price && price > 0 ? `Price: AED ${price.toLocaleString()}\n` : '';
   const waText = encodeURIComponent(
-    `Hello FastOnMed Sales Team,\nI would like to make an enquiry regarding:\n*${product.name}*\nSKU: ${product.sku || product.id}\nPrice: AED ${price.toLocaleString()}\nhttps://www.fastonmed.com/product/${product.slug}`
+    `Hello FastOnMed Sales Team,\nI would like to make an enquiry regarding:\n*${product.name}*\nSKU: ${product.sku || product.id}\n${priceLine}https://www.fastonmed.com/product/${product.slug}`
   );
   const waUrl = `https://wa.me/971508893589?text=${waText}`;
 
@@ -293,53 +294,55 @@ export default function ProductCard({ product, showActions = false }: ProductCar
           </Link>
         </h3>
 
-        {/* Price Display: Guaranteed Single Line per unit */}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'baseline',
-            gap: '6px',
-            flexWrap: 'wrap',
-            marginTop: 'auto',
-            marginBottom: showActions ? '8px' : '2px'
-          }}
-        >
-          <div style={{ display: 'inline-flex', alignItems: 'baseline', whiteSpace: 'nowrap' }}>
-            <span
-              style={{
-                fontSize: '0.68rem',
-                fontWeight: 800,
-                color: 'var(--primary, #51b291)',
-                marginRight: '3px'
-              }}
-            >
-              AED
-            </span>
-            <span
-              style={{
-                fontSize: '0.96rem',
-                fontWeight: 800,
-                color: '#0f172a',
-                letterSpacing: '-0.01em'
-              }}
-            >
-              {price.toLocaleString()}
-            </span>
-          </div>
+        {/* Price Display: Guaranteed Single Line per unit - Only shown when price > 0 */}
+        {price > 0 && (
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'baseline',
+              gap: '6px',
+              flexWrap: 'wrap',
+              marginTop: 'auto',
+              marginBottom: showActions ? '8px' : '2px'
+            }}
+          >
+            <div style={{ display: 'inline-flex', alignItems: 'baseline', whiteSpace: 'nowrap' }}>
+              <span
+                style={{
+                  fontSize: '0.68rem',
+                  fontWeight: 800,
+                  color: 'var(--primary, #51b291)',
+                  marginRight: '3px'
+                }}
+              >
+                AED
+              </span>
+              <span
+                style={{
+                  fontSize: '0.96rem',
+                  fontWeight: 800,
+                  color: '#0f172a',
+                  letterSpacing: '-0.01em'
+                }}
+              >
+                {price.toLocaleString()}
+              </span>
+            </div>
 
-          {hasDiscount && (
-            <span
-              style={{
-                fontSize: '0.72rem',
-                color: '#94a3b8',
-                textDecoration: 'line-through',
-                whiteSpace: 'nowrap'
-              }}
-            >
-              AED {product.regularPrice.toLocaleString()}
-            </span>
-          )}
-        </div>
+            {hasDiscount && (
+              <span
+                style={{
+                  fontSize: '0.72rem',
+                  color: '#94a3b8',
+                  textDecoration: 'line-through',
+                  whiteSpace: 'nowrap'
+                }}
+              >
+                AED {product.regularPrice.toLocaleString()}
+              </span>
+            )}
+          </div>
+        )}
 
         {/* Direct Enquiry Button (Goes directly to WhatsApp) */}
         {showActions && (

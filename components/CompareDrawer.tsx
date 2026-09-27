@@ -81,8 +81,8 @@ export default function CompareDrawer() {
                     <div style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--text-main)', marginBottom: '4px' }}>
                       {p.name}
                     </div>
-                    <div style={{ fontWeight: 800, color: 'var(--primary-dark)', fontSize: '1rem', marginBottom: '8px' }}>
-                      AED {(p.salePrice || p.regularPrice).toLocaleString()}
+                    <div style={{ fontWeight: 800, color: 'var(--primary-dark)', fontSize: '0.92rem', marginBottom: '8px' }}>
+                      {(p.salePrice || p.regularPrice) > 0 ? `AED ${(p.salePrice || p.regularPrice).toLocaleString()}` : 'Price on Request'}
                     </div>
                     {p.purchaseMode === 'cart' && (
                       <button onClick={() => addToCart(p)} className="btn btn-primary btn-sm" style={{ padding: '4px 10px', fontSize: '0.78rem' }}>

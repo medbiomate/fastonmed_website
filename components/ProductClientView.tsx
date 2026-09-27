@@ -64,8 +64,9 @@ export default function ProductClientView({ product, similarProducts }: ProductC
   };
 
   const canonicalUrl = `https://www.fastonmed.com/product/${product.slug}`;
+  const priceLine = price && price > 0 ? `Price: AED ${price.toLocaleString()}\n` : '';
   const waOrderText = encodeURIComponent(
-    `Hello FastOnMed Sales Team,\nI would like to inquire about purchasing:\n*${product.name}*\nSKU: ${product.sku}\nPrice: AED ${price.toLocaleString()}\nLink: ${canonicalUrl}`
+    `Hello FastOnMed Sales Team,\nI would like to inquire about purchasing:\n*${product.name}*\nSKU: ${product.sku}\n${priceLine}Link: ${canonicalUrl}`
   );
   const waUrl = `https://wa.me/971508893589?text=${waOrderText}`;
 
@@ -133,30 +134,32 @@ export default function ProductClientView({ product, similarProducts }: ProductC
         </div>
       </nav>
 
-      {/* Main Product Showcase Section */}
-      <div className="container" style={{ paddingTop: '36px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '48px', alignItems: 'start' }}>
+      {/* Main Product Showcase Section (Behind background: #f8fafc; Product card background: #ffffff) */}
+      <section style={{ backgroundColor: '#f8fafc', borderBottom: '1px solid #eef2f6', padding: '36px 0 52px' }}>
+        <div className="container">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '48px', alignItems: 'start' }}>
 
-          {/* Left Column: Product Imagery */}
-          <div>
-            <div
-              style={{
-                position: 'relative',
-                width: '100%',
-                aspectRatio: '1 / 1',
-                backgroundColor: '#f8fafc',
-                borderRadius: '16px',
-                border: '1px solid #e2e8f0',
-                overflow: 'hidden',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: '24px'
-              }}
-            >
-              {selectedImage ? (
-                <Image
-                  src={selectedImage}
+            {/* Left Column: Product Imagery */}
+            <div>
+              <div
+                style={{
+                  position: 'relative',
+                  width: '100%',
+                  aspectRatio: '1 / 1',
+                  backgroundColor: '#ffffff',
+                  borderRadius: '16px',
+                  border: '1px solid #e2e8f0',
+                  boxShadow: '0 4px 24px -2px rgba(15, 23, 42, 0.06)',
+                  overflow: 'hidden',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: '24px'
+                }}
+              >
+                {selectedImage ? (
+                  <Image
+                    src={selectedImage}
                   alt={`${product.name} - FastOnMed Healthcare UAE`}
                   fill
                   priority
@@ -214,7 +217,8 @@ export default function ProductClientView({ product, similarProducts }: ProductC
                       height: '72px',
                       borderRadius: '8px',
                       border: selectedImage === img ? '2px solid #51b291' : '1px solid #e2e8f0',
-                      backgroundColor: '#f8fafc',
+                      backgroundColor: '#ffffff',
+                      boxShadow: '0 2px 6px rgba(0, 0, 0, 0.04)',
                       padding: '4px',
                       cursor: 'pointer',
                       position: 'relative',
@@ -285,15 +289,17 @@ export default function ProductClientView({ product, similarProducts }: ProductC
               {product.name}
             </h1>
 
-            {/* Price Block */}
-            <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px', marginBottom: '20px' }}>
-              <span style={{ fontSize: '2rem', fontWeight: 800, color: '#51b291' }}>
-                AED {price.toLocaleString()}
-              </span>
-              <span style={{ color: '#64748b', fontSize: '0.9rem', fontWeight: 500 }}>
-                Excl. 5% UAE VAT
-              </span>
-            </div>
+            {/* Price Block - Only shown when price > 0 */}
+            {price > 0 && (
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px', marginBottom: '20px' }}>
+                <span style={{ fontSize: '2rem', fontWeight: 800, color: '#51b291' }}>
+                  AED {price.toLocaleString()}
+                </span>
+                <span style={{ color: '#64748b', fontSize: '0.9rem', fontWeight: 500 }}>
+                  Excl. 5% UAE VAT
+                </span>
+              </div>
+            )}
 
             {/* Short Description */}
             <p style={{ color: '#475569', fontSize: '0.98rem', lineHeight: 1.65, marginBottom: '28px' }}>
@@ -416,9 +422,10 @@ export default function ProductClientView({ product, similarProducts }: ProductC
                 gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
                 gap: '16px',
                 padding: '20px',
-                backgroundColor: '#f8fafc',
+                backgroundColor: '#ffffff',
                 borderRadius: '12px',
-                border: '1px solid #e2e8f0'
+                border: '1px solid #e2e8f0',
+                boxShadow: '0 2px 10px rgba(0, 0, 0, 0.03)'
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -442,10 +449,12 @@ export default function ProductClientView({ product, similarProducts }: ProductC
             </div>
           </div>
         </div>
+      </div>
+    </section>
 
-        {/* Detailed Information Tabs */}
-        <div style={{ marginTop: '56px', borderTop: '1px solid #e2e8f0', paddingTop: '40px' }}>
-          <div style={{ display: 'flex', gap: '28px', borderBottom: '1px solid #e2e8f0', marginBottom: '28px' }}>
+    {/* Detailed Information Tabs & Related Content */}
+    <div className="container" style={{ paddingTop: '48px' }}>
+      <div style={{ display: 'flex', gap: '28px', borderBottom: '1px solid #e2e8f0', marginBottom: '28px' }}>
             <button
               type="button"
               onClick={() => setActiveTab('specs')}
@@ -720,54 +729,104 @@ export default function ProductClientView({ product, similarProducts }: ProductC
         <div
           style={{
             marginTop: '64px',
-            background: 'linear-gradient(135deg, #0b1e1b 0%, #17483c 100%)',
+            background: 'linear-gradient(135deg, #063d2f 0%, #005a3e 50%, #00875a 100%)',
             color: '#ffffff',
             borderRadius: '16px',
-            padding: '40px',
+            padding: '42px 48px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
             flexWrap: 'wrap',
-            gap: '24px',
-            border: '1px solid rgba(81, 178, 145, 0.3)',
-            boxShadow: '0 10px 30px rgba(11, 30, 27, 0.15)'
+            gap: '28px',
+            border: '1px solid rgba(167, 243, 208, 0.25)',
+            boxShadow: '0 16px 40px -10px rgba(0, 61, 47, 0.35)',
+            position: 'relative',
+            overflow: 'hidden'
           }}
         >
-          <div>
-            <span style={{ color: '#a7e4cf', fontSize: '0.82rem', fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
-              Hospital & Clinic Bulk Procurement
-            </span>
-            <h3 style={{ fontSize: '1.55rem', fontWeight: 800, margin: '6px 0 8px' }}>
+          {/* Subtle Background Radial Glow */}
+          <div
+            style={{
+              position: 'absolute',
+              top: '-60px',
+              right: '-40px',
+              width: '280px',
+              height: '280px',
+              borderRadius: '50%',
+              background: 'radial-gradient(circle, rgba(167, 243, 208, 0.18) 0%, transparent 70%)',
+              pointerEvents: 'none'
+            }}
+          />
+
+          <div style={{ position: 'relative', zIndex: 1, maxWidth: '720px' }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', backgroundColor: 'rgba(255, 255, 255, 0.14)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255, 255, 255, 0.2)', padding: '5px 12px', borderRadius: '999px', marginBottom: '12px' }}>
+              <Sparkles size={13} color="#a7f3d0" />
+              <span style={{ color: '#a7f3d0', fontSize: '0.75rem', fontWeight: 800, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+                Hospital & Clinic Bulk Procurement
+              </span>
+            </div>
+
+            <h3
+              style={{
+                fontSize: '1.75rem',
+                fontWeight: 800,
+                color: '#ffffff',
+                lineHeight: 1.25,
+                letterSpacing: '-0.02em',
+                margin: '0 0 10px',
+                fontFamily: 'Arial, Helvetica, sans-serif'
+              }}
+            >
               Equipping a clinic, hospital ward, or ICU in the UAE?
             </h3>
-            <p style={{ color: '#cbd5e1', fontSize: '0.95rem', maxWidth: '640px', lineHeight: 1.55, margin: 0 }}>
-              Speak with FastOnMed’s biomedical consultants in Dubai Healthcare City for turnkey clinical packages, discounted institutional procurement, and localized AMC maintenance.
+
+            <p style={{ color: '#e2e8f0', fontSize: '0.96rem', lineHeight: 1.6, margin: '0 0 16px', opacity: 0.95 }}>
+              Speak directly with FastOnMed’s biomedical engineering desk in Dubai Healthcare City for turnkey department packages, institutional bulk discounts, and localized AMC support.
             </p>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '18px', flexWrap: 'wrap', fontSize: '0.80rem', fontWeight: 600, color: '#bbf7d0' }}>
+              <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <Check size={14} strokeWidth={2.5} />
+                <span>MoHAP & DHA Certified</span>
+              </span>
+              <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <Check size={14} strokeWidth={2.5} />
+                <span>Institutional Credit & Tender Terms</span>
+              </span>
+              <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <Check size={14} strokeWidth={2.5} />
+                <span>On-Site Dubai Biomedical Engineers</span>
+              </span>
+            </div>
           </div>
 
-          <a
-            href="https://wa.me/971508893589?text=Hello%20FastOnMed%20Sales%2C%20I%20would%20like%20to%20request%20a%20commercial%20quotation%20for%20healthcare%20equipment."
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              backgroundColor: '#51b291',
-              color: '#ffffff',
-              padding: '14px 28px',
-              borderRadius: '8px',
-              fontWeight: 700,
-              fontSize: '0.95rem',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '8px',
-              textDecoration: 'none',
-              boxShadow: '0 4px 14px rgba(81, 178, 145, 0.4)'
-            }}
-          >
-            <span>Request Commercial Quote</span>
-            <ArrowRight size={16} />
-          </a>
+          <div style={{ position: 'relative', zIndex: 1 }}>
+            <a
+              href="https://wa.me/971508893589?text=Hello%20FastOnMed%20Sales%2C%20I%20would%20like%20to%20request%20a%20commercial%20quotation%20for%20healthcare%20equipment."
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                backgroundColor: '#ffffff',
+                color: '#064e3b',
+                padding: '15px 30px',
+                borderRadius: '10px',
+                fontWeight: 800,
+                fontSize: '0.98rem',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '10px',
+                textDecoration: 'none',
+                boxShadow: '0 8px 24px rgba(0, 0, 0, 0.22)',
+                transition: 'all 0.2s ease',
+                whiteSpace: 'nowrap'
+              }}
+            >
+              <MessageCircle size={18} color="#00875a" strokeWidth={2.5} />
+              <span>Request Commercial Quote</span>
+              <ArrowRight size={16} strokeWidth={2.5} />
+            </a>
+          </div>
         </div>
       </div>
-    </div>
   );
 }
