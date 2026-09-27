@@ -248,7 +248,8 @@ export default function Navbar() {
           position: 'sticky',
           top: 0,
           zIndex: 100,
-          boxShadow: isDarkHeader ? '0 4px 20px rgba(0, 0, 0, 0.4)' : '0 2px 8px rgba(0, 0, 0, 0.03)'
+          boxShadow: isDarkHeader ? '0 4px 20px rgba(0, 0, 0, 0.4)' : '0 2px 8px rgba(0, 0, 0, 0.03)',
+          fontFamily: 'Arial, Helvetica, sans-serif'
         }}
       >
         <div
@@ -259,7 +260,8 @@ export default function Navbar() {
             alignItems: 'center',
             justifyContent: 'space-between',
             height: '74px',
-            padding: '0 24px'
+            padding: '0 24px',
+            fontFamily: 'Arial, Helvetica, sans-serif'
           }}
         >
           {/* Mobile Hamburger Button */}
@@ -274,7 +276,8 @@ export default function Navbar() {
               padding: '6px',
               display: 'none',
               alignItems: 'center',
-              justifyContent: 'center'
+              justifyContent: 'center',
+              fontFamily: 'Arial, Helvetica, sans-serif'
             }}
             aria-label="Open mobile menu"
           >
@@ -296,7 +299,8 @@ export default function Navbar() {
             style={{
               display: 'none',
               alignItems: 'center',
-              gap: '36px'
+              gap: '36px',
+              fontFamily: 'Arial, Helvetica, sans-serif'
             }}
             id="desktop-nav"
           >
@@ -314,7 +318,8 @@ export default function Navbar() {
                     letterSpacing: '0.01em',
                     transition: 'color 0.2s ease',
                     position: 'relative',
-                    padding: '8px 0'
+                    padding: '8px 0',
+                    fontFamily: 'Arial, Helvetica, sans-serif'
                   }}
                 >
                   {link.label}
@@ -483,7 +488,8 @@ export default function Navbar() {
                 alignItems: 'center',
                 marginLeft: '8px',
                 transition: 'background-color 0.2s',
-                boxShadow: '0 2px 8px rgba(0, 135, 90, 0.25)'
+                boxShadow: '0 2px 8px rgba(0, 135, 90, 0.25)',
+                fontFamily: 'Arial, Helvetica, sans-serif'
               }}
             >
               Get in Touch
