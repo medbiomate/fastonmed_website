@@ -7,7 +7,10 @@ export const metadata: Metadata = {
     'Review your medical equipment and clinical supplies cart with FastonMed, the Best Medical Equipment Supplier in UAE. Direct WhatsApp order forwarding and clinical checkout.',
   robots: {
     index: false,
-    follow: false
+    follow: true
+  },
+  alternates: {
+    canonical: 'https://www.fastonmed.com/cart'
   }
 };
 

@@ -122,7 +122,7 @@ export default function ProductClientView({ product, similarProducts }: ProductC
           <Link href="/shop" style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500 }}>Medical Equipment</Link>
           <ChevronRight size={10} color="#cbd5e1" />
           <Link
-            href={`/shop?category=${encodeURIComponent(product.category)}`}
+            href={`/product-category/${(product.category || 'medical-equipment').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`}
             style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500 }}
           >
             {product.category}
@@ -160,9 +160,9 @@ export default function ProductClientView({ product, similarProducts }: ProductC
                 {selectedImage ? (
                   <Image
                     src={selectedImage}
-                  alt={`${product.name} - FastonMed Healthcare UAE`}
-                  fill
-                  priority
+                    alt={product.name}
+                    fill
+                    priority
                   style={{ objectFit: 'contain' }}
                   sizes="(max-width: 768px) 100vw, 50vw"
                 />

@@ -168,7 +168,7 @@ export default async function EditorialPage({
 }) {
   const { slug } = await params;
   const page = await getSharedEditorialPage(slug);
-  if (!page) return <NotFound />;
+  if (!page) notFound();
 
   // Load catalog products to intelligently populate the featured equipment grid
   const allProducts = await getAllProducts();

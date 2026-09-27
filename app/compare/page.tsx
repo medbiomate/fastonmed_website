@@ -5,6 +5,10 @@ export const metadata: Metadata = {
   title: 'Compare Medical Equipment | Best Medical Equipment Supplier in UAE | FastonMed',
   description:
     'Compare technical specifications, biomedical features, and official warranty parameters across medical devices with FastonMed, the Best Medical Equipment Supplier in UAE.',
+  robots: {
+    index: false,
+    follow: true
+  },
   alternates: {
     canonical: 'https://www.fastonmed.com/compare'
   }

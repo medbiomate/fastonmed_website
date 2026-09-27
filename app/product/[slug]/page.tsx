@@ -22,7 +22,6 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
   }
 
   const price = product.salePrice && product.salePrice > 0 ? product.salePrice : product.regularPrice;
-  const canonicalUrl = `https://www.fastonmed.com/product/${product.slug}`;
   const imgUrl = product.mainImage
     ? product.mainImage.startsWith('http')
       ? product.mainImage
@@ -33,10 +32,23 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
     .replace(/<[^>]*>?/gm, '')
     .slice(0, 155);
 
-  const seoTitle = `${product.name} | Best Medical Equipment Supplier in UAE | FastonMed`;
-  const seoDescription = cleanDescription.length > 20
+  // Manual SEO title overrides automatic default
+  const seoTitle = (product.seoTitle && product.seoTitle.trim().length > 0)
+    ? product.seoTitle.trim()
+    : `${product.name} in UAE | FastonMed`;
+
+  // Manual SEO description overrides automatic default
+  const defaultDescription = cleanDescription.length > 20
     ? `${cleanDescription} FastonMed is the Best Medical Equipment Supplier in UAE. Official warranty & fast delivery across UAE.`
     : `Buy ${product.name} from FastonMed, the Best Medical Equipment Supplier in UAE. Official distributor in Dubai Healthcare City (DHCC) with warranty and biomedical support.`;
+
+  const seoDescription = (product.seoDescription && product.seoDescription.trim().length > 0)
+    ? product.seoDescription.trim()
+    : defaultDescription.slice(0, 160);
+
+  const canonicalUrl = (product.canonicalUrl && product.canonicalUrl.trim().length > 0)
+    ? product.canonicalUrl.trim()
+    : `https://www.fastonmed.com/product/${product.slug}`;
 
   return {
     title: seoTitle,
@@ -60,7 +72,7 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
       title: seoTitle,
       description: seoDescription,
       url: canonicalUrl,
-      siteName: 'FastonMed Healthcare Equipment & Medical Solutions LLC',
+      siteName: 'FastonMed Healthcare Equipment LLC',
       locale: 'en_AE',
       type: 'website',
       images: [
@@ -102,15 +114,17 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
   const similarProducts = await getServerSimilarProducts(product, 4);
 
   const price = product.salePrice && product.salePrice > 0 ? product.salePrice : product.regularPrice;
-  const canonicalUrl = `https://www.fastonmed.com/product/${product.slug}`;
+  const canonicalUrl = (product.canonicalUrl && product.canonicalUrl.trim().length > 0)
+    ? product.canonicalUrl.trim()
+    : `https://www.fastonmed.com/product/${product.slug}`;
   const imgUrl = product.mainImage
     ? product.mainImage.startsWith('http')
       ? product.mainImage
       : `https://www.fastonmed.com${product.mainImage}`
     : 'https://www.fastonmed.com/fastonmed-logo.png';
 
-  // 1. JSON-LD Product Schema
-  const productSchema = {
+  // 1. JSON-LD Product Schema (Strictly factual - no fabricated reviews or dummy prices)
+  const productSchema: Record<string, any> = {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: product.name,
@@ -123,11 +137,15 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
       name: product.brand || 'FastonMed Partner'
     },
     category: product.category,
-    offers: {
+  };
+
+  // Only include offer when a genuine price exists
+  if (price && price > 0) {
+    productSchema.offers = {
       '@type': 'Offer',
       url: canonicalUrl,
       priceCurrency: 'AED',
-      price: price > 0 ? price : 999,
+      price: price,
       priceValidUntil: '2027-12-31',
       itemCondition: 'https://schema.org/NewCondition',
       availability: product.stockStatus === 'out_of_stock' ? 'https://schema.org/OutOfStock' : 'https://schema.org/InStock',
@@ -142,15 +160,19 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
           addressCountry: 'AE'
         }
       }
-    },
-    aggregateRating: {
+    };
+  }
+
+  // Only include aggregateRating when genuine reviews exist
+  if (product.rating && product.reviewCount && product.reviewCount > 0) {
+    productSchema.aggregateRating = {
       '@type': 'AggregateRating',
-      ratingValue: '4.9',
-      reviewCount: '18',
+      ratingValue: product.rating.toString(),
+      reviewCount: product.reviewCount.toString(),
       bestRating: '5',
       worstRating: '1'
-    }
-  };
+    };
+  }
 
   // 2. JSON-LD Breadcrumbs Schema
   const breadcrumbSchema = {
@@ -172,8 +194,8 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
       {
         '@type': 'ListItem',
         position: 3,
-        name: product.category,
-        item: `https://www.fastonmed.com/shop?category=${encodeURIComponent(product.category)}`
+        name: product.category || 'Medical Equipment',
+        item: `https://www.fastonmed.com/product-category/${(product.category || 'medical-equipment').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`
       },
       {
         '@type': 'ListItem',

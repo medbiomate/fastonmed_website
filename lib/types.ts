@@ -49,6 +49,11 @@ export interface Product {
   seoTitle?: string;
   seoDescription?: string;
   canonicalUrl?: string;
+  robotsDirective?: string;
+  ogTitle?: string;
+  ogDescription?: string;
+  ogImage?: string;
+  focusKeyword?: string;
   rating?: number;
   reviewCount?: number;
   createdAt: string;
@@ -66,6 +71,12 @@ export interface ProductCategory {
   productCount: number;
   seoTitle?: string;
   seoDescription?: string;
+  canonicalUrl?: string;
+  robotsDirective?: string;
+  ogTitle?: string;
+  ogDescription?: string;
+  ogImage?: string;
+  focusKeyword?: string;
 }
 
 export interface Brand {
@@ -233,6 +244,12 @@ export interface BlogPost {
   scheduledAt?: string;
   seoTitle?: string;
   seoDescription?: string;
+  canonicalUrl?: string;
+  robotsDirective?: string;
+  ogTitle?: string;
+  ogDescription?: string;
+  ogImage?: string;
+  focusKeyword?: string;
 }
 
 export interface PageContent {
@@ -244,6 +261,12 @@ export interface PageContent {
   updatedAt: string;
   seoTitle?: string;
   seoDescription?: string;
+  canonicalUrl?: string;
+  robotsDirective?: string;
+  ogTitle?: string;
+  ogDescription?: string;
+  ogImage?: string;
+  focusKeyword?: string;
 }
 
 export interface RedirectRule {

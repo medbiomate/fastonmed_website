@@ -6,27 +6,23 @@ import SiteShell from '@/components/SiteShell';
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.fastonmed.com'),
   title: {
-    default: 'FastonMed | Best Medical Equipment Supplier in UAE',
+    default: 'Medical Equipment Supplier in UAE & Dubai | FastonMed',
     template: '%s'
   },
   description:
-    'FastonMed is the Best Medical Equipment Supplier in UAE. MoHAP & DHA licensed biomedical technology, ICU ventilators, hospital furniture & clinical devices.',
+    'FastonMed is a leading medical equipment supplier in UAE & Dubai. Supplying hospitals, clinics, and healthcare facilities with certified biomedical devices, ICU systems, and medical supplies.',
   keywords: [
-    'Best Medical Equipment Supplier in UAE',
     'Medical Equipment Supplier in UAE',
-    'Medical Equipment Supplier Dubai',
-    'Medical Equipment Supplier Abu Dhabi',
+    'Medical Equipment Dubai',
+    'Hospital Equipment UAE',
+    'Healthcare Equipment UAE',
+    'Medical Supplies UAE',
     'Biomedical Equipment UAE',
-    'Hospital Equipment Supplier UAE',
-    'ICU Ventilators UAE',
-    'Patient Monitoring Systems UAE',
-    'Clinical Diagnostic Equipment Dubai',
-    'MoHAP Licensed Medical Supplier',
-    'FastonMed Healthcare UAE'
+    'FastonMed'
   ],
-  authors: [{ name: 'FastonMed Healthcare Equipment LLC' }],
-  creator: 'FastonMed Healthcare Solutions',
-  publisher: 'FastonMed Healthcare Solutions',
+  authors: [{ name: 'FastonMed' }],
+  creator: 'FastonMed',
+  publisher: 'FastonMed',
   alternates: {
     canonical: 'https://www.fastonmed.com'
   },
@@ -34,24 +30,24 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_AE',
     url: 'https://www.fastonmed.com',
-    siteName: 'FastonMed Healthcare Equipment LLC',
-    title: 'FastonMed | Best Medical Equipment Supplier in UAE',
+    siteName: 'FastonMed',
+    title: 'Medical Equipment Supplier in UAE & Dubai | FastonMed',
     description:
-      'FastonMed is the Best Medical Equipment Supplier in UAE. Providing MoHAP & DHA approved hospital supplies, ICU ventilators, patient monitors, and biomedical support.',
+      'FastonMed is a leading medical equipment supplier in UAE & Dubai. Supplying hospitals, clinics, and healthcare facilities with certified biomedical devices, ICU systems, and medical supplies.',
     images: [
       {
         url: 'https://www.fastonmed.com/fastonmed-logo.png',
         width: 1200,
         height: 630,
-        alt: 'FastonMed - Best Medical Equipment Supplier in UAE'
+        alt: 'FastonMed - Medical Equipment Supplier in UAE'
       }
     ]
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'FastonMed | Best Medical Equipment Supplier in UAE',
+    title: 'Medical Equipment Supplier in UAE & Dubai | FastonMed',
     description:
-      'FastonMed is the Best Medical Equipment Supplier in UAE. Official warranty, same-day delivery across UAE, and biomedical technical support.',
+      'FastonMed is a leading medical equipment supplier in UAE & Dubai. Official warranty, fast delivery across UAE, and biomedical technical support.',
     images: ['https://www.fastonmed.com/fastonmed-logo.png']
   },
   icons: {
@@ -82,12 +78,12 @@ export const metadata: Metadata = {
 const orgSchema = {
   '@context': 'https://schema.org',
   '@type': 'MedicalBusiness',
-  name: 'FastonMed Healthcare Equipment & Medical Solutions LLC',
+  name: 'FastonMed',
   url: 'https://www.fastonmed.com',
   logo: 'https://www.fastonmed.com/fastonmed-logo.png',
   image: 'https://www.fastonmed.com/fastonmed-logo.png',
   description:
-    'Distributor of certified healthcare equipment, hospital furniture, diagnostic devices, and biomedical calibration in the UAE.',
+    'Supplier and distributor of certified healthcare equipment, hospital furniture, diagnostic devices, and biomedical calibration in the UAE.',
   telephone: '+971508893589',
   email: 'info@fastonmed.com',
   address: {
@@ -114,6 +110,21 @@ const orgSchema = {
   currenciesAccepted: 'AED'
 };
 
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'FastonMed',
+  url: 'https://www.fastonmed.com',
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: {
+      '@type': 'EntryPoint',
+      urlTemplate: 'https://www.fastonmed.com/shop?search={search_term_string}'
+    },
+    'query-input': 'required name=search_term_string'
+  }
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -128,6 +139,10 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
       </head>
       <body style={{ fontFamily: 'Arial, Helvetica, sans-serif' }}>

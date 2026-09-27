@@ -1,0 +1,3522 @@
+{
+  "timestamp": "2026-09-27T14:13:31.618Z",
+  "stats": {
+    "totalIndexedUrls": 2925,
+    "corePages": 11,
+    "editorialPages": 39,
+    "uniqueCategories": 149,
+    "specialtyCategories": 6,
+    "totalProducts": 2720,
+    "productAudit": {
+      "missingDescription": 0,
+      "shortDescription": 322,
+      "missingImages": 32,
+      "placeholderImages": 0,
+      "missingBrand": 0,
+      "missingSku": 0,
+      "zeroPrice": 413
+    }
+  },
+  "urls": [
+    {
+      "url": "https://www.fastonmed.com/",
+      "type": "core",
+      "canonical": "https://www.fastonmed.com",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/about-us",
+      "type": "core",
+      "canonical": "https://www.fastonmed.com/about-us",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/shop",
+      "type": "core",
+      "canonical": "https://www.fastonmed.com/shop",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/contact",
+      "type": "core",
+      "canonical": "https://www.fastonmed.com/contact",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/blog",
+      "type": "core",
+      "canonical": "https://www.fastonmed.com/blog",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/compare",
+      "type": "utility",
+      "canonical": "https://www.fastonmed.com/compare",
+      "indexable": false,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/wishlist",
+      "type": "utility",
+      "canonical": "https://www.fastonmed.com/wishlist",
+      "indexable": false,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/cart",
+      "type": "utility",
+      "canonical": "https://www.fastonmed.com/cart",
+      "indexable": false,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/checkout",
+      "type": "utility",
+      "canonical": "https://www.fastonmed.com/checkout",
+      "indexable": false,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/my-account",
+      "type": "utility",
+      "canonical": "https://www.fastonmed.com/my-account",
+      "indexable": false,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/order-tracking",
+      "type": "utility",
+      "canonical": "https://www.fastonmed.com/order-tracking",
+      "indexable": false,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/privacy-policy-2",
+      "type": "editorial",
+      "canonical": "https://www.fastonmed.com/privacy-policy-2",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/returns-exchanges",
+      "type": "editorial",
+      "canonical": "https://www.fastonmed.com/returns-exchanges",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/shipping",
+      "type": "editorial",
+      "canonical": "https://www.fastonmed.com/shipping",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/terms-conditions",
+      "type": "editorial",
+      "canonical": "https://www.fastonmed.com/terms-conditions",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/store-locations",
+      "type": "editorial",
+      "canonical": "https://www.fastonmed.com/store-locations",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/brands",
+      "type": "editorial",
+      "canonical": "https://www.fastonmed.com/brands",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/categories",
+      "type": "editorial",
+      "canonical": "https://www.fastonmed.com/categories",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/automated-external-defibrillator",
+      "type": "editorial",
+      "canonical": "https://www.fastonmed.com/automated-external-defibrillator",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/bipap-machine",
+      "type": "editorial",
+      "canonical": "https://www.fastonmed.com/bipap-machine",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/ecg-machine",
+      "type": "editorial",
+      "canonical": "https://www.fastonmed.com/ecg-machine",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/cpap-apap-machine",
+      "type": "editorial",
+      "canonical": "https://www.fastonmed.com/cpap-apap-machine",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/ambulatory-and-holter-ecg-monitors",
+      "type": "editorial",
+      "canonical": "https://www.fastonmed.com/ambulatory-and-holter-ecg-monitors",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/oxygen-sensor",
+      "type": "editorial",
+      "canonical": "https://www.fastonmed.com/oxygen-sensor",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/ambulatory-blood-pressure-monitor",
+      "type": "editorial",
+      "canonical": "https://www.fastonmed.com/ambulatory-blood-pressure-monitor",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/holter-ecg-monitor-2",
+      "type": "editorial",
+      "canonical": "https://www.fastonmed.com/holter-ecg-monitor-2",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/cardiology-equipment",
+      "type": "editorial",
+      "canonical": "https://www.fastonmed.com/cardiology-equipment",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/cardiology-equipment-2",
+      "type": "editorial",
+      "canonical": "https://www.fastonmed.com/cardiology-equipment-2",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/tmt-stress-test-system",
+      "type": "editorial",
+      "canonical": "https://www.fastonmed.com/tmt-stress-test-system",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/consumables",
+      "type": "editorial",
+      "canonical": "https://www.fastonmed.com/consumables",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/aed-pads",
+      "type": "editorial",
+      "canonical": "https://www.fastonmed.com/aed-pads",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/distance-gauge",
+      "type": "editorial",
+      "canonical": "https://www.fastonmed.com/distance-gauge",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/prp-tubes",
+      "type": "editorial",
+      "canonical": "https://www.fastonmed.com/prp-tubes",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/ambulatory-blood-pressure-monitor-2",
+      "type": "editorial",
+      "canonical": "https://www.fastonmed.com/ambulatory-blood-pressure-monitor-2",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/ozone-generator",
+      "type": "editorial",
+      "canonical": "https://www.fastonmed.com/ozone-generator",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/medical-equipment-supplier-in-uae",
+      "type": "editorial",
+      "canonical": "https://www.fastonmed.com/medical-equipment-supplier-in-uae",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/plan-preventive-maintenance-for-medical-equipment-in-uae",
+      "type": "editorial",
+      "canonical": "https://www.fastonmed.com/plan-preventive-maintenance-for-medical-equipment-in-uae",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/flexible-rigid-endoscope-repair-in-dubai",
+      "type": "editorial",
+      "canonical": "https://www.fastonmed.com/flexible-rigid-endoscope-repair-in-dubai",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/aed-replacement-pad-in-dubai",
+      "type": "editorial",
+      "canonical": "https://www.fastonmed.com/aed-replacement-pad-in-dubai",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/used-medical-equipment-in-uae",
+      "type": "editorial",
+      "canonical": "https://www.fastonmed.com/used-medical-equipment-in-uae",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/ultrasound-probe-repair-in-uae",
+      "type": "editorial",
+      "canonical": "https://www.fastonmed.com/ultrasound-probe-repair-in-uae",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/medical-equipment-service-in-uae-2",
+      "type": "editorial",
+      "canonical": "https://www.fastonmed.com/medical-equipment-service-in-uae-2",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/medical-equipment-calibration-service-in-uae",
+      "type": "editorial",
+      "canonical": "https://www.fastonmed.com/medical-equipment-calibration-service-in-uae",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/amc-cmc-for-medical-equipment-in-dubai-uae",
+      "type": "editorial",
+      "canonical": "https://www.fastonmed.com/amc-cmc-for-medical-equipment-in-dubai-uae",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/dental-equipment-supplier-in-dubai",
+      "type": "editorial",
+      "canonical": "https://www.fastonmed.com/dental-equipment-supplier-in-dubai",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/radiology-equipment-supplier-in-uae",
+      "type": "editorial",
+      "canonical": "https://www.fastonmed.com/radiology-equipment-supplier-in-uae",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/school-medical-supplies-in-uae",
+      "type": "editorial",
+      "canonical": "https://www.fastonmed.com/school-medical-supplies-in-uae",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/moh-registered-aed-machine-in-uae",
+      "type": "editorial",
+      "canonical": "https://www.fastonmed.com/moh-registered-aed-machine-in-uae",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/best-obstetrics-gynecology-equipment-in-uae",
+      "type": "editorial",
+      "canonical": "https://www.fastonmed.com/best-obstetrics-gynecology-equipment-in-uae",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/privacy-policy",
+      "type": "editorial",
+      "canonical": "https://www.fastonmed.com/privacy-policy",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/medical-disposable",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/medical-disposable",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/oxygen-concentrators",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/oxygen-concentrators",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/tecar-therapy-units",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/tecar-therapy-units",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/physiotherapy-equipments",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/physiotherapy-equipments",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/resistive-electrotherapy",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/resistive-electrotherapy",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/shockwave-amp-laser-therapy-equipment",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/shockwave-amp-laser-therapy-equipment",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/shockwave-therapy-equipment",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/shockwave-therapy-equipment",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/consumables",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/consumables",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/uncategorized",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/uncategorized",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/radial-pressure-wave-therapy-equipment-amp-accessories",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/radial-pressure-wave-therapy-equipment-amp-accessories",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/emergency-assistance-alarm",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/emergency-assistance-alarm",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/general-medical-devices",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/general-medical-devices",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/laboratory-equipment",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/laboratory-equipment",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/laboratory-refrigerators",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/laboratory-refrigerators",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/magnetotherapy-equipment",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/magnetotherapy-equipment",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/laser-therapy-equipment",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/laser-therapy-equipment",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/rechargeable-batteries",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/rechargeable-batteries",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/ventilator-batteries",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/ventilator-batteries",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/electrotherapy-amp-ultrasound",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/electrotherapy-amp-ultrasound",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/ultrasound-machines",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/ultrasound-machines",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/portable-medical-equipment",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/portable-medical-equipment",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/electrotherapy-equipment",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/electrotherapy-equipment",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/vacuum-therapy-accessories",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/vacuum-therapy-accessories",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/ot-equipment",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/ot-equipment",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/hospital-furniture",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/hospital-furniture",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/height-adjustable-medical-stools",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/height-adjustable-medical-stools",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/medical-bags-amp-backpacks",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/medical-bags-amp-backpacks",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/diagnostic-equipment",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/diagnostic-equipment",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/medical-chairs",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/medical-chairs",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/electric-operating-tables",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/electric-operating-tables",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/cardiology-equipment",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/cardiology-equipment",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/patient-monitoring-equipment",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/patient-monitoring-equipment",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/sterilization",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/sterilization",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/icu-equipment",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/icu-equipment",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/imaging-equipment",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/imaging-equipment",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/physiotherapy-equipment",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/physiotherapy-equipment",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/surgical-equipment",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/surgical-equipment",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/electro-hydraulic-operating-tables",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/electro-hydraulic-operating-tables",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/couches",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/couches",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/therapy-tables",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/therapy-tables",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/pain-relief-equipment",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/pain-relief-equipment",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/fitness-equipment",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/fitness-equipment",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/defibrillator-accessories",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/defibrillator-accessories",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/dental-equipment",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/dental-equipment",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/patient-transport-equipment",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/patient-transport-equipment",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/aed-pads",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/aed-pads",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/emergency-immobilization-equipment",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/emergency-immobilization-equipment",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/patient-monitoring",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/patient-monitoring",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/cervical-immobilization-devices",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/cervical-immobilization-devices",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/patient-monitoring-devices",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/patient-monitoring-devices",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/bobath-amp-mat-therapy-tables",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/bobath-amp-mat-therapy-tables",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/electric-dermatology-amp-spa-couches",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/electric-dermatology-amp-spa-couches",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/dermatology-amp-spa-couches",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/dermatology-amp-spa-couches",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/electric-spa-treatment-tables",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/electric-spa-treatment-tables",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/electric-facial-amp-dermatology-chairs",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/electric-facial-amp-dermatology-chairs",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/dermatology-chair",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/dermatology-chair",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/manual-blood-donation-chairs",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/manual-blood-donation-chairs",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/electric-gynaecology-examination-couches",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/electric-gynaecology-examination-couches",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/vertical-rehabilitation-tilt-tables",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/vertical-rehabilitation-tilt-tables",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/split-leg-electric-tilt-tables",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/split-leg-electric-tilt-tables",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/electric-tilt-tables",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/electric-tilt-tables",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/lumbar-traction-devices",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/lumbar-traction-devices",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/cervical-traction-devices",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/cervical-traction-devices",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/digital-traction-units",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/digital-traction-units",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/traction-units",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/traction-units",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/hospital-trolleys",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/hospital-trolleys",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/spinal-traction-tables",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/spinal-traction-tables",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/respiratory-equipment",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/respiratory-equipment",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/surgical-suction-machine",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/surgical-suction-machine",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/medical-suction-equipment",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/medical-suction-equipment",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/electric-physiotherapy-traction-couches",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/electric-physiotherapy-traction-couches",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/treatment-chair",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/treatment-chair",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/infusion-therapy-equipment",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/infusion-therapy-equipment",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/training-amp-simulation-equipment",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/training-amp-simulation-equipment",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/medium-amp-large-mobility-scooters",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/medium-amp-large-mobility-scooters",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/wheelchairs",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/wheelchairs",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/mobility-aids",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/mobility-aids",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/ophthalmology-equipments",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/ophthalmology-equipments",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/dental-equipments",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/dental-equipments",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/laboratory-centrifuges",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/laboratory-centrifuges",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/ecg-machines",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/ecg-machines",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/dermatology-equipment",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/dermatology-equipment",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/non-invasive-ventilator-niv",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/non-invasive-ventilator-niv",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/dvt-compression-pumps",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/dvt-compression-pumps",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/tympanometers",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/tympanometers",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/diagnostic-audiometers",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/diagnostic-audiometers",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/ambulatory-blood-pressure-monitor",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/ambulatory-blood-pressure-monitor",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/autoclave-machines",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/autoclave-machines",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/consumables-and-disposables",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/consumables-and-disposables",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/defibrillators-aed-machines",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/defibrillators-aed-machines",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/airway-management-devices",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/airway-management-devices",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/microscope",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/microscope",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/medical-lighting-equipment",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/medical-lighting-equipment",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/medical-scales",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/medical-scales",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/blood-pressure-monitors",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/blood-pressure-monitors",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/thermometers",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/thermometers",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/tabletop-autoclaves",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/tabletop-autoclaves",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/vein-finder-devices",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/vein-finder-devices",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/distance-gauge",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/distance-gauge",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/vital-signs-monitors",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/vital-signs-monitors",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/multi-parameter-patient-monitors",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/multi-parameter-patient-monitors",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/ent-equipments",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/ent-equipments",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/home-healthcare-devices",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/home-healthcare-devices",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/operation-theater-equipment",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/operation-theater-equipment",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/women-s-health-devices",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/women-s-health-devices",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/gynecology-equipment",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/gynecology-equipment",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/infrared-thermometers",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/infrared-thermometers",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/compressor-nebulizers",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/compressor-nebulizers",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/infrared-therapy-lamp",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/infrared-therapy-lamp",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/hearing-aids-amp-hearing-amplifiers",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/hearing-aids-amp-hearing-amplifiers",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/blood-glucose-monitors",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/blood-glucose-monitors",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/spirometry-devices",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/spirometry-devices",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/critical-care-equipment",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/critical-care-equipment",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/diagnostic-imaging-equipment",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/diagnostic-imaging-equipment",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/aesthetic-amp-skin-care-devices",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/aesthetic-amp-skin-care-devices",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/x-ray-accessories",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/x-ray-accessories",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/sterilization-equipment",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/sterilization-equipment",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/ultrasound-accessories",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/ultrasound-accessories",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/endoscopy-light-source",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/endoscopy-light-source",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/endoscopy-camera-system",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/endoscopy-camera-system",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/medical-imaging-amp-diagnostics",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/medical-imaging-amp-diagnostics",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/aed-battery",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/aed-battery",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/oxygeneo-machine",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/oxygeneo-machine",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/combination-therapy-unit",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/combination-therapy-unit",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/ozone-generator",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/ozone-generator",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/blood-collection-chairs",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/blood-collection-chairs",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/prp-tubes",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/prp-tubes",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/examination-couch",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/examination-couch",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/cpap-amp-bipap-machines",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/cpap-amp-bipap-machines",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/electrosurgery-units",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/electrosurgery-units",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/aed-machines",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/aed-machines",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/medical-gas-cylinders-amp-accessories",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/medical-gas-cylinders-amp-accessories",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/medical-air-mattress",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/medical-air-mattress",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/doctor-amp-operator-chairs",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/doctor-amp-operator-chairs",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/phlebotomy-chairs",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/phlebotomy-chairs",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/scissors",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/scissors",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/oxygen-sensor",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/oxygen-sensor",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/electric-dermatology-chair",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/electric-dermatology-chair",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/printers-amp-accessories",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/printers-amp-accessories",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/mother-amp-baby-care",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/mother-amp-baby-care",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/blood-pressure-monitor",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/blood-pressure-monitor",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/cements-amp-liners",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/cements-amp-liners",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/ambulatory-and-holter-ecg-monitors",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/ambulatory-and-holter-ecg-monitors",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/surgical-instruments",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/surgical-instruments",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/apex-locator",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/apex-locator",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/stethoscopes",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/stethoscopes",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/wound-care-dressings",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/wound-care-dressings",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/electrotherapy-ultrasound",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/electrotherapy-ultrasound",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/dermatology-spa-couches",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/dermatology-spa-couches",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/patient-monitoring",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/patient-monitoring",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/icu-equipment",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/icu-equipment",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/pharmacy-refrigerators",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/pharmacy-refrigerators",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/radiology-equipments",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/radiology-equipments",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/laboratory-equipment",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/laboratory-equipment",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product-category/hospital-furniture",
+      "type": "category",
+      "canonical": "https://www.fastonmed.com/product-category/hospital-furniture",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/cederroth-triangular-cloth-bandage-with-safety-pins-1889",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/cederroth-triangular-cloth-bandage-with-safety-pins-1889",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/cederroth-soft-foam-bandage-blue-6-cm-wide",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/cederroth-soft-foam-bandage-blue-6-cm-wide",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/salvequick-textile-finger-plasters-120-x-20-mm-6496",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/salvequick-textile-finger-plasters-120-x-20-mm-6496",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/salvequick-plastic-finger-plasters-120-x-20-mm-6096",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/salvequick-plastic-finger-plasters-120-x-20-mm-6096",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/salvequick-blue-detectable-finger-plasters-120-x-20-mm-6796",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/salvequick-blue-detectable-finger-plasters-120-x-20-mm-6796",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/drive-devilbiss-compact-525-5l-oxygen-concentrator",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/drive-devilbiss-compact-525-5l-oxygen-concentrator",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/cederroth-elastic-fixation-bandage-with-clips-8-cm-x-4-m-1882",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/cederroth-elastic-fixation-bandage-with-clips-8-cm-x-4-m-1882",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/cederroth-4-in-1-mini-universal-first-aid-dressing-mini-bloodstopper-1911",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/cederroth-4-in-1-mini-universal-first-aid-dressing-mini-bloodstopper-1911",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/cederroth-4-in-1-universal-first-aid-dressing-bloodstopper-1910",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/cederroth-4-in-1-universal-first-aid-dressing-bloodstopper-1910",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/sanrai-oxypure-oxygen-concentrator-zy-5ac",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/sanrai-oxypure-oxygen-concentrator-zy-5ac",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/philips-respironics-oxygenate-5l-oxygen-concentrator",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/philips-respironics-oxygenate-5l-oxygen-concentrator",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/therma-tecar-therapy-unit-150w",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/therma-tecar-therapy-unit-150w",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/therma-tecar-therapy-unit-capacitive-resistive-diathermy-system",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/therma-tecar-therapy-unit-capacitive-resistive-diathermy-system",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/youtecarx-base-unit-capacitive-resistive-electrotherapy-system",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/youtecarx-base-unit-capacitive-resistive-electrotherapy-system",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/blue-dot-hse-medium-dressing-flow-wrapped-30fmd120",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/blue-dot-hse-medium-dressing-flow-wrapped-30fmd120",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/astroplast-no-7-finger-dressing-1401003",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/astroplast-no-7-finger-dressing-1401003",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/blue-dot-no-16-flow-wrapped-eye-pad-dressing-30fbdt16",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/blue-dot-no-16-flow-wrapped-eye-pad-dressing-30fbdt16",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/blue-dot-sterile-ambulance-dressings-four-sizes",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/blue-dot-sterile-ambulance-dressings-four-sizes",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/zeus-wave-eswt-hilt-shockwave-and-high-intensity-laser-therapy-system",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/zeus-wave-eswt-hilt-shockwave-and-high-intensity-laser-therapy-system",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/cederroth-burn-gel-spray-50-ml-901901",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/cederroth-burn-gel-spray-50-ml-901901",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/intellect-focus-shockwave-therapy-system-focused-extracorporeal-shockwave-therapy-f-sw",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/intellect-focus-shockwave-therapy-system-focused-extracorporeal-shockwave-therapy-f-sw",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/mobile-2-rpw-radial-pressure-wave-shockwave-therapy-system",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/mobile-2-rpw-radial-pressure-wave-shockwave-therapy-system",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/salvequick-disinfecting-wound-cleansing-wipes-20-pcs-323700",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/salvequick-disinfecting-wound-cleansing-wipes-20-pcs-323700",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/cederroth-safety-hand-cleanser-wipes-600-wipes-3387",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/cederroth-safety-hand-cleanser-wipes-600-wipes-3387",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/blue-dot-small-burn-stop-dressing-10-x-10-cm-bsd100",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/blue-dot-small-burn-stop-dressing-10-x-10-cm-bsd100",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/astroplast-burnkool-sterile-hydrogel-burn-dressing-10-x-10-cm-2207003",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/astroplast-burnkool-sterile-hydrogel-burn-dressing-10-x-10-cm-2207003",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/blue-dot-sterile-saline-wound-cleansing-wipes-box-of-100-86972",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/blue-dot-sterile-saline-wound-cleansing-wipes-box-of-100-86972",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/intelect-mobile-rpw-portable-shockwave-therapy-unit",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/intelect-mobile-rpw-portable-shockwave-therapy-unit",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/intelect-rpw-shockwave-therapy-unit-with-d-actor-applicator",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/intelect-rpw-shockwave-therapy-unit-with-d-actor-applicator",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/intelect-rpw-2-transmitters-for-radial-pressure-wave-therapy",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/intelect-rpw-2-transmitters-for-radial-pressure-wave-therapy",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/dpta-kit1-disabled-toilet-alarm-system-1-zone-kit",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/dpta-kit1-disabled-toilet-alarm-system-1-zone-kit",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/c-tec-nc951-accessible-toilet-alarm-kit",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/c-tec-nc951-accessible-toilet-alarm-kit",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/biobase-btb-l12-12l-biosafety-transport-box",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/biobase-btb-l12-12l-biosafety-transport-box",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/biobase-btb-l8-8l-biosafety-transport-box",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/biobase-btb-l8-8l-biosafety-transport-box",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/biobase-bpr-5v298-lab-refrigerator-298l",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/biobase-bpr-5v298-lab-refrigerator-298l",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/bio-safe-body-fluid-clean-up-kit-1-application-cm-1011024",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/bio-safe-body-fluid-clean-up-kit-1-application-cm-1011024",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/biobase-bpr-5v108-lab-refrigerator-108l",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/biobase-bpr-5v108-lab-refrigerator-108l",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/biobase-bpr-5v68-68l-laboratory-refrigerator",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/biobase-bpr-5v68-68l-laboratory-refrigerator",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/cederroth-wall-bracket-for-first-aid-kit-x-large-51000008",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/cederroth-wall-bracket-for-first-aid-kit-x-large-51000008",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/cederroth-first-aid-panel-mini-191400",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/cederroth-first-aid-panel-mini-191400",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/cederroth-first-aid-burn-station-490960",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/cederroth-first-aid-burn-station-490960",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/cederroth-eye-wash-station-721500",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/cederroth-eye-wash-station-721500",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/cederroth-mobile-first-aid-kits-small-medium-large-x-large",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/cederroth-mobile-first-aid-kits-small-medium-large-x-large",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/cederroth-first-aid-station-490920",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/cederroth-first-aid-station-490920",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/cederroth-salvequick-blue-detectable-plaster-dispenser-6735cap",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/cederroth-salvequick-blue-detectable-plaster-dispenser-6735cap",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/cederroth-salvequick-plaster-dispenser-filled-490700",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/cederroth-salvequick-plaster-dispenser-filled-490700",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/cederroth-salvequick-plaster-dispenser-empty-490710",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/cederroth-salvequick-plaster-dispenser-empty-490710",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/onda-radial-shockwave-therapy-machine-non-focal-radial-shockwave-device",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/onda-radial-shockwave-therapy-machine-non-focal-radial-shockwave-device",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/magrex-magneto-therapy-machine-electromagnetic-stimulation-therapy-system",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/magrex-magneto-therapy-machine-electromagnetic-stimulation-therapy-system",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/tesla-plus-magneto-therapy-unit-pulsed-electromagnetic-field-therapy-device",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/tesla-plus-magneto-therapy-unit-pulsed-electromagnetic-field-therapy-device",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/tesla-magneto-therapy-unit-elf-electromagnetic-therapy-machine",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/tesla-magneto-therapy-unit-elf-electromagnetic-therapy-machine",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/intelect-mobile-laser-class-3b-low-level-laser-therapy-device",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/intelect-mobile-laser-class-3b-low-level-laser-therapy-device",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/physio-control-lifepak-15-rechargeable-lithium-ion-battery-ref-21330-001176",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/physio-control-lifepak-15-rechargeable-lithium-ion-battery-ref-21330-001176",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/resmed-battery-for-astral-100-astral-150-ventilators-r270-7652",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/resmed-battery-for-astral-100-astral-150-ventilators-r270-7652",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/lambada-yag-laser-10w-with-7-inch-touchscreen",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/lambada-yag-laser-10w-with-7-inch-touchscreen",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/lambada-exadiodic-laser-180w-with-7-inch-touchscreen",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/lambada-exadiodic-laser-180w-with-7-inch-touchscreen",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/lambada-monodiodic-laser-30w-physioled-laser-therapy-system",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/lambada-monodiodic-laser-30w-physioled-laser-therapy-system",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/lightforce-xpi-25w-class-iv-hi-power-laser-therapy-system",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/lightforce-xpi-25w-class-iv-hi-power-laser-therapy-system",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/cederroth-salvequick-blue-detectable-plaster-dispenser-490750",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/cederroth-salvequick-blue-detectable-plaster-dispenser-490750",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/cederroth-wound-care-dispenser-51011006",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/cederroth-wound-care-dispenser-51011006",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/cederroth-wound-care-dispenser-blue-51011009",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/cederroth-wound-care-dispenser-blue-51011009",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/blue-dot-standard-burns-first-aid-kit-red-pgb-box-90816",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/blue-dot-standard-burns-first-aid-kit-red-pgb-box-90816",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/blue-dot-first-aid-kit-s2-m2-l2",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/blue-dot-first-aid-kit-s2-m2-l2",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/lightforce-xpi-40w-class-iv-hi-power-laser-therapy-system",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/lightforce-xpi-40w-class-iv-hi-power-laser-therapy-system",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/lightforce-fxi-15w-class-iv-hi-power-laser-therapy-system",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/lightforce-fxi-15w-class-iv-hi-power-laser-therapy-system",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/intelect-mobile-combo-cha-2778-dual-frequency-ultrasound-2-channel-electrotherapy-system",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/intelect-mobile-combo-cha-2778-dual-frequency-ultrasound-2-channel-electrotherapy-system",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/sonora-combination-snr003-2-channel-electrotherapy-1-3-mhz-ultrasound",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/sonora-combination-snr003-2-channel-electrotherapy-1-3-mhz-ultrasound",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/intelect-mobile-2-combo-cha-15-1205-electrotherapy-ultrasound-system",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/intelect-mobile-2-combo-cha-15-1205-electrotherapy-ultrasound-system",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/blue-dot-eclipse-hse-first-aid-kit-green-90810-90811-90812",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/blue-dot-eclipse-hse-first-aid-kit-green-90810-90811-90812",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/hse-economy-workplace-first-aid-kit-small-medium-large",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/hse-economy-workplace-first-aid-kit-small-medium-large",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/blue-dot-bs-8599-1-home-workplace-first-aid-kit-s9-m9-l9",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/blue-dot-bs-8599-1-home-workplace-first-aid-kit-s9-m9-l9",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/gima-ambulance-emergency-rucksack-extra-large-27174",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/gima-ambulance-emergency-rucksack-extra-large-27174",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/gima-logic-2-emergency-medical-rucksack-large-27171",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/gima-logic-2-emergency-medical-rucksack-large-27171",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/sonora-combination-2-channel-electrotherapy-1-3-mhz-ultrasound-with-7-touch-screen",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/sonora-combination-2-channel-electrotherapy-1-3-mhz-ultrasound-with-7-touch-screen",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/chattanooga-intelect-mobile-2-combo-ultrasound-electrotherapy-system",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/chattanooga-intelect-mobile-2-combo-ultrasound-electrotherapy-system",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/chattanooga-intellect-advanced-color-stim-electrotherapy-system",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/chattanooga-intellect-advanced-color-stim-electrotherapy-system",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/intellect-mobile-stim-2-channel-electrotherapy-device",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/intellect-mobile-stim-2-channel-electrotherapy-device",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/electra-2-4-channel-electrotherapy-unit-with-7-touch-screen",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/electra-2-4-channel-electrotherapy-unit-with-7-touch-screen",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/gima-logic-1-emergency-medical-rucksack-27170",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/gima-logic-1-emergency-medical-rucksack-27170",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/gima-10-emergency-medical-rucksack-complete-emergency-kit-34164",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/gima-10-emergency-medical-rucksack-complete-emergency-kit-34164",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/gima-professional-emergency-medical-bag-pvc-coated-red-27166",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/gima-professional-emergency-medical-bag-pvc-coated-red-27166",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/gima-smart-emergency-medical-bag-large-red-27153",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/gima-smart-emergency-medical-bag-large-red-27153",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/gima-professional-emergency-medical-bag-27165",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/gima-professional-emergency-medical-bag-27165",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/electra-2-4-channel-electrotherapy-unit-with-7-inch-touch-screen",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/electra-2-4-channel-electrotherapy-unit-with-7-inch-touch-screen",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/chattanooga-intelect-mobile-2-vacuum-module-with-rubber-electrode-6-x-8-cm",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/chattanooga-intelect-mobile-2-vacuum-module-with-rubber-electrode-6-x-8-cm",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/chattanooga-intelect-mobile-2-stim-electrotherapy-unit-2-channel",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/chattanooga-intelect-mobile-2-stim-electrotherapy-unit-2-channel",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/chattanooga-intellect-mobile-ultrasound-therapy-unit-1-3-mhz",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/chattanooga-intellect-mobile-ultrasound-therapy-unit-1-3-mhz",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/sonora-snr-001-programmable-ultrasound-therapy-unit-1-3-mhz",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/sonora-snr-001-programmable-ultrasound-therapy-unit-1-3-mhz",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/intelect-mobile-2-system-cart-cha-15-1136",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/intelect-mobile-2-system-cart-cha-15-1136",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/intelect-mobile-2-ultrasound-therapy-unit-cha-15-1201",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/intelect-mobile-2-ultrasound-therapy-unit-cha-15-1201",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/ergonomic-saddle-stool-with-backrest-cha-106",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/ergonomic-saddle-stool-with-backrest-cha-106",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/ergonomic-saddle-medical-stool-cha-105",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/ergonomic-saddle-medical-stool-cha-105",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/height-adjustable-medical-stool-with-stainless-steel-frame-cha-109",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/height-adjustable-medical-stool-with-stainless-steel-frame-cha-109",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/gima-e2-rectangular-bag-with-window-red-27184",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/gima-e2-rectangular-bag-with-window-red-27184",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/gima-kansas-skay-medical-bag-black-27095",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/gima-kansas-skay-medical-bag-black-27095",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/gima-logic-2-trolley-rucksack-pvc-coated-27173",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/gima-logic-2-trolley-rucksack-pvc-coated-27173",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/gima-thermal-bag-27209",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/gima-thermal-bag-27209",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/gima-medinsuline-cool-bag-beige-grey-27203",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/gima-medinsuline-cool-bag-beige-grey-27203",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/gima-maxi-vials-bag-nylon-red-27129",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/gima-maxi-vials-bag-nylon-red-27129",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/gima-smart-bag-medium-red-27151",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/gima-smart-bag-medium-red-27151",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/gima-smart-bag-pvc-coated-medium-black-27158",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/gima-smart-bag-pvc-coated-medium-black-27158",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/smartflow-wireless-uroflowmetry-system",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/smartflow-wireless-uroflowmetry-system",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/therapist-medical-chair-with-backrest-cha-101",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/therapist-medical-chair-with-backrest-cha-101",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/surgeon-medical-stool-with-backrest-cha-103",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/surgeon-medical-stool-with-backrest-cha-103",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/medical-chair-with-backrest-and-side-armrest-cha-104",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/medical-chair-with-backrest-and-side-armrest-cha-104",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/medical-chair-with-backrest-and-side-armrest-cha-111",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/medical-chair-with-backrest-and-side-armrest-cha-111",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/et500t-electric-operating-table-with-c-arm-access",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/et500t-electric-operating-table-with-c-arm-access",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/customed-custo-guard-holter-ecg-wireless-3-channel-holter-monitor",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/customed-custo-guard-holter-ecg-wireless-3-channel-holter-monitor",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/custo-flash-500-510-holter-monitor",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/custo-flash-500-510-holter-monitor",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/cederroth-eye-wound-cleansing-spray-150ml-model-726000",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/cederroth-eye-wound-cleansing-spray-150ml-model-726000",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/stericlens-sterile-saline-wound-wash-spray-100ml-model-300721",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/stericlens-sterile-saline-wound-wash-spray-100ml-model-300721",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/blue-dot-eye-wash-solution-250ml-model-2144",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/blue-dot-eye-wash-solution-250ml-model-2144",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/biphasic-defibrillator-zoll-r-series-plus",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/biphasic-defibrillator-zoll-r-series-plus",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/dental-autoclave-class-b-e10",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/dental-autoclave-class-b-e10",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/infant-radiant-warmer-resuscitaire",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/infant-radiant-warmer-resuscitaire",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/mri-chiller-water-loop-50kw",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/mri-chiller-water-loop-50kw",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/surgical-shadowless-led-light-heliophos",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/surgical-shadowless-led-light-heliophos",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/biochemistry-syringe-pump-benefusion-sp3",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/biochemistry-syringe-pump-benefusion-sp3",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/centrifuge-speedfuge-4000",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/centrifuge-speedfuge-4000",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/endomed-482-electrotherapy-ultrasound",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/endomed-482-electrotherapy-ultrasound",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/image1-s-4u-rubina-4k-laparoscopy-surgical-tower",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/image1-s-4u-rubina-4k-laparoscopy-surgical-tower",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/cederroth-pocket-eye-wash-235ml-model-7221",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/cederroth-pocket-eye-wash-235ml-model-7221",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/cederroth-portable-eye-wash-bottle-500ml",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/cederroth-portable-eye-wash-bottle-500ml",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/cederroth-wall-bracket-for-eye-wash-7200",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/cederroth-wall-bracket-for-eye-wash-7200",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/blue-dot-20ml-eye-wash-pods-box-of-25-7912",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/blue-dot-20ml-eye-wash-pods-box-of-25-7912",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/blue-dot-standard-eye-wash-station-51016",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/blue-dot-standard-eye-wash-station-51016",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/blue-dot-emergency-eye-wash-station-with-mirror-cm-30ewst21",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/blue-dot-emergency-eye-wash-station-with-mirror-cm-30ewst21",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/surgical-c-arm-system-bv-pulsera",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/surgical-c-arm-system-bv-pulsera",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/anesthesia-workstation-fabius-plus-xl",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/anesthesia-workstation-fabius-plus-xl",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/et800-electro-hydraulic-operating-table-350-kg-capacity",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/et800-electro-hydraulic-operating-table-350-kg-capacity",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/2-section-fixed-height-medical-couch-with-side-rail-tab-200-fhs-sr",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/2-section-fixed-height-medical-couch-with-side-rail-tab-200-fhs-sr",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/2-section-height-adjustable-wooden-treatment-couch-tab-200w-ha",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/2-section-height-adjustable-wooden-treatment-couch-tab-200w-ha",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/fixed-height-wooden-mat-therapy-table-tab-100-fhsw-m",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/fixed-height-wooden-mat-therapy-table-tab-100-fhsw-m",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/2-section-fixed-height-wooden-treatment-couch-tab-200-fhw",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/2-section-fixed-height-wooden-treatment-couch-tab-200-fhw",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/digital-x-ray-dr-7500",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/digital-x-ray-dr-7500",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/hemodialysis-machine-5008s-cordiax",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/hemodialysis-machine-5008s-cordiax",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/digital-tens-ems-combo-stimulator-everyway-ev-806p",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/digital-tens-ems-combo-stimulator-everyway-ev-806p",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/med-fit-3-digital-dual-channel-tens-machine",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/med-fit-3-digital-dual-channel-tens-machine",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/biochemistry-analyzer-ba-3200",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/biochemistry-analyzer-ba-3200",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/neonatal-incubator-caleo",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/neonatal-incubator-caleo",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/visbody-creator600-smart-commercial-3d-intelligent-treadmill",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/visbody-creator600-smart-commercial-3d-intelligent-treadmill",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/aveus-avli3x4i001b-lithium-battery-for-av-360d-defibrillator",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/aveus-avli3x4i001b-lithium-battery-for-av-360d-defibrillator",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/ecg-machine-12-lead-cardiocare",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/ecg-machine-12-lead-cardiocare",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/dental-chair-unit-dx-2000",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/dental-chair-unit-dx-2000",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/ultrasound-machine-logiq-s8",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/ultrasound-machine-logiq-s8",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/astroplast-mezzo-eye-wash-kit-1005005",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/astroplast-mezzo-eye-wash-kit-1005005",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/blue-dot-emergency-eye-wash-solution-sterile-500ml-2143",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/blue-dot-emergency-eye-wash-solution-sterile-500ml-2143",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/abimed-head-immobilizer-am-555",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/abimed-head-immobilizer-am-555",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/philips-heartstart-hs1-adult-smart-pads-cartridge-m5071a",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/philips-heartstart-hs1-adult-smart-pads-cartridge-m5071a",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/gima-first-aid-air-cushion-splints-set-of-4-pieces-34106",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/gima-first-aid-air-cushion-splints-set-of-4-pieces-34106",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/cu-medical-systems-ipad-nf1200-adult-electrode-pad",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/cu-medical-systems-ipad-nf1200-adult-electrode-pad",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/disposable-adult-electrode-pads-for-hd1-er-range-1-pair",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/disposable-adult-electrode-pads-for-hd1-er-range-1-pair",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/patient-monitor-pm-7000",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/patient-monitor-pm-7000",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/gima-gimasplint-limb-immobilization-splint-set-5-pieces-with-bag-34685",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/gima-gimasplint-limb-immobilization-splint-set-5-pieces-with-bag-34685",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/my-life-cervical-collar-td2",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/my-life-cervical-collar-td2",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/my-life-traction-splint-set-td3",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/my-life-traction-splint-set-td3",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/philips-m3713a-adult-child-plus-multifunction-defibrillation-pads",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/philips-m3713a-adult-child-plus-multifunction-defibrillation-pads",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/icu-ventilator-sv-300",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/icu-ventilator-sv-300",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/philips-heartstart-frx-smart-pads-ii",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/philips-heartstart-frx-smart-pads-ii",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/periodmed-e15-multiparameter-patient-monitor",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/periodmed-e15-multiparameter-patient-monitor",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/abimed-air-splint-set-am-444",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/abimed-air-splint-set-am-444",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/my-life-ked-body-splint-for-head-spinal-stabilization-td9",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/my-life-ked-body-splint-for-head-spinal-stabilization-td9",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/gima-immobilization-belt-with-plastic-snap-lock-34010",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/gima-immobilization-belt-with-plastic-snap-lock-34010",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/quick-release-patient-securing-belt",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/quick-release-patient-securing-belt",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/rescue-bridle-td8a",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/rescue-bridle-td8a",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/physiomed-2-section-fixed-height-medical-treatment-couch-tab-200-fhs",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/physiomed-2-section-fixed-height-medical-treatment-couch-tab-200-fhs",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/abimed-spider-strap-am333",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/abimed-spider-strap-am333",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/physiomed-portable-wooden-massage-couch-with-5-cm-foam-por-wt221b",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/physiomed-portable-wooden-massage-couch-with-5-cm-foam-por-wt221b",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/physiomed-portable-wooden-massage-couch-with-adjustable-height-por-wt304",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/physiomed-portable-wooden-massage-couch-with-adjustable-height-por-wt304",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/my-life-spinal-board-with-straps-td-010162",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/my-life-spinal-board-with-straps-td-010162",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/physiomed-portable-aluminum-massage-couch-with-adjustable-backrest-por-at304",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/physiomed-portable-aluminum-massage-couch-with-adjustable-backrest-por-at304",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/physiomed-portable-aluminum-massage-couch-with-adjustable-height-por-263b",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/physiomed-portable-aluminum-massage-couch-with-adjustable-height-por-263b",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/physiomed-portable-aluminum-massage-couch-with-adjustable-backrest-por-at204",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/physiomed-portable-aluminum-massage-couch-with-adjustable-backrest-por-at204",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/physiomed-fixed-height-bobath-mat-therapy-table-mat-240032",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/physiomed-fixed-height-bobath-mat-therapy-table-mat-240032",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/physiomed-electric-bobath-mat-therapy-treatment-table-mat-240041d",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/physiomed-electric-bobath-mat-therapy-treatment-table-mat-240041d",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/physiomed-electric-height-adjustable-mat-bobath-therapy-table-mat-240029d",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/physiomed-electric-height-adjustable-mat-bobath-therapy-table-mat-240029d",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/physiomed-3-motor-electric-dermatology-spa-couch-der-d201",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/physiomed-3-motor-electric-dermatology-spa-couch-der-d201",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/evacuation-chair-excel-evacusafe-td010113",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/evacuation-chair-excel-evacusafe-td010113",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/abimed-straight-basket-stretcher-am222",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/abimed-straight-basket-stretcher-am222",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/abimed-split-basket-stretcher-am-111",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/abimed-split-basket-stretcher-am-111",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/my-life-stair-stretcher-mlf999a2",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/my-life-stair-stretcher-mlf999a2",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/my-life-scoop-stretcher-mlf999e-td01016",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/my-life-scoop-stretcher-mlf999e-td01016",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/my-life-folding-stretcher-with-carry-bag-td-10151-td-10152",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/my-life-folding-stretcher-with-carry-bag-td-10151-td-10152",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/physiomed-4-motor-electric-dermatology-treatment-couch-der-222b",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/physiomed-4-motor-electric-dermatology-treatment-couch-der-222b",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/physiomed-4-motor-electric-dermatology-spa-couch-der259-4m",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/physiomed-4-motor-electric-dermatology-spa-couch-der259-4m",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/physiomed-3-motor-electric-dermatology-spa-treatment-couch-der-221d",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/physiomed-3-motor-electric-dermatology-spa-treatment-couch-der-221d",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/my-life-2-fold-metal-folding-stretcher-with-wheels-td-010112",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/my-life-2-fold-metal-folding-stretcher-with-wheels-td-010112",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/physiomed-3-motor-electric-double-column-spa-treatment-table-der-275",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/physiomed-3-motor-electric-double-column-spa-treatment-table-der-275",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/my-life-wheelchair-stretcher-with-varied-positions-mlf999c2-td010132",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/my-life-wheelchair-stretcher-with-varied-positions-mlf999c2-td010132",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/physiomed-3-motor-electric-single-column-spa-treatment-table-der-265",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/physiomed-3-motor-electric-single-column-spa-treatment-table-der-265",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/my-life-auto-loading-ambulance-stretcher-td01013-a",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/my-life-auto-loading-ambulance-stretcher-td01013-a",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/physiomed-3-motor-electric-facial-treatment-chair-der-224a",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/physiomed-3-motor-electric-facial-treatment-chair-der-224a",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/physiomed-electric-dermatology-spa-treatment-couch-der-19",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/physiomed-electric-dermatology-spa-treatment-couch-der-19",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/electric-dermatology-spa-treatment-couch-der-19",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/electric-dermatology-spa-treatment-couch-der-19",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/4-motor-electric-dermatology-examination-chair-der-246eb-4m",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/4-motor-electric-dermatology-examination-chair-der-246eb-4m",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/3-motor-electric-dermatology-chair-der-220b",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/3-motor-electric-dermatology-chair-der-220b",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/mylife-fully-automatic-loading-stretcher-td-010131h",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/mylife-fully-automatic-loading-stretcher-td-010131h",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/automatic-loading-ambulance-stretcher-mlf999-c-td01013b",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/automatic-loading-ambulance-stretcher-mlf999-c-td01013b",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/high-vacuum-tips-am-221-standard-size",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/high-vacuum-tips-am-221-standard-size",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/saliva-ejectors-lmdp-series-standard-size",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/saliva-ejectors-lmdp-series-standard-size",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/barrier-film-4-x-6-inch-sheets-mbf-series",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/barrier-film-4-x-6-inch-sheets-mbf-series",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/2-ply-dental-bibs-disposable-dental-patient-bibs",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/2-ply-dental-bibs-disposable-dental-patient-bibs",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/finger-cots-standard-blue-100-pieces-bag",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/finger-cots-standard-blue-100-pieces-bag",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/4-motor-electric-dermatology-treatment-chair-der-220d",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/4-motor-electric-dermatology-treatment-chair-der-220d",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/neil-robertson-roll-stretcher-confined-space-rescue-stretcher",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/neil-robertson-roll-stretcher-confined-space-rescue-stretcher",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/manual-phlebotomy-padded-arm-chair-with-drawer-bd1400d",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/manual-phlebotomy-padded-arm-chair-with-drawer-bd1400d",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/manual-phlebotomy-padded-arm-chair-with-adjustable-arms-bd1400",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/manual-phlebotomy-padded-arm-chair-with-adjustable-arms-bd1400",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/manual-phlebotomy-chair-with-padded-armrests-bd1300",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/manual-phlebotomy-chair-with-padded-armrests-bd1300",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/fixed-height-phlebotomy-chair-with-adjustable-armrests-bd1200",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/fixed-height-phlebotomy-chair-with-adjustable-armrests-bd1200",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/manual-blood-donation-chair-with-adjustable-sections-bd1500m",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/manual-blood-donation-chair-with-adjustable-sections-bd1500m",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/electric-blood-donation-chair-with-adjustable-back-knee-sections-bd1500e",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/electric-blood-donation-chair-with-adjustable-back-knee-sections-bd1500e",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/electric-blood-donor-dialysis-chair-bd1600e",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/electric-blood-donor-dialysis-chair-bd1600e",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/micra-electric-blood-donor-transfusion-couch-tab-bt24s",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/micra-electric-blood-donor-transfusion-couch-tab-bt24s",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/electric-chemotherapy-dialysis-blood-drawing-chair-bd1700e",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/electric-chemotherapy-dialysis-blood-drawing-chair-bd1700e",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/lomar-sterile-non-woven-wound-dressing-lmb-series",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/lomar-sterile-non-woven-wound-dressing-lmb-series",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/ecopore-sterile-non-woven-wound-dressing-ewd-series",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/ecopore-sterile-non-woven-wound-dressing-ewd-series",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/ecopore-adhesive-bandages-eab-series",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/ecopore-adhesive-bandages-eab-series",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/lomar-elastic-crepe-bandage",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/lomar-elastic-crepe-bandage",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/lomar-conforming-bandage",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/lomar-conforming-bandage",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/lomar-cotton-gauze-bandage",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/lomar-cotton-gauze-bandage",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/electric-dialysis-treatment-chair-with-cpr-trendelenburg-bd-1550e",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/electric-dialysis-treatment-chair-with-cpr-trendelenburg-bd-1550e",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/ecopore-fixation-tape-with-paper-backing-ebr-series",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/ecopore-fixation-tape-with-paper-backing-ebr-series",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/manual-dialysis-treatment-chair-with-reclining-backrest-bd-1550m",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/manual-dialysis-treatment-chair-with-reclining-backrest-bd-1550m",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/gynaecology-electric-examination-table-with-adjustable-foot-pedals-gyn-400a-1",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/gynaecology-electric-examination-table-with-adjustable-foot-pedals-gyn-400a-1",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/ecopore-surgical-paper-tape-non-woven",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/ecopore-surgical-paper-tape-non-woven",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/electric-gynaecology-obstetrics-examination-table-gyn-400a",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/electric-gynaecology-obstetrics-examination-table-gyn-400a",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/electric-gynaecology-spa-examination-couch-gyn-246ebs",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/electric-gynaecology-spa-examination-couch-gyn-246ebs",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/ecopore-unidix-silk-adhesive-tape-cloth-surgical-tape",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/ecopore-unidix-silk-adhesive-tape-cloth-surgical-tape",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/electric-gynaecology-examination-couch-with-drawers-gyn-200gfd",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/electric-gynaecology-examination-couch-with-drawers-gyn-200gfd",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/ideal-plus-3-motor-electric-gynaecology-couch-gyn-200",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/ideal-plus-3-motor-electric-gynaecology-couch-gyn-200",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/ecopore-transparent-surgical-tape-clear-medical-adhesive-tape",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/ecopore-transparent-surgical-tape-clear-medical-adhesive-tape",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/op-gyn-electric-gynaecological-examination-chair-gyn-220",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/op-gyn-electric-gynaecological-examination-chair-gyn-220",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/ideal-plus-manual-chiropractic-treatment-table-chr-260",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/ideal-plus-manual-chiropractic-treatment-table-chr-260",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/ideal-plus-fixed-height-manual-chiropractic-table-chiro-280",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/ideal-plus-fixed-height-manual-chiropractic-table-chiro-280",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/stainless-steel-pet-grooming-table-dongpin",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/stainless-steel-pet-grooming-table-dongpin",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/hair-washing-chair-dongpin",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/hair-washing-chair-dongpin",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/massage-shampoo-bed-dongpin-xf-607",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/massage-shampoo-bed-dongpin-xf-607",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/tattoo-master-chair-dongpin-dp-9975",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/tattoo-master-chair-dongpin-dp-9975",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/fellowship-adjustable-tattoo-artist-chair-dp-9973",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/fellowship-adjustable-tattoo-artist-chair-dp-9973",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/tattoo-chair-dongpin-dp-3603",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/tattoo-chair-dongpin-dp-3603",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/ideal-plus-electric-chiropractic-treatment-table-fr3300",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/ideal-plus-electric-chiropractic-treatment-table-fr3300",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/full-body-portable-massage-chair-dp-5800",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/full-body-portable-massage-chair-dp-5800",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/chiropractic-automatic-flexion-distraction-table-gvii-5d",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/chiropractic-automatic-flexion-distraction-table-gvii-5d",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/3-drop-manual-chiropractic-treatment-table-gvii-3d",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/3-drop-manual-chiropractic-treatment-table-gvii-3d",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/electric-vertical-rehabilitation-tilt-table-tab-a121",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/electric-vertical-rehabilitation-tilt-table-tab-a121",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/portable-tattoo-spa-massage-table-dongpin-2723-123",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/portable-tattoo-spa-massage-table-dongpin-2723-123",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/manual-treatment-table-dp-8340",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/manual-treatment-table-dp-8340",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/2-section-physiotherapy-x-base-bed-dp-8414",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/2-section-physiotherapy-x-base-bed-dp-8414",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/raffaello-electric-split-leg-tilt-table-art250174",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/raffaello-electric-split-leg-tilt-table-art250174",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/canova-electric-single-leg-tilt-table-art250171",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/canova-electric-single-leg-tilt-table-art250171",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/treatment-table-dp-8273",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/treatment-table-dp-8273",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/2-section-electric-tilt-table-with-adjustable-backrest-tab-103e",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/2-section-electric-tilt-table-with-adjustable-backrest-tab-103e",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/ideal-plus-electric-variable-height-tilt-table-tab-100",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/ideal-plus-electric-variable-height-tilt-table-tab-100",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/physiotherapy-treatment-table-dp-8131",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/physiotherapy-treatment-table-dp-8131",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/saunders-lumbar-hometrac-portable-lumbar-traction-device-199603",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/saunders-lumbar-hometrac-portable-lumbar-traction-device-199603",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/luxury-spa-massage-table-with-locker-dp-g051f",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/luxury-spa-massage-table-with-locker-dp-g051f",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/saunders-cervical-traction-device-with-pressure-gauge-199594",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/saunders-cervical-traction-device-with-pressure-gauge-199594",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/luxury-electric-treatment-table-dp-g042f",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/luxury-electric-treatment-table-dp-g042f",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/triton-digital-traction-unit-with-touch-screen-4749",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/triton-digital-traction-unit-with-touch-screen-4749",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/electric-therapy-couch-for-beauty-salons-dp-z05",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/electric-therapy-couch-for-beauty-salons-dp-z05",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/tru-trac-digital-traction-unit-with-touch-screen-4779",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/tru-trac-digital-traction-unit-with-touch-screen-4779",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/stainless-steel-medical-utility-trolley-dongpin-bdt205",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/stainless-steel-medical-utility-trolley-dongpin-bdt205",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/spinetrac-spinal-decompression-therapy-system-hm-dts100",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/spinetrac-spinal-decompression-therapy-system-hm-dts100",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/ideal-plus-electric-physiotherapy-traction-couch-tab-400-b",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/ideal-plus-electric-physiotherapy-traction-couch-tab-400-b",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/electric-surgical-suction-pump-hospivac-restyled",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/electric-surgical-suction-pump-hospivac-restyled",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/new-hospivac-350-professional-surgical-suction-machine-ca-mi",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/new-hospivac-350-professional-surgical-suction-machine-ca-mi",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/electric-surgical-suction-pump-hospivac-400",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/electric-surgical-suction-pump-hospivac-400",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/new-hospivac-restyled-professional-surgical-suction-machine-ca-mi",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/new-hospivac-restyled-professional-surgical-suction-machine-ca-mi",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/electric-surgical-suction-pump-hospivac-350",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/electric-surgical-suction-pump-hospivac-350",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/askir-c30-professional-electric-surgical-suction-machine-ca-mi",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/askir-c30-professional-electric-surgical-suction-machine-ca-mi",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/emergency-care-suction-system-askir-230-12v-br",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/emergency-care-suction-system-askir-230-12v-br",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/new-askir-118-basic-portable-emergency-suction-machine-ca-mi",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/new-askir-118-basic-portable-emergency-suction-machine-ca-mi",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/battery-powered-mucus-suction-pump-askir-118",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/battery-powered-mucus-suction-pump-askir-118",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/new-askir-30-proximity-electric-surgical-suction-machine-ca-mi",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/new-askir-30-proximity-electric-surgical-suction-machine-ca-mi",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/new-askir-30-electric-surgical-suction-machine-ca-mi",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/new-askir-30-electric-surgical-suction-machine-ca-mi",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/battery-operated-surgical-suction-pump-askir-118-basic",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/battery-operated-surgical-suction-pump-askir-118-basic",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/new-askir-20-electric-medical-suction-machine-ca-mi",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/new-askir-20-electric-medical-suction-machine-ca-mi",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/battery-powered-mucus-suction-pump-askir-36",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/battery-powered-mucus-suction-pump-askir-36",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/new-aspiret-electric-surgical-suction-machine-ca-mi",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/new-aspiret-electric-surgical-suction-machine-ca-mi",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/electric-mucus-suction-pump-askir-36-br",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/electric-mucus-suction-pump-askir-36-br",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/ideal-plus-300-electric-physiotherapy-traction-couch-tab-300-b",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/ideal-plus-300-electric-physiotherapy-traction-couch-tab-300-b",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/triton-6e-electric-6-section-spinal-traction-distraction-table",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/triton-6e-electric-6-section-spinal-traction-distraction-table",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/triton-6m-6-section-electric-spinal-traction-distraction-table",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/triton-6m-6-section-electric-spinal-traction-distraction-table",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/galaxy-3-section-electric-spinal-traction-table-package-ttet300",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/galaxy-3-section-electric-spinal-traction-table-package-ttet300",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/orthopedic-9-section-electric-examination-physiotherapy-couch-tab-900sl",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/orthopedic-9-section-electric-examination-physiotherapy-couch-tab-900sl",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/ideal-plus-9-section-electric-physiotherapy-treatment-couch-tab-900-1",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/ideal-plus-9-section-electric-physiotherapy-treatment-couch-tab-900-1",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/8-section-electric-physiotherapy-therapy-couch-tab-800",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/8-section-electric-physiotherapy-therapy-couch-tab-800",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/ideal-plus-7-section-electric-physiotherapy-treatment-couch-tab-710",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/ideal-plus-7-section-electric-physiotherapy-treatment-couch-tab-710",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/orthopedic-7-section-electric-examination-physiotherapy-couch-tab-700sl",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/orthopedic-7-section-electric-examination-physiotherapy-couch-tab-700sl",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/ideal-plus-6-section-electric-postural-drainage-physiotherapy-couch-tab-601",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/ideal-plus-6-section-electric-postural-drainage-physiotherapy-couch-tab-601",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/medical-utility-trolley-dp-6039",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/medical-utility-trolley-dp-6039",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/beauty-facial-trolley-dp-6038",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/beauty-facial-trolley-dp-6038",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/medical-utility-trolley-oy-005",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/medical-utility-trolley-oy-005",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/medical-utility-trolley-oy-001",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/medical-utility-trolley-oy-001",
+      "indexable": true,
+      "expectedStatus": 200
+    },
+    {
+      "url": "https://www.fastonmed.com/product/cosmetic-trolley-dp6004",
+      "type": "product",
+      "canonical": "https://www.fastonmed.com/product/cosmetic-trolley-dp6004",
+      "indexable": true,
+      "expectedStatus": 200
+    }
+  ]
+}

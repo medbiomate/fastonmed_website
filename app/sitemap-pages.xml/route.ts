@@ -6,16 +6,11 @@ export const dynamic = 'force-dynamic';
 export async function GET() {
   const now = new Date();
   const pages = [
-    ['', 'daily', 1],
-    ['/compare', 'weekly', 0.5],
-    ['/wishlist', 'weekly', 0.5],
+    ['', 'daily', 1.0],
     ['/shop', 'daily', 0.9],
-    ['/cart', 'weekly', 0.4],
-    ['/checkout', 'weekly', 0.4],
-    ['/my-account', 'monthly', 0.3],
-    ['/order-tracking', 'monthly', 0.4],
     ['/about-us', 'monthly', 0.7],
-    ['/contact', 'monthly', 0.8]
+    ['/contact', 'monthly', 0.8],
+    ['/blog', 'weekly', 0.8]
   ] as const;
   const sharedPages = await getSharedEditorialPages();
   const entries = [
