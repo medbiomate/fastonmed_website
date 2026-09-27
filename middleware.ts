@@ -50,9 +50,48 @@ export function middleware(request: NextRequest) {
     return res;
   }
 
-  return NextResponse.next();
+  // Handle Arabic routes (/ar, /ar/...)
+  const isArabic = pathname === '/ar' || pathname.startsWith('/ar/');
+  if (isArabic) {
+    let targetPath = pathname === '/ar' ? '/' : pathname.slice(3);
+    if (!targetPath.startsWith('/')) {
+      targetPath = '/' + targetPath;
+    }
+
+    const requestHeaders = new Headers(request.headers);
+    requestHeaders.set('x-locale', 'ar');
+    requestHeaders.set('x-pathname', pathname);
+
+    const rewriteUrl = new URL(targetPath + request.nextUrl.search, request.url);
+    const response = NextResponse.rewrite(rewriteUrl, {
+      request: {
+        headers: requestHeaders,
+      },
+    });
+    return response;
+  }
+
+  // Default English route
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set('x-locale', 'en');
+  requestHeaders.set('x-pathname', pathname);
+
+  return NextResponse.next({
+    request: {
+      headers: requestHeaders,
+    },
+  });
 }
 
 export const config = {
-  matcher: ['/admin/:path*']
+  matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - api (API routes)
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico, sitemap*.xml, robots.txt, asset files
+     */
+    '/((?!api|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|xml|txt)).*)',
+  ],
 };

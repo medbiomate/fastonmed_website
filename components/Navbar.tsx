@@ -8,6 +8,9 @@ import { useApp } from '@/lib/context';
 import { store } from '@/lib/store';
 import FastonmedLogo from './FastonmedLogo';
 import ShopMegaMenu from './ShopMegaMenu';
+import LanguageSwitcher from './LanguageSwitcher';
+import { useLocale } from '@/lib/locale-context';
+import { getEquivalentPath } from '@/lib/i18n';
 
 const tickerMessages = [
   'Free UAE Delivery on Orders Over AED 500',
@@ -18,6 +21,7 @@ const tickerMessages = [
 
 export default function Navbar() {
   const pathname = usePathname();
+  const { locale, isRtl } = useLocale();
   const { cartCount, setIsCartOpen, wishlist } = useApp();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchModalOpen, setSearchModalOpen] = useState(false);
@@ -66,16 +70,21 @@ export default function Navbar() {
     setChromeSettings(store.getSiteChrome());
   }, []);
 
-  const navLinks = chromeSettings.headerMenu && chromeSettings.headerMenu.length > 0
+  const baseLinks = chromeSettings.headerMenu && chromeSettings.headerMenu.length > 0
     ? chromeSettings.headerMenu.map(m => ({ label: m.label, href: m.url }))
     : [
-        { label: 'Home', href: '/' },
-        { label: 'About Us', href: '/about-us' },
-        { label: 'Products', href: '/shop' },
-        { label: 'Services', href: '/services' },
-        { label: 'Quality', href: '/about-us' },
-        { label: 'Contact Us', href: '/contact' }
+        { label: locale === 'ar' ? 'الرئيسية' : 'Home', href: '/' },
+        { label: locale === 'ar' ? 'من نحن' : 'About Us', href: '/about-us' },
+        { label: locale === 'ar' ? 'المتجر' : 'Products', href: '/shop' },
+        { label: locale === 'ar' ? 'الخدمات' : 'Services', href: '/services' },
+        { label: locale === 'ar' ? 'الجودة' : 'Quality', href: '/about-us' },
+        { label: locale === 'ar' ? 'اتصل بنا' : 'Contact Us', href: '/contact' }
       ];
+
+  const navLinks = baseLinks.map(l => ({
+    label: l.label,
+    href: locale === 'ar' ? getEquivalentPath(l.href, 'ar') : l.href
+  }));
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -222,6 +231,10 @@ export default function Navbar() {
               <Clock size={13} strokeWidth={2.2} />
               <span>Mon – Sat: 8:30 AM – 6:00 PM</span>
             </span>
+
+            <span style={{ opacity: 0.35, fontSize: '0.75rem' }}>|</span>
+
+            <LanguageSwitcher variant="topbar" />
           </div>
         </div>
 
@@ -547,15 +560,16 @@ export default function Navbar() {
                 display: 'flex',
                 alignItems: 'center'
               }}
-              aria-label="Admin Portal & Account"
-              title="Account / Admin Portal"
             >
               <User size={21} />
             </Link>
 
+            {/* Language Switcher */}
+            <LanguageSwitcher variant="header" />
+
             {/* Get in Touch CTA Button */}
             <Link
-              href="/contact"
+              href={locale === 'ar' ? '/ar/contact' : '/contact'}
               id="header-cta-btn"
               style={{
                 backgroundColor: '#00875a',
@@ -753,6 +767,9 @@ export default function Navbar() {
                 <span>Search 500+ products...</span>
               </button>
             </div>
+
+            {/* Mobile Language Switcher */}
+            <LanguageSwitcher variant="mobile" />
 
             <nav style={{ display: 'flex', flexDirection: 'column', gap: '4px', flex: 1 }}>
               {navLinks.map(l => {

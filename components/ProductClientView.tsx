@@ -24,6 +24,8 @@ import {
 import { Product } from '@/lib/types';
 import { useApp } from '@/lib/context';
 import ProductCard from '@/components/ProductCard';
+import { useLocale } from '@/lib/locale-context';
+import { getEquivalentPath } from '@/lib/i18n';
 
 interface ProductClientViewProps {
   product: Product;
@@ -31,6 +33,7 @@ interface ProductClientViewProps {
 }
 
 export default function ProductClientView({ product, similarProducts }: ProductClientViewProps) {
+  const { locale, isRtl, t } = useLocale();
   const [quantity, setQuantity] = useState<number>(1);
   const [selectedImage, setSelectedImage] = useState<string>(product.mainImage || '');
   const [activeTab, setActiveTab] = useState<'specs' | 'features' | 'faq'>('specs');
@@ -117,17 +120,21 @@ export default function ProductClientView({ product, similarProducts }: ProductC
       {/* Low-Profile Breadcrumbs Navigation (For SEO Hierarchy) */}
       <nav aria-label="Breadcrumbs" className="seo-breadcrumb" style={{ borderBottom: '1px solid #eef2f6', backgroundColor: '#fcfdfd', padding: '6px 0' }}>
         <div className="container" style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '0.68rem', color: '#94a3b8', flexWrap: 'wrap', lineHeight: 1.2 }}>
-          <Link href="/" style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500 }}>Home</Link>
-          <ChevronRight size={10} color="#cbd5e1" />
-          <Link href="/shop" style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500 }}>Medical Equipment</Link>
-          <ChevronRight size={10} color="#cbd5e1" />
+          <Link href={locale === 'ar' ? '/ar' : '/'} style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500 }}>
+            {t('common.home')}
+          </Link>
+          <ChevronRight size={10} color="#cbd5e1" className="rtl-flip" />
+          <Link href={locale === 'ar' ? '/ar/shop' : '/shop'} style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500 }}>
+            {locale === 'ar' ? 'المعدات والأجهزة الطبية' : 'Medical Equipment'}
+          </Link>
+          <ChevronRight size={10} color="#cbd5e1" className="rtl-flip" />
           <Link
-            href={`/product-category/${(product.category || 'medical-equipment').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`}
+            href={`${locale === 'ar' ? '/ar' : ''}/product-category/${(product.category || 'medical-equipment').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`}
             style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500 }}
           >
             {product.category}
           </Link>
-          <ChevronRight size={10} color="#cbd5e1" />
+          <ChevronRight size={10} color="#cbd5e1" className="rtl-flip" />
           <span style={{ color: '#64748b', fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '300px' }}>
             {product.name}
           </span>

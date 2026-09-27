@@ -1,9 +1,11 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { headers } from 'next/headers';
 import { getServerProductBySlug, getServerSimilarProducts } from '@/lib/server-catalog';
 import ProductClientView from '@/components/ProductClientView';
 import NotFound from '@/app/not-found';
+import { translateEntityFields } from '@/lib/translation-service';
 
 interface ProductPageProps {
   params: Promise<{ slug: string }>;
@@ -21,6 +23,12 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
     };
   }
 
+  const headersList = await headers();
+  const isAr = headersList.get('x-locale') === 'ar';
+  const enUrl = `https://www.fastonmed.com/product/${product.slug}`;
+  const arUrl = `https://www.fastonmed.com/ar/product/${product.slug}`;
+  const canonicalUrl = isAr ? arUrl : enUrl;
+
   const price = product.salePrice && product.salePrice > 0 ? product.salePrice : product.regularPrice;
   const imgUrl = product.mainImage
     ? product.mainImage.startsWith('http')
@@ -33,26 +41,37 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
     .slice(0, 155);
 
   // Manual SEO title overrides automatic default
-  const seoTitle = (product.seoTitle && product.seoTitle.trim().length > 0)
+  const defaultEnSeoTitle = (product.seoTitle && product.seoTitle.trim().length > 0)
     ? product.seoTitle.trim()
     : `${product.name} in UAE | FastonMed`;
 
   // Manual SEO description overrides automatic default
-  const defaultDescription = cleanDescription.length > 20
+  const defaultEnDescription = cleanDescription.length > 20
     ? `${cleanDescription} FastonMed is the Best Medical Equipment Supplier in UAE. Official warranty & fast delivery across UAE.`
     : `Buy ${product.name} from FastonMed, the Best Medical Equipment Supplier in UAE. Official distributor in Dubai Healthcare City (DHCC) with warranty and biomedical support.`;
 
-  const seoDescription = (product.seoDescription && product.seoDescription.trim().length > 0)
+  const defaultEnSeoDescription = (product.seoDescription && product.seoDescription.trim().length > 0)
     ? product.seoDescription.trim()
-    : defaultDescription.slice(0, 160);
+    : defaultEnDescription.slice(0, 160);
 
-  const canonicalUrl = (product.canonicalUrl && product.canonicalUrl.trim().length > 0)
-    ? product.canonicalUrl.trim()
-    : `https://www.fastonmed.com/product/${product.slug}`;
+  let finalTitle = defaultEnSeoTitle;
+  let finalDescription = defaultEnSeoDescription;
+
+  if (isAr) {
+    const arFields = await translateEntityFields('product', product.id || product.slug, {
+      name: product.name,
+      shortDescription: cleanDescription,
+      seoTitle: defaultEnSeoTitle,
+      seoDescription: defaultEnSeoDescription,
+    }, 'ar');
+
+    finalTitle = arFields.seoTitle || `${arFields.name} في الإمارات | فاستونميد`;
+    finalDescription = arFields.seoDescription || defaultEnSeoDescription;
+  }
 
   return {
-    title: seoTitle,
-    description: seoDescription,
+    title: finalTitle,
+    description: finalDescription,
     keywords: [
       product.name,
       product.category,
@@ -66,14 +85,19 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
       'FastonMed'
     ],
     alternates: {
-      canonical: canonicalUrl
+      canonical: canonicalUrl,
+      languages: {
+        'en': enUrl,
+        'ar': arUrl,
+        'x-default': enUrl,
+      }
     },
     openGraph: {
-      title: seoTitle,
-      description: seoDescription,
+      title: finalTitle,
+      description: finalDescription,
       url: canonicalUrl,
       siteName: 'FastonMed',
-      locale: 'en_AE',
+      locale: isAr ? 'ar_AE' : 'en_AE',
       type: 'website',
       images: [
         {
@@ -86,8 +110,8 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
     },
     twitter: {
       card: 'summary_large_image',
-      title: seoTitle,
-      description: seoDescription,
+      title: finalTitle,
+      description: finalDescription,
       images: [imgUrl]
     },
     robots: {
@@ -110,13 +134,32 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
 
   if (!product) return <NotFound />;
 
+  const headersList = await headers();
+  const isAr = headersList.get('x-locale') === 'ar';
+  const enUrl = `https://www.fastonmed.com/product/${product.slug}`;
+  const arUrl = `https://www.fastonmed.com/ar/product/${product.slug}`;
+  const canonicalUrl = isAr ? arUrl : enUrl;
+
+  let displayProduct = product;
+  if (isAr) {
+    const arFields = await translateEntityFields('product', product.id || product.slug, {
+      name: product.name,
+      shortDescription: product.shortDescription || '',
+      fullDescription: product.fullDescription || '',
+    }, 'ar');
+
+    displayProduct = {
+      ...product,
+      name: arFields.name || product.name,
+      shortDescription: arFields.shortDescription || product.shortDescription,
+      fullDescription: arFields.fullDescription || product.fullDescription,
+    };
+  }
+
   // Fetch similar products with intelligent keyword/category scoring
   const similarProducts = await getServerSimilarProducts(product, 4);
 
   const price = product.salePrice && product.salePrice > 0 ? product.salePrice : product.regularPrice;
-  const canonicalUrl = (product.canonicalUrl && product.canonicalUrl.trim().length > 0)
-    ? product.canonicalUrl.trim()
-    : `https://www.fastonmed.com/product/${product.slug}`;
   const imgUrl = product.mainImage
     ? product.mainImage.startsWith('http')
       ? product.mainImage
@@ -127,9 +170,9 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
   const productSchema: Record<string, any> = {
     '@context': 'https://schema.org',
     '@type': 'Product',
-    name: product.name,
+    name: displayProduct.name,
     image: [imgUrl],
-    description: (product.shortDescription || product.fullDescription || '').replace(/<[^>]*>?/gm, '').slice(0, 300),
+    description: (displayProduct.shortDescription || displayProduct.fullDescription || '').replace(/<[^>]*>?/gm, '').slice(0, 300),
     sku: product.sku || product.id,
     mpn: product.sku || product.id,
     brand: {
@@ -182,25 +225,25 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
       {
         '@type': 'ListItem',
         position: 1,
-        name: 'Home',
-        item: 'https://www.fastonmed.com'
+        name: isAr ? 'الرئيسية' : 'Home',
+        item: isAr ? 'https://www.fastonmed.com/ar' : 'https://www.fastonmed.com'
       },
       {
         '@type': 'ListItem',
         position: 2,
-        name: 'Medical Catalog',
-        item: 'https://www.fastonmed.com/shop'
+        name: isAr ? 'المتجر' : 'Medical Catalog',
+        item: isAr ? 'https://www.fastonmed.com/ar/shop' : 'https://www.fastonmed.com/shop'
       },
       {
         '@type': 'ListItem',
         position: 3,
-        name: product.category || 'Medical Equipment',
-        item: `https://www.fastonmed.com/product-category/${(product.category || 'medical-equipment').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`
+        name: product.category || (isAr ? 'الأجهزة الطبية' : 'Medical Equipment'),
+        item: `${isAr ? 'https://www.fastonmed.com/ar' : 'https://www.fastonmed.com'}/product-category/${(product.category || 'medical-equipment').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`
       },
       {
         '@type': 'ListItem',
         position: 4,
-        name: product.name,
+        name: displayProduct.name,
         item: canonicalUrl
       }
     ]
@@ -255,7 +298,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
       />
 
       {/* Interactive Client Component */}
-      <ProductClientView product={product} similarProducts={similarProducts} />
+      <ProductClientView product={displayProduct} similarProducts={similarProducts} />
     </>
   );
 }

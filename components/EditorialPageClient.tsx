@@ -22,6 +22,7 @@ import {
 } from 'lucide-react';
 import type { Product } from '@/lib/types';
 import type { FAQItem } from '@/lib/editorial-pages';
+import { useLocale } from '@/lib/locale-context';
 
 export type CategoryItem = {
   name: string;
@@ -59,6 +60,12 @@ export default function EditorialPageClient({
   partners,
   faqs,
 }: EditorialPageClientProps) {
+  const { isArabic, t } = useLocale();
+  const localizeHref = (href: string) => {
+    if (!isArabic) return href;
+    if (href.startsWith('/ar')) return href;
+    return `/ar${href.startsWith('/') ? '' : '/'}${href}`;
+  };
   // FAQ accordion state
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
 
@@ -227,7 +234,7 @@ export default function EditorialPageClient({
               {categories.map((cat) => (
                 <Link
                   key={cat.name}
-                  href={`/shop?category=${encodeURIComponent(cat.name)}`}
+                  href={localizeHref(`/shop?category=${encodeURIComponent(cat.name)}`)}
                   className="group"
                   style={{
                     flex: '0 0 160px',
@@ -374,7 +381,7 @@ export default function EditorialPageClient({
                         borderBottom: '1px solid #f1f5f9',
                       }}
                     >
-                      <Link href={`/product/${product.slug}`}>
+                      <Link href={localizeHref(`/product/${product.slug}`)}>
                         <Image
                           src={product.mainImage || '/products/dental-chair.jpg'}
                           alt={product.name}
@@ -445,7 +452,7 @@ export default function EditorialPageClient({
                         }}
                       >
                         <Link
-                          href={`/product/${product.slug}`}
+                          href={localizeHref(`/product/${product.slug}`)}
                           style={{
                             color: '#0f2923',
                             textDecoration: 'none',
@@ -545,11 +552,11 @@ export default function EditorialPageClient({
                           }}
                         >
                           <MessageCircle size={16} />
-                          Buy via WhatsApp
+                          {isArabic ? 'شراء عبر واتساب' : 'Buy via WhatsApp'}
                         </a>
 
                         <Link
-                          href={`/product/${product.slug}`}
+                          href={localizeHref(`/product/${product.slug}`)}
                           style={{
                             display: 'flex',
                             alignItems: 'center',
@@ -563,7 +570,7 @@ export default function EditorialPageClient({
                             textDecoration: 'none',
                           }}
                         >
-                          View Details
+                          {isArabic ? 'عرض التفاصيل' : 'View Details'}
                         </Link>
                       </div>
                     </div>
@@ -575,7 +582,7 @@ export default function EditorialPageClient({
             {/* View All in Catalog CTA */}
             <div style={{ textAlign: 'center', marginTop: 36 }}>
               <Link
-                href="/shop"
+                href={localizeHref('/shop')}
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',

@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useState, type ReactNode } from 'react';
-import { Archive, BarChart3, BookOpen, ChevronDown, ChevronRight, ExternalLink, FileText, Files, FolderTree, Image as ImageIcon, LayoutDashboard, MessageSquare, Package, PanelLeftClose, PanelLeftOpen, Settings, ShoppingCart, Tag } from 'lucide-react';
+import { Archive, BarChart3, BookOpen, ChevronDown, ChevronRight, ExternalLink, FileText, Files, FolderTree, Image as ImageIcon, Languages, LayoutDashboard, MessageSquare, Package, PanelLeftClose, PanelLeftOpen, Settings, ShoppingCart, Tag } from 'lucide-react';
 import { store } from '@/lib/store';
 
 type NavItem = { label: string; href: string; count?: number };
@@ -74,6 +74,8 @@ export default function AdminSidebar() {
         <NavGroup label="Content Tools" icon={<FileText size={18} />} items={[{ label: 'FAQs', href: '/admin/content/faqs' }, { label: 'Reviews', href: '/admin/content/reviews' }, { label: 'Comments', href: '/admin/content/comments' }]} />
         <NavGroup label="Header & Footer" icon={<FolderTree size={18} />} items={[{ label: "Header", href: "/admin/appearance/header" }, { label: "Footer", href: "/admin/appearance/footer" }]} />
         {direct('/admin/coupons', 'Coupons', <Tag size={18} />)}
+        <div className="tk-nav-section-label">LOCALIZATION</div>
+        {direct('/admin/translations', 'Translations', <Languages size={18} />)}
         <div className="tk-nav-section-label">SYSTEM</div>
         <NavGroup label="Website" icon={<Archive size={18} />} items={[{ label: 'SEO', href: '/admin/seo' }, { label: 'Redirects', href: '/admin/seo/redirects' }]} />
         <NavGroup label="Settings" icon={<Settings size={18} />} items={[{ label: 'Store Settings', href: '/admin/settings' }, { label: 'Users & Access', href: '/admin/settings/users' }]} />

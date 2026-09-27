@@ -146,17 +146,27 @@ const websiteSchema = {
   }
 };
 
-export default function RootLayout({
+import { headers } from 'next/headers';
+import { LocaleProvider } from '@/lib/locale-context';
+
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const headersList = await headers();
+  const locale = headersList.get('x-locale') === 'ar' ? 'ar' : 'en';
+  const isAr = locale === 'ar';
+
   return (
-    <html lang="en">
+    <html lang={isAr ? 'ar' : 'en'} dir={isAr ? 'rtl' : 'ltr'} className={isAr ? 'rtl-arabic' : ''}>
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="alternate" hrefLang="en" href="https://www.fastonmed.com" />
+        <link rel="alternate" hrefLang="ar" href="https://www.fastonmed.com/ar" />
+        <link rel="alternate" hrefLang="x-default" href="https://www.fastonmed.com" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }}
@@ -166,9 +176,11 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
       </head>
-      <body style={{ fontFamily: 'Arial, Helvetica, sans-serif' }}>
+      <body style={{ fontFamily: isAr ? "'Cairo', 'Tajawal', Arial, sans-serif" : 'Arial, Helvetica, sans-serif' }}>
         <AppProvider>
-          <SiteShell>{children}</SiteShell>
+          <LocaleProvider>
+            <SiteShell>{children}</SiteShell>
+          </LocaleProvider>
         </AppProvider>
       </body>
     </html>

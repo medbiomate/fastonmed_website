@@ -1,8 +1,10 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { headers } from 'next/headers';
 import { getAllProducts } from '@/lib/server-catalog';
 import CategoryClientView from '@/components/CategoryClientView';
 import { resolveSpecialtyConfig } from '@/lib/category-definitions';
+import { translateEntityFields } from '@/lib/translation-service';
 
 const slugify = (value: string) =>
   value.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
@@ -20,14 +22,31 @@ export async function generateMetadata({
     ? specialty.title
     : target.replaceAll('-', ' ').replace(/\b\w/g, (char) => char.toUpperCase());
 
-  const canonicalUrl = `https://www.fastonmed.com/product-category/${slug.join('/')}`;
-  const title = `${formattedLabel} in UAE | FastonMed`;
-  const description = specialty?.description ||
+  const headersList = await headers();
+  const isAr = headersList.get('x-locale') === 'ar';
+  const enUrl = `https://www.fastonmed.com/product-category/${slug.join('/')}`;
+  const arUrl = `https://www.fastonmed.com/ar/product-category/${slug.join('/')}`;
+  const canonicalUrl = isAr ? arUrl : enUrl;
+
+  const defaultDescription = specialty?.description ||
     `Discover certified ${formattedLabel} from FastonMed, leading medical equipment supplier in UAE. Official UAE distribution, verified quality standards, and rapid delivery in Dubai & Abu Dhabi.`;
 
+  let finalTitle = `${formattedLabel} in UAE | FastonMed`;
+  let finalDescription = defaultDescription;
+
+  if (isAr) {
+    const arFields = await translateEntityFields('category', target, {
+      title: formattedLabel,
+      description: defaultDescription,
+    }, 'ar');
+
+    finalTitle = `${arFields.title || formattedLabel} في الإمارات | فاستونميد`;
+    finalDescription = arFields.description || defaultDescription;
+  }
+
   return {
-    title,
-    description,
+    title: finalTitle,
+    description: finalDescription,
     keywords: [
       formattedLabel,
       `${formattedLabel} UAE`,
@@ -37,20 +56,25 @@ export async function generateMetadata({
       'FastonMed'
     ],
     alternates: {
-      canonical: canonicalUrl
+      canonical: canonicalUrl,
+      languages: {
+        'en': enUrl,
+        'ar': arUrl,
+        'x-default': enUrl,
+      }
     },
     openGraph: {
-      title,
-      description,
+      title: finalTitle,
+      description: finalDescription,
       url: canonicalUrl,
       siteName: 'FastonMed',
-      locale: 'en_AE',
+      locale: isAr ? 'ar_AE' : 'en_AE',
       type: 'website'
     },
     twitter: {
       card: 'summary_large_image',
-      title,
-      description
+      title: finalTitle,
+      description: finalDescription
     }
   };
 }

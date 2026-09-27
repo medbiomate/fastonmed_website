@@ -25,6 +25,9 @@ import type { Product } from '@/lib/types';
 import type { FAQItem } from '@/lib/editorial-pages';
 import NotFound from '@/app/not-found';
 
+import { headers } from 'next/headers';
+import { getOrTranslateContent, getOrTranslateBatch } from '@/lib/translation-service';
+
 export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({
@@ -34,18 +37,41 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const page = await getSharedEditorialPage(slug);
+  const headersList = await headers();
+  const isAr = headersList.get('x-locale') === 'ar';
+
   if (!page) {
     return {
-      title: 'Page Not Found | Best Medical Equipment Supplier in UAE | FastonMed',
+      title: isAr ? 'الصفحة غير موجودة | FastonMed' : 'Page Not Found | Best Medical Equipment Supplier in UAE | FastonMed',
       robots: { index: false, follow: true }
     };
   }
 
-  const title = `${page.title} | Best Medical Equipment Supplier in UAE | FastonMed`;
-  const description =
+  let title = `${page.title} | Best Medical Equipment Supplier in UAE | FastonMed`;
+  let description =
     page.description ||
     `${page.title} – FastonMed is the Best Medical Equipment Supplier in UAE. Certified clinical solutions, ICU ventilators, and hospital equipment across Dubai and Abu Dhabi.`;
-  const canonicalUrl = `https://www.fastonmed.com/${slug}`;
+
+  if (isAr) {
+    const [arTitle, arDesc] = await Promise.all([
+      getOrTranslateContent({
+        entityType: 'page',
+        entityId: slug,
+        fieldName: 'title',
+        sourceText: page.title,
+      }),
+      getOrTranslateContent({
+        entityType: 'page',
+        entityId: slug,
+        fieldName: 'description',
+        sourceText: description,
+      }),
+    ]);
+    title = `${arTitle} | أفضل مورد للمعدات الطبية في الإمارات | FastonMed`;
+    description = arDesc;
+  }
+
+  const canonicalUrl = isAr ? `https://www.fastonmed.com/ar/${slug}` : `https://www.fastonmed.com/${slug}`;
 
   return {
     title,
@@ -61,13 +87,18 @@ export async function generateMetadata({
     ],
     alternates: {
       canonical: canonicalUrl,
+      languages: {
+        en: `https://www.fastonmed.com/${slug}`,
+        ar: `https://www.fastonmed.com/ar/${slug}`,
+        'x-default': `https://www.fastonmed.com/${slug}`,
+      },
     },
     openGraph: {
       title,
       description,
       url: canonicalUrl,
       siteName: 'FastonMed',
-      locale: 'en_AE',
+      locale: isAr ? 'ar_AE' : 'en_AE',
       type: 'article',
     },
     twitter: {
@@ -171,6 +202,73 @@ export default async function EditorialPage({
   const page = await getSharedEditorialPage(slug);
   if (!page) notFound();
 
+  const headersList = await headers();
+  const isAr = headersList.get('x-locale') === 'ar';
+
+  let displayTitle = page.title;
+  let displayDescription = page.description;
+  let displayEyebrow = page.eyebrow || 'Trusted Across UAE';
+
+  let displaySections = page.sections || [];
+  let displayFaqs = (page.faqs && page.faqs.length > 0) ? page.faqs : DEFAULT_HEALTHCARE_FAQS;
+
+  if (isAr) {
+    const mainItems = [
+      { fieldName: 'title', sourceText: page.title },
+      { fieldName: 'description', sourceText: page.description || '' },
+      { fieldName: 'eyebrow', sourceText: page.eyebrow || 'Trusted Across UAE' }
+    ];
+    const mainTrans = await getOrTranslateBatch({
+      entityType: 'page',
+      entityId: slug,
+      items: mainItems,
+    });
+    displayTitle = mainTrans.title || displayTitle;
+    displayDescription = mainTrans.description || displayDescription;
+    displayEyebrow = mainTrans.eyebrow || displayEyebrow;
+
+    if (displaySections.length > 0) {
+      const secItems: { fieldName: string; sourceText: string }[] = [];
+      displaySections.forEach((s, sIdx) => {
+        secItems.push({ fieldName: `section_${sIdx}_title`, sourceText: s.title });
+        s.paragraphs.forEach((p, pIdx) => {
+          secItems.push({ fieldName: `section_${sIdx}_p_${pIdx}`, sourceText: p });
+        });
+        (s.points || []).forEach((pt, ptIdx) => {
+          secItems.push({ fieldName: `section_${sIdx}_pt_${ptIdx}`, sourceText: pt });
+        });
+      });
+      const secTrans = await getOrTranslateBatch({
+        entityType: 'page',
+        entityId: slug,
+        items: secItems,
+      });
+      displaySections = displaySections.map((s, sIdx) => ({
+        ...s,
+        title: secTrans[`section_${sIdx}_title`] || s.title,
+        paragraphs: s.paragraphs.map((p, pIdx) => secTrans[`section_${sIdx}_p_${pIdx}`] || p),
+        points: (s.points || []).map((pt, ptIdx) => secTrans[`section_${sIdx}_pt_${ptIdx}`] || pt),
+      }));
+    }
+
+    if (displayFaqs.length > 0) {
+      const faqItems: { fieldName: string; sourceText: string }[] = [];
+      displayFaqs.forEach((f, fIdx) => {
+        faqItems.push({ fieldName: `faq_${fIdx}_q`, sourceText: f.question });
+        faqItems.push({ fieldName: `faq_${fIdx}_a`, sourceText: f.answer });
+      });
+      const faqTrans = await getOrTranslateBatch({
+        entityType: 'page',
+        entityId: slug,
+        items: faqItems,
+      });
+      displayFaqs = displayFaqs.map((f, fIdx) => ({
+        question: faqTrans[`faq_${fIdx}_q`] || f.question,
+        answer: faqTrans[`faq_${fIdx}_a`] || f.answer,
+      }));
+    }
+  }
+
   // Load catalog products to intelligently populate the featured equipment grid
   const allProducts = await getAllProducts();
 
@@ -210,12 +308,13 @@ export default async function EditorialPage({
     featuredProducts.push(...fallbacks.slice(0, 8 - featuredProducts.length));
   }
 
-  const faqs = (page.faqs && page.faqs.length > 0) ? page.faqs : DEFAULT_HEALTHCARE_FAQS;
   const heroImage = page.heroImage || (slug.includes('dental') ? '/products/dental-chair.jpg' : '/images/original/hospital-image-1.webp');
 
   // WhatsApp enquiry link for hero CTA
   const heroWaMessage = encodeURIComponent(
-    `Hello FastonMed UAE,\nI am viewing your page "${page.title}" and would like to enquire about your equipment solutions and pricing.`
+    isAr
+      ? `مرحباً فاستونميد الإمارات،\nأنا أتصفح صفحتكم "${displayTitle}" وأود الاستفسار عن حلول الأجهزة والأسعار.`
+      : `Hello FastonMed UAE,\nI am viewing your page "${page.title}" and would like to enquire about your equipment solutions and pricing.`
   );
   const heroWaLink = `https://wa.me/971508893589?text=${heroWaMessage}`;
 
@@ -243,15 +342,15 @@ export default async function EditorialPage({
               lineHeight: 1.2
             }}
           >
-            <Link href="/" style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500 }}>
-              Home
+            <Link href={isAr ? "/ar" : "/"} style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500 }}>
+              {isAr ? 'الرئيسية' : 'Home'}
             </Link>
-            <ChevronRight size={10} color="#cbd5e1" />
-            <Link href="/shop" style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500 }}>
-              Equipment & Solutions
+            <ChevronRight size={10} color="#cbd5e1" style={isAr ? { transform: 'scaleX(-1)' } : undefined} />
+            <Link href={isAr ? "/ar/shop" : "/shop"} style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500 }}>
+              {isAr ? 'المعدات والحلول' : 'Equipment & Solutions'}
             </Link>
-            <ChevronRight size={10} color="#cbd5e1" />
-            <span style={{ color: '#64748b', fontWeight: 500 }}>{page.title}</span>
+            <ChevronRight size={10} color="#cbd5e1" style={isAr ? { transform: 'scaleX(-1)' } : undefined} />
+            <span style={{ color: '#64748b', fontWeight: 500 }}>{displayTitle}</span>
           </nav>
         </div>
       </div>
@@ -294,7 +393,7 @@ export default async function EditorialPage({
                 }}
               >
                 <ShieldCheck size={16} />
-                {page.eyebrow || 'Trusted Across UAE'}
+                {displayEyebrow}
               </span>
 
               <h1
@@ -307,7 +406,7 @@ export default async function EditorialPage({
                   letterSpacing: '-0.025em',
                 }}
               >
-                {page.title}
+                {displayTitle}
               </h1>
 
               <div
@@ -320,7 +419,7 @@ export default async function EditorialPage({
                   marginBottom: 32,
                 }}
               >
-                {page.description.split('\n\n').map((paragraph, idx) => (
+                {displayDescription.split('\n\n').map((paragraph, idx) => (
                   <p key={idx} style={{ margin: 0 }}>
                     {paragraph}
                   </p>
@@ -346,7 +445,7 @@ export default async function EditorialPage({
                     transition: 'all 0.2s ease',
                   }}
                 >
-                  Explore Equipment
+                  {isAr ? 'استكشف المعدات' : 'Explore Equipment'}
                 </a>
 
                 <a
@@ -369,7 +468,7 @@ export default async function EditorialPage({
                   }}
                 >
                   <MessageCircle size={18} />
-                  Buy via WhatsApp
+                  {isAr ? 'شراء عبر واتساب' : 'Buy via WhatsApp'}
                 </a>
               </div>
             </div>
@@ -390,7 +489,7 @@ export default async function EditorialPage({
               >
                 <Image
                   src={heroImage}
-                  alt={page.title}
+                  alt={displayTitle}
                   fill
                   priority
                   sizes="(max-width: 768px) 100vw, 540px"
@@ -430,10 +529,10 @@ export default async function EditorialPage({
                     </div>
                     <div>
                       <div style={{ fontSize: '0.84rem', fontWeight: 800, color: '#0f2923' }}>
-                        FastonMed Dubai
+                        {isAr ? 'فاستونميد دبي' : 'FastonMed Dubai'}
                       </div>
                       <div style={{ fontSize: '0.74rem', color: '#64748b' }}>
-                        Certified Healthcare Equipment Supplier
+                        {isAr ? 'مورد معتمد للأجهزة والمعدات الطبية' : 'Certified Healthcare Equipment Supplier'}
                       </div>
                     </div>
                   </div>
@@ -447,7 +546,7 @@ export default async function EditorialPage({
                       borderRadius: 20,
                     }}
                   >
-                    UAE Official
+                    {isAr ? 'رسمي بالإمارات' : 'UAE Official'}
                   </span>
                 </div>
               </div>
@@ -473,10 +572,10 @@ export default async function EditorialPage({
             }}
           >
             {[
-              { label: 'International Quality Standards', icon: ShieldCheck },
-              { label: 'Fast UAE-Wide Delivery', icon: Clock },
-              { label: 'Installation & After-Sales', icon: Stethoscope },
-              { label: 'Dedicated Biomedical Support', icon: Award },
+              { label: isAr ? 'معايير الجودة الدولية' : 'International Quality Standards', icon: ShieldCheck },
+              { label: isAr ? 'توصيل سريع لكافة أنحاء الإمارات' : 'Fast UAE-Wide Delivery', icon: Clock },
+              { label: isAr ? 'تركيب ودعم ما بعد البيع' : 'Installation & After-Sales', icon: Stethoscope },
+              { label: isAr ? 'دعم هندسي طبي حيوي متخصص' : 'Dedicated Biomedical Support', icon: Award },
             ].map((item) => {
               const Icon = item.icon;
               return (
@@ -518,7 +617,7 @@ export default async function EditorialPage({
       </section>
 
       {/* EDITORIAL NARRATIVE & CLINICAL BENEFIT SECTIONS */}
-      {page.sections && page.sections.length > 0 && (
+      {displaySections && displaySections.length > 0 && (
         <section
           style={{
             padding: '64px 0',
@@ -528,7 +627,7 @@ export default async function EditorialPage({
         >
           <div className="container" style={{ maxWidth: 1100, margin: '0 auto', padding: '0 20px' }}>
             <div style={{ display: 'grid', gap: 36 }}>
-              {page.sections.map((sec, idx) => {
+              {displaySections.map((sec, idx) => {
                 const hasPoints = sec.points && sec.points.length > 0;
                 return (
                   <article
@@ -622,12 +721,12 @@ export default async function EditorialPage({
       {/* CLIENT-SIDE INTERACTIVE LAYOUT: Categories, Featured Products Grid, Industries, Brand Partners, FAQs Accordion, Contact Form */}
       <EditorialPageClient
         slug={slug}
-        title={page.title}
+        title={displayTitle}
         categories={HEALTHCARE_CATEGORIES}
         featuredProducts={featuredProducts}
         industries={HEALTHCARE_INDUSTRIES}
         partners={BRAND_PARTNERS}
-        faqs={faqs}
+        faqs={displayFaqs}
       />
     </main>
   );

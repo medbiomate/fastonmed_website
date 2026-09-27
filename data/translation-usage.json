@@ -1,0 +1,11 @@
+{
+  "total_requests": 100,
+  "characters_translated_total": 1937,
+  "characters_translated_today": 1937,
+  "characters_translated_month": 1937,
+  "cache_hits": 98,
+  "api_calls_avoided": 98,
+  "failed_requests": 0,
+  "last_reset_day": "2026-09-27",
+  "last_reset_month": "2026-09"
+}
