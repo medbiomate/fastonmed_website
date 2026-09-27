@@ -67,7 +67,7 @@ const initialBentoRaw = [
     stockQuantity: 120,
     lowStockThreshold: 5,
     stockStatus: 'in_stock',
-    technicalSpecs: { 'Sterility': 'Clinical Grade', 'Compliance': 'MoHAP / DHA' },
+    technicalSpecs: { 'Sterility': 'Clinical Grade', 'Quality': 'Certified Standard' },
     features: ['Instant fluid absorption', 'Antimicrobial surface disinfection', 'Complete PPE included'],
     applications: ['Hospital Emergency Rooms', 'ICU', 'Ambulance & Clinics'],
     isFeatured: true,
@@ -152,7 +152,7 @@ const initialBentoRaw = [
     lowStockThreshold: 5,
     stockStatus: 'in_stock',
     technicalSpecs: { 'Applications': '5 Uses', 'Case': 'Polypropylene Heavy Duty' },
-    features: ['Waterproof carry case', 'MoHAP compliance guide', 'Rapid response tools'],
+    features: ['Waterproof carry case', 'Clinical protocol guide', 'Rapid response tools'],
     applications: ['Clinics', 'Hospital Wards', 'Laboratories'],
     isFeatured: true,
     isBestSeller: true,
@@ -285,7 +285,7 @@ const spotlightEquipmentList = [
     id: 'spotlight-1',
     name: 'Haier Vaccine Refrigerator HYC-309',
     category: 'Cold Chain Medical',
-    badge: 'MoHAP Certified',
+    badge: 'Clinical Grade',
     description: '2°C to 8°C High Precision Vaccine & Pharmacy Cooling with Microprocessor',
     regularPrice: 12500,
     salePrice: 10950,
@@ -343,7 +343,7 @@ const fastSupplyConsumablesList = [
     salePrice: 95,
     slug: 'bio-safe-body-fluid-clean-up-kit-1-application-cm-1011024',
     image: '/wp-content/uploads/2026/09/Body-Fluid-Clean-up-Kit-1-Application.jpg',
-    specs: ['1 Complete Application', 'Absorbent Granules', 'MoHAP Waste Bag']
+    specs: ['1 Complete Application', 'Absorbent Granules', 'Clinical Waste Bag']
   },
   {
     id: 'consumable-2',
@@ -398,7 +398,7 @@ const therapeuticAreas = [
   {
     id: 'pharmacy-refrigerators',
     title: 'Medical Cold Storage',
-    desc: 'MoHAP compliant 2–8°C pharmacy fridges & biofreezers.',
+    desc: 'Certified 2–8°C pharmacy fridges & biofreezers.',
     image: '/images/illustrations/medical-cold-storage.svg',
     href: '/product-category/pharmacy-refrigerators'
   },
@@ -430,7 +430,7 @@ const healthcareFacilitiesServed = [
     id: 'hospitals',
     title: 'Hospitals & Medical Centers',
     badge: 'Tertiary Care',
-    desc: 'Equipping inpatient wards, emergency rooms, and surgical suites with MoHAP/DHA compliant equipment.',
+    desc: 'Equipping inpatient wards, emergency rooms, and surgical suites with certified hospital equipment.',
     equipment: ['Hospital Ward Beds', 'OT Lights & Tables', 'Patient Monitors', 'Infusion Pumps'],
     icon: Hospital,
     image: '/images/facilities/hospitals.jpg',
@@ -500,7 +500,7 @@ const healthcareFacilitiesServed = [
     id: 'pharmacy',
     title: 'Pharmacies & Cold Chains',
     badge: 'Pharmaceuticals',
-    desc: 'Furnishing hospital and retail pharmacies with MoHAP compliant 2–8°C refrigerators and vaccine loggers.',
+    desc: 'Furnishing hospital and retail pharmacies with certified 2–8°C refrigerators and vaccine loggers.',
     equipment: ['Pharmacy Refrigerators', 'Vaccine Freezers', 'Temperature Loggers', 'Dispensing Trolleys'],
     icon: Activity,
     image: '/images/facilities/pharmacies.jpg',
@@ -891,7 +891,7 @@ export default function HomePage() {
                   fontFamily: 'Arial, Helvetica, sans-serif'
                 }}
               >
-                FastonMed is the premier medical equipment supplier in UAE, delivering MoHAP-licensed biomedical technology, ICU systems, and clinical supplies across all 7 Emirates.
+                FastonMed is the premier medical equipment supplier in UAE, delivering certified biomedical technology, ICU systems, and clinical supplies across all 7 Emirates.
               </p>
               <p
                 className="hero-desc-mobile"

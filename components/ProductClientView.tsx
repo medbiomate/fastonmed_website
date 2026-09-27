@@ -76,7 +76,7 @@ export default function ProductClientView({ product, similarProducts }: ProductC
     ['Product Category', product.category || 'Medical Equipment'],
     ['Brand / Manufacturer', product.brand || 'FastonMed Partner'],
     ['SKU / Catalog ID', product.sku || 'N/A'],
-    ['Regulatory Compliance', 'UAE MoHAP / DHA / DoH Certified'],
+    ['Regulatory Compliance', 'UAE Standard Hospital & Clinical Grade'],
     ['Warranty', product.warrantyPeriod || '1 Year Biomedical Warranty'],
     ['Supply Voltage / Power', '220V - 240V / 50-60Hz (UAE Standard)'],
     ['Clinical Application', 'Hospital Inpatient, ICU, Clinic & Homecare'],
@@ -589,8 +589,8 @@ export default function ProductClientView({ product, similarProducts }: ProductC
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                 {[
                   {
-                    q: `Is ${product.name} approved by UAE Ministry of Health (MoHAP)?`,
-                    a: 'Yes. All medical equipment distributed by FastonMed is compliant with UAE MoHAP, Dubai Health Authority (DHA), and Department of Health (DoH Abu Dhabi) standards for hospital and clinical installation.'
+                    q: `Does ${product.name} include official warranty and technical support in UAE?`,
+                    a: 'Yes. All medical equipment distributed by FastonMed includes official manufacturer warranty, biomedical inspection, and dedicated technical support across Dubai, Abu Dhabi, and the UAE.'
                   },
                   {
                     q: 'How does FastonMed handle warranty, maintenance, and calibration?',
@@ -787,7 +787,7 @@ export default function ProductClientView({ product, similarProducts }: ProductC
             <div style={{ display: 'flex', alignItems: 'center', gap: '18px', flexWrap: 'wrap', fontSize: '0.80rem', fontWeight: 600, color: '#bbf7d0' }}>
               <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <Check size={14} strokeWidth={2.5} />
-                <span>MoHAP & DHA Certified</span>
+                <span>Clinical Quality Assured</span>
               </span>
               <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <Check size={14} strokeWidth={2.5} />

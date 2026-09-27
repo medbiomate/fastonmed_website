@@ -72,7 +72,7 @@ function mapRawProduct(item: RawCrmProduct, index: number): Product {
     warrantyPeriod: item.warrantyPeriod || '1 Year Official UAE Warranty',
     technicalSpecs: item.specifications || {},
     features: [
-      'Statutory compliance with UAE MoHAP, DHA, and DoH clinical standards',
+      'Engineered to meet international clinical safety and biomedical performance standards',
       'Engineered for hospital wards, day surgery centers, and homecare',
       'High-grade medical materials with antimicrobial surface resistance',
       'Fast delivery across Dubai, Abu Dhabi, and all 7 Emirates'

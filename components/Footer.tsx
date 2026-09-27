@@ -216,7 +216,7 @@ export default function Footer() {
             </div>
 
             <p style={{ fontSize: '0.82rem', color: '#64748b', lineHeight: 1.5, margin: '0 0 16px 0' }}>
-              FastonMed is the Best Medical Equipment Supplier in UAE. Official distributor of MoHAP & DHA licensed biomedical technology, ICU ventilators, diagnostics, and clinical equipment.
+              FastonMed is the Best Medical Equipment Supplier in UAE. Official distributor of certified biomedical technology, ICU ventilators, diagnostics, and clinical equipment.
             </p>
 
             {/* Social Icons (Rounded like Go Digit) */}
@@ -585,7 +585,7 @@ export default function Footer() {
               </div>
               <div className={`fm-mega-col-content ${expandedSection === 'lab' ? 'active' : ''}`}>
                 <ul className="fm-dir-list">
-                  <li><Link href="/product-category/pharmacy-refrigerators" className="fm-footer-link">MoHAP 2°C–8°C Pharmacy Fridges</Link></li>
+                  <li><Link href="/product-category/pharmacy-refrigerators" className="fm-footer-link">2°C–8°C Pharmacy Refrigeration</Link></li>
                   <li><Link href="/product-category/pharmacy-refrigerators" className="fm-footer-link">-20°C to -86°C Ultra Low Biofreezers</Link></li>
                   <li><Link href="/product-category/laboratory-equipment" className="fm-footer-link">Clinical Chemistry Analyzers</Link></li>
                   <li><Link href="/product-category/laboratory-equipment" className="fm-footer-link">High-Speed Clinical Centrifuges</Link></li>
@@ -683,7 +683,7 @@ export default function Footer() {
                   <li><Link href="/medical-equipment-supplier-in-uae" className="fm-footer-link">Healthcare Solutions Fujairah & UAQ</Link></li>
                   <li><Link href="/shipping" className="fm-footer-link">Same-Day Dubai Clinical Express Delivery</Link></li>
                   <li><Link href="/contact" className="fm-footer-link">UAE Free Zone & GCC Export Supply</Link></li>
-                  <li><Link href="/contact" className="fm-footer-link">MoHAP Approved Wholesale Procurement</Link></li>
+                  <li><Link href="/contact" className="fm-footer-link">Hospital & Clinic Wholesale Procurement</Link></li>
                   <li><Link href="/contact" className="fm-footer-link">UAE Ministry & Private Hospital Tenders</Link></li>
                 </ul>
               </div>
@@ -703,9 +703,9 @@ export default function Footer() {
               <div className={`fm-mega-col-content ${expandedSection === 'compliance' ? 'active' : ''}`}>
                 <ul className="fm-dir-list">
                   <li><Link href="/medical-equipment-supplier-in-uae" className="fm-footer-link">Best Medical Equipment Supplier UAE</Link></li>
-                  <li><Link href="/about-us" className="fm-footer-link">MoHAP Medical Device Import Standards</Link></li>
-                  <li><Link href="/about-us" className="fm-footer-link">DHA Health Facility Guidelines Dubai</Link></li>
-                  <li><Link href="/about-us" className="fm-footer-link">DoH Abu Dhabi Biomedical Regulations</Link></li>
+                  <li><Link href="/about-us" className="fm-footer-link">Medical Equipment Quality Standards</Link></li>
+                  <li><Link href="/about-us" className="fm-footer-link">Clinical Facility Supply Guidelines</Link></li>
+                  <li><Link href="/about-us" className="fm-footer-link">Biomedical Engineering & Calibration</Link></li>
                   <li><Link href="/terms-conditions" className="fm-footer-link">Official Manufacturer Warranty Terms</Link></li>
                   <li><Link href="/returns-exchanges" className="fm-footer-link">Warranty Claims & Exchange Policy</Link></li>
                   <li><Link href="/shipping" className="fm-footer-link">Cold-Chain Temperature Monitored Delivery</Link></li>
@@ -766,7 +766,7 @@ export default function Footer() {
               <span style={{ color: '#334155' }}>|</span>
               <Link href="/shipping" className="fm-legal-link">Shipping & Delivery</Link>
               <span style={{ color: '#334155' }}>|</span>
-              <Link href="/about-us" className="fm-legal-link">MoHAP Compliance</Link>
+              <Link href="/about-us" className="fm-legal-link">Quality & Warranty Standards</Link>
               <span style={{ color: '#334155' }}>|</span>
               <Link href="/contact" className="fm-legal-link">24/7 Biomedical Support</Link>
               <span style={{ color: '#334155' }}>|</span>
@@ -805,22 +805,22 @@ export default function Footer() {
                   Verify FastonMed UAE
                 </div>
                 <div style={{ fontSize: '0.68rem', color: '#64748b' }}>
-                  MoHAP & DHA Certified Supplier
+                  Verified Healthcare Equipment Supplier
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Legal Registrations, Corporate Office & MoHAP Info (Styled like Digit IRDAI / CIN details) */}
+          {/* Legal Registrations & Corporate Office */}
           <div style={{ paddingTop: '20px', fontSize: '0.75rem', lineHeight: 1.6, color: '#64748b' }}>
             <p style={{ margin: '0 0 8px 0', color: '#94a3b8' }}>
-              <strong style={{ color: '#cbd5e1' }}>Commercial License:</strong> FastonMed Healthcare Equipment LLC | <strong style={{ color: '#cbd5e1' }}>MoHAP Reg:</strong> UAE-MED-2024-889 | <strong style={{ color: '#cbd5e1' }}>DHA Registered Vendor:</strong> DHA-MED-9942 | <strong style={{ color: '#cbd5e1' }}>DoH Abu Dhabi Compliance:</strong> Approved Clinical Supplier
+              <strong style={{ color: '#cbd5e1' }}>Commercial Entity:</strong> FastonMed Healthcare Equipment LLC | United Arab Emirates
             </p>
             <p style={{ margin: '0 0 12px 0' }}>
               FastonMed Healthcare Equipment LLC | Corporate Office Address: Dubai Healthcare City (DHCC) & Al Qusais Industrial Area, Dubai, United Arab Emirates | P.O. Box 23881, Dubai, UAE | Official Biomedical Helpline: +971 50 889 3589 / +971 50 889 3586 | Email: sales@fastonmed.com | Calibration Support: service@fastonmed.com.
             </p>
             <p style={{ margin: '0 0 16px 0', fontSize: '0.72rem', color: '#475569' }}>
-              FastonMed is the Best Medical Equipment Supplier in UAE. Licensed distributor of MoHAP, DHA, and DoH approved biomedical technology, ICU ventilators, multi-parameter patient monitors, hospital furniture, surgical lighting, medical cold storage, and clinical laboratory equipment across Dubai, Abu Dhabi, Sharjah, Ajman, Ras Al Khaimah, Fujairah, and Umm Al Quwain. All brand logos, trademarks, and registered marks displayed on this platform belong to their respective corporate manufacturers.
+              FastonMed is the Best Medical Equipment Supplier in UAE. Distributor of certified biomedical technology, ICU ventilators, multi-parameter patient monitors, hospital furniture, surgical lighting, medical cold storage, and clinical laboratory equipment across Dubai, Abu Dhabi, Sharjah, Ajman, Ras Al Khaimah, Fujairah, and Umm Al Quwain. All brand logos, trademarks, and registered marks displayed on this platform belong to their respective corporate manufacturers.
             </p>
 
             <div
@@ -841,7 +841,7 @@ export default function Footer() {
               </div>
               <div style={{ display: 'flex', gap: '16px' }}>
                 <span>Dubai • Abu Dhabi • Sharjah • Northern Emirates</span>
-                <span>ISO 9001:2015 & MoHAP Certified</span>
+                <span>Clinical & Biomedical Quality Assured</span>
               </div>
             </div>
           </div>

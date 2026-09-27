@@ -433,7 +433,7 @@ export default function NotFoundView() {
             Browse Clinical Equipment by Category
           </h2>
           <p style={{ fontSize: '14px', color: '#64748B', margin: 0 }}>
-            Find hospital-grade certified biomedical devices with DHA & MoHAP compliance.
+            Find hospital-grade certified biomedical devices with official UAE warranty.
           </p>
         </div>
 
@@ -757,7 +757,7 @@ export default function NotFoundView() {
                 color: '#A7F3D0'
               }}
             >
-              <ShieldCheck size={14} /> MoHAP & DHA Licensed Supplier • FastonMed UAE
+              <ShieldCheck size={14} /> Verified Medical Equipment Supplier • FastonMed UAE
             </div>
             <h3
               style={{

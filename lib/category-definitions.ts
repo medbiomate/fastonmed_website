@@ -28,8 +28,8 @@ export const CATEGORY_SPECIALTIES: Record<string, CategorySpecialtyConfig> = {
     shortTitle: 'Patient Monitoring',
     subtitle: 'Multi-Parameter ICU Monitors, Telemetry Units & ECG Systems',
     description:
-      'High-precision patient monitoring systems engineered for intensive care units, emergency rooms, surgical suites, and general hospital wards across Dubai and the UAE. Fully compliant with UAE MoHAP, DHA, and DoH standards.',
-    badge: 'MoHAP & DHA CLINICAL STANDARDS',
+      'High-precision patient monitoring systems engineered for intensive care units, emergency rooms, surgical suites, and general hospital wards across Dubai and the UAE with high clinical reliability and accuracy.',
+    badge: 'CLINICAL GRADE ACCURACY',
     illustration: '/images/illustrations/patient-monitoring.svg',
     subcategories: [
       {
@@ -115,10 +115,10 @@ export const CATEGORY_SPECIALTIES: Record<string, CategorySpecialtyConfig> = {
     ],
     title: 'Medical Cold Storage & Pharmacy Refrigerators',
     shortTitle: 'Medical Cold Storage',
-    subtitle: 'MoHAP Compliant 2–8°C Pharmacy Fridges & Biofreezers',
+    subtitle: 'Certified 2–8°C Pharmacy Fridges & Biofreezers',
     description:
       'Precision temperature-controlled pharmaceutical refrigerators, biofreezers, and vaccine cold-chain storage systems engineered to maintain strict 2–8°C compliance with digital data-logging for UAE clinical pharmacies.',
-    badge: 'MOHAP 2–8°C COLD CHAIN COMPLIANT',
+    badge: '2–8°C COLD CHAIN CERTIFIED',
     illustration: '/images/illustrations/medical-cold-storage.svg',
     subcategories: [
       {
@@ -294,7 +294,7 @@ export const OTHER_SPECIALTIES_LIST = [
   {
     slug: 'pharmacy-refrigerators',
     title: 'Medical Cold Storage',
-    desc: 'MoHAP compliant 2–8°C pharmacy fridges & biofreezers.',
+    desc: 'Certified 2–8°C pharmacy fridges & biofreezers.',
     illustration: '/images/illustrations/medical-cold-storage.svg'
   },
   {

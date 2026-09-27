@@ -229,7 +229,7 @@ export default function CategoryClientView({
                 }}
               >
                 {specialtyConfig?.description ||
-                  `Certified ${categoryTitle} supplied by FastonMed across Dubai, Abu Dhabi, and Northern Emirates. 100% compliant with UAE MoHAP and DHA medical device regulations with manufacturer warranty.`}
+                  `Certified ${categoryTitle} supplied by FastonMed across Dubai, Abu Dhabi, and Northern Emirates with official manufacturer warranty and biomedical support.`}
               </p>
 
               {/* 4 Trust Highlights */}
@@ -247,7 +247,7 @@ export default function CategoryClientView({
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#1e293b', fontSize: '0.82rem', fontWeight: 600 }}>
                   <FileCheck2 size={16} color="#00875a" />
-                  <span>MoHAP / DHA Compliant</span>
+                  <span>Clinical Grade Quality</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#1e293b', fontSize: '0.82rem', fontWeight: 600 }}>
                   <Truck size={16} color="#00875a" />
@@ -683,7 +683,7 @@ export default function CategoryClientView({
                 Equipping a Hospital Ward, Day Surgery, or Clinic?
               </h3>
               <p style={{ color: '#cbd5e1', fontSize: '0.92rem', lineHeight: 1.6, margin: 0 }}>
-                FastonMed supplies private and government healthcare institutions across Dubai, Abu Dhabi, and Northern Emirates with official MoHAP documentation, biomedical warranty, and scheduled calibration.
+                FastonMed supplies private and government healthcare institutions across Dubai, Abu Dhabi, and Northern Emirates with comprehensive documentation, biomedical warranty, and scheduled calibration.
               </p>
             </div>
 

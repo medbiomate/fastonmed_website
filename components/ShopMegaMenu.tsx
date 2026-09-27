@@ -61,7 +61,7 @@ export default function ShopMegaMenu({
       slug: 'pharmacy-refrigerators',
       icon: <ThermometerSnowflake size={18} color="#00875a" />,
       items: [
-        { label: 'MoHAP 2°C–8°C Pharmacy Fridges', href: '/product-category/pharmacy-refrigerators' },
+        { label: '2°C–8°C Pharmacy Refrigerators', href: '/product-category/pharmacy-refrigerators' },
         { label: '-20°C to -86°C Ultra-Low Biofreezers', href: '/product-category/pharmacy-refrigerators' },
         { label: 'Vaccine Cold-Chain Storage', href: '/product-category/pharmacy-refrigerators' },
         { label: 'Cold-Chain Data Loggers', href: '/product-category/pharmacy-refrigerators' },
@@ -111,7 +111,7 @@ export default function ShopMegaMenu({
       id: 'ventilator',
       title: 'ICU Mechanical Ventilator',
       category: 'Critical Care / ICU',
-      badge: 'MoHAP Licensed',
+      badge: 'Clinical Grade',
       badgeColor: '#00875a',
       image: '/images/hero-showcase/1-icu-ventilator.png',
       href: '/product-category/icu-equipment'
@@ -306,7 +306,7 @@ export default function ShopMegaMenu({
                   2,720+ PRODUCTS
                 </span>
                 <span style={{ fontSize: '0.84rem', color: '#475569' }}>
-                  Supplying MoHAP & DHA approved hospital devices and biomedical supplies across UAE.
+                  Supplying certified hospital devices and biomedical supplies across UAE.
                 </span>
               </div>
 
