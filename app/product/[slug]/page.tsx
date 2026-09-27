@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getServerProductBySlug, getServerSimilarProducts } from '@/lib/server-catalog';
 import ProductClientView from '@/components/ProductClientView';
+import NotFound from '@/app/not-found';
 
 interface ProductPageProps {
   params: Promise<{ slug: string }>;
@@ -95,34 +96,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
   const { slug } = await params;
   const product = await getServerProductBySlug(slug);
 
-  if (!product) {
-    return (
-      <div style={{ backgroundColor: '#f8fafc', padding: '100px 0', textAlign: 'center' }}>
-        <div className="container">
-          <h1 style={{ fontSize: '2rem', fontWeight: 800, color: '#0f172a', marginBottom: '12px' }}>
-            Medical Equipment Not Found
-          </h1>
-          <p style={{ color: '#64748b', marginBottom: '28px', maxWidth: '480px', margin: '0 auto 28px' }}>
-            The requested medical equipment item does not exist or may have been updated in our catalog.
-          </p>
-          <Link
-            href="/shop"
-            style={{
-              backgroundColor: '#51b291',
-              color: '#ffffff',
-              padding: '12px 28px',
-              borderRadius: '8px',
-              fontWeight: 700,
-              textDecoration: 'none',
-              display: 'inline-block'
-            }}
-          >
-            Browse Medical Catalog
-          </Link>
-        </div>
-      </div>
-    );
-  }
+  if (!product) return <NotFound />;
 
   // Fetch similar products with intelligent keyword/category scoring
   const similarProducts = await getServerSimilarProducts(product, 4);

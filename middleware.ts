@@ -27,17 +27,27 @@ export function middleware(request: NextRequest) {
     // If on the login page:
     if (pathname === '/admin/login') {
       if (hasValidSession) {
-        return NextResponse.redirect(new URL('/admin', request.url));
+        const res = NextResponse.redirect(new URL('/admin', request.url));
+        res.headers.set('X-Robots-Tag', 'noindex, nofollow, noarchive');
+        return res;
       }
-      return NextResponse.next();
+      const res = NextResponse.next();
+      res.headers.set('X-Robots-Tag', 'noindex, nofollow, noarchive');
+      return res;
     }
 
     // For all other /admin routes:
     if (!hasValidSession) {
       const loginUrl = new URL('/admin/login', request.url);
       loginUrl.searchParams.set('redirect', pathname);
-      return NextResponse.redirect(loginUrl);
+      const res = NextResponse.redirect(loginUrl);
+      res.headers.set('X-Robots-Tag', 'noindex, nofollow, noarchive');
+      return res;
     }
+
+    const res = NextResponse.next();
+    res.headers.set('X-Robots-Tag', 'noindex, nofollow, noarchive');
+    return res;
   }
 
   return NextResponse.next();

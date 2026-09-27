@@ -23,6 +23,7 @@ import EditorialPageClient, {
 } from '@/components/EditorialPageClient';
 import type { Product } from '@/lib/types';
 import type { FAQItem } from '@/lib/editorial-pages';
+import NotFound from '@/app/not-found';
 
 export const dynamic = 'force-dynamic';
 
@@ -167,7 +168,7 @@ export default async function EditorialPage({
 }) {
   const { slug } = await params;
   const page = await getSharedEditorialPage(slug);
-  if (!page) notFound();
+  if (!page) return <NotFound />;
 
   // Load catalog products to intelligently populate the featured equipment grid
   const allProducts = await getAllProducts();
