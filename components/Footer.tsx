@@ -20,9 +20,152 @@ import FastonmedLogo from './FastonmedLogo';
 import { store } from '@/lib/store';
 import { useLocale } from '@/lib/locale-context';
 
+const row1Columns = [
+  {
+    titleEn: 'ICU & Critical Care Guides',
+    titleAr: 'أدلة العناية المركزة والحالات الحرجة',
+    items: [
+      { labelEn: 'ICU Ventilators & Respirators', labelAr: 'أجهزة التنفس الاصطناعي للعناية المركزة', href: '/product-category/icu-equipment' },
+      { labelEn: 'Multi-Parameter ICU Monitors', labelAr: 'أجهزة مراقبة المرضى متعددة المعايير', href: '/product-category/patient-monitoring' },
+      { labelEn: 'Automated External Defibrillator', labelAr: 'أجهزة إزالة رجفان القلب الآلية (AED)', href: '/automated-external-defibrillator' },
+      { labelEn: 'MoH Registered AED Machine UAE', labelAr: 'أجهزة AED معتمدة من وزارة الصحة', href: '/moh-registered-aed-machine-in-uae' },
+      { labelEn: 'AED Replacement Pads in Dubai', labelAr: 'ضمادات ووسادات أجهزة الصدمات بدبي', href: '/aed-replacement-pad-in-dubai' },
+      { labelEn: 'Syringe & Infusion Pumps', labelAr: 'مضخات الحقن والوريد الطبية الدقيقة', href: '/product-category/icu-equipment' },
+      { labelEn: 'High-Vacuum Suction Units', labelAr: 'وحدات شفط جراحية عالية الفراغ', href: '/product-category/icu-equipment' },
+      { labelEn: 'BiPAP Non-Invasive Ventilation', labelAr: 'أجهزة التنفس غير الغازي BiPAP', href: '/bipap-machine' },
+      { labelEn: 'CPAP & APAP Sleep Therapy', labelAr: 'أجهزة علاج انقطاع التنفس CPAP وAPAP', href: '/cpap-apap-machine' },
+      { labelEn: 'Medical Oxygen Sensors & Cells', labelAr: 'حساسات وخلايا الأكسجين الطبي', href: '/oxygen-sensor' },
+      { labelEn: 'Emergency Resuscitation Crash Carts', labelAr: 'عربات الطوارئ والإنعاش الطبي', href: '/product-category/hospital-furniture' },
+      { labelEn: 'High Flow Nasal Cannula (HFNC)', labelAr: 'أجهزة قنية الأنف عالية التدفق (HFNC)', href: '/product-category/icu-equipment' }
+    ]
+  },
+  {
+    titleEn: 'Diagnostic & Cardiology Guides',
+    titleAr: 'أدلة التشخيص وطب القلب',
+    items: [
+      { labelEn: '12-Lead Diagnostic ECG Machine', labelAr: 'أجهزة تخطيط القلب التشخيصية 12 قناة', href: '/ecg-machine' },
+      { labelEn: 'Holter ECG Continuous Monitor', labelAr: 'أجهزة مراقبة تخطيط القلب المستمر (هولتر)', href: '/holter-ecg-monitor-2' },
+      { labelEn: 'Ambulatory Blood Pressure (ABPM)', labelAr: 'أجهزة مراقبة ضغط الدم المتنقلة (ABPM)', href: '/ambulatory-blood-pressure-monitor' },
+      { labelEn: 'Ambulatory & Holter ECG Monitors', labelAr: 'أجهزة هولتر ومراقبة القلب وضغط الدم', href: '/ambulatory-and-holter-ecg-monitors' },
+      { labelEn: 'TMT Cardiac Stress Test System', labelAr: 'أنظمة اختبار الجهد للقلب (TMT)', href: '/tmt-stress-test-system' },
+      { labelEn: 'Cardiology Equipment Supplier', labelAr: 'مورد أجهزة ومعدات طب وجراحة القلب', href: '/cardiology-equipment' },
+      { labelEn: 'Color Doppler Ultrasound Machine', labelAr: 'أجهزة سونار الدوبلر الملون التراساوند', href: '/product-category/radiology-equipments' },
+      { labelEn: 'Radiology Equipment Supplier UAE', labelAr: 'مورد أجهزة الأشعة والتصوير الطبي بالإمارات', href: '/radiology-equipment-supplier-in-uae' },
+      { labelEn: 'Ultrasound Probe Repair UAE', labelAr: 'إصلاح وصيانة مجسات السونار بالإمارات', href: '/ultrasound-probe-repair-in-uae' },
+      { labelEn: 'Obstetrics & Gynecology Equipment', labelAr: 'أجهزة ومعدات طب النساء والولادة', href: '/best-obstetrics-gynecology-equipment-in-uae' },
+      { labelEn: 'PRP Tubes & Centrifuge Kits', labelAr: 'أنابيب البلازما PRP وأجهزة الطرد المركزي', href: '/prp-tubes' },
+      { labelEn: 'Digital Mobile Radiography X-Ray', labelAr: 'أجهزة الأشعة السينية الرقمية المتنقلة', href: '/product-category/radiology-equipments' }
+    ]
+  },
+  {
+    titleEn: 'Hospital Furniture Guides',
+    titleAr: 'أدلة أثاث المستشفيات والأسرة',
+    items: [
+      { labelEn: 'Electric 5-Function ICU Hospital Beds', labelAr: 'أسرة عناية مركزة كهربائية 5 حركات', href: '/product-category/hospital-furniture' },
+      { labelEn: 'Manual 2-Crank Fowler Hospital Beds', labelAr: 'أسرة مرضى يدوية بحركتين مع كرنك', href: '/product-category/hospital-furniture' },
+      { labelEn: 'Hydraulic Examination Couches', labelAr: 'طاولات فحص سريري هيدروليكية', href: '/product-category/hospital-furniture' },
+      { labelEn: 'Gynecological Delivery Beds & Tables', labelAr: 'أسرة وطاولات الولادة والفحص النسائي', href: '/product-category/hospital-furniture' },
+      { labelEn: 'Patient Transport Stretchers & Carts', labelAr: 'نقالات وعربات نقل المرضى بالمستشفى', href: '/product-category/hospital-furniture' },
+      { labelEn: 'Phlebotomy Blood Donation Chairs', labelAr: 'كراسي سحب الدم والتبرع المتخصصة', href: '/product-category/hospital-furniture' },
+      { labelEn: 'Emergency Medication Crash Trolleys', labelAr: 'عربات أدوية الطوارئ والإنعاش المجهزة', href: '/product-category/hospital-furniture' },
+      { labelEn: 'Hospital Bedside Lockers & Cabinets', labelAr: 'خزائن وطاولات جانبية لأسرة المرضى', href: '/product-category/hospital-furniture' },
+      { labelEn: 'Overbed Food Tables & IV Poles', labelAr: 'طاولات طعام فوق السرير وحوامل محاليل', href: '/product-category/hospital-furniture' },
+      { labelEn: 'Heavy-Duty Patient Wheelchairs', labelAr: 'كراسي متحركة للمرضى شديدة التحمل', href: '/product-category/hospital-furniture' },
+      { labelEn: 'Dental Equipment Supplier Dubai', labelAr: 'مورد أجهزة وعيادات طب الأسنان بدبي', href: '/dental-equipment-supplier-in-dubai' },
+      { labelEn: 'Surgical Shadowless OT Ceiling Lights', labelAr: 'كشافات عمليات جراحية سقفية بدون ظلال', href: '/product-category/hospital-furniture' }
+    ]
+  },
+  {
+    titleEn: 'Laboratory & Cold Chain Guides',
+    titleAr: 'أدلة المختبرات وسلسلة التبريد',
+    items: [
+      { labelEn: '2°C–8°C Pharmacy Refrigeration', labelAr: 'ثلاجات صيدلية وطبية (2° إلى 8° مئوية)', href: '/product-category/pharmacy-refrigerators' },
+      { labelEn: '-20°C to -86°C Ultra Low Biofreezers', labelAr: 'مجمدات حفظ عينات فائقة التبريد حتى -86°', href: '/product-category/pharmacy-refrigerators' },
+      { labelEn: 'Clinical Chemistry Analyzers', labelAr: 'أجهزة تحاليل كيمياء الدم السريرية', href: '/product-category/laboratory-equipment' },
+      { labelEn: 'High-Speed Clinical Centrifuges', labelAr: 'أجهزة طرد مركزي طبية عالية السرعة', href: '/product-category/laboratory-equipment' },
+      { labelEn: 'Medical Steam Autoclaves & Sterilizers', labelAr: 'أجهزة أوتوكلاف وتعقيم طبي بالبخار', href: '/product-category/laboratory-equipment' },
+      { labelEn: 'Biosafety & Laminar Airflow Benches', labelAr: 'كبائن السلامة الحيوية وتدفق الهواء النقي', href: '/product-category/laboratory-equipment' },
+      { labelEn: 'Medical Ozone Generator Systems', labelAr: 'أنظمة ومولدات الأوزون الطبي العلاجي', href: '/ozone-generator' },
+      { labelEn: 'School Medical Supplies in UAE', labelAr: 'مستلزمات العيادات المدرسية في الإمارات', href: '/school-medical-supplies-in-uae' },
+      { labelEn: 'Clinical Consumables & ECG Paper', labelAr: 'مستهلكات طبية وورق تخطيط القلب', href: '/consumables' },
+      { labelEn: 'Endoscope Repair in Dubai', labelAr: 'صيانة وإصلاح مناظير الجهاز الهضمي بدبي', href: '/flexible-rigid-endoscope-repair-in-dubai' },
+      { labelEn: 'Used Medical Equipment in UAE', labelAr: 'أجهزة ومعدات طبية مستعملة ومجددة معتمدة', href: '/used-medical-equipment-in-uae' },
+      { labelEn: 'Clinical Pathology Microscopes', labelAr: 'مجاهر فحص مخبري وسريري عالية الدقة', href: '/product-category/laboratory-equipment' }
+    ]
+  }
+];
+
+const row2Columns = [
+  {
+    titleEn: 'Biomedical Engineering & AMC',
+    titleAr: 'الهندسة الطبية الحيوية وعقود الصيانة',
+    items: [
+      { labelEn: 'Equipment Calibration Service UAE', labelAr: 'خدمات معايرة الأجهزة الطبية في الإمارات', href: '/medical-equipment-calibration-service-in-uae' },
+      { labelEn: 'AMC & CMC Maintenance Dubai UAE', labelAr: 'عقود صيانة سنوية وشاملة للأجهزة الطبية', href: '/amc-cmc-for-medical-equipment-in-dubai-uae' },
+      { labelEn: 'Planned Preventive Maintenance (PPM)', labelAr: 'الصيانة الوقائية الدورية المجدولة (PPM)', href: '/plan-preventive-maintenance-for-medical-equipment-in-uae' },
+      { labelEn: 'Medical Equipment Service in UAE', labelAr: 'مركز خدمة وصيانة المعدات الطبية بالإمارات', href: '/medical-equipment-service-in-uae-2' },
+      { labelEn: 'Biomedical Electrical Safety Audits', labelAr: 'تدقيق السلامة الكهربائية للأجهزة الطبية', href: '/amc-cmc-for-medical-equipment-in-dubai-uae' },
+      { labelEn: 'Ultrasound Acoustic & Crystal Repair', labelAr: 'إصلاح كريستالات وصوتيات مجسات السونار', href: '/ultrasound-probe-repair-in-uae' },
+      { labelEn: 'Rigid & Flexible Optical Calibration', labelAr: 'معايرة وصيانة المناظير الصلبة والمرنة', href: '/flexible-rigid-endoscope-repair-in-dubai' },
+      { labelEn: 'ICU Ventilator Flow Sensor Overhaul', labelAr: 'صيانة ومعايرة حساسات تدفق أجهزة التنفس', href: '/product-category/icu-equipment' },
+      { labelEn: 'Hospital Turnkey Equipment Setup', labelAr: 'تجهيز المستشفيات والعيادات تسليم مفتاح', href: '/contact' },
+      { labelEn: '24/7 Biomedical Emergency Support', labelAr: 'دعم هندسي وطبي طارئ على مدار الساعة', href: '/contact' }
+    ]
+  },
+  {
+    titleEn: 'Healthcare Facilities Supplied',
+    titleAr: 'المنشآت الصحية المعتمدة',
+    items: [
+      { labelEn: 'Tertiary Hospitals & Emergency Units', labelAr: 'المستشفيات التخصصية وأقسام الطوارئ', href: '/about-us' },
+      { labelEn: 'Day Surgery & Outpatient Clinics', labelAr: 'مراكز جراحة اليوم الواحد والعيادات الخارجية', href: '/about-us' },
+      { labelEn: 'Polyclinics & Diagnostic Centers', labelAr: 'المجمعات الطبية ومراكز الفحص التشخيصي', href: '/about-us' },
+      { labelEn: 'Radiology & Medical Imaging Centers', labelAr: 'مراكز الأشعة والتصوير الطبي المتقدم', href: '/radiology-equipment-supplier-in-uae' },
+      { labelEn: 'Clinical Pathology & Diagnostic Labs', labelAr: 'مختبرات التحاليل الطبية والباثولوجيا', href: '/product-category/laboratory-equipment' },
+      { labelEn: 'Dental Clinics & Maxillofacial Units', labelAr: 'عيادات الأسنان وجراحة الوجه والفكين', href: '/dental-equipment-supplier-in-dubai' },
+      { labelEn: 'Physiotherapy & Rehabilitation Centers', labelAr: 'مراكز العلاج الطبيعي والتأهيل الطبي', href: '/product-category/hospital-furniture' },
+      { labelEn: 'School, University & Nursery Clinics', labelAr: 'عيادات المدارس والجامعات والحضانات', href: '/school-medical-supplies-in-uae' },
+      { labelEn: 'Pharmacy & Cold Chain Warehouses', labelAr: 'مستودعات الأدوية وسلسلة التبريد الطبي', href: '/product-category/pharmacy-refrigerators' },
+      { labelEn: 'Ambulance Fleets & First Responders', labelAr: 'أسطول سيارات الإسعاف وفرق الاستجابة السريعة', href: '/moh-registered-aed-machine-in-uae' }
+    ]
+  },
+  {
+    titleEn: 'UAE Regional Distribution',
+    titleAr: 'التوزيع الإقليمي في الإمارات',
+    items: [
+      { labelEn: 'Medical Equipment Supplier Dubai', labelAr: 'مورد أجهزة طبية في دبي', href: '/medical-equipment-supplier-in-uae' },
+      { labelEn: 'Medical Equipment Abu Dhabi & Al Ain', labelAr: 'مورد معدات طبية في أبوظبي والعين', href: '/medical-equipment-supplier-in-uae' },
+      { labelEn: 'Clinical Supplies Sharjah Medical City', labelAr: 'مستلزمات طبية في مدينة الشارقة للرعاية الصحية', href: '/medical-equipment-supplier-in-uae' },
+      { labelEn: 'Medical Equipment Supplier Ajman', labelAr: 'مورد أجهزة طبية في عجمان', href: '/medical-equipment-supplier-in-uae' },
+      { labelEn: 'Hospital Equipment Ras Al Khaimah (RAK)', labelAr: 'معدات مستشفيات في رأس الخيمة', href: '/medical-equipment-supplier-in-uae' },
+      { labelEn: 'Healthcare Solutions Fujairah & UAQ', labelAr: 'حلول رعاية صحية في الفجيرة وأم القيوين', href: '/medical-equipment-supplier-in-uae' },
+      { labelEn: 'Same-Day Dubai Clinical Express Delivery', labelAr: 'توصيل سريع في نفس اليوم للعيادات بدبي', href: '/shipping' },
+      { labelEn: 'UAE Free Zone & GCC Export Supply', labelAr: 'توريد للمناطق الحرة وتصدير لدول الخليج', href: '/contact' },
+      { labelEn: 'Hospital & Clinic Wholesale Procurement', labelAr: 'توريد بالجملة للمستشفيات والعيادات', href: '/contact' },
+      { labelEn: 'UAE Ministry & Private Hospital Tenders', labelAr: 'مناقصات المستشفيات الحكومية والخاصة', href: '/contact' }
+    ]
+  },
+  {
+    titleEn: 'Standards & Regulations Guides',
+    titleAr: 'أدلة المعايير واللوائح الطبية',
+    items: [
+      { labelEn: 'Best Medical Equipment Supplier UAE', labelAr: 'أفضل مورد معدات وأجهزة طبية في الإمارات', href: '/medical-equipment-supplier-in-uae' },
+      { labelEn: 'Medical Equipment Quality Standards', labelAr: 'معايير جودة المعدات الطبية العالمية', href: '/about-us' },
+      { labelEn: 'Clinical Facility Supply Guidelines', labelAr: 'إرشادات تجهيز المنشآت والعيادات الطبية', href: '/about-us' },
+      { labelEn: 'Biomedical Engineering & Calibration', labelAr: 'معايير الهندسة الطبية الحيوية والمعايرة', href: '/about-us' },
+      { labelEn: 'Official Manufacturer Warranty Terms', labelAr: 'شروط الضمان المعتمد من المصنعين', href: '/terms-conditions' },
+      { labelEn: 'Warranty Claims & Exchange Policy', labelAr: 'سياسة مطالبات الضمان واستبدال الأجهزة', href: '/returns-exchanges' },
+      { labelEn: 'Cold-Chain Temperature Monitored Delivery', labelAr: 'شحن مبرد مراقب درجات الحرارة للمستلزمات', href: '/shipping' },
+      { labelEn: 'Hospital Privacy & Data Protection', labelAr: 'خصوصية المنشآت الصحية وحماية البيانات', href: '/privacy-policy' },
+      { labelEn: 'Certified Global Healthcare Brands', labelAr: 'علامات تجارية طبية عالمية معتمدة', href: '/brands' },
+      { labelEn: 'FastonMed Warehouses & Service Hubs', labelAr: 'مستودعات ومراكز خدمات فاستون ميد', href: '/store-locations' }
+    ]
+  }
+];
+
 export default function Footer() {
   const { locale, isArabic } = useLocale();
-  const isAr = isArabic || locale === 'ar';
+  const isAr = isArabic || locale === 'ar' || (typeof window !== 'undefined' && (window.location.pathname === '/ar' || window.location.pathname.startsWith('/ar/')));
+  const getHref = (url: string) => isAr ? (url === '/' ? '/ar' : (url.startsWith('/ar') ? url : `/ar${url}`)) : url;
   const pathname = usePathname();
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
@@ -540,186 +683,48 @@ export default function Footer() {
             {/* SECTION 2: MEGA SEO DIRECTORY - ROW 1 (4 COLUMNS) */}
             <div style={{ paddingTop: '32px', paddingBottom: '32px', borderBottom: '1px solid #eef2f6' }}>
               <div className="fm-mega-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '30px' }}>
-                {/* Guide Column 1: ICU & Critical Care Equipment */}
-                <div>
-                  <div className="fm-dir-header">
-                    <span>ICU & Critical Care Guides</span>
+                {row1Columns.map((col, idx) => (
+                  <div key={idx}>
+                    <div className="fm-dir-header">
+                      <span>{isAr ? col.titleAr : col.titleEn}</span>
+                    </div>
+                    <div className="fm-mega-col-content">
+                      <ul className="fm-dir-list">
+                        {col.items.map((item, itemIdx) => (
+                          <li key={itemIdx}>
+                            <Link href={getHref(item.href)} className="fm-footer-link">
+                              {isAr ? item.labelAr : item.labelEn}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
-                  <div className="fm-mega-col-content">
-                    <ul className="fm-dir-list">
-                      <li><Link href="/product-category/icu-equipment" className="fm-footer-link">ICU Ventilators & Respirators</Link></li>
-                      <li><Link href="/product-category/patient-monitoring" className="fm-footer-link">Multi-Parameter ICU Monitors</Link></li>
-                      <li><Link href="/automated-external-defibrillator" className="fm-footer-link">Automated External Defibrillator</Link></li>
-                      <li><Link href="/moh-registered-aed-machine-in-uae" className="fm-footer-link">MoH Registered AED Machine UAE</Link></li>
-                      <li><Link href="/aed-replacement-pad-in-dubai" className="fm-footer-link">AED Replacement Pads in Dubai</Link></li>
-                      <li><Link href="/product-category/icu-equipment" className="fm-footer-link">Syringe & Infusion Pumps</Link></li>
-                      <li><Link href="/product-category/icu-equipment" className="fm-footer-link">High-Vacuum Suction Units</Link></li>
-                      <li><Link href="/bipap-machine" className="fm-footer-link">BiPAP Non-Invasive Ventilation</Link></li>
-                      <li><Link href="/cpap-apap-machine" className="fm-footer-link">CPAP & APAP Sleep Therapy</Link></li>
-                      <li><Link href="/oxygen-sensor" className="fm-footer-link">Medical Oxygen Sensors & Cells</Link></li>
-                      <li><Link href="/product-category/hospital-furniture" className="fm-footer-link">Emergency Resuscitation Crash Carts</Link></li>
-                      <li><Link href="/product-category/icu-equipment" className="fm-footer-link">High Flow Nasal Cannula (HFNC)</Link></li>
-                    </ul>
-                  </div>
-                </div>
-
-                {/* Guide Column 2: Diagnostic & Cardiology Systems */}
-                <div>
-                  <div className="fm-dir-header">
-                    <span>Diagnostic & Cardiology Guides</span>
-                  </div>
-                  <div className="fm-mega-col-content">
-                    <ul className="fm-dir-list">
-                      <li><Link href="/ecg-machine" className="fm-footer-link">12-Lead Diagnostic ECG Machine</Link></li>
-                      <li><Link href="/holter-ecg-monitor-2" className="fm-footer-link">Holter ECG Continuous Monitor</Link></li>
-                      <li><Link href="/ambulatory-blood-pressure-monitor" className="fm-footer-link">Ambulatory Blood Pressure (ABPM)</Link></li>
-                      <li><Link href="/ambulatory-and-holter-ecg-monitors" className="fm-footer-link">Ambulatory & Holter ECG Monitors</Link></li>
-                      <li><Link href="/tmt-stress-test-system" className="fm-footer-link">TMT Cardiac Stress Test System</Link></li>
-                      <li><Link href="/cardiology-equipment" className="fm-footer-link">Cardiology Equipment Supplier</Link></li>
-                      <li><Link href="/product-category/radiology-equipments" className="fm-footer-link">Color Doppler Ultrasound Machine</Link></li>
-                      <li><Link href="/radiology-equipment-supplier-in-uae" className="fm-footer-link">Radiology Equipment Supplier UAE</Link></li>
-                      <li><Link href="/ultrasound-probe-repair-in-uae" className="fm-footer-link">Ultrasound Probe Repair UAE</Link></li>
-                      <li><Link href="/best-obstetrics-gynecology-equipment-in-uae" className="fm-footer-link">Obstetrics & Gynecology Equipment</Link></li>
-                      <li><Link href="/prp-tubes" className="fm-footer-link">PRP Tubes & Centrifuge Kits</Link></li>
-                      <li><Link href="/product-category/radiology-equipments" className="fm-footer-link">Digital Mobile Radiography X-Ray</Link></li>
-                    </ul>
-                  </div>
-                </div>
-
-                {/* Guide Column 3: Hospital Furniture & Clinical Couches */}
-                <div>
-                  <div className="fm-dir-header">
-                    <span>Hospital Furniture Guides</span>
-                  </div>
-                  <div className="fm-mega-col-content">
-                    <ul className="fm-dir-list">
-                      <li><Link href="/product-category/hospital-furniture" className="fm-footer-link">Electric 5-Function ICU Hospital Beds</Link></li>
-                      <li><Link href="/product-category/hospital-furniture" className="fm-footer-link">Manual 2-Crank Fowler Hospital Beds</Link></li>
-                      <li><Link href="/product-category/hospital-furniture" className="fm-footer-link">Hydraulic Examination Couches</Link></li>
-                      <li><Link href="/product-category/hospital-furniture" className="fm-footer-link">Gynecological Delivery Beds & Tables</Link></li>
-                      <li><Link href="/product-category/hospital-furniture" className="fm-footer-link">Patient Transport Stretchers & Carts</Link></li>
-                      <li><Link href="/product-category/hospital-furniture" className="fm-footer-link">Phlebotomy Blood Donation Chairs</Link></li>
-                      <li><Link href="/product-category/hospital-furniture" className="fm-footer-link">Emergency Medication Crash Trolleys</Link></li>
-                      <li><Link href="/product-category/hospital-furniture" className="fm-footer-link">Hospital Bedside Lockers & Cabinets</Link></li>
-                      <li><Link href="/product-category/hospital-furniture" className="fm-footer-link">Overbed Food Tables & IV Poles</Link></li>
-                      <li><Link href="/product-category/hospital-furniture" className="fm-footer-link">Heavy-Duty Patient Wheelchairs</Link></li>
-                      <li><Link href="/dental-equipment-supplier-in-dubai" className="fm-footer-link">Dental Equipment Supplier Dubai</Link></li>
-                      <li><Link href="/product-category/hospital-furniture" className="fm-footer-link">Surgical Shadowless OT Ceiling Lights</Link></li>
-                    </ul>
-                  </div>
-                </div>
-
-                {/* Guide Column 4: Laboratory, Cold Chain & Consumables */}
-                <div>
-                  <div className="fm-dir-header">
-                    <span>Laboratory & Cold Chain Guides</span>
-                  </div>
-                  <div className="fm-mega-col-content">
-                    <ul className="fm-dir-list">
-                      <li><Link href="/product-category/pharmacy-refrigerators" className="fm-footer-link">2°C–8°C Pharmacy Refrigeration</Link></li>
-                      <li><Link href="/product-category/pharmacy-refrigerators" className="fm-footer-link">-20°C to -86°C Ultra Low Biofreezers</Link></li>
-                      <li><Link href="/product-category/laboratory-equipment" className="fm-footer-link">Clinical Chemistry Analyzers</Link></li>
-                      <li><Link href="/product-category/laboratory-equipment" className="fm-footer-link">High-Speed Clinical Centrifuges</Link></li>
-                      <li><Link href="/product-category/laboratory-equipment" className="fm-footer-link">Medical Steam Autoclaves & Sterilizers</Link></li>
-                      <li><Link href="/product-category/laboratory-equipment" className="fm-footer-link">Biosafety & Laminar Airflow Benches</Link></li>
-                      <li><Link href="/ozone-generator" className="fm-footer-link">Medical Ozone Generator Systems</Link></li>
-                      <li><Link href="/school-medical-supplies-in-uae" className="fm-footer-link">School Medical Supplies in UAE</Link></li>
-                      <li><Link href="/consumables" className="fm-footer-link">Clinical Consumables & ECG Paper</Link></li>
-                      <li><Link href="/flexible-rigid-endoscope-repair-in-dubai" className="fm-footer-link">Endoscope Repair in Dubai</Link></li>
-                      <li><Link href="/used-medical-equipment-in-uae" className="fm-footer-link">Used Medical Equipment in UAE</Link></li>
-                      <li><Link href="/product-category/laboratory-equipment" className="fm-footer-link">Clinical Pathology Microscopes</Link></li>
-                    </ul>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
 
             {/* SECTION 3: MEGA SEO DIRECTORY - ROW 2 (4 COLUMNS) */}
             <div style={{ paddingTop: '32px', paddingBottom: '36px' }}>
               <div className="fm-mega-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '30px' }}>
-                {/* Row 2 Column 1: Biomedical Engineering & Maintenance */}
-                <div>
-                  <div className="fm-dir-header">
-                    <span>Biomedical Engineering & AMC</span>
+                {row2Columns.map((col, idx) => (
+                  <div key={idx}>
+                    <div className="fm-dir-header">
+                      <span>{isAr ? col.titleAr : col.titleEn}</span>
+                    </div>
+                    <div className="fm-mega-col-content">
+                      <ul className="fm-dir-list">
+                        {col.items.map((item, itemIdx) => (
+                          <li key={itemIdx}>
+                            <Link href={getHref(item.href)} className="fm-footer-link">
+                              {isAr ? item.labelAr : item.labelEn}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
-                  <div className="fm-mega-col-content">
-                    <ul className="fm-dir-list">
-                      <li><Link href="/medical-equipment-calibration-service-in-uae" className="fm-footer-link">Equipment Calibration Service UAE</Link></li>
-                      <li><Link href="/amc-cmc-for-medical-equipment-in-dubai-uae" className="fm-footer-link">AMC & CMC Maintenance Dubai UAE</Link></li>
-                      <li><Link href="/plan-preventive-maintenance-for-medical-equipment-in-uae" className="fm-footer-link">Planned Preventive Maintenance (PPM)</Link></li>
-                      <li><Link href="/medical-equipment-service-in-uae-2" className="fm-footer-link">Medical Equipment Service in UAE</Link></li>
-                      <li><Link href="/amc-cmc-for-medical-equipment-in-dubai-uae" className="fm-footer-link">Biomedical Electrical Safety Audits</Link></li>
-                      <li><Link href="/ultrasound-probe-repair-in-uae" className="fm-footer-link">Ultrasound Acoustic & Crystal Repair</Link></li>
-                      <li><Link href="/flexible-rigid-endoscope-repair-in-dubai" className="fm-footer-link">Rigid & Flexible Optical Calibration</Link></li>
-                      <li><Link href="/product-category/icu-equipment" className="fm-footer-link">ICU Ventilator Flow Sensor Overhaul</Link></li>
-                      <li><Link href="/contact" className="fm-footer-link">Hospital Turnkey Equipment Setup</Link></li>
-                      <li><Link href="/contact" className="fm-footer-link">24/7 Biomedical Emergency Support</Link></li>
-                    </ul>
-                  </div>
-                </div>
-
-                {/* Row 2 Column 2: Healthcare Facilities We Supply */}
-                <div>
-                  <div className="fm-dir-header">
-                    <span>Healthcare Facilities Supplied</span>
-                  </div>
-                  <div className="fm-mega-col-content">
-                    <ul className="fm-dir-list">
-                      <li><Link href="/about-us" className="fm-footer-link">Tertiary Hospitals & Emergency Units</Link></li>
-                      <li><Link href="/about-us" className="fm-footer-link">Day Surgery & Outpatient Clinics</Link></li>
-                      <li><Link href="/about-us" className="fm-footer-link">Polyclinics & Diagnostic Centers</Link></li>
-                      <li><Link href="/radiology-equipment-supplier-in-uae" className="fm-footer-link">Radiology & Medical Imaging Centers</Link></li>
-                      <li><Link href="/product-category/laboratory-equipment" className="fm-footer-link">Clinical Pathology & Diagnostic Labs</Link></li>
-                      <li><Link href="/dental-equipment-supplier-in-dubai" className="fm-footer-link">Dental Clinics & Maxillofacial Units</Link></li>
-                      <li><Link href="/product-category/hospital-furniture" className="fm-footer-link">Physiotherapy & Rehabilitation Centers</Link></li>
-                      <li><Link href="/school-medical-supplies-in-uae" className="fm-footer-link">School, University & Nursery Clinics</Link></li>
-                      <li><Link href="/product-category/pharmacy-refrigerators" className="fm-footer-link">Pharmacy & Cold Chain Warehouses</Link></li>
-                      <li><Link href="/moh-registered-aed-machine-in-uae" className="fm-footer-link">Ambulance Fleets & First Responders</Link></li>
-                    </ul>
-                  </div>
-                </div>
-
-                {/* Row 2 Column 3: UAE Regional Distribution */}
-                <div>
-                  <div className="fm-dir-header">
-                    <span>UAE Regional Distribution</span>
-                  </div>
-                  <div className="fm-mega-col-content">
-                    <ul className="fm-dir-list">
-                      <li><Link href="/medical-equipment-supplier-in-uae" className="fm-footer-link">Medical Equipment Supplier Dubai</Link></li>
-                      <li><Link href="/medical-equipment-supplier-in-uae" className="fm-footer-link">Medical Equipment Abu Dhabi & Al Ain</Link></li>
-                      <li><Link href="/medical-equipment-supplier-in-uae" className="fm-footer-link">Clinical Supplies Sharjah Medical City</Link></li>
-                      <li><Link href="/medical-equipment-supplier-in-uae" className="fm-footer-link">Medical Equipment Supplier Ajman</Link></li>
-                      <li><Link href="/medical-equipment-supplier-in-uae" className="fm-footer-link">Hospital Equipment Ras Al Khaimah (RAK)</Link></li>
-                      <li><Link href="/medical-equipment-supplier-in-uae" className="fm-footer-link">Healthcare Solutions Fujairah & UAQ</Link></li>
-                      <li><Link href="/shipping" className="fm-footer-link">Same-Day Dubai Clinical Express Delivery</Link></li>
-                      <li><Link href="/contact" className="fm-footer-link">UAE Free Zone & GCC Export Supply</Link></li>
-                      <li><Link href="/contact" className="fm-footer-link">Hospital & Clinic Wholesale Procurement</Link></li>
-                      <li><Link href="/contact" className="fm-footer-link">UAE Ministry & Private Hospital Tenders</Link></li>
-                    </ul>
-                  </div>
-                </div>
-
-                {/* Row 2 Column 4: Standards & Compliance Guides */}
-                <div>
-                  <div className="fm-dir-header">
-                    <span>Standards & Regulations Guides</span>
-                  </div>
-                  <div className="fm-mega-col-content">
-                    <ul className="fm-dir-list">
-                      <li><Link href="/medical-equipment-supplier-in-uae" className="fm-footer-link">Best Medical Equipment Supplier UAE</Link></li>
-                      <li><Link href="/about-us" className="fm-footer-link">Medical Equipment Quality Standards</Link></li>
-                      <li><Link href="/about-us" className="fm-footer-link">Clinical Facility Supply Guidelines</Link></li>
-                      <li><Link href="/about-us" className="fm-footer-link">Biomedical Engineering & Calibration</Link></li>
-                      <li><Link href="/terms-conditions" className="fm-footer-link">Official Manufacturer Warranty Terms</Link></li>
-                      <li><Link href="/returns-exchanges" className="fm-footer-link">Warranty Claims & Exchange Policy</Link></li>
-                      <li><Link href="/shipping" className="fm-footer-link">Cold-Chain Temperature Monitored Delivery</Link></li>
-                      <li><Link href="/privacy-policy" className="fm-footer-link">Hospital Privacy & Data Protection</Link></li>
-                      <li><Link href="/brands" className="fm-footer-link">Certified Global Healthcare Brands</Link></li>
-                      <li><Link href="/store-locations" className="fm-footer-link">FastonMed Warehouses & Service Hubs</Link></li>
-                    </ul>
-                  </div>
-                </div>
+                ))}
               </div>
 
               {/* Bottom Quick Hide Control */}
@@ -751,7 +756,7 @@ export default function Footer() {
                     e.currentTarget.style.color = '#64748b';
                   }}
                 >
-                  <span>Hide Guides</span>
+                  <span>{isAr ? 'إخفاء الأدلة' : 'Hide Guides'}</span>
                   <ChevronUp size={14} />
                 </button>
               </div>

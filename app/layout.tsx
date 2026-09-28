@@ -180,7 +180,7 @@ export default async function RootLayout({
       </head>
       <body style={{ fontFamily: isAr ? "'Cairo', 'Tajawal', Arial, sans-serif" : 'Arial, Helvetica, sans-serif' }}>
         <AppProvider>
-          <LocaleProvider>
+          <LocaleProvider initialLocale={locale}>
             <SiteShell>{children}</SiteShell>
           </LocaleProvider>
         </AppProvider>

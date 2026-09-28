@@ -1077,12 +1077,21 @@ nav[aria-label="Breadcrumbs"] svg,
 /* Forms in RTL */
 [dir="rtl"] input[type="text"],
 [dir="rtl"] input[type="email"],
-[dir="rtl"] input[type="tel"],
 [dir="rtl"] input[type="search"],
 [dir="rtl"] textarea,
 [dir="rtl"] select {
   text-align: right !important;
   direction: rtl !important;
+}
+
+/* Phone numbers, currency codes, emails, and LTR overrides inside RTL */
+[dir="rtl"] [dir="ltr"],
+[dir="rtl"] input[type="tel"],
+[dir="rtl"] a[href^="tel:"],
+[dir="rtl"] a[href^="mailto:"] {
+  direction: ltr !important;
+  text-align: left !important;
+  unicode-bidi: isolate !important;
 }
 
 /* Language Switcher Styling */

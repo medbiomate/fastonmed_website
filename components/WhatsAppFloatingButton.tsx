@@ -10,7 +10,12 @@ export default function WhatsAppFloatingButton() {
   // Hide in /admin
   if (pathname?.startsWith('/admin')) return null;
 
-  const defaultMsg = encodeURIComponent('Hello FastonMed, I am browsing your medical equipment store and would like to speak with a sales specialist.');
+  const isAr = pathname?.startsWith('/ar') || (typeof window !== 'undefined' && (window.location.pathname === '/ar' || window.location.pathname.startsWith('/ar/')));
+  const defaultMsg = encodeURIComponent(
+    isAr
+      ? 'مرحباً فاستون ميد، أود الاستفسار بخصوص الأجهزة والمعدات الطبية.'
+      : 'Hello FastonMed, I am browsing your medical equipment store and would like to speak with a sales specialist.'
+  );
   const waUrl = `https://wa.me/971508893589?text=${defaultMsg}`;
 
   return (

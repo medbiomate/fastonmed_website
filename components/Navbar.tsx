@@ -135,40 +135,52 @@ export default function Navbar() {
         <div
           className="container"
           style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr auto 1fr',
+            display: 'flex',
             alignItems: 'center',
+            justifyContent: 'space-between',
             padding: '0 20px',
-            width: '100%'
+            width: '100%',
+            gap: '16px'
           }}
         >
-          {/* Left: Contact Info */}
+          {/* Contact Info (Forced LTR for clean phone numbers & email) */}
           <div
             id="topbar-contacts"
+            dir="ltr"
             style={{
               display: 'flex',
               alignItems: 'center',
               gap: '14px',
               fontWeight: 500,
-              justifySelf: 'start'
+              flexShrink: 0,
+              direction: 'ltr',
+              unicodeBidi: 'isolate',
+              whiteSpace: 'nowrap'
             }}
           >
             <div
+              dir="ltr"
               style={{
                 color: '#ffffff',
-                display: 'flex',
+                display: 'inline-flex',
                 alignItems: 'center',
                 gap: '6px',
-                opacity: 0.95
+                opacity: 0.95,
+                direction: 'ltr',
+                unicodeBidi: 'isolate',
+                whiteSpace: 'nowrap'
               }}
             >
               <Phone size={13} strokeWidth={2.2} />
               <a
                 href="tel:+971508893589"
+                dir="ltr"
                 style={{
                   color: '#ffffff',
                   textDecoration: 'none',
-                  transition: 'opacity 0.2s'
+                  transition: 'opacity 0.2s',
+                  direction: 'ltr',
+                  unicodeBidi: 'isolate'
                 }}
                 onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.8')}
                 onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
@@ -178,10 +190,13 @@ export default function Navbar() {
               <span style={{ opacity: 0.4 }}>/</span>
               <a
                 href="tel:+971508893586"
+                dir="ltr"
                 style={{
                   color: '#ffffff',
                   textDecoration: 'none',
-                  transition: 'opacity 0.2s'
+                  transition: 'opacity 0.2s',
+                  direction: 'ltr',
+                  unicodeBidi: 'isolate'
                 }}
                 onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.8')}
                 onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
@@ -194,13 +209,17 @@ export default function Navbar() {
 
             <a
               href="mailto:sales@fastonmed.com"
+              dir="ltr"
               style={{
                 color: '#ffffff',
                 textDecoration: 'none',
-                display: 'flex',
+                display: 'inline-flex',
                 alignItems: 'center',
                 gap: '6px',
                 opacity: 0.95,
+                direction: 'ltr',
+                unicodeBidi: 'isolate',
+                whiteSpace: 'nowrap',
                 transition: 'opacity 0.2s'
               }}
               onMouseEnter={(e) => (e.currentTarget.style.opacity = '1')}
@@ -211,7 +230,7 @@ export default function Navbar() {
             </a>
           </div>
 
-          {/* Center: Exactly Centered Live Ticker */}
+          {/* Center: Live Announcement Ticker */}
           <div
             id="topbar-ticker"
             style={{
@@ -223,26 +242,31 @@ export default function Navbar() {
               fontSize: '0.80rem',
               letterSpacing: '0.01em',
               textAlign: 'center',
-              justifySelf: 'center',
               color: '#ffffff',
               padding: '0 12px',
-              whiteSpace: 'nowrap'
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              flex: '1 1 auto'
             }}
           >
-            <ShieldCheck size={14} strokeWidth={2.2} color="#bbf7d0" />
-            <span>{(locale === 'ar' ? tickerMessagesAr : tickerMessagesEn)[tickerIndex % 4]}</span>
+            <ShieldCheck size={14} strokeWidth={2.2} color="#bbf7d0" style={{ flexShrink: 0 }} />
+            <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              {(locale === 'ar' ? tickerMessagesAr : tickerMessagesEn)[tickerIndex % 4]}
+            </span>
           </div>
 
-          {/* Right: UAE Presence & Business Hours for visual balance */}
+          {/* Right: UAE Presence & Business Hours */}
           <div
             id="topbar-right"
             style={{
               display: 'flex',
               alignItems: 'center',
               gap: '14px',
-              justifySelf: 'end',
               fontWeight: 500,
-              fontSize: '0.78rem'
+              fontSize: '0.78rem',
+              flexShrink: 0,
+              whiteSpace: 'nowrap'
             }}
           >
             <span
@@ -250,7 +274,8 @@ export default function Navbar() {
                 display: 'flex',
                 alignItems: 'center',
                 gap: '5px',
-                opacity: 0.95
+                opacity: 0.95,
+                whiteSpace: 'nowrap'
               }}
             >
               <MapPin size={13} strokeWidth={2.2} />
@@ -264,28 +289,20 @@ export default function Navbar() {
                 display: 'flex',
                 alignItems: 'center',
                 gap: '5px',
-                opacity: 0.95
+                opacity: 0.95,
+                whiteSpace: 'nowrap'
               }}
             >
               <Clock size={13} strokeWidth={2.2} />
-              <span>{locale === 'ar' ? 'السبت – الخميس: 8:30 ص – 6:00 م' : 'Mon – Sat: 8:30 AM – 6:00 PM'}</span>
+              <bdi>{locale === 'ar' ? 'السبت – الخميس: 8:30 ص – 6:00 م' : 'Mon – Sat: 8:30 AM – 6:00 PM'}</bdi>
             </span>
           </div>
         </div>
 
         <style>{`
-          @media (max-width: 1100px) {
+          @media (max-width: 1180px) {
             #topbar-right {
               display: none !important;
-            }
-            #topbar .container {
-              display: flex !important;
-              justify-content: space-between !important;
-              grid-template-columns: none !important;
-            }
-            #topbar-ticker {
-              justify-self: auto !important;
-              text-align: right !important;
             }
           }
           @media (max-width: 820px) {
@@ -296,7 +313,6 @@ export default function Navbar() {
               display: none !important;
             }
             #topbar .container {
-              display: flex !important;
               justify-content: center !important;
               padding: 0 10px !important;
             }
