@@ -171,38 +171,43 @@ export default function Footer() {
   const [subscribed, setSubscribed] = useState(false);
   const [chromeSettings, setChromeSettings] = useState(() => store.getSiteChrome());
   
-  const guideColumns = [
-    [row1Columns[0], row2Columns[0]],
-    [row1Columns[1], row2Columns[1]],
-    [row1Columns[2], row2Columns[2]],
-    [row1Columns[3], row2Columns[3]]
-  ];
 
   const allGuideTitles = [
     ...row1Columns.map(c => c.titleEn),
     ...row2Columns.map(c => c.titleEn)
   ];
 
-  const [openGuides, setOpenGuides] = useState<Record<string, boolean>>({});
+  // Desktop: single accordion per row (Row 1 and Row 2)
+  const [desktopRow1Open, setDesktopRow1Open] = useState(true);
+  const [desktopRow2Open, setDesktopRow2Open] = useState(false);
 
-  const toggleGuide = (title: string) => {
-    setOpenGuides(prev => ({
+  // Mobile: individual accordion per category
+  const [mobileOpenGuides, setMobileOpenGuides] = useState<Record<string, boolean>>({
+    'ICU & Critical Care Guides': true
+  });
+
+  const toggleMobileGuide = (title: string) => {
+    setMobileOpenGuides(prev => ({
       ...prev,
       [title]: !prev[title]
     }));
   };
 
-  const areAllOpen = allGuideTitles.length > 0 && allGuideTitles.every(t => openGuides[t]);
+  const areAllOpen = desktopRow1Open && desktopRow2Open;
 
   const toggleAllGuides = () => {
     if (areAllOpen) {
-      setOpenGuides({});
+      setDesktopRow1Open(false);
+      setDesktopRow2Open(false);
+      setMobileOpenGuides({});
     } else {
+      setDesktopRow1Open(true);
+      setDesktopRow2Open(true);
       const next: Record<string, boolean> = {};
       allGuideTitles.forEach(t => {
         next[t] = true;
       });
-      setOpenGuides(next);
+      setMobileOpenGuides(next);
     }
   };
 
@@ -299,6 +304,25 @@ export default function Footer() {
           color: #ffffff !important;
           border-color: #00875a !important;
         }
+        .fm-desktop-guide-rows {
+          display: block;
+        }
+        .fm-mobile-guide-cards {
+          display: none;
+        }
+        .fm-row-accordion-card {
+          background-color: #ffffff;
+          border: 1px solid #e2e8f0;
+          border-radius: 8px;
+          overflow: hidden;
+          transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .fm-row-accordion-card:hover {
+          border-color: #cbd5e1;
+        }
+        .fm-row-accordion-header:hover {
+          background-color: #f8fafc !important;
+        }
         .fm-guide-card {
           background-color: #ffffff;
           border: 1px solid #e2e8f0;
@@ -317,35 +341,30 @@ export default function Footer() {
             flex-direction: column !important;
             gap: 32px !important;
           }
-          .fm-mega-grid {
-            grid-template-columns: repeat(2, 1fr) !important;
-            gap: 28px 20px !important;
-          }
-          .fm-accordion-grid {
-            grid-template-columns: repeat(2, 1fr) !important;
-            gap: 16px !important;
-          }
-        }
-        @media (max-width: 640px) {
           .fm-top-columns {
             grid-template-columns: repeat(2, 1fr) !important;
             gap: 24px 16px !important;
           }
-          .fm-mega-grid {
-            grid-template-columns: 1fr !important;
-            gap: 20px !important;
+        }
+        @media (max-width: 767px) {
+          .fm-desktop-guide-rows {
+            display: none !important;
           }
-          .fm-accordion-grid {
-            grid-template-columns: 1fr !important;
-            gap: 12px !important;
-          }
-          .fm-mega-col-content {
-            display: block !important;
+          .fm-mobile-guide-cards {
+            display: flex !important;
+            flex-direction: column;
+            gap: 12px;
           }
           .fm-bottom-legal-row {
             flex-direction: column !important;
             align-items: flex-start !important;
             gap: 14px !important;
+          }
+        }
+        @media (max-width: 640px) {
+          .fm-top-columns {
+            grid-template-columns: 1fr !important;
+            gap: 24px 16px !important;
           }
         }
       `}</style>
@@ -728,90 +747,272 @@ export default function Footer() {
             </button>
           </div>
 
-          {/* 4-COLUMN ACCORDION GRID */}
-          <div
-            className="fm-accordion-grid"
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(4, 1fr)',
-              gap: '18px',
-              alignItems: 'start'
-            }}
-          >
-            {guideColumns.map((colGroup, colIdx) => (
-              <div key={colIdx} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-                {colGroup.map((category) => {
-                  const isOpen = !!openGuides[category.titleEn];
-                  return (
-                    <div
-                      key={category.titleEn}
-                      className="fm-guide-card"
-                      style={{
-                        backgroundColor: '#ffffff',
-                        border: '1px solid #e2e8f0',
-                        borderRadius: '8px',
-                        overflow: 'hidden',
-                        transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
-                        boxShadow: isOpen ? '0 4px 14px rgba(15, 23, 42, 0.05)' : 'none'
-                      }}
-                    >
-                      <button
-                        type="button"
-                        onClick={() => toggleGuide(category.titleEn)}
-                        className="fm-guide-header-btn"
+          {/* DESKTOP VIEW: SINGLE ACCORDION PER ROW (>= 768px) */}
+          <div className="fm-desktop-guide-rows">
+            {/* ROW 1 ACCORDION CARD */}
+            <div
+              className="fm-row-accordion-card"
+              style={{
+                backgroundColor: '#ffffff',
+                border: '1px solid #e2e8f0',
+                borderRadius: '8px',
+                marginBottom: '14px',
+                overflow: 'hidden',
+                transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
+                boxShadow: desktopRow1Open ? '0 4px 14px rgba(15, 23, 42, 0.04)' : 'none'
+              }}
+            >
+              <div
+                onClick={() => setDesktopRow1Open(!desktopRow1Open)}
+                className="fm-row-accordion-header"
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(4, 1fr)',
+                  gap: '24px',
+                  alignItems: 'center',
+                  padding: '13px 20px',
+                  backgroundColor: desktopRow1Open ? '#f8fafc' : '#ffffff',
+                  borderBottom: desktopRow1Open ? '1px solid #eef2f6' : 'none',
+                  cursor: 'pointer',
+                  userSelect: 'none',
+                  textAlign: isAr ? 'right' : 'left'
+                }}
+              >
+                <div style={{ fontWeight: 700, fontSize: '0.88rem', color: '#0f172a' }}>
+                  {isAr ? row1Columns[0].titleAr : row1Columns[0].titleEn}
+                </div>
+                <div style={{ fontWeight: 700, fontSize: '0.88rem', color: '#0f172a' }}>
+                  {isAr ? row1Columns[1].titleAr : row1Columns[1].titleEn}
+                </div>
+                <div style={{ fontWeight: 700, fontSize: '0.88rem', color: '#0f172a' }}>
+                  {isAr ? row1Columns[2].titleAr : row1Columns[2].titleEn}
+                </div>
+                <div
+                  style={{
+                    fontWeight: 700,
+                    fontSize: '0.88rem',
+                    color: '#0f172a',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    gap: '10px'
+                  }}
+                >
+                  <span>{isAr ? row1Columns[3].titleAr : row1Columns[3].titleEn}</span>
+                  {desktopRow1Open ? (
+                    <ChevronUp size={17} color="#00875a" style={{ flexShrink: 0 }} />
+                  ) : (
+                    <ChevronDown size={17} color="#94a3b8" style={{ flexShrink: 0 }} />
+                  )}
+                </div>
+              </div>
+
+              {desktopRow1Open && (
+                <div style={{ padding: '18px 20px 22px 20px' }}>
+                  <div
+                    style={{
+                      display: 'grid',
+                      gridTemplateColumns: 'repeat(4, 1fr)',
+                      gap: '24px',
+                      alignItems: 'start'
+                    }}
+                  >
+                    {row1Columns.map((col, idx) => (
+                      <div key={idx}>
+                        <ul
+                          className="fm-dir-list"
+                          style={{
+                            listStyle: 'none',
+                            padding: 0,
+                            margin: 0,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '8px'
+                          }}
+                        >
+                          {col.items.map((item, itemIdx) => (
+                            <li key={itemIdx}>
+                              <Link href={getHref(item.href)} className="fm-footer-link">
+                                {isAr ? item.labelAr : item.labelEn}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* ROW 2 ACCORDION CARD */}
+            <div
+              className="fm-row-accordion-card"
+              style={{
+                backgroundColor: '#ffffff',
+                border: '1px solid #e2e8f0',
+                borderRadius: '8px',
+                overflow: 'hidden',
+                transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
+                boxShadow: desktopRow2Open ? '0 4px 14px rgba(15, 23, 42, 0.04)' : 'none'
+              }}
+            >
+              <div
+                onClick={() => setDesktopRow2Open(!desktopRow2Open)}
+                className="fm-row-accordion-header"
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(4, 1fr)',
+                  gap: '24px',
+                  alignItems: 'center',
+                  padding: '13px 20px',
+                  backgroundColor: desktopRow2Open ? '#f8fafc' : '#ffffff',
+                  borderBottom: desktopRow2Open ? '1px solid #eef2f6' : 'none',
+                  cursor: 'pointer',
+                  userSelect: 'none',
+                  textAlign: isAr ? 'right' : 'left'
+                }}
+              >
+                <div style={{ fontWeight: 700, fontSize: '0.88rem', color: '#0f172a' }}>
+                  {isAr ? row2Columns[0].titleAr : row2Columns[0].titleEn}
+                </div>
+                <div style={{ fontWeight: 700, fontSize: '0.88rem', color: '#0f172a' }}>
+                  {isAr ? row2Columns[1].titleAr : row2Columns[1].titleEn}
+                </div>
+                <div style={{ fontWeight: 700, fontSize: '0.88rem', color: '#0f172a' }}>
+                  {isAr ? row2Columns[2].titleAr : row2Columns[2].titleEn}
+                </div>
+                <div
+                  style={{
+                    fontWeight: 700,
+                    fontSize: '0.88rem',
+                    color: '#0f172a',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    gap: '10px'
+                  }}
+                >
+                  <span>{isAr ? row2Columns[3].titleAr : row2Columns[3].titleEn}</span>
+                  {desktopRow2Open ? (
+                    <ChevronUp size={17} color="#00875a" style={{ flexShrink: 0 }} />
+                  ) : (
+                    <ChevronDown size={17} color="#94a3b8" style={{ flexShrink: 0 }} />
+                  )}
+                </div>
+              </div>
+
+              {desktopRow2Open && (
+                <div style={{ padding: '18px 20px 22px 20px' }}>
+                  <div
+                    style={{
+                      display: 'grid',
+                      gridTemplateColumns: 'repeat(4, 1fr)',
+                      gap: '24px',
+                      alignItems: 'start'
+                    }}
+                  >
+                    {row2Columns.map((col, idx) => (
+                      <div key={idx}>
+                        <ul
+                          className="fm-dir-list"
+                          style={{
+                            listStyle: 'none',
+                            padding: 0,
+                            margin: 0,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '8px'
+                          }}
+                        >
+                          {col.items.map((item, itemIdx) => (
+                            <li key={itemIdx}>
+                              <Link href={getHref(item.href)} className="fm-footer-link">
+                                {isAr ? item.labelAr : item.labelEn}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* MOBILE VIEW: INDIVIDUAL ACCORDION PER CATEGORY (< 768px) */}
+          <div className="fm-mobile-guide-cards">
+            {[...row1Columns, ...row2Columns].map((category) => {
+              const isOpen = !!mobileOpenGuides[category.titleEn];
+              return (
+                <div
+                  key={category.titleEn}
+                  className="fm-guide-card"
+                  style={{
+                    backgroundColor: '#ffffff',
+                    border: '1px solid #e2e8f0',
+                    borderRadius: '8px',
+                    overflow: 'hidden',
+                    transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
+                    boxShadow: isOpen ? '0 4px 14px rgba(15, 23, 42, 0.05)' : 'none'
+                  }}
+                >
+                  <button
+                    type="button"
+                    onClick={() => toggleMobileGuide(category.titleEn)}
+                    className="fm-guide-header-btn"
+                    style={{
+                      width: '100%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      padding: '13px 16px',
+                      backgroundColor: isOpen ? '#f8fafc' : '#ffffff',
+                      border: 'none',
+                      borderBottom: isOpen ? '1px solid #eef2f6' : 'none',
+                      cursor: 'pointer',
+                      textAlign: isAr ? 'right' : 'left',
+                      color: '#0f172a',
+                      fontWeight: 700,
+                      fontSize: '0.88rem',
+                      transition: 'background-color 0.15s ease'
+                    }}
+                  >
+                    <span style={{ lineHeight: 1.35 }}>{isAr ? category.titleAr : category.titleEn}</span>
+                    {isOpen ? (
+                      <ChevronUp size={17} color="#00875a" style={{ flexShrink: 0, [isAr ? 'marginRight' : 'marginLeft']: '8px' }} />
+                    ) : (
+                      <ChevronDown size={17} color="#94a3b8" style={{ flexShrink: 0, [isAr ? 'marginRight' : 'marginLeft']: '8px' }} />
+                    )}
+                  </button>
+
+                  {isOpen && (
+                    <div style={{ padding: '12px 16px 16px 16px' }}>
+                      <ul
+                        className="fm-dir-list"
                         style={{
-                          width: '100%',
+                          listStyle: 'none',
+                          padding: 0,
+                          margin: 0,
                           display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                          padding: '13px 16px',
-                          backgroundColor: isOpen ? '#f8fafc' : '#ffffff',
-                          border: 'none',
-                          borderBottom: isOpen ? '1px solid #eef2f6' : 'none',
-                          cursor: 'pointer',
-                          textAlign: isAr ? 'right' : 'left',
-                          color: '#0f172a',
-                          fontWeight: 700,
-                          fontSize: '0.88rem',
-                          transition: 'background-color 0.15s ease'
+                          flexDirection: 'column',
+                          gap: '8px'
                         }}
                       >
-                        <span style={{ lineHeight: 1.35 }}>{isAr ? category.titleAr : category.titleEn}</span>
-                        {isOpen ? (
-                          <ChevronUp size={17} color="#00875a" style={{ flexShrink: 0, [isAr ? 'marginRight' : 'marginLeft']: '8px' }} />
-                        ) : (
-                          <ChevronDown size={17} color="#94a3b8" style={{ flexShrink: 0, [isAr ? 'marginRight' : 'marginLeft']: '8px' }} />
-                        )}
-                      </button>
-
-                      {isOpen && (
-                        <div style={{ padding: '12px 16px 16px 16px' }}>
-                          <ul
-                            className="fm-dir-list"
-                            style={{
-                              listStyle: 'none',
-                              padding: 0,
-                              margin: 0,
-                              display: 'flex',
-                              flexDirection: 'column',
-                              gap: '8px'
-                            }}
-                          >
-                            {category.items.map((item, itemIdx) => (
-                              <li key={itemIdx}>
-                                <Link href={getHref(item.href)} className="fm-footer-link">
-                                  {isAr ? item.labelAr : item.labelEn}
-                                </Link>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
+                        {category.items.map((item, itemIdx) => (
+                          <li key={itemIdx}>
+                            <Link href={getHref(item.href)} className="fm-footer-link">
+                              {isAr ? item.labelAr : item.labelEn}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
-                  );
-                })}
-              </div>
-            ))}
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
