@@ -5,8 +5,10 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { X, Trash2, Plus, Minus, ArrowRight, ShieldCheck, Tag } from 'lucide-react';
 import { useApp } from '@/lib/context';
+import { useLocale } from '@/lib/locale-context';
 
 export default function CartDrawer() {
+  const { locale, isArabic, localizeUrl } = useLocale();
   const {
     cart,
     isCartOpen,
@@ -45,12 +47,17 @@ export default function CartDrawer() {
         {/* Header */}
         <div style={{ padding: '20px 24px', borderBottom: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <h3 style={{ fontSize: '1.25rem', fontWeight: 700 }}>Your Shopping Cart</h3>
-            <span className="badge badge-primary">{cart.length} items</span>
+            <h3 style={{ fontSize: '1.25rem', fontWeight: 700 }}>
+              {isArabic ? 'سلة المشتريات' : 'Your Shopping Cart'}
+            </h3>
+            <span className="badge badge-primary">
+              {cart.length} {isArabic ? 'منتجات' : 'items'}
+            </span>
           </div>
           <button
             onClick={() => setIsCartOpen(false)}
             style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)' }}
+            aria-label={isArabic ? 'إغلاق' : 'Close'}
           >
             <X size={22} />
           </button>
@@ -60,10 +67,16 @@ export default function CartDrawer() {
         <div style={{ padding: '14px 24px', backgroundColor: 'var(--bg-subtle)', borderBottom: '1px solid var(--border-color)' }}>
           <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-main)', marginBottom: '6px' }}>
             {amountNeeded > 0 ? (
-              <span>Add <strong style={{ color: 'var(--primary-dark)' }}>AED {amountNeeded.toLocaleString()}</strong> more for FREE UAE Delivery!</span>
+              <span>
+                {isArabic ? (
+                  <>أضف بقيمة <strong style={{ color: 'var(--primary-dark)' }}>{amountNeeded.toLocaleString()} درهم</strong> إضافية للحصول على توصيل مجاني في الإمارات!</>
+                ) : (
+                  <>Add <strong style={{ color: 'var(--primary-dark)' }}>AED {amountNeeded.toLocaleString()}</strong> more for FREE UAE Delivery!</>
+                )}
+              </span>
             ) : (
               <span style={{ color: 'var(--status-success)', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                🎉 You have qualified for <strong>FREE UAE Delivery</strong>!
+                {isArabic ? '🎉 لقد حصلت على توصيل مجاني لكافة مناطق الإمارات!' : '🎉 You have qualified for FREE UAE Delivery!'}
               </span>
             )}
           </div>
@@ -206,14 +219,14 @@ export default function CartDrawer() {
             <form onSubmit={handleApplyCoupon} style={{ display: 'flex', gap: '8px', marginBottom: '14px' }}>
               <input
                 type="text"
-                placeholder="Coupon code (e.g. WELCOME10)"
+                placeholder={isArabic ? 'رمز القسيمة (مثال: WELCOME10)' : 'Coupon code (e.g. WELCOME10)'}
                 value={couponInput}
                 onChange={e => setCouponInput(e.target.value)}
                 className="form-control"
                 style={{ padding: '8px 12px', fontSize: '0.85rem' }}
               />
               <button type="submit" className="btn btn-outline btn-sm">
-                Apply
+                {isArabic ? 'تطبيق' : 'Apply'}
               </button>
             </form>
 
@@ -226,10 +239,10 @@ export default function CartDrawer() {
             {appliedCoupon && (
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: 'var(--primary-light)', padding: '6px 12px', borderRadius: 'var(--radius-sm)', marginBottom: '12px' }}>
                 <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--primary-dark)', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  <Tag size={13} /> {appliedCoupon.code} applied
+                  <Tag size={13} /> {appliedCoupon.code} {isArabic ? 'مُطبّقة' : 'applied'}
                 </span>
                 <button onClick={removeCoupon} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '0.75rem', color: 'var(--accent)', fontWeight: 700 }}>
-                  Remove
+                  {isArabic ? 'إزالة' : 'Remove'}
                 </button>
               </div>
             )}
@@ -237,37 +250,37 @@ export default function CartDrawer() {
             {/* Calculations Breakdown */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '0.88rem', marginBottom: '16px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--text-muted)' }}>
-                <span>Subtotal</span>
-                <span>AED {cartSubtotal.toLocaleString()}</span>
+                <span>{isArabic ? 'المجموع الفرعي' : 'Subtotal'}</span>
+                <span>{cartSubtotal.toLocaleString()} {isArabic ? 'درهم' : 'AED'}</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--text-muted)' }}>
-                <span>Shipping (UAE)</span>
-                <span>{cartShipping === 0 ? <strong style={{ color: 'var(--status-success)' }}>FREE</strong> : `AED ${cartShipping}`}</span>
+                <span>{isArabic ? 'الشحن (الإمارات)' : 'Shipping (UAE)'}</span>
+                <span>{cartShipping === 0 ? <strong style={{ color: 'var(--status-success)' }}>{isArabic ? 'مجاني' : 'FREE'}</strong> : `${cartShipping} ${isArabic ? 'درهم' : 'AED'}`}</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--text-muted)' }}>
-                <span>UAE VAT (5%)</span>
-                <span>AED {cartTax.toLocaleString()}</span>
+                <span>{isArabic ? 'ضريبة القيمة المضافة (5%)' : 'UAE VAT (5%)'}</span>
+                <span>{cartTax.toLocaleString()} {isArabic ? 'درهم' : 'AED'}</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.15rem', fontWeight: 800, color: 'var(--text-main)', borderTop: '1px solid var(--border-color)', paddingTop: '8px', marginTop: '4px' }}>
-                <span>Grand Total</span>
-                <span style={{ color: 'var(--primary-dark)' }}>AED {cartGrandTotal.toLocaleString()}</span>
+                <span>{isArabic ? 'المجموع الكلي' : 'Grand Total'}</span>
+                <span style={{ color: 'var(--primary-dark)' }}>{cartGrandTotal.toLocaleString()} {isArabic ? 'درهم' : 'AED'}</span>
               </div>
             </div>
 
             {/* Checkout Button */}
             <Link
-              href="/checkout"
+              href={localizeUrl('/checkout')}
               onClick={() => setIsCartOpen(false)}
               className="btn btn-primary btn-lg"
               style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
             >
-              <span>Proceed to Checkout</span>
-              <ArrowRight size={18} />
+              <span>{isArabic ? 'المتابعة إلى إتمام الطلب' : 'Proceed to Checkout'}</span>
+              <ArrowRight size={18} style={{ transform: isArabic ? 'scaleX(-1)' : 'none' }} />
             </Link>
 
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', marginTop: '12px', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
               <ShieldCheck size={14} color="var(--primary)" />
-              <span>UAE Ministry of Health Compliant & Secure Checkout</span>
+              <span>{isArabic ? 'دفع آمن ومعتمد متوافق مع معايير وزارة الصحة الإماراتية' : 'UAE Ministry of Health Compliant & Secure Checkout'}</span>
             </div>
           </div>
         )}

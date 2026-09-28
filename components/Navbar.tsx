@@ -28,7 +28,7 @@ const tickerMessagesAr = [
 
 export default function Navbar() {
   const pathname = usePathname();
-  const { locale, isRtl } = useLocale();
+  const { locale, isRtl, isArabic, localizeUrl } = useLocale();
   const { cartCount, setIsCartOpen, wishlist } = useApp();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchModalOpen, setSearchModalOpen] = useState(false);
@@ -109,7 +109,7 @@ export default function Navbar() {
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      window.location.href = `/shop?search=${encodeURIComponent(searchQuery.trim())}`;
+      window.location.href = localizeUrl(`/shop?search=${encodeURIComponent(searchQuery.trim())}`);
     }
   };
 
@@ -377,7 +377,7 @@ export default function Navbar() {
             </button>
 
             {/* Brand Logo (Responsive desktop / mobile) */}
-            <Link href="/" style={{ display: 'flex', alignItems: 'center' }}>
+            <Link href={localizeUrl('/')} style={{ display: 'flex', alignItems: 'center' }}>
               <div id="desktop-logo" style={{ display: 'block' }}>
                 <FastonmedLogo height={38} theme={isDarkHeader ? 'dark' : 'light'} />
               </div>
@@ -537,7 +537,7 @@ export default function Navbar() {
 
             {/* Wishlist Icon */}
             <Link
-              href="/wishlist"
+              href={localizeUrl('/wishlist')}
               id="header-wishlist"
               style={{
                 position: 'relative',
@@ -697,10 +697,13 @@ export default function Navbar() {
             onClick={e => e.stopPropagation()}
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-              <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0f172a' }}>Search FastonMed</h3>
+              <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0f172a' }}>
+                {isArabic ? 'البحث في فاستونميد' : 'Search FastonMed'}
+              </h3>
               <button
                 onClick={() => setSearchModalOpen(false)}
                 style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#64748b' }}
+                aria-label={isArabic ? 'إغلاق' : 'Close'}
               >
                 <X size={22} />
               </button>
@@ -708,27 +711,28 @@ export default function Navbar() {
 
             <form onSubmit={handleSearchSubmit}>
               <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-                <Search size={22} style={{ position: 'absolute', left: '16px', color: '#94a3b8' }} />
+                <Search size={22} style={{ position: 'absolute', [isArabic ? 'right' : 'left']: '16px', color: '#94a3b8' }} />
                 <input
                   type="text"
-                  placeholder="Search medical equipment, brand, model or SKU..."
+                  placeholder={isArabic ? 'ابحث عن أجهزة طبية، علامة تجارية، موديل أو كود...' : 'Search medical equipment, brand, model or SKU...'}
                   value={searchQuery}
                   onChange={e => setSearchQuery(e.target.value)}
                   autoFocus
                   style={{
                     width: '100%',
-                    padding: '16px 120px 16px 48px',
+                    padding: isArabic ? '16px 48px 16px 120px' : '16px 120px 16px 48px',
                     fontSize: '1rem',
                     border: '2px solid #51b291',
                     borderRadius: '30px',
-                    outline: 'none'
+                    outline: 'none',
+                    textAlign: isArabic ? 'right' : 'left'
                   }}
                 />
                 <button
                   type="submit"
                   style={{
                     position: 'absolute',
-                    right: '6px',
+                    [isArabic ? 'left' : 'right']: '6px',
                     backgroundColor: '#51b291',
                     color: '#ffffff',
                     border: 'none',
@@ -738,19 +742,21 @@ export default function Navbar() {
                     cursor: 'pointer'
                   }}
                 >
-                  Search
+                  {isArabic ? 'بحث' : 'Search'}
                 </button>
               </div>
             </form>
 
             <div style={{ marginTop: '20px', display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
-              <span style={{ fontSize: '0.82rem', color: '#64748b', fontWeight: 600 }}>Popular Searches:</span>
+              <span style={{ fontSize: '0.82rem', color: '#64748b', fontWeight: 600 }}>
+                {isArabic ? 'الأكثر بحثاً:' : 'Popular Searches:'}
+              </span>
               {['Haier Refrigerator', 'Cederroth Dressing', 'Blue Dot Pack', 'Dental Chair', 'ENT Unit'].map(k => (
                 <button
                   key={k}
                   onClick={() => {
                     setSearchQuery(k);
-                    window.location.href = `/shop?search=${encodeURIComponent(k)}`;
+                    window.location.href = localizeUrl(`/shop?search=${encodeURIComponent(k)}`);
                   }}
                   style={{
                     fontSize: '0.8rem',
@@ -758,8 +764,8 @@ export default function Navbar() {
                     borderRadius: '20px',
                     border: '1px solid #e2e8f0',
                     backgroundColor: '#f8fafc',
-                    color: '#334155',
-                    cursor: 'pointer'
+                    cursor: 'pointer',
+                    color: '#475569'
                   }}
                 >
                   {k}
@@ -877,7 +883,7 @@ export default function Navbar() {
                             textDecoration: 'none'
                           }}
                         >
-                          Shop Equipment
+                          {l.label}
                         </Link>
                         <button
                           type="button"
@@ -914,53 +920,53 @@ export default function Navbar() {
                           }}
                         >
                           <Link
-                            href="/product-category/icu-equipment"
+                            href={localizeUrl('/product-category/icu-equipment')}
                             onClick={() => setMobileMenuOpen(false)}
                             style={{ fontSize: '0.85rem', color: '#334155', textDecoration: 'none', fontWeight: 600 }}
                           >
-                            • ICU & Critical Care
+                            {isArabic ? '• العناية المركزة والحرجة' : '• ICU & Critical Care'}
                           </Link>
                           <Link
-                            href="/product-category/patient-monitoring"
+                            href={localizeUrl('/product-category/patient-monitoring')}
                             onClick={() => setMobileMenuOpen(false)}
                             style={{ fontSize: '0.85rem', color: '#334155', textDecoration: 'none', fontWeight: 600 }}
                           >
-                            • Patient Monitoring & ECG
+                            {isArabic ? '• مراقبة المرضى وتخطيط القلب' : '• Patient Monitoring & ECG'}
                           </Link>
                           <Link
-                            href="/product-category/pharmacy-refrigerators"
+                            href={localizeUrl('/product-category/pharmacy-refrigerators')}
                             onClick={() => setMobileMenuOpen(false)}
                             style={{ fontSize: '0.85rem', color: '#334155', textDecoration: 'none', fontWeight: 600 }}
                           >
-                            • Medical Cold Storage (2–8°C)
+                            {isArabic ? '• التبريد الطبي وحفظ اللقاحات (2–8° م)' : '• Medical Cold Storage (2–8°C)'}
                           </Link>
                           <Link
-                            href="/product-category/radiology-equipments"
+                            href={localizeUrl('/product-category/radiology-equipments')}
                             onClick={() => setMobileMenuOpen(false)}
                             style={{ fontSize: '0.85rem', color: '#334155', textDecoration: 'none', fontWeight: 600 }}
                           >
-                            • Ultrasound & Radiology
+                            {isArabic ? '• أجهزة الموجات الصوتية والأشعة' : '• Ultrasound & Radiology'}
                           </Link>
                           <Link
-                            href="/product-category/laboratory-equipment"
+                            href={localizeUrl('/product-category/laboratory-equipment')}
                             onClick={() => setMobileMenuOpen(false)}
                             style={{ fontSize: '0.85rem', color: '#334155', textDecoration: 'none', fontWeight: 600 }}
                           >
-                            • Clinical Laboratory
+                            {isArabic ? '• المختبرات والتحاليل الطبية' : '• Clinical Laboratory'}
                           </Link>
                           <Link
-                            href="/product-category/hospital-furniture"
+                            href={localizeUrl('/product-category/hospital-furniture')}
                             onClick={() => setMobileMenuOpen(false)}
                             style={{ fontSize: '0.85rem', color: '#334155', textDecoration: 'none', fontWeight: 600 }}
                           >
-                            • Hospital Furniture & Couches
+                            {isArabic ? '• أثاث المستشفيات والعيادات' : '• Hospital Furniture & Couches'}
                           </Link>
                           <Link
-                            href="/shop"
+                            href={localizeUrl('/shop')}
                             onClick={() => setMobileMenuOpen(false)}
                             style={{ fontSize: '0.84rem', color: '#00875a', textDecoration: 'none', fontWeight: 700, paddingTop: '6px', borderTop: '1px solid #e2e8f0' }}
                           >
-                            View Full 2,700+ Catalog →
+                            {isArabic ? 'تصفح الكتالوج الشامل (+2,700 منتج) ←' : 'View Full 2,700+ Catalog →'}
                           </Link>
                         </div>
                       )}
@@ -988,7 +994,7 @@ export default function Navbar() {
               })}
 
               <Link
-                href="/wishlist"
+                href={localizeUrl('/wishlist')}
                 onClick={() => setMobileMenuOpen(false)}
                 style={{
                   fontSize: '1rem',

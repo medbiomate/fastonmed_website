@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { ShoppingBag, Heart, Eye, MessageCircle, Star, ImageOff } from 'lucide-react';
 import { Product } from '@/lib/types';
 import { useApp } from '@/lib/context';
+import { useLocale } from '@/lib/locale-context';
 
 interface ProductCardProps {
   product: Product;
@@ -14,6 +15,7 @@ interface ProductCardProps {
 
 export default function ProductCard({ product, showActions = false }: ProductCardProps) {
   const { addToCart, isInWishlist, toggleWishlist, openQuickView } = useApp();
+  const { isArabic, localizeUrl } = useLocale();
 
   const isFavorited = isInWishlist(product.id);
   const price = product.salePrice && product.salePrice > 0 ? product.salePrice : product.regularPrice;
@@ -23,13 +25,21 @@ export default function ProductCard({ product, showActions = false }: ProductCar
     : 0;
 
   // WhatsApp prefilled message for direct enquiry
-  const priceLine = price && price > 0 ? `Price: AED ${price.toLocaleString()}\n` : '';
+  const priceLine = price && price > 0
+    ? (isArabic ? `السعر: ${price.toLocaleString()} درهم\n` : `Price: AED ${price.toLocaleString()}\n`)
+    : '';
+  const waProductUrl = isArabic
+    ? `https://www.fastonmed.com/ar/product/${product.slug}`
+    : `https://www.fastonmed.com/product/${product.slug}`;
   const waText = encodeURIComponent(
-    `Hello FastonMed Sales Team,\nI would like to make an enquiry regarding:\n*${product.name}*\nSKU: ${product.sku || product.id}\n${priceLine}https://www.fastonmed.com/product/${product.slug}`
+    isArabic
+      ? `مرحباً فريق مبيعات فاستونميد،\nأود الاستفسار بخصوص المنتج:\n*${product.name}*\nالرمز: ${product.sku || product.id}\n${priceLine}${waProductUrl}`
+      : `Hello FastonMed Sales Team,\nI would like to make an enquiry regarding:\n*${product.name}*\nSKU: ${product.sku || product.id}\n${priceLine}${waProductUrl}`
   );
   const waUrl = `https://wa.me/971508893589?text=${waText}`;
 
   const hasReviews = (product.reviewCount || 0) > 0 && (product.rating || 0) > 0;
+  const productHref = localizeUrl(`/product/${product.slug}`);
 
   return (
     <div
@@ -109,7 +119,7 @@ export default function ProductCard({ product, showActions = false }: ProductCar
         }}
       >
         <Link
-          href={`/product/${product.slug}`}
+          href={productHref}
           style={{ position: 'relative', width: '100%', height: '100%', display: 'block' }}
         >
           {product.mainImage ? (
@@ -127,13 +137,13 @@ export default function ProductCard({ product, showActions = false }: ProductCar
           ) : (
             <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'center', justifyContent: 'center', backgroundColor: '#f8fafc', color: '#94a3b8', fontSize: '0.72rem', fontWeight: 600 }}>
               <ImageOff size={30} strokeWidth={1.5} />
-              <span>Image unavailable</span>
+              <span>{isArabic ? 'الصورة غير متوفرة' : 'Image unavailable'}</span>
             </div>
           )}
         </Link>
 
         {/* Badges (Discount / Hot) */}
-        <div style={{ position: 'absolute', top: '7px', left: '7px', display: 'flex', flexDirection: 'column', gap: '4px', zIndex: 2 }}>
+        <div style={{ position: 'absolute', top: '7px', left: isArabic ? 'auto' : '7px', right: isArabic ? '7px' : 'auto', display: 'flex', flexDirection: 'column', gap: '4px', zIndex: 2 }}>
           {hasDiscount && (
             <span
               style={{
@@ -161,7 +171,7 @@ export default function ProductCard({ product, showActions = false }: ProductCar
                 borderRadius: '9999px'
               }}
             >
-              HOT
+              {isArabic ? 'الأكثر طلباً' : 'HOT'}
             </span>
           )}
         </div>
@@ -172,7 +182,8 @@ export default function ProductCard({ product, showActions = false }: ProductCar
           style={{
             position: 'absolute',
             top: '7px',
-            right: '7px',
+            right: isArabic ? 'auto' : '7px',
+            left: isArabic ? '7px' : 'auto',
             display: 'flex',
             flexDirection: 'column',
             gap: '4px',
@@ -197,7 +208,7 @@ export default function ProductCard({ product, showActions = false }: ProductCar
               color: isFavorited ? '#ef4444' : '#64748b',
               transition: 'all 0.15s ease'
             }}
-            title={isFavorited ? 'Remove from Wishlist' : 'Add to Wishlist'}
+            title={isArabic ? (isFavorited ? 'إزالة من المفضلة' : 'إضافة إلى المفضلة') : (isFavorited ? 'Remove from Wishlist' : 'Add to Wishlist')}
             aria-label="Wishlist"
           >
             <Heart size={14} fill={isFavorited ? '#ef4444' : 'none'} />
@@ -220,7 +231,7 @@ export default function ProductCard({ product, showActions = false }: ProductCar
               color: '#64748b',
               transition: 'all 0.15s ease'
             }}
-            title="Quick View"
+            title={isArabic ? 'نظرة سريعة' : 'Quick View'}
             aria-label="Quick View"
           >
             <Eye size={14} />
@@ -267,7 +278,7 @@ export default function ProductCard({ product, showActions = false }: ProductCar
               }}
             >
               <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#10b981', display: 'inline-block' }} />
-              In Stock
+              {isArabic ? 'متوفر في المخزون' : 'In Stock'}
             </span>
           )}
         </div>
@@ -287,7 +298,7 @@ export default function ProductCard({ product, showActions = false }: ProductCar
           }}
         >
           <Link
-            href={`/product/${product.slug}`}
+            href={productHref}
             style={{ color: '#0f172a', textDecoration: 'none', transition: 'color 0.2s' }}
           >
             {product.name}
@@ -312,10 +323,11 @@ export default function ProductCard({ product, showActions = false }: ProductCar
                   fontSize: '0.68rem',
                   fontWeight: 800,
                   color: 'var(--primary, #51b291)',
-                  marginRight: '3px'
+                  marginRight: isArabic ? '0' : '3px',
+                  marginLeft: isArabic ? '3px' : '0'
                 }}
               >
-                AED
+                {isArabic ? 'درهم' : 'AED'}
               </span>
               <span
                 style={{
@@ -338,7 +350,7 @@ export default function ProductCard({ product, showActions = false }: ProductCar
                   whiteSpace: 'nowrap'
                 }}
               >
-                AED {product.regularPrice.toLocaleString()}
+                {isArabic ? `${product.regularPrice.toLocaleString()} درهم` : `AED ${product.regularPrice.toLocaleString()}`}
               </span>
             )}
           </div>
@@ -365,10 +377,10 @@ export default function ProductCard({ product, showActions = false }: ProductCar
                 textDecoration: 'none',
                 boxShadow: '0 2px 6px rgba(37, 211, 102, 0.28)'
               }}
-              title={`Direct enquiry for ${product.name} on WhatsApp`}
+              title={isArabic ? `طلب مباشر للمنتج ${product.name} عبر واتساب` : `Direct enquiry for ${product.name} on WhatsApp`}
             >
               <MessageCircle size={15} strokeWidth={2.5} />
-              <span>Direct Enquiry</span>
+              <span>{isArabic ? 'طلب مباشر' : 'Direct Enquiry'}</span>
             </a>
           </div>
         )}

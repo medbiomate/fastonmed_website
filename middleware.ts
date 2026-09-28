@@ -71,6 +71,13 @@ export function middleware(request: NextRequest) {
     return response;
   }
 
+  // If user preferred Arabic language via cookie and visits an English public route, redirect to Arabic equivalent
+  const preferredLang = request.cookies.get('preferred_language')?.value;
+  if (preferredLang === 'ar' && !pathname.startsWith('/admin')) {
+    const arTarget = `/ar${pathname === '/' ? '' : pathname}${request.nextUrl.search}`;
+    return NextResponse.redirect(new URL(arTarget, request.url));
+  }
+
   // Default English route
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set('x-locale', 'en');

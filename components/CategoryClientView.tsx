@@ -20,6 +20,7 @@ import {
 import { Product } from '@/lib/types';
 import ProductCard from '@/components/ProductCard';
 import { resolveSpecialtyConfig, OTHER_SPECIALTIES_LIST } from '@/lib/category-definitions';
+import { useLocale } from '@/lib/locale-context';
 
 interface CategoryClientViewProps {
   categoryTitle: string;
@@ -34,6 +35,7 @@ export default function CategoryClientView({
   categorySlug,
   initialProducts
 }: CategoryClientViewProps) {
+  const { locale, isArabic, localizeUrl } = useLocale();
   const specialtyConfig = resolveSpecialtyConfig(categorySlug);
   const [selectedSubcategory, setSelectedSubcategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -124,19 +126,30 @@ export default function CategoryClientView({
     (item) => item.slug !== categorySlug && !specialtyConfig?.aliases.includes(item.slug)
   );
 
+  const currentTitle = (isArabic && specialtyConfig?.titleAr) ? specialtyConfig.titleAr : categoryTitle;
+  const currentSubtitle = (isArabic && specialtyConfig?.subtitleAr) ? specialtyConfig.subtitleAr : specialtyConfig?.subtitle;
+  const currentDescription = (isArabic && specialtyConfig?.descriptionAr)
+    ? specialtyConfig.descriptionAr
+    : (specialtyConfig?.description || (isArabic
+        ? `معدات ${categoryTitle} معتمدة وموردة من قبل فاستونميد في دبي وأبوظبي والإمارات الشمالية مع ضمان رسمي معتمد ودعم فني طبي حيوي.`
+        : `Certified ${categoryTitle} supplied by FastonMed across Dubai, Abu Dhabi, and Northern Emirates with official manufacturer warranty and biomedical support.`));
+  const currentBadge = (isArabic && specialtyConfig?.badgeAr)
+    ? specialtyConfig.badgeAr
+    : (specialtyConfig?.badge || (isArabic ? 'دليل الأجهزة الطبية المعتمدة في الإمارات' : 'OFFICIAL UAE CLINICAL CATALOG'));
+
   return (
-    <div style={{ backgroundColor: '#f8fafc', minHeight: '100vh', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+    <div style={{ backgroundColor: '#ffffff', minHeight: '100vh' }}>
       {/* 1. Category Hero Banner */}
       <section
         style={{
-          background: 'linear-gradient(180deg, #f0fdf4 0%, #f8fafc 100%)',
+          backgroundColor: '#f8fafc',
           borderBottom: '1px solid #e2e8f0',
-          padding: '36px 0 44px',
+          padding: '44px 0 36px',
           position: 'relative'
         }}
       >
         <div className="container" style={{ maxWidth: '1240px', margin: '0 auto', padding: '0 20px' }}>
-          {/* Low-Profile Breadcrumbs (For SEO Hierarchy) */}
+          {/* Low-Profile Breadcrumbs */}
           <nav
             aria-label="Breadcrumb"
             className="seo-breadcrumb"
@@ -146,26 +159,26 @@ export default function CategoryClientView({
               gap: '6px',
               fontSize: '0.68rem',
               color: '#94a3b8',
-              marginBottom: '10px',
+              marginBottom: '14px',
               lineHeight: 1.2
             }}
           >
-            <Link href="/" style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500 }}>
-              Home
+            <Link href={localizeUrl('/')} style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500 }}>
+              {isArabic ? 'الرئيسية' : 'Home'}
             </Link>
             <span style={{ color: '#cbd5e1' }}>/</span>
-            <Link href="/shop" style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500 }}>
-              Specialties
+            <Link href={localizeUrl('/shop')} style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500 }}>
+              {isArabic ? 'المتجر والتخصصات' : 'Specialties'}
             </Link>
             <span style={{ color: '#cbd5e1' }}>/</span>
-            <span style={{ color: '#64748b', fontWeight: 500 }}>{categoryTitle}</span>
+            <span style={{ color: '#64748b', fontWeight: 500 }}>{currentTitle}</span>
           </nav>
 
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: specialtyConfig?.illustration ? '1fr 300px' : '1fr',
-              gap: '36px',
+              gridTemplateColumns: specialtyConfig?.illustration ? '1fr 240px' : '1fr',
+              gap: '40px',
               alignItems: 'center'
             }}
             className="category-hero-grid"
@@ -188,7 +201,7 @@ export default function CategoryClientView({
                 }}
               >
                 <ShieldCheck size={14} />
-                <span>{specialtyConfig?.badge || 'OFFICIAL UAE CLINICAL CATALOG'}</span>
+                <span>{currentBadge}</span>
               </div>
 
               <h1
@@ -202,10 +215,10 @@ export default function CategoryClientView({
                 }}
                 className="category-main-title"
               >
-                {categoryTitle}
+                {currentTitle}
               </h1>
 
-              {specialtyConfig?.subtitle && (
+              {currentSubtitle && (
                 <p
                   style={{
                     fontSize: '1.1rem',
@@ -215,7 +228,7 @@ export default function CategoryClientView({
                     lineHeight: 1.4
                   }}
                 >
-                  {specialtyConfig.subtitle}
+                  {currentSubtitle}
                 </p>
               )}
 
@@ -228,8 +241,7 @@ export default function CategoryClientView({
                   margin: '0 0 24px'
                 }}
               >
-                {specialtyConfig?.description ||
-                  `Certified ${categoryTitle} supplied by FastonMed across Dubai, Abu Dhabi, and Northern Emirates with official manufacturer warranty and biomedical support.`}
+                {currentDescription}
               </p>
 
               {/* 4 Trust Highlights */}
@@ -243,19 +255,19 @@ export default function CategoryClientView({
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#1e293b', fontSize: '0.82rem', fontWeight: 600 }}>
                   <Award size={16} color="#00875a" />
-                  <span>Official Warranty & Service</span>
+                  <span>{isArabic ? 'ضمان وصيانة معتمدة' : 'Official Warranty & Service'}</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#1e293b', fontSize: '0.82rem', fontWeight: 600 }}>
                   <FileCheck2 size={16} color="#00875a" />
-                  <span>Clinical Grade Quality</span>
+                  <span>{isArabic ? 'جودة سريرية فائقة' : 'Clinical Grade Quality'}</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#1e293b', fontSize: '0.82rem', fontWeight: 600 }}>
                   <Truck size={16} color="#00875a" />
-                  <span>Fast Delivery Across UAE</span>
+                  <span>{isArabic ? 'توصيل سريع لكافة الإمارات' : 'Fast Delivery Across UAE'}</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#1e293b', fontSize: '0.82rem', fontWeight: 600 }}>
                   <Building2 size={16} color="#00875a" />
-                  <span>Hospital & Clinic RFQ</span>
+                  <span>{isArabic ? 'عروض أسعار للمستشفيات والعيادات' : 'Hospital & Clinic RFQ'}</span>
                 </div>
               </div>
             </div>
@@ -293,7 +305,7 @@ export default function CategoryClientView({
                 >
                   <img
                     src={specialtyConfig.illustration}
-                    alt={categoryTitle}
+                    alt={currentTitle}
                     style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                   />
                 </div>
@@ -308,10 +320,10 @@ export default function CategoryClientView({
                     marginBottom: '8px'
                   }}
                 >
-                  {initialProducts.length} Certified Models
+                  {isArabic ? `${initialProducts.length} طراز معتمد` : `${initialProducts.length} Certified Models`}
                 </div>
                 <span style={{ fontSize: '0.76rem', color: '#64748b' }}>
-                  Supplied in UAE by FastonMed
+                  {isArabic ? 'توريد معتمد في الإمارات من فاستونميد' : 'Supplied in UAE by FastonMed'}
                 </span>
               </div>
             )}
@@ -339,6 +351,7 @@ export default function CategoryClientView({
                 const isSelected = selectedSubcategory === sub.id;
                 const count = subcategoryCounts[sub.id] ?? 0;
                 if (sub.id !== 'all' && count === 0) return null;
+                const pillLabel = (isArabic && sub.labelAr) ? sub.labelAr : sub.label;
 
                 return (
                   <button
@@ -364,7 +377,7 @@ export default function CategoryClientView({
                       transition: 'all 0.2s ease'
                     }}
                   >
-                    <span>{sub.label}</span>
+                    <span>{pillLabel}</span>
                     <span
                       style={{
                         fontSize: '0.72rem',
@@ -411,7 +424,12 @@ export default function CategoryClientView({
               <Search
                 size={17}
                 color="#94a3b8"
-                style={{ position: 'absolute', left: '12px', pointerEvents: 'none' }}
+                style={{
+                  position: 'absolute',
+                  left: isArabic ? 'auto' : '12px',
+                  right: isArabic ? '12px' : 'auto',
+                  pointerEvents: 'none'
+                }}
               />
               <input
                 type="text"
@@ -420,10 +438,10 @@ export default function CategoryClientView({
                   setSearchQuery(e.target.value);
                   setCurrentPage(1);
                 }}
-                placeholder={`Search within ${categoryTitle}...`}
+                placeholder={isArabic ? `البحث داخل ${currentTitle}...` : `Search within ${categoryTitle}...`}
                 style={{
                   width: '100%',
-                  padding: '9px 36px 9px 38px',
+                  padding: isArabic ? '9px 38px 9px 36px' : '9px 36px 9px 38px',
                   borderRadius: '8px',
                   border: '1px solid #cbd5e1',
                   fontSize: '0.86rem',
@@ -437,7 +455,8 @@ export default function CategoryClientView({
                   onClick={() => setSearchQuery('')}
                   style={{
                     position: 'absolute',
-                    right: '10px',
+                    right: isArabic ? 'auto' : '10px',
+                    left: isArabic ? '10px' : 'auto',
                     background: 'none',
                     border: 'none',
                     cursor: 'pointer',
@@ -445,7 +464,7 @@ export default function CategoryClientView({
                     display: 'flex',
                     alignItems: 'center'
                   }}
-                  aria-label="Clear search"
+                  aria-label={isArabic ? 'مسح البحث' : 'Clear search'}
                 >
                   <X size={15} />
                 </button>
@@ -455,8 +474,9 @@ export default function CategoryClientView({
             {/* Right: Sort & Count */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
               <span style={{ fontSize: '0.84rem', color: '#64748b', fontWeight: 600 }}>
-                Showing {totalItems === 0 ? 0 : startIndex + 1}–
-                {Math.min(startIndex + ITEMS_PER_PAGE, totalItems)} of {totalItems} items
+                {isArabic
+                  ? `عرض ${totalItems === 0 ? 0 : startIndex + 1}–${Math.min(startIndex + ITEMS_PER_PAGE, totalItems)} من أصل ${totalItems} منتج`
+                  : `Showing ${totalItems === 0 ? 0 : startIndex + 1}–${Math.min(startIndex + ITEMS_PER_PAGE, totalItems)} of ${totalItems} items`}
               </span>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -479,10 +499,10 @@ export default function CategoryClientView({
                     outline: 'none'
                   }}
                 >
-                  <option value="recent">Newest Certified</option>
-                  <option value="price-low">Price: Low to High</option>
-                  <option value="price-high">Price: High to Low</option>
-                  <option value="name">Product Name (A-Z)</option>
+                  <option value="recent">{isArabic ? 'أحدث الإضافات المعتمدة' : 'Newest Certified'}</option>
+                  <option value="price-low">{isArabic ? 'السعر: من الأقل للأعلى' : 'Price: Low to High'}</option>
+                  <option value="price-high">{isArabic ? 'السعر: من الأعلى للأقل' : 'Price: High to Low'}</option>
+                  <option value="name">{isArabic ? 'اسم المنتج (أ-ي)' : 'Product Name (A-Z)'}</option>
                 </select>
               </div>
             </div>
@@ -530,10 +550,12 @@ export default function CategoryClientView({
                 <Search size={28} />
               </div>
               <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0f172a', margin: '0 0 8px' }}>
-                No matching products found
+                {isArabic ? 'لم يتم العثور على منتجات مطابقة' : 'No matching products found'}
               </h3>
               <p style={{ color: '#64748b', fontSize: '0.9rem', maxWidth: '420px', margin: '0 auto 20px' }}>
-                We couldn&apos;t find any products matching your search in {categoryTitle}. Try adjusting your keywords or browse all products in this category.
+                {isArabic
+                  ? `لم نتمكن من العثور على أي منتج مطابق لبحثك في ${currentTitle}. جرب تعديل كلمات البحث أو تصفح كافة منتجات هذه الفئة.`
+                  : `We couldn't find any products matching your search in ${categoryTitle}. Try adjusting your keywords or browse all products in this category.`}
               </p>
               <button
                 onClick={() => {
@@ -551,7 +573,7 @@ export default function CategoryClientView({
                   cursor: 'pointer'
                 }}
               >
-                Reset Filters
+                {isArabic ? 'إعادة ضبط التصفية' : 'Reset Filters'}
               </button>
             </div>
           )}
@@ -584,8 +606,8 @@ export default function CategoryClientView({
                   fontSize: '0.84rem'
                 }}
               >
-                <ChevronLeft size={16} />
-                <span>Previous</span>
+                <ChevronLeft size={16} className={isArabic ? 'rtl-flip' : ''} />
+                <span>{isArabic ? 'السابق' : 'Previous'}</span>
               </button>
 
               {Array.from({ length: totalPages }, (_, i) => i + 1)
@@ -637,8 +659,8 @@ export default function CategoryClientView({
                   fontSize: '0.84rem'
                 }}
               >
-                <span>Next</span>
-                <ChevronRight size={16} />
+                <span>{isArabic ? 'التالي' : 'Next'}</span>
+                <ChevronRight size={16} className={isArabic ? 'rtl-flip' : ''} />
               </button>
             </div>
           )}
@@ -677,19 +699,21 @@ export default function CategoryClientView({
                 }}
               >
                 <Building2 size={13} />
-                <span>UAE HEALTHCARE TENDER & BULK PROCUREMENT</span>
+                <span>{isArabic ? 'توريد المناقصات والكميات للرعاية الصحية في الإمارات' : 'UAE HEALTHCARE TENDER & BULK PROCUREMENT'}</span>
               </div>
               <h3 style={{ fontSize: '1.6rem', fontWeight: 800, margin: '0 0 10px', color: '#ffffff' }}>
-                Equipping a Hospital Ward, Day Surgery, or Clinic?
+                {isArabic ? 'هل تقوم بتجهيز جناح مستشفى أو مركز جراحة يومية أو عيادة؟' : 'Equipping a Hospital Ward, Day Surgery, or Clinic?'}
               </h3>
               <p style={{ color: '#cbd5e1', fontSize: '0.92rem', lineHeight: 1.6, margin: 0 }}>
-                FastonMed supplies private and government healthcare institutions across Dubai, Abu Dhabi, and Northern Emirates with comprehensive documentation, biomedical warranty, and scheduled calibration.
+                {isArabic
+                  ? 'تقوم فاستونميد بتوريد وتجهيز المنشآت الصحية الحكومية والخاصة في دبي وأبوظبي والإمارات الشمالية مع توثيق شامل، ضمان طبي حيوي، وجداول معايرة دورية معتمدة.'
+                  : 'FastonMed supplies private and government healthcare institutions across Dubai, Abu Dhabi, and Northern Emirates with comprehensive documentation, biomedical warranty, and scheduled calibration.'}
               </p>
             </div>
 
             <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
               <Link
-                href="/contact"
+                href={localizeUrl('/contact')}
                 style={{
                   backgroundColor: '#00875a',
                   color: '#ffffff',
@@ -705,12 +729,16 @@ export default function CategoryClientView({
                   boxShadow: '0 4px 14px rgba(0, 135, 90, 0.35)'
                 }}
               >
-                <span>Request Official Quotation</span>
-                <ArrowRight size={16} />
+                <span>{isArabic ? 'طلب عرض أسعار مؤسسي' : 'Request Official Quotation'}</span>
+                <ArrowRight size={16} className={isArabic ? 'rtl-flip' : ''} />
               </Link>
 
               <a
-                href="https://wa.me/971508893589?text=Hello%20FastonMed%20Sales%20Team%2C%20I%20would%20like%20to%20request%20a%20bulk%20procurement%20quotation%20for%20hospital%20equipment."
+                href={
+                  isArabic
+                    ? 'https://wa.me/971508893589?text=' + encodeURIComponent('مرحباً فريق مبيعات فاستونميد، أود طلب عرض أسعار لتوريد أجهزة ومعدات طبية لمؤسسة صحية.')
+                    : 'https://wa.me/971508893589?text=Hello%20FastonMed%20Sales%20Team%2C%20I%20would%20like%20to%20request%20a%20bulk%20procurement%20quotation%20for%20hospital%20equipment.'
+                }
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
@@ -727,7 +755,7 @@ export default function CategoryClientView({
                 }}
               >
                 <MessageCircle size={17} />
-                <span>WhatsApp Specialist</span>
+                <span>{isArabic ? 'مختص واتساب' : 'WhatsApp Specialist'}</span>
               </a>
             </div>
           </div>
@@ -736,10 +764,10 @@ export default function CategoryClientView({
           <div>
             <div style={{ marginBottom: '24px' }}>
               <span style={{ color: '#00875a', fontWeight: 800, fontSize: '0.78rem', letterSpacing: '0.08em' }}>
-                EXPLORE COMPLETE CATALOG
+                {isArabic ? 'استكشف الكتالوج الكامل' : 'EXPLORE COMPLETE CATALOG'}
               </span>
               <h3 style={{ fontSize: '1.45rem', fontWeight: 800, color: '#0f172a', margin: '6px 0 0' }}>
-                Other Medical Equipment Specialties
+                {isArabic ? 'تخصصات ومعدات طبية أخرى' : 'Other Medical Equipment Specialties'}
               </h3>
             </div>
 
@@ -750,67 +778,72 @@ export default function CategoryClientView({
                 gap: '16px'
               }}
             >
-              {otherSpecialties.map((item) => (
-                <Link
-                  key={item.slug}
-                  href={`/product-category/${item.slug}`}
-                  style={{
-                    backgroundColor: '#ffffff',
-                    borderRadius: '14px',
-                    border: '1px solid #e2e8f0',
-                    padding: '16px',
-                    textDecoration: 'none',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    transition: 'all 0.2s ease',
-                    boxShadow: '0 2px 6px rgba(0, 0, 0, 0.02)'
-                  }}
-                  className="other-specialty-card"
-                >
-                  <div
+              {otherSpecialties.map((item) => {
+                const itemTitle = (isArabic && (item as any).titleAr) ? (item as any).titleAr : item.title;
+                const itemDesc = (isArabic && (item as any).descAr) ? (item as any).descAr : item.desc;
+
+                return (
+                  <Link
+                    key={item.slug}
+                    href={localizeUrl(`/product-category/${item.slug}`)}
                     style={{
-                      height: '110px',
-                      backgroundColor: '#f8fafc',
-                      borderRadius: '10px',
+                      backgroundColor: '#ffffff',
+                      borderRadius: '14px',
+                      border: '1px solid #e2e8f0',
+                      padding: '16px',
+                      textDecoration: 'none',
                       display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      padding: '8px',
-                      marginBottom: '12px'
+                      flexDirection: 'column',
+                      transition: 'all 0.2s ease',
+                      boxShadow: '0 2px 6px rgba(0, 0, 0, 0.02)'
                     }}
+                    className="other-specialty-card"
                   >
-                    <img
-                      src={item.illustration}
-                      alt={item.title}
-                      style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-                    />
-                  </div>
-
-                  <h4 style={{ fontSize: '0.95rem', fontWeight: 800, color: '#0f172a', margin: '0 0 6px' }}>
-                    {item.title}
-                  </h4>
-                  <p style={{ fontSize: '0.76rem', color: '#64748b', lineHeight: 1.45, margin: '0 0 12px', flex: 1 }}>
-                    {item.desc}
-                  </p>
-
-                  <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 'auto' }}>
                     <div
                       style={{
-                        width: '26px',
-                        height: '26px',
-                        borderRadius: '50%',
-                        border: '1px solid #e2e8f0',
+                        height: '110px',
+                        backgroundColor: '#f8fafc',
+                        borderRadius: '10px',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        color: '#00875a'
+                        padding: '8px',
+                        marginBottom: '12px'
                       }}
                     >
-                      <ArrowRight size={13} />
+                      <img
+                        src={item.illustration}
+                        alt={itemTitle}
+                        style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                      />
                     </div>
-                  </div>
-                </Link>
-              ))}
+
+                    <h4 style={{ fontSize: '0.95rem', fontWeight: 800, color: '#0f172a', margin: '0 0 6px' }}>
+                      {itemTitle}
+                    </h4>
+                    <p style={{ fontSize: '0.76rem', color: '#64748b', lineHeight: 1.45, margin: '0 0 12px', flex: 1 }}>
+                      {itemDesc}
+                    </p>
+
+                    <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 'auto' }}>
+                      <div
+                        style={{
+                          width: '26px',
+                          height: '26px',
+                          borderRadius: '50%',
+                          border: '1px solid #e2e8f0',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          color: '#00875a'
+                        }}
+                      >
+                        <ArrowRight size={13} className={isArabic ? 'rtl-flip' : ''} />
+                      </div>
+                    </div>
+                  </Link>
+                );
+              })}
             </div>
           </div>
         </div>

@@ -33,7 +33,7 @@ interface ProductClientViewProps {
 }
 
 export default function ProductClientView({ product, similarProducts }: ProductClientViewProps) {
-  const { locale, isRtl, t } = useLocale();
+  const { locale, isRtl, isArabic, localizeUrl, t } = useLocale();
   const [quantity, setQuantity] = useState<number>(1);
   const [selectedImage, setSelectedImage] = useState<string>(product.mainImage || '');
   const [activeTab, setActiveTab] = useState<'specs' | 'features' | 'faq'>('specs');
@@ -66,25 +66,42 @@ export default function ProductClientView({ product, similarProducts }: ProductC
     }
   };
 
-  const canonicalUrl = `https://www.fastonmed.com/product/${product.slug}`;
-  const priceLine = price && price > 0 ? `Price: AED ${price.toLocaleString()}\n` : '';
+  const canonicalUrl = isArabic
+    ? `https://www.fastonmed.com/ar/product/${product.slug}`
+    : `https://www.fastonmed.com/product/${product.slug}`;
+  const priceLine = price && price > 0
+    ? (isArabic ? `السعر: ${price.toLocaleString()} درهم\n` : `Price: AED ${price.toLocaleString()}\n`)
+    : '';
   const waOrderText = encodeURIComponent(
-    `Hello FastonMed Sales Team,\nI would like to inquire about purchasing:\n*${product.name}*\nSKU: ${product.sku}\n${priceLine}Link: ${canonicalUrl}`
+    isArabic
+      ? `مرحباً فريق مبيعات فاستونميد،\nأود الاستفسار بخصوص شراء المنتج:\n*${product.name}*\nالرمز: ${product.sku}\n${priceLine}الرابط: ${canonicalUrl}`
+      : `Hello FastonMed Sales Team,\nI would like to inquire about purchasing:\n*${product.name}*\nSKU: ${product.sku}\n${priceLine}Link: ${canonicalUrl}`
   );
   const waUrl = `https://wa.me/971508893589?text=${waOrderText}`;
 
   // Default clinical specs if not explicitly set
   const specs = Object.entries(product.technicalSpecs || {});
-  const displaySpecs: [string, string][] = specs.length > 0 ? specs : [
-    ['Product Category', product.category || 'Medical Equipment'],
-    ['Brand / Manufacturer', product.brand || 'FastonMed Partner'],
-    ['SKU / Catalog ID', product.sku || 'N/A'],
-    ['Regulatory Compliance', 'UAE Standard Hospital & Clinical Grade'],
-    ['Warranty', product.warrantyPeriod || '1 Year Biomedical Warranty'],
-    ['Supply Voltage / Power', '220V - 240V / 50-60Hz (UAE Standard)'],
-    ['Clinical Application', 'Hospital Inpatient, ICU, Clinic & Homecare'],
-    ['After-Sales Service', 'FastonMed DIP-1 Engineering Center']
-  ];
+  const displaySpecs: [string, string][] = specs.length > 0 ? specs : (
+    isArabic ? [
+      ['فئة المنتج', product.category || 'معدات طبية'],
+      ['العلامة التجارية / الشركة المصنعة', product.brand || 'شريك فاستونميد'],
+      ['رمز المنتج (SKU)', product.sku || 'N/A'],
+      ['الامتثال التنظيمي', 'مطابق لمعايير المستشفيات والعيادات في الإمارات'],
+      ['الضمان', product.warrantyPeriod || 'ضمان طبي حيوي لمدة عام'],
+      ['الجهد والطاقة الكهربائية', '220V - 240V / 50-60Hz (المعيار الإماراتي)'],
+      ['الاستخدام السريري', 'أجنحة المستشفيات، العناية المركزة، العيادات والرعاية المنزلية'],
+      ['خدمة ما بعد البيع', 'مركز فاستونميد للهندسة الطبية الحيوية - DIP-1، دبي']
+    ] : [
+      ['Product Category', product.category || 'Medical Equipment'],
+      ['Brand / Manufacturer', product.brand || 'FastonMed Partner'],
+      ['SKU / Catalog ID', product.sku || 'N/A'],
+      ['Regulatory Compliance', 'UAE Standard Hospital & Clinical Grade'],
+      ['Warranty', product.warrantyPeriod || '1 Year Biomedical Warranty'],
+      ['Supply Voltage / Power', '220V - 240V / 50-60Hz (UAE Standard)'],
+      ['Clinical Application', 'Hospital Inpatient, ICU, Clinic & Homecare'],
+      ['After-Sales Service', 'FastonMed DIP-1 Engineering Center']
+    ]
+  );
 
   return (
     <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', paddingBottom: '70px' }}>
@@ -94,7 +111,8 @@ export default function ProductClientView({ product, similarProducts }: ProductC
           style={{
             position: 'fixed',
             bottom: '24px',
-            right: '24px',
+            right: isArabic ? 'auto' : '24px',
+            left: isArabic ? '24px' : 'auto',
             backgroundColor: '#0f172a',
             color: '#ffffff',
             padding: '14px 20px',
@@ -111,7 +129,9 @@ export default function ProductClientView({ product, similarProducts }: ProductC
             <Check size={14} color="#ffffff" strokeWidth={3} />
           </div>
           <div>
-            <div style={{ fontWeight: 700, fontSize: '0.9rem' }}>Added to Shopping Cart</div>
+            <div style={{ fontWeight: 700, fontSize: '0.9rem' }}>
+              {isArabic ? 'تمت إضافة المنتج إلى سلة المشتريات' : 'Added to Shopping Cart'}
+            </div>
             <div style={{ fontSize: '0.78rem', color: '#94a3b8' }}>{quantity}x {product.name}</div>
           </div>
         </div>
@@ -120,16 +140,16 @@ export default function ProductClientView({ product, similarProducts }: ProductC
       {/* Low-Profile Breadcrumbs Navigation (For SEO Hierarchy) */}
       <nav aria-label="Breadcrumbs" className="seo-breadcrumb" style={{ borderBottom: '1px solid #eef2f6', backgroundColor: '#fcfdfd', padding: '6px 0' }}>
         <div className="container" style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '0.68rem', color: '#94a3b8', flexWrap: 'wrap', lineHeight: 1.2 }}>
-          <Link href={locale === 'ar' ? '/ar' : '/'} style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500 }}>
+          <Link href={localizeUrl('/')} style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500 }}>
             {t('common.home')}
           </Link>
           <ChevronRight size={10} color="#cbd5e1" className="rtl-flip" />
-          <Link href={locale === 'ar' ? '/ar/shop' : '/shop'} style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500 }}>
-            {locale === 'ar' ? 'المعدات والأجهزة الطبية' : 'Medical Equipment'}
+          <Link href={localizeUrl('/shop')} style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500 }}>
+            {isArabic ? 'المعدات والأجهزة الطبية' : 'Medical Equipment'}
           </Link>
           <ChevronRight size={10} color="#cbd5e1" className="rtl-flip" />
           <Link
-            href={`${locale === 'ar' ? '/ar' : ''}/product-category/${(product.category || 'medical-equipment').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`}
+            href={localizeUrl(`/product-category/${(product.category || 'medical-equipment').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`)}
             style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500 }}
           >
             {product.category}
@@ -265,7 +285,7 @@ export default function ProductClientView({ product, similarProducts }: ProductC
                   }}
                 >
                   <Share2 size={13} />
-                  <span>{copied ? 'Copied!' : 'Share'}</span>
+                  <span>{copied ? (isArabic ? 'تم النسخ!' : 'Copied!') : (isArabic ? 'مشاركة' : 'Share')}</span>
                 </button>
                 <button
                   type="button"
@@ -287,7 +307,7 @@ export default function ProductClientView({ product, similarProducts }: ProductC
                   }}
                 >
                   <Heart size={13} fill={isFavorited ? '#ef4444' : 'none'} />
-                  <span>{isFavorited ? 'Saved' : 'Wishlist'}</span>
+                  <span>{isFavorited ? (isArabic ? 'محفوظة' : 'Saved') : (isArabic ? 'المفضلة' : 'Wishlist')}</span>
                 </button>
               </div>
             </div>
@@ -300,10 +320,10 @@ export default function ProductClientView({ product, similarProducts }: ProductC
             {price > 0 && (
               <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px', marginBottom: '20px' }}>
                 <span style={{ fontSize: '2rem', fontWeight: 800, color: '#51b291' }}>
-                  AED {price.toLocaleString()}
+                  {isArabic ? `${price.toLocaleString()} درهم` : `AED ${price.toLocaleString()}`}
                 </span>
                 <span style={{ color: '#64748b', fontSize: '0.9rem', fontWeight: 500 }}>
-                  Excl. 5% UAE VAT
+                  {isArabic ? 'غير شامل 5% ضريبة القيمة المضافة' : 'Excl. 5% UAE VAT'}
                 </span>
               </div>
             )}
@@ -393,7 +413,7 @@ export default function ProductClientView({ product, similarProducts }: ProductC
                 }}
               >
                 <ShoppingBag size={18} />
-                <span>Add to Cart</span>
+                <span>{isArabic ? 'إضافة إلى السلة' : 'Add to Cart'}</span>
               </button>
 
               {/* Direct WhatsApp Consultation */}
@@ -418,7 +438,7 @@ export default function ProductClientView({ product, similarProducts }: ProductC
                 }}
               >
                 <MessageCircle size={18} />
-                <span>Inquire on WhatsApp</span>
+                <span>{isArabic ? 'استفسار عبر واتساب' : 'Inquire on WhatsApp'}</span>
               </a>
             </div>
 
@@ -438,19 +458,19 @@ export default function ProductClientView({ product, similarProducts }: ProductC
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <ShieldCheck size={20} color="#51b291" />
                 <span style={{ fontSize: '0.84rem', fontWeight: 600, color: '#1e293b' }}>
-                  1 Year Official Warranty
+                  {isArabic ? 'ضمان رسمي لمدة عام' : '1 Year Official Warranty'}
                 </span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <Truck size={20} color="#51b291" />
                 <span style={{ fontSize: '0.84rem', fontWeight: 600, color: '#1e293b' }}>
-                  Fast UAE Delivery
+                  {isArabic ? 'توصيل سريع في كافة الإمارات' : 'Fast UAE Delivery'}
                 </span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <Headphones size={20} color="#51b291" />
                 <span style={{ fontSize: '0.84rem', fontWeight: 600, color: '#1e293b' }}>
-                  Biomedical Support
+                  {isArabic ? 'دعم فني وطبي حيوي معتمد' : 'Biomedical Support'}
                 </span>
               </div>
             </div>
@@ -461,7 +481,7 @@ export default function ProductClientView({ product, similarProducts }: ProductC
 
     {/* Detailed Information Tabs & Related Content */}
     <div className="container" style={{ paddingTop: '48px' }}>
-      <div style={{ display: 'flex', gap: '28px', borderBottom: '1px solid #e2e8f0', marginBottom: '28px' }}>
+      <div style={{ display: 'flex', gap: '28px', borderBottom: '1px solid #e2e8f0', marginBottom: '28px', overflowX: 'auto' }}>
             <button
               type="button"
               onClick={() => setActiveTab('specs')}
@@ -473,10 +493,11 @@ export default function ProductClientView({ product, similarProducts }: ProductC
                 fontWeight: 700,
                 fontSize: '1.02rem',
                 color: activeTab === 'specs' ? '#0f172a' : '#64748b',
-                cursor: 'pointer'
+                cursor: 'pointer',
+                whiteSpace: 'nowrap'
               }}
             >
-              Technical Specifications
+              {isArabic ? 'المواصفات الفنية والهندسية' : 'Technical Specifications'}
             </button>
             <button
               type="button"
@@ -489,10 +510,11 @@ export default function ProductClientView({ product, similarProducts }: ProductC
                 fontWeight: 700,
                 fontSize: '1.02rem',
                 color: activeTab === 'features' ? '#0f172a' : '#64748b',
-                cursor: 'pointer'
+                cursor: 'pointer',
+                whiteSpace: 'nowrap'
               }}
             >
-              Clinical Features & Indications
+              {isArabic ? 'المميزات السريرية ودواعي الاستخدام' : 'Clinical Features & Indications'}
             </button>
             <button
               type="button"
@@ -505,10 +527,11 @@ export default function ProductClientView({ product, similarProducts }: ProductC
                 fontWeight: 700,
                 fontSize: '1.02rem',
                 color: activeTab === 'faq' ? '#0f172a' : '#64748b',
-                cursor: 'pointer'
+                cursor: 'pointer',
+                whiteSpace: 'nowrap'
               }}
             >
-              UAE Compliance & FAQs
+              {isArabic ? 'الامتثال في الإمارات والأسئلة الشائعة' : 'UAE Compliance & FAQs'}
             </button>
           </div>
 
@@ -684,14 +707,14 @@ export default function ProductClientView({ product, similarProducts }: ProductC
                     textTransform: 'uppercase'
                   }}
                 >
-                  Clinical Recommendations
+                  {isArabic ? 'توصيات سريرية معتمدة' : 'Clinical Recommendations'}
                 </span>
                 <h2 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#0f172a', margin: '4px 0 0 0' }}>
-                  Similar Medical Equipment in {product.category}
+                  {isArabic ? `معدات طبية مماثلة في قسم ${product.category}` : `Similar Medical Equipment in ${product.category}`}
                 </h2>
               </div>
               <Link
-                href={`/shop?category=${encodeURIComponent(product.category)}`}
+                href={localizeUrl(`/shop?category=${encodeURIComponent(product.category)}`)}
                 style={{
                   color: '#51b291',
                   fontWeight: 700,
@@ -702,8 +725,8 @@ export default function ProductClientView({ product, similarProducts }: ProductC
                   textDecoration: 'none'
                 }}
               >
-                <span>View Full {product.category} Range</span>
-                <ChevronRight size={16} />
+                <span>{isArabic ? `عرض كافة أجهزة ${product.category}` : `View Full ${product.category} Range`}</span>
+                <ChevronRight size={16} style={{ transform: isArabic ? 'scaleX(-1)' : 'none' }} />
               </Link>
             </div>
 
@@ -759,7 +782,8 @@ export default function ProductClientView({ product, similarProducts }: ProductC
             style={{
               position: 'absolute',
               top: '-60px',
-              right: '-40px',
+              right: isArabic ? 'auto' : '-40px',
+              left: isArabic ? '-40px' : 'auto',
               width: '280px',
               height: '280px',
               borderRadius: '50%',
@@ -772,7 +796,7 @@ export default function ProductClientView({ product, similarProducts }: ProductC
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', backgroundColor: 'rgba(255, 255, 255, 0.14)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255, 255, 255, 0.2)', padding: '5px 12px', borderRadius: '999px', marginBottom: '12px' }}>
               <Sparkles size={13} color="#a7f3d0" />
               <span style={{ color: '#a7f3d0', fontSize: '0.75rem', fontWeight: 800, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
-                Hospital & Clinic Bulk Procurement
+                {isArabic ? 'توريد المستشفيات والعيادات بالجملة' : 'Hospital & Clinic Bulk Procurement'}
               </span>
             </div>
 
@@ -784,35 +808,41 @@ export default function ProductClientView({ product, similarProducts }: ProductC
                 lineHeight: 1.25,
                 letterSpacing: '-0.02em',
                 margin: '0 0 10px',
-                fontFamily: 'Arial, Helvetica, sans-serif'
+                fontFamily: 'inherit'
               }}
             >
-              Equipping a clinic, hospital ward, or ICU in the UAE?
+              {isArabic ? 'هل تقوم بتجهيز عيادة أو قسم مستشفى أو وحدة عناية مركزة في الإمارات؟' : 'Equipping a clinic, hospital ward, or ICU in the UAE?'}
             </h3>
 
             <p style={{ color: '#e2e8f0', fontSize: '0.96rem', lineHeight: 1.6, margin: '0 0 16px', opacity: 0.95 }}>
-              Speak directly with FastonMed’s biomedical engineering desk in DIP-1, Dubai for turnkey department packages, institutional bulk discounts, and localized AMC support.
+              {isArabic
+                ? 'تحدث مباشرة مع مكتب الهندسة الطبية الحيوية في فاستونميد بمجمع دبي للاستثمار (DIP-1) للحصول على باقات متكاملة، خصومات توريد للكميات، ودعم عقود صيانة دورية معتمد.'
+                : 'Speak directly with FastonMed’s biomedical engineering desk in DIP-1, Dubai for turnkey department packages, institutional bulk discounts, and localized AMC support.'}
             </p>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '18px', flexWrap: 'wrap', fontSize: '0.80rem', fontWeight: 600, color: '#bbf7d0' }}>
               <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <Check size={14} strokeWidth={2.5} />
-                <span>Clinical Quality Assured</span>
+                <span>{isArabic ? 'جودة سريرية مضمونة 100%' : 'Clinical Quality Assured'}</span>
               </span>
               <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <Check size={14} strokeWidth={2.5} />
-                <span>Institutional Credit & Tender Terms</span>
+                <span>{isArabic ? 'تسهيلات ائتمانية للمؤسسات والمناقصات' : 'Institutional Credit & Tender Terms'}</span>
               </span>
               <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <Check size={14} strokeWidth={2.5} />
-                <span>On-Site Dubai Biomedical Engineers</span>
+                <span>{isArabic ? 'مهندسون طبيون معتمدون في دبي' : 'On-Site Dubai Biomedical Engineers'}</span>
               </span>
             </div>
           </div>
 
           <div style={{ position: 'relative', zIndex: 1 }}>
             <a
-              href="https://wa.me/971508893589?text=Hello%20FastonMed%20Sales%2C%20I%20would%20like%20to%20request%20a%20commercial%20quotation%20for%20healthcare%20equipment."
+              href={
+                isArabic
+                  ? 'https://wa.me/971508893589?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%20%D9%85%D8%A8%D9%8A%D8%B9%D8%A7%D8%AA%20%D9%81%D8%A7%D8%B3%D8%AA%D9%88%D9%86%D9%85%D9%8A%D8%AF%D8%8C%20%D8%A3%D9%88%D8%AF%20%D8%B7%D9%84%D8%A8%20%D8%B9%D8%B1%D8%B6%20%D8%A3%D8%B3%D8%B9%D8%A7%D8%B1%20%D8%AA%D8%AC%D8%A7%D8%B1%D9%8A%20%D9%84%D9%84%D9%85%D8%B9%D8%AF%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B7%D8%A8%D9%8A%D8%A9.'
+                  : 'https://wa.me/971508893589?text=Hello%20FastonMed%20Sales%2C%20I%20would%20like%20to%20request%20a%20commercial%20quotation%20for%20healthcare%20equipment.'
+              }
               target="_blank"
               rel="noopener noreferrer"
               style={{
@@ -832,8 +862,8 @@ export default function ProductClientView({ product, similarProducts }: ProductC
               }}
             >
               <MessageCircle size={18} color="#00875a" strokeWidth={2.5} />
-              <span>Request Commercial Quote</span>
-              <ArrowRight size={16} strokeWidth={2.5} />
+              <span>{isArabic ? 'طلب عرض أسعار تجاري' : 'Request Commercial Quote'}</span>
+              <ArrowRight size={16} strokeWidth={2.5} style={{ transform: isArabic ? 'scaleX(-1)' : 'none' }} />
             </a>
           </div>
         </div>

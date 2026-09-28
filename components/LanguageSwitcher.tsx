@@ -34,12 +34,14 @@ export default function LanguageSwitcher({ variant = 'header', className = '' }:
   const activeLocale = browserLocale || contextLocale || 'en';
   const pathForLinks = currentPath || pathname;
 
-  const handleLanguageClick = (target: Locale) => {
+  const handleLanguageSwitch = (e: React.MouseEvent, target: Locale, targetHref: string) => {
+    e.preventDefault();
     try {
       document.cookie = `preferred_language=${target}; path=/; max-age=31536000; SameSite=Lax`;
     } catch {
       // Ignore cookie errors
     }
+    window.location.href = targetHref;
   };
 
   const enHref = getEquivalentPath(pathForLinks, 'en', searchString);
@@ -67,9 +69,9 @@ export default function LanguageSwitcher({ variant = 'header', className = '' }:
       aria-label="Language selection"
     >
       {/* English Option */}
-      <Link
+      <a
         href={enHref}
-        onClick={() => handleLanguageClick('en')}
+        onClick={(e) => handleLanguageSwitch(e, 'en', enHref)}
         style={{
           display: 'inline-flex',
           alignItems: 'center',
@@ -87,17 +89,18 @@ export default function LanguageSwitcher({ variant = 'header', className = '' }:
           transition: 'all 0.18s ease-in-out',
           backgroundColor: activeLocale === 'en' ? '#00875a' : 'transparent',
           color: activeLocale === 'en' ? '#ffffff' : '#64748b',
-          boxShadow: activeLocale === 'en' ? '0 1px 3px rgba(0, 135, 90, 0.25)' : 'none'
+          boxShadow: activeLocale === 'en' ? '0 1px 3px rgba(0, 135, 90, 0.25)' : 'none',
+          cursor: 'pointer'
         }}
         title="Switch to English"
       >
         EN
-      </Link>
+      </a>
 
       {/* Arabic Option */}
-      <Link
+      <a
         href={arHref}
-        onClick={() => handleLanguageClick('ar')}
+        onClick={(e) => handleLanguageSwitch(e, 'ar', arHref)}
         style={{
           display: 'inline-flex',
           alignItems: 'center',
@@ -114,12 +117,13 @@ export default function LanguageSwitcher({ variant = 'header', className = '' }:
           transition: 'all 0.18s ease-in-out',
           backgroundColor: activeLocale === 'ar' ? '#00875a' : 'transparent',
           color: activeLocale === 'ar' ? '#ffffff' : '#64748b',
-          boxShadow: activeLocale === 'ar' ? '0 1px 3px rgba(0, 135, 90, 0.25)' : 'none'
+          boxShadow: activeLocale === 'ar' ? '0 1px 3px rgba(0, 135, 90, 0.25)' : 'none',
+          cursor: 'pointer'
         }}
         title="التحويل إلى اللغة العربية"
       >
         عربي
-      </Link>
+      </a>
     </div>
   );
 }
