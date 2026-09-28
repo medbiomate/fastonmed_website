@@ -270,10 +270,6 @@ export default function Navbar() {
               <Clock size={13} strokeWidth={2.2} />
               <span>{locale === 'ar' ? 'السبت – الخميس: 8:30 ص – 6:00 م' : 'Mon – Sat: 8:30 AM – 6:00 PM'}</span>
             </span>
-
-            <span style={{ opacity: 0.35, fontSize: '0.75rem' }}>|</span>
-
-            <LanguageSwitcher variant="topbar" />
           </div>
         </div>
 
@@ -342,35 +338,38 @@ export default function Navbar() {
             fontFamily: 'Arial, Helvetica, sans-serif'
           }}
         >
-          {/* Mobile Hamburger Button */}
-          <button
-            onClick={() => setMobileMenuOpen(true)}
-            id="mobile-menu-trigger"
-            style={{
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              color: isDarkHeader ? '#ffffff' : '#0f172a',
-              padding: '6px',
-              display: 'none',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontFamily: 'Arial, Helvetica, sans-serif'
-            }}
-            aria-label="Open mobile menu"
-          >
-            <Menu size={22} />
-          </button>
+          {/* 1. Left: Mobile Menu Trigger + Brand Logo */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            {/* Mobile Hamburger Button */}
+            <button
+              onClick={() => setMobileMenuOpen(true)}
+              id="mobile-menu-trigger"
+              style={{
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                color: isDarkHeader ? '#ffffff' : '#0f172a',
+                padding: '6px',
+                display: 'none',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontFamily: 'Arial, Helvetica, sans-serif'
+              }}
+              aria-label="Open mobile menu"
+            >
+              <Menu size={22} />
+            </button>
 
-          {/* 1. Brand Logo (Responsive desktop / mobile) */}
-          <Link href="/" style={{ display: 'flex', alignItems: 'center' }}>
-            <div id="desktop-logo" style={{ display: 'block' }}>
-              <FastonmedLogo height={38} theme={isDarkHeader ? 'dark' : 'light'} />
-            </div>
-            <div id="mobile-logo" style={{ display: 'none' }}>
-              <FastonmedLogo height={28} theme={isDarkHeader ? 'dark' : 'light'} />
-            </div>
-          </Link>
+            {/* Brand Logo (Responsive desktop / mobile) */}
+            <Link href="/" style={{ display: 'flex', alignItems: 'center' }}>
+              <div id="desktop-logo" style={{ display: 'block' }}>
+                <FastonmedLogo height={38} theme={isDarkHeader ? 'dark' : 'light'} />
+              </div>
+              <div id="mobile-logo" style={{ display: 'none' }}>
+                <FastonmedLogo height={26} theme={isDarkHeader ? 'dark' : 'light'} />
+              </div>
+            </Link>
+          </div>
 
           {/* 2. Center: Navigation Menu */}
           <nav
@@ -479,6 +478,8 @@ export default function Navbar() {
               #desktop-logo { display: block !important; }
               #mobile-logo { display: none !important; }
               #header-wishlist { display: flex !important; }
+              #header-cart { display: flex !important; }
+              #header-user { display: flex !important; }
               #header-cta-btn { display: inline-flex !important; }
             }
             @media (max-width: 899px) {
@@ -486,9 +487,12 @@ export default function Navbar() {
               #desktop-logo { display: none !important; }
               #mobile-logo { display: block !important; }
               #header-wishlist { display: none !important; }
+              #header-cart { display: none !important; }
+              #header-user { display: none !important; }
+              #header-cta-btn { display: none !important; }
               #main-header-inner {
-                height: 56px !important;
-                padding: 0 12px !important;
+                height: 58px !important;
+                padding: 0 14px !important;
               }
             }
           `}</style>
@@ -497,6 +501,7 @@ export default function Navbar() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             {/* Search Icon */}
             <button
+              id="header-search"
               onClick={() => setSearchModalOpen(true)}
               style={{
                 background: 'none',
@@ -552,8 +557,9 @@ export default function Navbar() {
               )}
             </Link>
 
-            {/* Shopping Bag Cart Icon */}
+            {/* Shopping Bag Cart Icon (Desktop only) */}
             <button
+              id="header-cart"
               onClick={() => setIsCartOpen(true)}
               style={{
                 background: 'none',
@@ -590,8 +596,9 @@ export default function Navbar() {
               </span>
             </button>
 
-            {/* Account / Admin Login Icon */}
+            {/* Account / Admin Login Icon (Desktop only) */}
             <Link
+              id="header-user"
               href="/admin/login"
               style={{
                 color: '#1e293b',
@@ -599,12 +606,16 @@ export default function Navbar() {
                 display: 'flex',
                 alignItems: 'center'
               }}
+              aria-label="Account Login"
+              title="Account Login"
             >
               <User size={21} />
             </Link>
 
-            {/* Language Switcher */}
-            <LanguageSwitcher variant="header" />
+            {/* Language Switcher Capsule Toggle */}
+            <div id="header-lang" style={{ display: 'flex', alignItems: 'center' }}>
+              <LanguageSwitcher variant="header" />
+            </div>
 
             {/* Get in Touch CTA Button */}
             <Link
@@ -807,8 +818,24 @@ export default function Navbar() {
               </button>
             </div>
 
-            {/* Mobile Language Switcher */}
-            <LanguageSwitcher variant="mobile" />
+            {/* Mobile Language Switcher Row */}
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: '10px 14px',
+                backgroundColor: '#f8fafc',
+                borderRadius: '12px',
+                border: '1px solid #e2e8f0',
+                marginBottom: '16px'
+              }}
+            >
+              <span style={{ fontSize: '0.88rem', fontWeight: 600, color: '#334155' }}>
+                {locale === 'ar' ? 'اللغة' : 'Language'}
+              </span>
+              <LanguageSwitcher variant="mobile" />
+            </div>
 
             <nav style={{ display: 'flex', flexDirection: 'column', gap: '4px', flex: 1 }}>
               {navLinks.map(l => {
@@ -959,12 +986,67 @@ export default function Navbar() {
                   justifyContent: 'space-between'
                 }}
               >
-                <span>Saved Wishlist</span>
+                <span>{locale === 'ar' ? 'قائمة الرغبات والمحفوظات' : 'Saved Wishlist'}</span>
                 {wishlist.length > 0 && (
-                  <span style={{ backgroundColor: '#51b291', color: '#ffffff', fontSize: '0.72rem', padding: '2px 8px', borderRadius: '12px' }}>
+                  <span style={{ backgroundColor: '#00875a', color: '#ffffff', fontSize: '0.72rem', padding: '2px 8px', borderRadius: '12px' }}>
                     {wishlist.length}
                   </span>
                 )}
+              </Link>
+
+              {/* Mobile Drawer Cart Link */}
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  setIsCartOpen(true);
+                }}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  borderBottom: '1px solid #f8fafc',
+                  padding: '10px 4px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  width: '100%',
+                  cursor: 'pointer',
+                  fontSize: '1rem',
+                  fontWeight: 500,
+                  color: '#0f172a',
+                  textAlign: 'left',
+                  fontFamily: 'inherit'
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <ShoppingBag size={18} color="#00875a" />
+                  <span>{locale === 'ar' ? 'سلة المشتريات' : 'Shopping Cart'}</span>
+                </div>
+                {cartCount > 0 && (
+                  <span style={{ backgroundColor: '#00875a', color: '#ffffff', fontSize: '0.72rem', fontWeight: 800, padding: '2px 8px', borderRadius: '12px' }}>
+                    {cartCount}
+                  </span>
+                )}
+              </button>
+
+              {/* Mobile Drawer Account Link */}
+              <Link
+                href="/admin/login"
+                onClick={() => setMobileMenuOpen(false)}
+                style={{
+                  fontSize: '1rem',
+                  fontWeight: 500,
+                  color: '#0f172a',
+                  textDecoration: 'none',
+                  padding: '10px 4px',
+                  borderBottom: '1px solid #f8fafc',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px'
+                }}
+              >
+                <User size={18} color="#00875a" />
+                <span>{locale === 'ar' ? 'حسابي / تسجيل الدخول' : 'My Account / Login'}</span>
               </Link>
             </nav>
 
