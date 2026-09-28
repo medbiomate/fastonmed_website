@@ -170,7 +170,41 @@ export default function Footer() {
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
   const [chromeSettings, setChromeSettings] = useState(() => store.getSiteChrome());
-  const [showAllGuides, setShowAllGuides] = useState(true);
+  
+  const guideColumns = [
+    [row1Columns[0], row2Columns[0]],
+    [row1Columns[1], row2Columns[1]],
+    [row1Columns[2], row2Columns[2]],
+    [row1Columns[3], row2Columns[3]]
+  ];
+
+  const allGuideTitles = [
+    ...row1Columns.map(c => c.titleEn),
+    ...row2Columns.map(c => c.titleEn)
+  ];
+
+  const [openGuides, setOpenGuides] = useState<Record<string, boolean>>({});
+
+  const toggleGuide = (title: string) => {
+    setOpenGuides(prev => ({
+      ...prev,
+      [title]: !prev[title]
+    }));
+  };
+
+  const areAllOpen = allGuideTitles.length > 0 && allGuideTitles.every(t => openGuides[t]);
+
+  const toggleAllGuides = () => {
+    if (areAllOpen) {
+      setOpenGuides({});
+    } else {
+      const next: Record<string, boolean> = {};
+      allGuideTitles.forEach(t => {
+        next[t] = true;
+      });
+      setOpenGuides(next);
+    }
+  };
 
   useEffect(() => {
     setChromeSettings(store.getSiteChrome());
@@ -265,6 +299,19 @@ export default function Footer() {
           color: #ffffff !important;
           border-color: #00875a !important;
         }
+        .fm-guide-card {
+          background-color: #ffffff;
+          border: 1px solid #e2e8f0;
+          border-radius: 8px;
+          overflow: hidden;
+          transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .fm-guide-card:hover {
+          border-color: #cbd5e1;
+        }
+        .fm-guide-header-btn:hover {
+          background-color: #f8fafc !important;
+        }
         @media (max-width: 991px) {
           .fm-top-row {
             flex-direction: column !important;
@@ -273,6 +320,10 @@ export default function Footer() {
           .fm-mega-grid {
             grid-template-columns: repeat(2, 1fr) !important;
             gap: 28px 20px !important;
+          }
+          .fm-accordion-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 16px !important;
           }
         }
         @media (max-width: 640px) {
@@ -283,6 +334,10 @@ export default function Footer() {
           .fm-mega-grid {
             grid-template-columns: 1fr !important;
             gap: 20px !important;
+          }
+          .fm-accordion-grid {
+            grid-template-columns: 1fr !important;
+            gap: 12px !important;
           }
           .fm-mega-col-content {
             display: block !important;
@@ -618,151 +673,147 @@ export default function Footer() {
         </div>
 
         {/* ========================================================================= */}
-        {/* DIRECTORY MASTER HEADER & SINGLE UNIFIED TOGGLE BUTTON                   */}
+        {/* DIRECTORY SECTION: INDIVIDUAL ACCORDION CARDS (GODIGIT STYLE)            */}
         {/* ========================================================================= */}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            flexWrap: 'wrap',
-            gap: '14px',
-            paddingTop: '28px',
-            paddingBottom: '20px',
-            borderBottom: showAllGuides ? '1px solid #eef2f6' : 'none'
-          }}
-        >
-          <div>
-            <h3
-              style={{
-                fontSize: '1rem',
-                fontWeight: 700,
-                color: '#0f172a',
-                margin: 0,
-                letterSpacing: '-0.01em'
-              }}
-            >
-              {isAr ? 'دليل الأجهزة الطبية والرعاية الصحية في الإمارات' : 'UAE Healthcare Equipment & Clinical Directories'}
-            </h3>
-            <p style={{ margin: '4px 0 0 0', fontSize: '0.8rem', color: '#64748b' }}>
-              {isAr ? 'أدلة التوريد المباشر ومواصفات الهندسة الطبية الحيوية وتوزيع المستشفيات' : 'Direct procurement guides, biomedical specifications, and regional hospital distribution'}
-            </p>
-          </div>
-
-          <button
-            type="button"
-            onClick={() => setShowAllGuides(prev => !prev)}
-            aria-expanded={showAllGuides}
-            className="fm-guides-toggle-btn"
+        <div style={{ paddingTop: '28px', paddingBottom: '36px' }}>
+          <div
             style={{
-              display: 'inline-flex',
+              display: 'flex',
               alignItems: 'center',
-              gap: '8px',
-              padding: '8px 18px',
-              backgroundColor: showAllGuides ? '#f1f5f9' : '#00875a',
-              color: showAllGuides ? '#334155' : '#ffffff',
-              border: `1px solid ${showAllGuides ? '#cbd5e1' : '#00875a'}`,
-              borderRadius: '8px',
-              fontSize: '0.84rem',
-              fontWeight: 600,
-              cursor: 'pointer',
-              transition: 'all 0.2s ease',
-              boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)'
+              justifyContent: 'space-between',
+              flexWrap: 'wrap',
+              gap: '14px',
+              marginBottom: '22px'
             }}
           >
-            <span>{showAllGuides ? (isAr ? 'إخفاء الأدلة' : 'Hide Guides') : (isAr ? 'عرض جميع الأدلة' : 'Show All Guides')}</span>
-            {showAllGuides ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-          </button>
-        </div>
-
-        {/* ========================================================================= */}
-        {/* MEGA SEO DIRECTORY - ALL 8 COLUMNS TOGGLED BY SINGLE MASTER BUTTON        */}
-        {/* ========================================================================= */}
-        {showAllGuides && (
-          <div>
-            {/* SECTION 2: MEGA SEO DIRECTORY - ROW 1 (4 COLUMNS) */}
-            <div style={{ paddingTop: '32px', paddingBottom: '32px', borderBottom: '1px solid #eef2f6' }}>
-              <div className="fm-mega-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '30px' }}>
-                {row1Columns.map((col, idx) => (
-                  <div key={idx}>
-                    <div className="fm-dir-header">
-                      <span>{isAr ? col.titleAr : col.titleEn}</span>
-                    </div>
-                    <div className="fm-mega-col-content">
-                      <ul className="fm-dir-list">
-                        {col.items.map((item, itemIdx) => (
-                          <li key={itemIdx}>
-                            <Link href={getHref(item.href)} className="fm-footer-link">
-                              {isAr ? item.labelAr : item.labelEn}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                ))}
-              </div>
+            <div>
+              <h3
+                style={{
+                  fontSize: '1rem',
+                  fontWeight: 700,
+                  color: '#0f172a',
+                  margin: 0,
+                  letterSpacing: '-0.01em'
+                }}
+              >
+                {isAr ? 'دليل الأجهزة الطبية والرعاية الصحية في الإمارات' : 'UAE Healthcare Equipment & Clinical Directories'}
+              </h3>
+              <p style={{ margin: '4px 0 0 0', fontSize: '0.8rem', color: '#64748b' }}>
+                {isAr ? 'أدلة التوريد المباشر ومواصفات الهندسة الطبية الحيوية وتوزيع المستشفيات' : 'Direct procurement guides, biomedical specifications, and regional hospital distribution'}
+              </p>
             </div>
 
-            {/* SECTION 3: MEGA SEO DIRECTORY - ROW 2 (4 COLUMNS) */}
-            <div style={{ paddingTop: '32px', paddingBottom: '36px' }}>
-              <div className="fm-mega-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '30px' }}>
-                {row2Columns.map((col, idx) => (
-                  <div key={idx}>
-                    <div className="fm-dir-header">
-                      <span>{isAr ? col.titleAr : col.titleEn}</span>
-                    </div>
-                    <div className="fm-mega-col-content">
-                      <ul className="fm-dir-list">
-                        {col.items.map((item, itemIdx) => (
-                          <li key={itemIdx}>
-                            <Link href={getHref(item.href)} className="fm-footer-link">
-                              {isAr ? item.labelAr : item.labelEn}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Bottom Quick Hide Control */}
-              <div style={{ textAlign: 'center', paddingTop: '24px' }}>
-                <button
-                  type="button"
-                  onClick={() => setShowAllGuides(false)}
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    background: 'none',
-                    border: '1px solid #e2e8f0',
-                    backgroundColor: '#ffffff',
-                    color: '#64748b',
-                    fontSize: '0.8rem',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                    padding: '6px 16px',
-                    borderRadius: '20px',
-                    transition: 'all 0.2s ease'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = '#f1f5f9';
-                    e.currentTarget.style.color = '#0f172a';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = '#ffffff';
-                    e.currentTarget.style.color = '#64748b';
-                  }}
-                >
-                  <span>{isAr ? 'إخفاء الأدلة' : 'Hide Guides'}</span>
-                  <ChevronUp size={14} />
-                </button>
-              </div>
-            </div>
+            <button
+              type="button"
+              onClick={toggleAllGuides}
+              className="fm-guides-toggle-btn"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '7px 16px',
+                backgroundColor: areAllOpen ? '#f1f5f9' : '#ffffff',
+                color: areAllOpen ? '#0f172a' : '#00875a',
+                border: '1px solid #cbd5e1',
+                borderRadius: '8px',
+                fontSize: '0.82rem',
+                fontWeight: 600,
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                boxShadow: '0 1px 2px rgba(0, 0, 0, 0.04)'
+              }}
+            >
+              <span>{areAllOpen ? (isAr ? 'طي كافة الأدلة' : 'Collapse All') : (isAr ? 'توسيع كافة الأدلة' : 'Expand All')}</span>
+              {areAllOpen ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
+            </button>
           </div>
-        )}
+
+          {/* 4-COLUMN ACCORDION GRID */}
+          <div
+            className="fm-accordion-grid"
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(4, 1fr)',
+              gap: '18px',
+              alignItems: 'start'
+            }}
+          >
+            {guideColumns.map((colGroup, colIdx) => (
+              <div key={colIdx} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                {colGroup.map((category) => {
+                  const isOpen = !!openGuides[category.titleEn];
+                  return (
+                    <div
+                      key={category.titleEn}
+                      className="fm-guide-card"
+                      style={{
+                        backgroundColor: '#ffffff',
+                        border: '1px solid #e2e8f0',
+                        borderRadius: '8px',
+                        overflow: 'hidden',
+                        transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
+                        boxShadow: isOpen ? '0 4px 14px rgba(15, 23, 42, 0.05)' : 'none'
+                      }}
+                    >
+                      <button
+                        type="button"
+                        onClick={() => toggleGuide(category.titleEn)}
+                        className="fm-guide-header-btn"
+                        style={{
+                          width: '100%',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          padding: '13px 16px',
+                          backgroundColor: isOpen ? '#f8fafc' : '#ffffff',
+                          border: 'none',
+                          borderBottom: isOpen ? '1px solid #eef2f6' : 'none',
+                          cursor: 'pointer',
+                          textAlign: isAr ? 'right' : 'left',
+                          color: '#0f172a',
+                          fontWeight: 700,
+                          fontSize: '0.88rem',
+                          transition: 'background-color 0.15s ease'
+                        }}
+                      >
+                        <span style={{ lineHeight: 1.35 }}>{isAr ? category.titleAr : category.titleEn}</span>
+                        {isOpen ? (
+                          <ChevronUp size={17} color="#00875a" style={{ flexShrink: 0, [isAr ? 'marginRight' : 'marginLeft']: '8px' }} />
+                        ) : (
+                          <ChevronDown size={17} color="#94a3b8" style={{ flexShrink: 0, [isAr ? 'marginRight' : 'marginLeft']: '8px' }} />
+                        )}
+                      </button>
+
+                      {isOpen && (
+                        <div style={{ padding: '12px 16px 16px 16px' }}>
+                          <ul
+                            className="fm-dir-list"
+                            style={{
+                              listStyle: 'none',
+                              padding: 0,
+                              margin: 0,
+                              display: 'flex',
+                              flexDirection: 'column',
+                              gap: '8px'
+                            }}
+                          >
+                            {category.items.map((item, itemIdx) => (
+                              <li key={itemIdx}>
+                                <Link href={getHref(item.href)} className="fm-footer-link">
+                                  {isAr ? item.labelAr : item.labelEn}
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* ========================================================================= */}
