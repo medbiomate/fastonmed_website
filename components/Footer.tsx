@@ -18,8 +18,11 @@ import {
 } from 'lucide-react';
 import FastonmedLogo from './FastonmedLogo';
 import { store } from '@/lib/store';
+import { useLocale } from '@/lib/locale-context';
 
 export default function Footer() {
+  const { locale, isArabic } = useLocale();
+  const isAr = isArabic || locale === 'ar';
   const pathname = usePathname();
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
@@ -183,29 +186,31 @@ export default function Footer() {
                 marginBottom: '16px'
               }}
             >
-              <Link href="/about-us" className="fm-footer-link" style={{ fontWeight: 700, color: '#0f172a' }}>
-                About Us
+              <Link href={isAr ? '/ar/about-us' : '/about-us'} className="fm-footer-link" style={{ fontWeight: 700, color: '#0f172a' }}>
+                {isAr ? 'من نحن' : 'About Us'}
               </Link>
               <span style={{ color: '#cbd5e1' }}>|</span>
-              <Link href="/contact" className="fm-footer-link" style={{ fontWeight: 700, color: '#0f172a' }}>
-                Contact
+              <Link href={isAr ? '/ar/contact' : '/contact'} className="fm-footer-link" style={{ fontWeight: 700, color: '#0f172a' }}>
+                {isAr ? 'اتصل بنا' : 'Contact'}
               </Link>
               <span style={{ color: '#cbd5e1' }}>|</span>
-              <Link href="/shop" className="fm-footer-link" style={{ fontWeight: 700, color: '#0f172a' }}>
-                Catalog
+              <Link href={isAr ? '/ar/shop' : '/shop'} className="fm-footer-link" style={{ fontWeight: 700, color: '#0f172a' }}>
+                {isAr ? 'الكتالوج' : 'Catalog'}
               </Link>
               <span style={{ color: '#cbd5e1' }}>|</span>
-              <Link href="/brands" className="fm-footer-link" style={{ fontWeight: 700, color: '#0f172a' }}>
-                Brands
+              <Link href={isAr ? '/ar/brands' : '/brands'} className="fm-footer-link" style={{ fontWeight: 700, color: '#0f172a' }}>
+                {isAr ? 'العلامات التجارية' : 'Brands'}
               </Link>
               <span style={{ color: '#cbd5e1' }}>|</span>
-              <Link href="/contact" className="fm-footer-link" style={{ fontWeight: 700, color: '#0f172a' }}>
-                Request Quote
+              <Link href={isAr ? '/ar/contact' : '/contact'} className="fm-footer-link" style={{ fontWeight: 700, color: '#0f172a' }}>
+                {isAr ? 'طلب عرض أسعار' : 'Request Quote'}
               </Link>
             </div>
 
             <p style={{ fontSize: '0.82rem', color: '#64748b', lineHeight: 1.5, margin: '0 0 16px 0' }}>
-              FastonMed is the Best Medical Equipment Supplier in UAE. Official distributor of certified biomedical technology, ICU ventilators, diagnostics, and clinical equipment.
+              {isAr
+                ? 'فاستونميد هي أفضل مورد للأجهزة والمعدات الطبية في الإمارات ودبي. موزع معتمد للتقنيات الطبية الحيوية، أجهزة التنفس للعناية المركزة، أجهزة التشخيص والمعدات السريرية.'
+                : 'FastonMed is the Best Medical Equipment Supplier in UAE. Official distributor of certified biomedical technology, ICU ventilators, diagnostics, and clinical equipment.'}
             </p>
 
             {/* Social Icons (Rounded like Go Digit) */}
@@ -301,10 +306,10 @@ export default function Footer() {
                 </svg>
                 <div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <span style={{ fontSize: '0.78rem', fontWeight: 800, color: '#0f172a' }}>Google Rating</span>
+                    <span style={{ fontSize: '0.78rem', fontWeight: 800, color: '#0f172a' }}>{isAr ? 'تقييم جوجل' : 'Google Rating'}</span>
                     <span style={{ fontSize: '0.78rem', fontWeight: 800, color: '#00875a' }}>5.0 ★★★★★</span>
                   </div>
-                  <div style={{ fontSize: '0.7rem', color: '#64748b' }}>Fastonmed Trading L.L.C • UAE</div>
+                  <div style={{ fontSize: '0.7rem', color: '#64748b' }}>{isAr ? 'فاستونميد للتجارة ذ.م.م • الإمارات' : 'Fastonmed Trading L.L.C • UAE'}</div>
                 </div>
               </a>
             </div>
@@ -323,47 +328,47 @@ export default function Footer() {
             {/* Products Column */}
             <div>
               <h4 style={{ fontSize: '0.96rem', fontWeight: 700, color: '#0f172a', margin: '0 0 14px 0' }}>
-                Products
+                {isAr ? 'المنتجات والأجهزة' : 'Products'}
               </h4>
               <ul className="fm-dir-list">
                 <li>
-                  <Link href="/product-category/icu-equipment" className="fm-footer-link">
-                    ICU & Critical Care
+                  <Link href={isAr ? '/ar/product-category/icu-equipment' : '/product-category/icu-equipment'} className="fm-footer-link">
+                    {isAr ? 'العناية المركزة والحرجة' : 'ICU & Critical Care'}
                   </Link>
                 </li>
                 <li>
-                  <Link href="/product-category/patient-monitoring" className="fm-footer-link">
-                    Patient Monitoring
+                  <Link href={isAr ? '/ar/product-category/patient-monitoring' : '/product-category/patient-monitoring'} className="fm-footer-link">
+                    {isAr ? 'مراقبة المرضى السريرية' : 'Patient Monitoring'}
                   </Link>
                 </li>
                 <li>
-                  <Link href="/product-category/pharmacy-refrigerators" className="fm-footer-link">
-                    Medical Cold Storage
+                  <Link href={isAr ? '/ar/product-category/pharmacy-refrigerators' : '/product-category/pharmacy-refrigerators'} className="fm-footer-link">
+                    {isAr ? 'سلسلة التبريد الطبي' : 'Medical Cold Storage'}
                   </Link>
                 </li>
                 <li>
-                  <Link href="/product-category/radiology-equipments" className="fm-footer-link">
-                    Ultrasound & Radiology
+                  <Link href={isAr ? '/ar/product-category/radiology-equipments' : '/product-category/radiology-equipments'} className="fm-footer-link">
+                    {isAr ? 'السونار والأشعة التشخيصية' : 'Ultrasound & Radiology'}
                   </Link>
                 </li>
                 <li>
-                  <Link href="/product-category/laboratory-equipment" className="fm-footer-link">
-                    Clinical Laboratory
+                  <Link href={isAr ? '/ar/product-category/laboratory-equipment' : '/product-category/laboratory-equipment'} className="fm-footer-link">
+                    {isAr ? 'المختبرات والتحاليل' : 'Clinical Laboratory'}
                   </Link>
                 </li>
                 <li>
-                  <Link href="/product-category/hospital-furniture" className="fm-footer-link">
-                    Hospital Furniture
+                  <Link href={isAr ? '/ar/product-category/hospital-furniture' : '/product-category/hospital-furniture'} className="fm-footer-link">
+                    {isAr ? 'أثاث المستشفيات' : 'Hospital Furniture'}
                   </Link>
                 </li>
                 <li>
-                  <Link href="/cardiology-equipment" className="fm-footer-link">
-                    Cardiology Diagnostics
+                  <Link href={isAr ? '/ar/cardiology-equipment' : '/cardiology-equipment'} className="fm-footer-link">
+                    {isAr ? 'تشخيص أمراض القلب' : 'Cardiology Diagnostics'}
                   </Link>
                 </li>
                 <li>
-                  <Link href="/shop" className="fm-footer-link" style={{ fontWeight: 700, color: '#00875a' }}>
-                    View All 2,700+ Products →
+                  <Link href={isAr ? '/ar/shop' : '/shop'} className="fm-footer-link" style={{ fontWeight: 700, color: '#00875a' }}>
+                    {isAr ? 'عرض جميع المنتجات (أكثر من 2,700 صنف) ←' : 'View All 2,700+ Products →'}
                   </Link>
                 </li>
               </ul>
@@ -372,47 +377,47 @@ export default function Footer() {
             {/* Resources Column */}
             <div>
               <h4 style={{ fontSize: '0.96rem', fontWeight: 700, color: '#0f172a', margin: '0 0 14px 0' }}>
-                Resources
+                {isAr ? 'المصادر والخدمات' : 'Resources'}
               </h4>
               <ul className="fm-dir-list">
                 <li>
-                  <Link href="/medical-equipment-calibration-service-in-uae" className="fm-footer-link">
-                    Biomedical Calibration
+                  <Link href={isAr ? '/ar/medical-equipment-calibration-service-in-uae' : '/medical-equipment-calibration-service-in-uae'} className="fm-footer-link">
+                    {isAr ? 'معايرة الأجهزة الطبية الحيوية' : 'Biomedical Calibration'}
                   </Link>
                 </li>
                 <li>
-                  <Link href="/amc-cmc-for-medical-equipment-in-dubai-uae" className="fm-footer-link">
-                    AMC & CMC Contracts
+                  <Link href={isAr ? '/ar/amc-cmc-for-medical-equipment-in-dubai-uae' : '/amc-cmc-for-medical-equipment-in-dubai-uae'} className="fm-footer-link">
+                    {isAr ? 'عقود الصيانة AMC و CMC' : 'AMC & CMC Contracts'}
                   </Link>
                 </li>
                 <li>
-                  <Link href="/plan-preventive-maintenance-for-medical-equipment-in-uae" className="fm-footer-link">
-                    Preventive Maintenance
+                  <Link href={isAr ? '/ar/plan-preventive-maintenance-for-medical-equipment-in-uae' : '/plan-preventive-maintenance-for-medical-equipment-in-uae'} className="fm-footer-link">
+                    {isAr ? 'الصيانة الوقائية الدورية' : 'Preventive Maintenance'}
                   </Link>
                 </li>
                 <li>
-                  <Link href="/ultrasound-probe-repair-in-uae" className="fm-footer-link">
-                    Ultrasound Probe Repair
+                  <Link href={isAr ? '/ar/ultrasound-probe-repair-in-uae' : '/ultrasound-probe-repair-in-uae'} className="fm-footer-link">
+                    {isAr ? 'إصلاح مجسات السونار' : 'Ultrasound Probe Repair'}
                   </Link>
                 </li>
                 <li>
-                  <Link href="/flexible-rigid-endoscope-repair-in-dubai" className="fm-footer-link">
-                    Endoscope Repair Dubai
+                  <Link href={isAr ? '/ar/flexible-rigid-endoscope-repair-in-dubai' : '/flexible-rigid-endoscope-repair-in-dubai'} className="fm-footer-link">
+                    {isAr ? 'إصلاح المناظير الطبية في دبي' : 'Endoscope Repair Dubai'}
                   </Link>
                 </li>
                 <li>
-                  <Link href="/used-medical-equipment-in-uae" className="fm-footer-link">
-                    Certified Pre-Owned
+                  <Link href={isAr ? '/ar/used-medical-equipment-in-uae' : '/used-medical-equipment-in-uae'} className="fm-footer-link">
+                    {isAr ? 'أجهزة طبية مستعملة معتمدة' : 'Certified Pre-Owned'}
                   </Link>
                 </li>
                 <li>
-                  <Link href="/school-medical-supplies-in-uae" className="fm-footer-link">
-                    School Medical Supplies
+                  <Link href={isAr ? '/ar/school-medical-supplies-in-uae' : '/school-medical-supplies-in-uae'} className="fm-footer-link">
+                    {isAr ? 'مستلزمات العيادات المدرسية' : 'School Medical Supplies'}
                   </Link>
                 </li>
                 <li>
-                  <Link href="/blog" className="fm-footer-link">
-                    Clinical Guides & Articles
+                  <Link href={isAr ? '/ar/blog' : '/blog'} className="fm-footer-link">
+                    {isAr ? 'المقالات والأدلة السريرية' : 'Clinical Guides & Articles'}
                   </Link>
                 </li>
               </ul>
@@ -421,47 +426,47 @@ export default function Footer() {
             {/* Important Links Column */}
             <div>
               <h4 style={{ fontSize: '0.96rem', fontWeight: 700, color: '#0f172a', margin: '0 0 14px 0' }}>
-                Important Links
+                {isAr ? 'روابط هامة' : 'Important Links'}
               </h4>
               <ul className="fm-dir-list">
                 <li>
-                  <Link href="/medical-equipment-supplier-in-uae" className="fm-footer-link">
-                    Supplier Overview UAE
+                  <Link href={isAr ? '/ar/medical-equipment-supplier-in-uae' : '/medical-equipment-supplier-in-uae'} className="fm-footer-link">
+                    {isAr ? 'دليل التوريد الطبي في الإمارات' : 'Supplier Overview UAE'}
                   </Link>
                 </li>
                 <li>
-                  <Link href="/store-locations" className="fm-footer-link">
-                    Store & Warehouses
+                  <Link href={isAr ? '/ar/store-locations' : '/store-locations'} className="fm-footer-link">
+                    {isAr ? 'المتجر والمستودعات' : 'Store & Warehouses'}
                   </Link>
                 </li>
                 <li>
-                  <Link href="/brands" className="fm-footer-link">
-                    Authorized Brands
+                  <Link href={isAr ? '/ar/brands' : '/brands'} className="fm-footer-link">
+                    {isAr ? 'العلامات المعتمدة' : 'Authorized Brands'}
                   </Link>
                 </li>
                 <li>
-                  <Link href="/order-tracking" className="fm-footer-link">
-                    Order Tracking
+                  <Link href={isAr ? '/ar/order-tracking' : '/order-tracking'} className="fm-footer-link">
+                    {isAr ? 'تتبع الطلبات' : 'Order Tracking'}
                   </Link>
                 </li>
                 <li>
-                  <Link href="/my-account" className="fm-footer-link">
-                    Hospital Account Portal
+                  <Link href={isAr ? '/ar/my-account' : '/my-account'} className="fm-footer-link">
+                    {isAr ? 'بوابة حسابات المستشفيات' : 'Hospital Account Portal'}
                   </Link>
                 </li>
                 <li>
-                  <Link href="/contact" className="fm-footer-link">
-                    Institutional RFQ Tender
+                  <Link href={isAr ? '/ar/contact' : '/contact'} className="fm-footer-link">
+                    {isAr ? 'عروض أسعار ومناقصات' : 'Institutional RFQ Tender'}
                   </Link>
                 </li>
                 <li>
-                  <Link href="/shipping" className="fm-footer-link">
-                    UAE Delivery Times
+                  <Link href={isAr ? '/ar/shipping' : '/shipping'} className="fm-footer-link">
+                    {isAr ? 'مواعيد التوصيل في الإمارات' : 'UAE Delivery Times'}
                   </Link>
                 </li>
                 <li>
-                  <Link href="/returns-exchanges" className="fm-footer-link">
-                    Warranty & Return Policy
+                  <Link href={isAr ? '/ar/returns-exchanges' : '/returns-exchanges'} className="fm-footer-link">
+                    {isAr ? 'سياسة الضمان والاسترجاع' : 'Warranty & Return Policy'}
                   </Link>
                 </li>
               </ul>
@@ -494,10 +499,10 @@ export default function Footer() {
                 letterSpacing: '-0.01em'
               }}
             >
-              UAE Healthcare Equipment & Clinical Directories
+              {isAr ? 'دليل الأجهزة الطبية والرعاية الصحية في الإمارات' : 'UAE Healthcare Equipment & Clinical Directories'}
             </h3>
             <p style={{ margin: '4px 0 0 0', fontSize: '0.8rem', color: '#64748b' }}>
-              Direct procurement guides, biomedical specifications, and regional hospital distribution
+              {isAr ? 'أدلة التوريد المباشر ومواصفات الهندسة الطبية الحيوية وتوزيع المستشفيات' : 'Direct procurement guides, biomedical specifications, and regional hospital distribution'}
             </p>
           </div>
 
@@ -522,7 +527,7 @@ export default function Footer() {
               boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)'
             }}
           >
-            <span>{showAllGuides ? 'Hide Guides' : 'Show All Guides'}</span>
+            <span>{showAllGuides ? (isAr ? 'إخفاء الأدلة' : 'Hide Guides') : (isAr ? 'عرض جميع الأدلة' : 'Show All Guides')}</span>
             {showAllGuides ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
           </button>
         </div>
@@ -792,21 +797,21 @@ export default function Footer() {
                 fontWeight: 600
               }}
             >
-              <Link href="/shop" className="fm-legal-link">Downloads</Link>
+              <Link href={isAr ? '/ar/shop' : '/shop'} className="fm-legal-link">{isAr ? 'التحميلات' : 'Downloads'}</Link>
               <span style={{ color: '#334155' }}>|</span>
-              <Link href="/privacy-policy" className="fm-legal-link">Privacy Policy</Link>
+              <Link href={isAr ? '/ar/privacy-policy' : '/privacy-policy'} className="fm-legal-link">{isAr ? 'سياسة الخصوصية' : 'Privacy Policy'}</Link>
               <span style={{ color: '#334155' }}>|</span>
-              <Link href="/terms-conditions" className="fm-legal-link">Terms & Conditions</Link>
+              <Link href={isAr ? '/ar/terms-conditions' : '/terms-conditions'} className="fm-legal-link">{isAr ? 'الشروط والأحكام' : 'Terms & Conditions'}</Link>
               <span style={{ color: '#334155' }}>|</span>
-              <Link href="/returns-exchanges" className="fm-legal-link">Returns & Exchanges</Link>
+              <Link href={isAr ? '/ar/returns-exchanges' : '/returns-exchanges'} className="fm-legal-link">{isAr ? 'الإرجاع والاستبدال' : 'Returns & Exchanges'}</Link>
               <span style={{ color: '#334155' }}>|</span>
-              <Link href="/shipping" className="fm-legal-link">Shipping & Delivery</Link>
+              <Link href={isAr ? '/ar/shipping' : '/shipping'} className="fm-legal-link">{isAr ? 'الشحن والتوصيل' : 'Shipping & Delivery'}</Link>
               <span style={{ color: '#334155' }}>|</span>
-              <Link href="/about-us" className="fm-legal-link">Quality & Warranty Standards</Link>
+              <Link href={isAr ? '/ar/about-us' : '/about-us'} className="fm-legal-link">{isAr ? 'معايير الجودة والضمان' : 'Quality & Warranty Standards'}</Link>
               <span style={{ color: '#334155' }}>|</span>
-              <Link href="/contact" className="fm-legal-link">24/7 Biomedical Support</Link>
+              <Link href={isAr ? '/ar/contact' : '/contact'} className="fm-legal-link">{isAr ? 'دعم طبي حيوي 24/7' : '24/7 Biomedical Support'}</Link>
               <span style={{ color: '#334155' }}>|</span>
-              <Link href="/store-locations" className="fm-legal-link">Dubai Store</Link>
+              <Link href={isAr ? '/ar/store-locations' : '/store-locations'} className="fm-legal-link">{isAr ? 'مقر دبي' : 'Dubai Store'}</Link>
             </div>
           </div>
 
@@ -828,27 +833,31 @@ export default function Footer() {
               }}
             >
               <div>
-                <strong style={{ color: '#cbd5e1' }}>Legal Entity:</strong> FASTONMED TRADING L.L.C (فاستونميد للتجارة ذ.م.م)
+                <strong style={{ color: '#cbd5e1' }}>{isAr ? 'الكيان القانوني:' : 'Legal Entity:'}</strong> FASTONMED TRADING L.L.C (فاستونميد للتجارة ذ.م.م)
               </div>
               <div>
-                <strong style={{ color: '#cbd5e1' }}>Commercial License No:</strong> 1606077
+                <strong style={{ color: '#cbd5e1' }}>{isAr ? 'رقم الرخصة التجارية:' : 'Commercial License No:'}</strong> 1606077
               </div>
               <div>
-                <strong style={{ color: '#cbd5e1' }}>Register No:</strong> 2818619
+                <strong style={{ color: '#cbd5e1' }}>{isAr ? 'رقم السجل التجاري:' : 'Register No:'}</strong> 2818619
               </div>
               <div>
-                <strong style={{ color: '#cbd5e1' }}>VAT TRN:</strong> 105373862900003
+                <strong style={{ color: '#cbd5e1' }}>{isAr ? 'الرقم الضريبي:' : 'VAT TRN:'}</strong> 105373862900003
               </div>
               <div>
-                <strong style={{ color: '#cbd5e1' }}>Jurisdiction:</strong> United Arab Emirates
+                <strong style={{ color: '#cbd5e1' }}>{isAr ? 'الدولة:' : 'Jurisdiction:'}</strong> {isAr ? 'دولة الإمارات العربية المتحدة' : 'United Arab Emirates'}
               </div>
             </div>
 
             <p style={{ margin: '0 0 12px 0' }}>
-              FASTONMED TRADING L.L.C | Official Address: OFF215 - Arjumand Building, Green Community Village, DIP-1, Dubai, United Arab Emirates | Official Biomedical Helpline: +971 50 889 3589 / +971 50 889 3586 | Email: sales@fastonmed.com | Calibration Support: service@fastonmed.com.
+              {isAr
+                ? 'فاستونميد للتجارة ذ.م.م | العنوان الرسمي: OFF215 - مبنى ارجمند، قرية جرين كوميونيتي، مجمع دبي للاستثمار 1 (DIP-1)، دبي، الإمارات العربية المتحدة | الخط الساخن للأجهزة الطبية: +971 50 889 3589 / +971 50 889 3586 | البريد الإلكتروني: sales@fastonmed.com | دعم المعايرة: service@fastonmed.com.'
+                : 'FASTONMED TRADING L.L.C | Official Address: OFF215 - Arjumand Building, Green Community Village, DIP-1, Dubai, United Arab Emirates | Official Biomedical Helpline: +971 50 889 3589 / +971 50 889 3586 | Email: sales@fastonmed.com | Calibration Support: service@fastonmed.com.'}
             </p>
             <p style={{ margin: '0 0 16px 0', fontSize: '0.72rem', color: '#475569' }}>
-              FastonMed is the Best Medical Equipment Supplier in UAE. Distributor of certified biomedical technology, ICU ventilators, multi-parameter patient monitors, hospital furniture, surgical lighting, medical cold storage, and clinical laboratory equipment across Dubai, Abu Dhabi, Sharjah, Ajman, Ras Al Khaimah, Fujairah, and Umm Al Quwain. All brand logos, trademarks, and registered marks displayed on this platform belong to their respective corporate manufacturers.
+              {isAr
+                ? 'فاستونميد هي أفضل مورد للأجهزة والمعدات الطبية في الإمارات. موزع للتكنولوجيا الطبية الحيوية المعتمدة، أجهزة التنفس للعناية المركزة، شاشات مراقبة المرضى، أثاث المستشفيات، الإضاءة الجراحية، التبريد الطبي وأجهزة المختبرات السريرية في دبي وأبوظبي والشارقة وعجمان ورأس الخيمة والفجيرة وأم القيوين. جميع العلامات التجارية والشعارات ملك لأصحابها من الشركات المصنعة.'
+                : 'FastonMed is the Best Medical Equipment Supplier in UAE. Distributor of certified biomedical technology, ICU ventilators, multi-parameter patient monitors, hospital furniture, surgical lighting, medical cold storage, and clinical laboratory equipment across Dubai, Abu Dhabi, Sharjah, Ajman, Ras Al Khaimah, Fujairah, and Umm Al Quwain. All brand logos, trademarks, and registered marks displayed on this platform belong to their respective corporate manufacturers.'}
             </p>
 
             <div
@@ -865,11 +874,11 @@ export default function Footer() {
               }}
             >
               <div>
-                © 2026 FastonMed (FASTONMED TRADING L.L.C). All Rights Reserved.
+                {isAr ? '© 2026 فاستونميد (فاستونميد للتجارة ذ.م.م). جميع الحقوق محفوظة.' : '© 2026 FastonMed (FASTONMED TRADING L.L.C). All Rights Reserved.'}
               </div>
               <div style={{ display: 'flex', gap: '16px' }}>
-                <span>Dubai • Abu Dhabi • Sharjah • Northern Emirates</span>
-                <span>Clinical & Biomedical Quality Assured</span>
+                <span>{isAr ? 'دبي • أبوظبي • الشارقة • كافة الإمارات' : 'Dubai • Abu Dhabi • Sharjah • Northern Emirates'}</span>
+                <span>{isAr ? 'جودة طبية وسريرية معتمدة' : 'Clinical & Biomedical Quality Assured'}</span>
               </div>
             </div>
           </div>

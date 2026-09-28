@@ -42,6 +42,7 @@ import {
   Send
 } from 'lucide-react';
 import { useApp } from '@/lib/context';
+import { useLocale } from '@/lib/locale-context';
 import type { Product } from '@/lib/types';
 import GoogleReviewsSection from '@/components/GoogleReviewsSection';
 
@@ -372,54 +373,66 @@ const fastSupplyConsumablesList = [
 ];
 
 const categoryPills = [
-  { id: 'all', label: 'All Products' },
-  { id: 'recent', label: 'Recently Added' },
-  { id: 'icu', label: 'ICU & Monitoring' },
-  { id: 'furniture', label: 'Hospital Furniture' },
-  { id: 'consumables', label: 'Consumables & PPE' },
-  { id: 'diagnostic', label: 'Laboratory & Diagnostic' }
+  { id: 'all', label: 'All Products', labelAr: 'جميع المنتجات' },
+  { id: 'recent', label: 'Recently Added', labelAr: 'أحدث الأجهزة' },
+  { id: 'icu', label: 'ICU & Monitoring', labelAr: 'العناية المركزة والمراقبة' },
+  { id: 'furniture', label: 'Hospital Furniture', labelAr: 'أثاث المستشفيات' },
+  { id: 'consumables', label: 'Consumables & PPE', labelAr: 'المستهلكات والوقاية' },
+  { id: 'diagnostic', label: 'Laboratory & Diagnostic', labelAr: 'المختبرات والتشخيص' }
 ];
 
 const therapeuticAreas = [
   {
     id: 'icu-equipment',
     title: 'ICU & Critical Care',
+    titleAr: 'العناية المركزة والحرجة',
     desc: 'High-acuity ICU ventilators, infusion pumps & defibrillators.',
+    descAr: 'أجهزة تنفس اصطناعي للعناية المركزة، مضخات تسريب وأجهزة إزالة الرجفان.',
     image: '/images/illustrations/icu-care.svg',
     href: '/product-category/icu-equipment'
   },
   {
     id: 'patient-monitoring',
     title: 'Patient Monitoring',
+    titleAr: 'مراقبة المرضى السريرية',
     desc: 'Multi-parameter monitors, ECG & wireless telemetry units.',
+    descAr: 'شاشات مراقبة متعددة المعايير، أجهزة تخطيط القلب ووحدات قياس عن بعد.',
     image: '/images/illustrations/patient-monitoring.svg',
     href: '/product-category/patient-monitoring'
   },
   {
     id: 'pharmacy-refrigerators',
     title: 'Medical Cold Storage',
+    titleAr: 'سلسلة التبريد وحفظ الأدوية',
     desc: 'Certified 2–8°C pharmacy fridges & biofreezers.',
+    descAr: 'ثلاجات صيدلانية معتمدة 2–8 درجات مئوية ومجمدات بيولوجية متطورة.',
     image: '/images/illustrations/medical-cold-storage.svg',
     href: '/product-category/pharmacy-refrigerators'
   },
   {
     id: 'radiology-equipments',
     title: 'Ultrasound & Radiology',
+    titleAr: 'الموجات فوق الصوتية والأشعة',
     desc: 'Color Doppler ultrasound systems & mobile digital X-ray.',
+    descAr: 'أنظمة سونار دوبلر ملونة وأجهزة أشعة سينية رقمية متنقلة للمستشفيات.',
     image: '/images/illustrations/ultrasound-radiology.svg',
     href: '/product-category/radiology-equipments'
   },
   {
     id: 'laboratory-equipment',
     title: 'Clinical Laboratory',
+    titleAr: 'المختبرات والتحاليل الطبية',
     desc: 'Biochemistry analyzers, centrifuges & biosafety cabinets.',
+    descAr: 'أجهزة كيمياء حيوية، أجهزة طرد مركزي وكبائن أمان حيوي معتمدة.',
     image: '/images/illustrations/clinical-laboratory.svg',
     href: '/product-category/laboratory-equipment'
   },
   {
     id: 'hospital-furniture',
     title: 'Hospital Furniture',
+    titleAr: 'أثاث المستشفيات وتجهيز الغرف',
     desc: 'Electric hospital beds, examination couches & dental units.',
+    descAr: 'أسرّة مستشفيات كهربائية، طاولات فحص طبية ووحدات عيادات أسنان.',
     image: '/images/illustrations/hospital-furniture.svg',
     href: '/product-category/hospital-furniture'
   }
@@ -429,8 +442,11 @@ const healthcareFacilitiesServed = [
   {
     id: 'hospitals',
     title: 'Hospitals & Medical Centers',
+    titleAr: 'المستشفيات والمراكز الطبية',
     badge: 'Tertiary Care',
+    badgeAr: 'رعاية تخصصية',
     desc: 'Equipping inpatient wards, emergency rooms, and surgical suites with certified hospital equipment.',
+    descAr: 'تجهيز أجنحة التنويم، غرف الطوارئ، وغرف العمليات الجراحية بأجهزة مستشفيات معتمدة وموثوقة.',
     equipment: ['Hospital Ward Beds', 'OT Lights & Tables', 'Patient Monitors', 'Infusion Pumps'],
     icon: Hospital,
     image: '/images/facilities/hospitals.jpg',
@@ -439,8 +455,11 @@ const healthcareFacilitiesServed = [
   {
     id: 'clinics',
     title: 'Medical Polyclinics & Centers',
+    titleAr: 'المجمعات الطبية والعيادات',
     badge: 'Ambulatory Care',
+    badgeAr: 'عيادات خارجية',
     desc: 'Supplying consulting suites, diagnostic instruments, and tabletop autoclaves for specialty clinics.',
+    descAr: 'توريد أجهزة الفحص السريري، أجهزة التعقيم بالبخار، وشاشات العلامات الحيوية للعيادات التخصصية.',
     equipment: ['Examination Couches', 'Sterilizers & Autoclaves', 'Vital Signs Monitors', 'Diagnostic Sets'],
     icon: Building2,
     image: '/images/facilities/polyclinics.jpg',
@@ -449,8 +468,11 @@ const healthcareFacilitiesServed = [
   {
     id: 'laboratories',
     title: 'Clinical Laboratories',
+    titleAr: 'المختبرات الطبية والتشخيصية',
     badge: 'Diagnostic Labs',
+    badgeAr: 'مختبرات تشخيصية',
     desc: 'Outfitting clinical pathology and research laboratories with precision cold-chain and containment systems.',
+    descAr: 'تجهيز مختبرات علم الأمراض والبحوث بأنظمة حفظ بيولوجية دقيقة وسلسلة تبريد متكاملة.',
     equipment: ['Biosafety Cabinets', 'Lab Centrifuges', 'Specimen Transport Boxes', 'Laboratory Fridges'],
     icon: FlaskConical,
     image: '/images/facilities/laboratories.jpg',
@@ -459,8 +481,11 @@ const healthcareFacilitiesServed = [
   {
     id: 'icu-emergency',
     title: 'ICU & Emergency Units',
+    titleAr: 'وحدات العناية المركزة والطوارئ',
     badge: 'Critical Care',
+    badgeAr: 'عناية فائقة',
     desc: 'Delivering life-support mechanical ventilators, emergency biphasic defibrillators, and mobile crash carts.',
+    descAr: 'توريد أجهزة التنفس الاصطناعي المنقذة للحياة، أجهزة الصدمات الكهربائية المتطورة، وحقائب الطوارئ.',
     equipment: ['ICU Ventilators', 'Defibrillators (AED)', 'Emergency Spill Kits', 'Syringe Pumps'],
     icon: HeartPulse,
     image: '/images/facilities/icu-emergency.jpg',
@@ -469,8 +494,11 @@ const healthcareFacilitiesServed = [
   {
     id: 'radiology',
     title: 'Radiology & Imaging Centers',
+    titleAr: 'مراكز الأشعة والتشخيص التصويري',
     badge: 'Medical Imaging',
+    badgeAr: 'تصوير طبي',
     desc: 'Delivering Color Doppler ultrasound systems, imaging transducers, mobile carts, and radiation protection.',
+    descAr: 'توفير أجهزة السونار الملونة، مجسات الفحص، عربات النقل المجهزة، ومعدات الحماية من الإشعاع.',
     equipment: ['Color Doppler Ultrasound', 'Ultrasound Probes', 'Ultrasound Carts', 'Radiation PPE'],
     icon: Radio,
     image: '/images/facilities/radiology.jpg',
@@ -479,8 +507,11 @@ const healthcareFacilitiesServed = [
   {
     id: 'dental',
     title: 'Dental Clinics & Surgeries',
+    titleAr: 'عيادات ومراكز جراحة الأسنان',
     badge: 'Oral Care',
+    badgeAr: 'طب وجراحة الأسنان',
     desc: 'Complete delivery of clinical dental operatories, sterilization packaging reels, and suction accessories.',
+    descAr: 'تجهيز شامل لكراسي علاج الأسنان، أجهزة كشط الجير بالموجات، ورولات وأكياس التعقيم الطبي.',
     equipment: ['Dental Treatment Chairs', 'Sterilization Reels', 'Ultrasonic Scalers', 'Autoclave Pouches'],
     icon: Smile,
     image: '/images/facilities/dental.jpg',
@@ -489,8 +520,11 @@ const healthcareFacilitiesServed = [
   {
     id: 'physiotherapy',
     title: 'Rehabilitation & Physiotherapy',
+    titleAr: 'مراكز التأهيل والعلاج الطبيعي',
     badge: 'Physical Therapy',
+    badgeAr: 'علاج طبيعي وتأهيل',
     desc: 'Equipping rehabilitation gymnasiums, sports medicine facilities, and mobility patient transfer care.',
+    descAr: 'تجهيز صالات العلاج الطبيعي والطب الرياضي وأجهزة العلاج بالموجات الصادمة وكراسي الحركة الطبية.',
     equipment: ['Shockwave Therapy Units', 'Combo Electrotherapy', 'Foldable Wheelchairs', 'Transfer Chairs'],
     icon: Accessibility,
     image: '/images/facilities/physiotherapy.jpg',
@@ -499,8 +533,11 @@ const healthcareFacilitiesServed = [
   {
     id: 'pharmacy',
     title: 'Pharmacies & Cold Chains',
+    titleAr: 'الصيدليات وسلسلة التبريد الطبي',
     badge: 'Pharmaceuticals',
+    badgeAr: 'صيدلة وتبريد طبي',
     desc: 'Furnishing hospital and retail pharmacies with certified 2–8°C refrigerators and vaccine loggers.',
+    descAr: 'تجهيز الصيدليات بثلاجات حفظ اللقاحات 2–8 درجات مئوية وأجهزة مراقبة وتوثيق درجات الحرارة.',
     equipment: ['Pharmacy Refrigerators', 'Vaccine Freezers', 'Temperature Loggers', 'Dispensing Trolleys'],
     icon: Activity,
     image: '/images/facilities/pharmacies.jpg',
@@ -552,6 +589,8 @@ const heroFeaturedProducts = [
 ];
 
 export default function HomePage() {
+  const { locale, isArabic } = useLocale();
+  const isAr = isArabic || locale === 'ar';
   const { addToCart, isInWishlist, toggleWishlist } = useApp();
   const [products, setProducts] = useState<Product[]>(initialBentoProducts);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -858,8 +897,17 @@ export default function HomePage() {
                   fontFamily: 'Arial, Helvetica, sans-serif'
                 }}
               >
-                Best Medical Equipment<br />
-                <span style={{ color: '#00875a' }}>Supplier in UAE</span>
+                {isAr ? (
+                  <>
+                    أفضل مورد للأجهزة<br />
+                    <span style={{ color: '#00875a' }}>والمعدات الطبية في الإمارات</span>
+                  </>
+                ) : (
+                  <>
+                    Best Medical Equipment<br />
+                    <span style={{ color: '#00875a' }}>Supplier in UAE</span>
+                  </>
+                )}
               </h1>
 
               {/* Credibility Statement */}
@@ -875,7 +923,9 @@ export default function HomePage() {
                   fontFamily: 'Arial, Helvetica, sans-serif'
                 }}
               >
-                Since 2024 · 10,000+ Devices · 100% Certified
+                {isAr
+                  ? 'منذ 2024 · أكثر من 10,000 جهاز طبي · معتمد 100%'
+                  : 'Since 2024 · 10,000+ Devices · 100% Certified'}
               </div>
 
               {/* Subtitle with SEO sub-keywords */}
@@ -891,7 +941,9 @@ export default function HomePage() {
                   fontFamily: 'Arial, Helvetica, sans-serif'
                 }}
               >
-                FastonMed is the premier medical equipment supplier in UAE, delivering certified biomedical technology, ICU systems, and clinical supplies across all 7 Emirates.
+                {isAr
+                  ? 'فاستونميد هي المورد الرائد للمعدات والأجهزة الطبية في دولة الإمارات، حيث نقدم أحدث التقنيات الطبية الحيوية المعتمدة وأنظمة العناية المركزة والمستلزمات السريرية عبر جميع الإمارات السبع.'
+                  : 'FastonMed is the premier medical equipment supplier in UAE, delivering certified biomedical technology, ICU systems, and clinical supplies across all 7 Emirates.'}
               </p>
               <p
                 className="hero-desc-mobile"
@@ -903,7 +955,9 @@ export default function HomePage() {
                   fontFamily: 'Arial, Helvetica, sans-serif'
                 }}
               >
-                High-precision biomedical systems & clinical supplies across the UAE.
+                {isAr
+                  ? 'أنظمة طبية حيوية عالية الدقة ومستلزمات سريرية معتمدة عبر الإمارات.'
+                  : 'High-precision biomedical systems & clinical supplies across the UAE.'}
               </p>
 
               {/* Action Buttons: In-line on Laptop, Stacked on Mobile, Icon matching Logo Color #42B69C */}
@@ -911,7 +965,7 @@ export default function HomePage() {
                 id="hero-actions-container"
               >
                 <Link
-                  href="/shop"
+                  href={isAr ? "/ar/shop" : "/shop"}
                   style={{
                     backgroundColor: '#002845',
                     color: '#ffffff',
@@ -931,8 +985,8 @@ export default function HomePage() {
                   className="hero-nav-btn-primary"
                 >
                   <Calendar size={18} color="#42B69C" strokeWidth={2.4} className="hero-btn-icon" />
-                  <span className="hero-btn-text-full">Explore Equipment</span>
-                  <span className="hero-btn-text-compact">Explore All</span>
+                  <span className="hero-btn-text-full">{isAr ? 'استكشف الأجهزة الطبية' : 'Explore Equipment'}</span>
+                  <span className="hero-btn-text-compact">{isAr ? 'استكشف الكل' : 'Explore All'}</span>
                   <ArrowRight size={17} color="#ffffff" strokeWidth={2.4} className="hero-btn-arrow" />
                 </Link>
 
@@ -957,7 +1011,7 @@ export default function HomePage() {
                   className="hero-nav-btn-secondary"
                 >
                   <Phone size={18} color="#42B69C" fill="#42B69C" strokeWidth={1} className="hero-btn-icon hero-btn-icon-phone" />
-                  <span>Call Now</span>
+                  <span>{isAr ? 'اتصل الآن' : 'Call Now'}</span>
                 </a>
               </div>
             </div>
@@ -1263,8 +1317,12 @@ export default function HomePage() {
               <ShieldCheck size={20} color="#0284c7" />
             </div>
             <div>
-              <h4 style={{ fontSize: '0.92rem', fontWeight: 700, color: '#0f172a', margin: '0 0 4px', fontFamily: 'Arial, Helvetica, sans-serif' }}>Certified Genuine Quality</h4>
-              <p style={{ fontSize: '0.78rem', color: '#64748b', margin: 0, lineHeight: 1.45, fontFamily: 'Arial, Helvetica, sans-serif' }}>100% genuine biomedical equipment with direct UAE warranty.</p>
+              <h4 style={{ fontSize: '0.92rem', fontWeight: 700, color: '#0f172a', margin: '0 0 4px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                {isAr ? 'جودة أصلية معتمدة' : 'Certified Genuine Quality'}
+              </h4>
+              <p style={{ fontSize: '0.78rem', color: '#64748b', margin: 0, lineHeight: 1.45, fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                {isAr ? 'أجهزة طبية حيوية أصلية 100% مع ضمان مباشر ومعتمد بالإمارات.' : '100% genuine biomedical equipment with direct UAE warranty.'}
+              </p>
             </div>
           </div>
 
@@ -1274,8 +1332,12 @@ export default function HomePage() {
               <Sparkles size={20} color="#16a34a" />
             </div>
             <div>
-              <h4 style={{ fontSize: '0.92rem', fontWeight: 700, color: '#0f172a', margin: '0 0 4px', fontFamily: 'Arial, Helvetica, sans-serif' }}>Biomedical AMC & Service</h4>
-              <p style={{ fontSize: '0.78rem', color: '#64748b', margin: 0, lineHeight: 1.45, fontFamily: 'Arial, Helvetica, sans-serif' }}>In-house biomedical engineers, calibration & hospital support.</p>
+              <h4 style={{ fontSize: '0.92rem', fontWeight: 700, color: '#0f172a', margin: '0 0 4px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                {isAr ? 'عقود صيانة طبية ومعايرة' : 'Biomedical AMC & Service'}
+              </h4>
+              <p style={{ fontSize: '0.78rem', color: '#64748b', margin: 0, lineHeight: 1.45, fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                {isAr ? 'فريق هندسي متخصص، معايرة دورية ودعم مستمر للمستشفيات.' : 'In-house biomedical engineers, calibration & hospital support.'}
+              </p>
             </div>
           </div>
 
@@ -1285,8 +1347,12 @@ export default function HomePage() {
               <Globe size={20} color="#9333ea" />
             </div>
             <div>
-              <h4 style={{ fontSize: '0.92rem', fontWeight: 700, color: '#0f172a', margin: '0 0 4px', fontFamily: 'Arial, Helvetica, sans-serif' }}>7 Emirates Coverage</h4>
-              <p style={{ fontSize: '0.78rem', color: '#64748b', margin: 0, lineHeight: 1.45, fontFamily: 'Arial, Helvetica, sans-serif' }}>Same-day Dubai dispatch & 24h delivery across UAE & GCC.</p>
+              <h4 style={{ fontSize: '0.92rem', fontWeight: 700, color: '#0f172a', margin: '0 0 4px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                {isAr ? 'تغطية كافة الإمارات السبع' : '7 Emirates Coverage'}
+              </h4>
+              <p style={{ fontSize: '0.78rem', color: '#64748b', margin: 0, lineHeight: 1.45, fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                {isAr ? 'شحن فوري في دبي وتوصيل خلال 24 ساعة لكافة الإمارات والخليج.' : 'Same-day Dubai dispatch & 24h delivery across UAE & GCC.'}
+              </p>
             </div>
           </div>
 
@@ -1296,8 +1362,12 @@ export default function HomePage() {
               <Heart size={20} color="#ea580c" />
             </div>
             <div>
-              <h4 style={{ fontSize: '0.92rem', fontWeight: 700, color: '#0f172a', margin: '0 0 4px', fontFamily: 'Arial, Helvetica, sans-serif' }}>24/7 Clinical Support</h4>
-              <p style={{ fontSize: '0.78rem', color: '#64748b', margin: 0, lineHeight: 1.45, fontFamily: 'Arial, Helvetica, sans-serif' }}>Direct hospital procurement rates & emergency loaner units.</p>
+              <h4 style={{ fontSize: '0.92rem', fontWeight: 700, color: '#0f172a', margin: '0 0 4px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                {isAr ? 'دعم سريري وهندسي 24/7' : '24/7 Clinical Support'}
+              </h4>
+              <p style={{ fontSize: '0.78rem', color: '#64748b', margin: 0, lineHeight: 1.45, fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                {isAr ? 'أسعار توريد مباشرة للمستشفيات مع توفير أجهزة بديلة للطوارئ.' : 'Direct hospital procurement rates & emergency loaner units.'}
+              </p>
             </div>
           </div>
         </div>
@@ -1374,7 +1444,7 @@ export default function HomePage() {
                     fontFamily: 'Arial, Helvetica, sans-serif'
                   }}
                 >
-                  ABOUT FASTONMED
+                  {isAr ? 'عن فاستونميد' : 'ABOUT FASTONMED'}
                 </div>
 
                 <h2
@@ -1389,7 +1459,11 @@ export default function HomePage() {
                     fontFamily: 'Arial, Helvetica, sans-serif'
                   }}
                 >
-                  A Legacy of Trust<br />in UAE Healthcare
+                  {isAr ? (
+                    <>شريك موثوق ومسيرة تميز<br />في الرعاية الصحية بالإمارات</>
+                  ) : (
+                    <>A Legacy of Trust<br />in UAE Healthcare</>
+                  )}
                 </h2>
 
                 <p
@@ -1401,32 +1475,42 @@ export default function HomePage() {
                     fontFamily: 'Arial, Helvetica, sans-serif'
                   }}
                 >
-                  With professional biomedical engineering facilities and a dedicated clinical support team, FastonMed is dedicated to empowering UAE hospitals, day surgery centers, and clinics with dependable medical technologies and responsive support.
+                  {isAr
+                    ? 'بفضل منشآت الهندسة الطبية الحيوية المتقدمة وفريق الدعم السريري المتخصص، تلتزم فاستونميد بتمكين المستشفيات ومراكز جراحة اليوم الواحد والعيادات في الإمارات بأحدث التقنيات الطبية الموثوقة والدعم السريع الفوري.'
+                    : 'With professional biomedical engineering facilities and a dedicated clinical support team, FastonMed is dedicated to empowering UAE hospitals, day surgery centers, and clinics with dependable medical technologies and responsive support.'}
                 </p>
 
                 {/* 4 Checkpoint Items */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '30px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                     <CheckCircle2 size={18} color="#00875a" />
-                    <span style={{ fontSize: '0.9rem', fontWeight: 600, color: '#1e293b', fontFamily: 'Arial, Helvetica, sans-serif' }}>UAE Registered Healthcare & Biomedical Supplier</span>
+                    <span style={{ fontSize: '0.9rem', fontWeight: 600, color: '#1e293b', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                      {isAr ? 'مورد معتمد للرعاية الصحية والأجهزة الطبية الحيوية في الإمارات' : 'UAE Registered Healthcare & Biomedical Supplier'}
+                    </span>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                     <CheckCircle2 size={18} color="#00875a" />
-                    <span style={{ fontSize: '0.9rem', fontWeight: 600, color: '#1e293b', fontFamily: 'Arial, Helvetica, sans-serif' }}>Comprehensive Range of Biomedical & ICU Products</span>
+                    <span style={{ fontSize: '0.9rem', fontWeight: 600, color: '#1e293b', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                      {isAr ? 'مجموعة متكاملة من أجهزة العناية المركزة والمعدات الطبية' : 'Comprehensive Range of Biomedical & ICU Products'}
+                    </span>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                     <CheckCircle2 size={18} color="#00875a" />
-                    <span style={{ fontSize: '0.9rem', fontWeight: 600, color: '#1e293b', fontFamily: 'Arial, Helvetica, sans-serif' }}>In-House Biomedical Engineering & Calibration AMC</span>
+                    <span style={{ fontSize: '0.9rem', fontWeight: 600, color: '#1e293b', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                      {isAr ? 'فريق هندسة طبية حيوية داخلي وعقود صيانة ومعايرة معتمدة' : 'In-House Biomedical Engineering & Calibration AMC'}
+                    </span>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                     <CheckCircle2 size={18} color="#00875a" />
-                    <span style={{ fontSize: '0.9rem', fontWeight: 600, color: '#1e293b', fontFamily: 'Arial, Helvetica, sans-serif' }}>Direct Hospital Supply Across All 7 Emirates</span>
+                    <span style={{ fontSize: '0.9rem', fontWeight: 600, color: '#1e293b', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                      {isAr ? 'توريد وتسليم مباشر للمستشفيات في جميع الإمارات السبع' : 'Direct Hospital Supply Across All 7 Emirates'}
+                    </span>
                   </div>
                 </div>
 
                 {/* Learn More Button */}
                 <Link
-                  href="/about-us"
+                  href={isAr ? '/ar/about-us' : '/about-us'}
                   style={{
                     backgroundColor: '#00875a',
                     color: '#ffffff',
@@ -1443,8 +1527,8 @@ export default function HomePage() {
                     fontFamily: 'Arial, Helvetica, sans-serif'
                   }}
                 >
-                  <span>Learn More</span>
-                  <ArrowRight size={16} />
+                  <span>{isAr ? 'تعرف على المزيد' : 'Learn More'}</span>
+                  <ArrowRight size={16} style={isAr ? { transform: 'scaleX(-1)' } : undefined} />
                 </Link>
               </div>
 
@@ -1489,8 +1573,12 @@ export default function HomePage() {
                     zIndex: 2
                   }}
                 >
-                  <div style={{ fontSize: '1.85rem', fontWeight: 800, color: '#00875a', lineHeight: 1, fontFamily: 'Arial, Helvetica, sans-serif' }}>Since 2024</div>
-                  <div style={{ fontSize: '0.78rem', fontWeight: 600, color: '#64748b', marginTop: '4px', fontFamily: 'Arial, Helvetica, sans-serif' }}>Pioneering UAE Healthcare</div>
+                  <div style={{ fontSize: '1.85rem', fontWeight: 800, color: '#00875a', lineHeight: 1, fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                    {isAr ? 'منذ 2024' : 'Since 2024'}
+                  </div>
+                  <div style={{ fontSize: '0.78rem', fontWeight: 600, color: '#64748b', marginTop: '4px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                    {isAr ? 'ريادة الرعاية الصحية بالإمارات' : 'Pioneering UAE Healthcare'}
+                  </div>
                 </div>
               </div>
             </div>
@@ -1536,7 +1624,7 @@ export default function HomePage() {
                 fontFamily: 'Arial, Helvetica, sans-serif'
               }}
             >
-              OUR SPECIALTIES
+              {isAr ? 'تخصصاتنا الطبية' : 'OUR SPECIALTIES'}
             </div>
             <h2
               id="specialties-heading"
@@ -1549,7 +1637,7 @@ export default function HomePage() {
                 fontFamily: 'Arial, Helvetica, sans-serif'
               }}
             >
-              Medical Equipment Specialties
+              {isAr ? 'التخصصات والمعدات الطبية المعتمدة' : 'Medical Equipment Specialties'}
             </h2>
           </div>
 
@@ -1565,7 +1653,7 @@ export default function HomePage() {
             {therapeuticAreas.map(area => (
               <Link
                 key={area.id}
-                href={area.href}
+                href={isAr ? `/ar${area.href}` : area.href}
                 style={{
                   backgroundColor: '#ffffff',
                   borderRadius: '16px',
@@ -1584,7 +1672,7 @@ export default function HomePage() {
                 <div style={{ height: '148px', backgroundColor: '#f8fafc', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8px', borderBottom: '1px solid #f1f5f9' }}>
                   <img
                     src={area.image}
-                    alt={area.title}
+                    alt={isAr && (area as any).titleAr ? (area as any).titleAr : area.title}
                     style={{
                       width: '100%',
                       height: '100%',
@@ -1599,10 +1687,10 @@ export default function HomePage() {
                 {/* Content */}
                 <div style={{ padding: '14px', display: 'flex', flexDirection: 'column', flex: 1 }}>
                   <h4 style={{ fontSize: '0.94rem', fontWeight: 800, color: '#0f172a', margin: '0 0 6px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                    {area.title}
+                    {isAr && (area as any).titleAr ? (area as any).titleAr : area.title}
                   </h4>
                   <p style={{ fontSize: '0.75rem', color: '#64748b', lineHeight: 1.45, margin: '0 0 14px', flex: 1, fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                    {area.desc}
+                    {isAr && (area as any).descAr ? (area as any).descAr : area.desc}
                   </p>
 
                   <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 'auto' }}>
@@ -1618,7 +1706,7 @@ export default function HomePage() {
                         color: '#00875a'
                       }}
                     >
-                      <ArrowRight size={13} />
+                      <ArrowRight size={13} style={isAr ? { transform: 'scaleX(-1)' } : undefined} />
                     </div>
                   </div>
                 </div>
@@ -1629,7 +1717,7 @@ export default function HomePage() {
           {/* Centered View All Products Button */}
           <div style={{ textAlign: 'center', marginTop: '40px' }}>
             <Link
-              href="/shop"
+              href={isAr ? '/ar/shop' : '/shop'}
               style={{
                 backgroundColor: '#00875a',
                 color: '#ffffff',
@@ -1646,7 +1734,8 @@ export default function HomePage() {
                 fontFamily: 'Arial, Helvetica, sans-serif'
               }}
             >
-              View Complete Catalog
+              <span>{isAr ? 'استكشف الكتالوج الطبي الكامل' : 'View Complete Catalog'}</span>
+              <ArrowRight size={16} style={isAr ? { transform: 'scaleX(-1)' } : undefined} />
             </Link>
           </div>
         </div>
@@ -1704,7 +1793,7 @@ export default function HomePage() {
                 <Globe size={24} color="#ffffff" />
               </div>
               <div className="metric-stat-number">7</div>
-              <div className="metric-stat-label">Emirates Covered</div>
+              <div className="metric-stat-label">{isAr ? 'إمارات نغطيها بالكامل' : 'Emirates Covered'}</div>
             </div>
 
             {/* Stat 2 */}
@@ -1713,7 +1802,7 @@ export default function HomePage() {
                 <Package size={24} color="#ffffff" />
               </div>
               <div className="metric-stat-number">500+</div>
-              <div className="metric-stat-label">Quality Medical Devices</div>
+              <div className="metric-stat-label">{isAr ? 'جهاز ومعدة طبية معتمدة' : 'Quality Medical Devices'}</div>
             </div>
 
             {/* Stat 3 */}
@@ -1722,7 +1811,7 @@ export default function HomePage() {
                 <Users size={24} color="#ffffff" />
               </div>
               <div className="metric-stat-number">300+</div>
-              <div className="metric-stat-label">Hospitals & Clinics</div>
+              <div className="metric-stat-label">{isAr ? 'مستشفى وعيادة نخدمها' : 'Hospitals & Clinics'}</div>
             </div>
 
             {/* Stat 4 */}
@@ -1731,7 +1820,7 @@ export default function HomePage() {
                 <Award size={24} color="#ffffff" />
               </div>
               <div className="metric-stat-number">2024</div>
-              <div className="metric-stat-label">Since Established in UAE</div>
+              <div className="metric-stat-label">{isAr ? 'تأسست لخدمة القطاع الصحي' : 'Since Established in UAE'}</div>
             </div>
           </div>
         </div>
@@ -1855,7 +1944,7 @@ export default function HomePage() {
                 fontFamily: 'Arial, Helvetica, sans-serif'
               }}
             >
-              WHO WE SUPPLY & DELIVER TO
+              {isAr ? 'القطاعات والمنشآت التي نورد لها' : 'WHO WE SUPPLY & DELIVER TO'}
             </div>
             <h2
               id="facilities-heading"
@@ -1868,7 +1957,7 @@ export default function HomePage() {
                 fontFamily: 'Arial, Helvetica, sans-serif'
               }}
             >
-              Healthcare Facilities & Sectors We Deliver To
+              {isAr ? 'المنشآت الصحية والمستشفيات التي نخدمها في الإمارات' : 'Healthcare Facilities & Sectors We Deliver To'}
             </h2>
             <p
               id="facilities-subtext"
@@ -1880,7 +1969,9 @@ export default function HomePage() {
                 fontFamily: 'Arial, Helvetica, sans-serif'
               }}
             >
-              FastonMed delivers genuine certified medical equipment, biomedical engineering support, and clinical consumables to healthcare firms across Dubai, Abu Dhabi, and the UAE.
+              {isAr
+                ? 'توفر فاستونميد معدات طبية أصلية معتمدة، دعماً هندسياً حيوياً، ومستهلكات سريرية للمنشآت الصحية عبر دبي وأبوظبي وكافة أنحاء الإمارات.'
+                : 'FastonMed delivers genuine certified medical equipment, biomedical engineering support, and clinical consumables to healthcare firms across Dubai, Abu Dhabi, and the UAE.'}
             </p>
           </div>
 
@@ -1898,7 +1989,7 @@ export default function HomePage() {
             {healthcareFacilitiesServed.map(facility => (
               <Link
                 key={facility.id}
-                href={facility.href}
+                href={isAr ? `/ar${facility.href}` : facility.href}
                 style={{
                   backgroundColor: '#ffffff',
                   borderRadius: '16px',
@@ -1925,7 +2016,7 @@ export default function HomePage() {
                 >
                   <Image
                     src={facility.image}
-                    alt={facility.title}
+                    alt={isAr && (facility as any).titleAr ? (facility as any).titleAr : facility.title}
                     fill
                     sizes="(max-width: 640px) 80vw, (max-width: 1024px) 50vw, 25vw"
                     style={{
@@ -1948,7 +2039,7 @@ export default function HomePage() {
                       fontFamily: 'Arial, Helvetica, sans-serif'
                     }}
                   >
-                    {facility.title}
+                    {isAr && (facility as any).titleAr ? (facility as any).titleAr : facility.title}
                   </h3>
 
                   <p
@@ -1960,7 +2051,7 @@ export default function HomePage() {
                       fontFamily: 'Arial, Helvetica, sans-serif'
                     }}
                   >
-                    {facility.desc}
+                    {isAr && (facility as any).descAr ? (facility as any).descAr : facility.desc}
                   </p>
 
                   {/* View Supplies Link */}
@@ -1977,8 +2068,8 @@ export default function HomePage() {
                       fontFamily: 'Arial, Helvetica, sans-serif'
                     }}
                   >
-                    <span>Explore Equipment</span>
-                    <ArrowRight size={14} />
+                    <span>{isAr ? 'استكشف المعدات' : 'Explore Equipment'}</span>
+                    <ArrowRight size={14} style={isAr ? { transform: 'scaleX(-1)' } : undefined} />
                   </div>
                 </div>
               </Link>
@@ -2169,7 +2260,7 @@ export default function HomePage() {
                   fontFamily: 'Arial, Helvetica, sans-serif'
                 }}
               >
-                LIVE CATALOG
+                {isAr ? 'الكتالوج الطبي المباشر' : 'LIVE CATALOG'}
               </div>
               <h2
                 id="catalog-heading"
@@ -2182,7 +2273,7 @@ export default function HomePage() {
                   fontFamily: 'Arial, Helvetica, sans-serif'
                 }}
               >
-                Featured Equipment & Supplies
+                {isAr ? 'أبرز الأجهزة والمستلزمات الطبية' : 'Featured Equipment & Supplies'}
               </h2>
             </div>
 
@@ -2226,7 +2317,7 @@ export default function HomePage() {
                       fontFamily: 'Arial, Helvetica, sans-serif'
                     }}
                   >
-                    {cat.label}
+                    {isAr && (cat as any).labelAr ? (cat as any).labelAr : cat.label}
                   </button>
                 );
               })}
@@ -2316,7 +2407,7 @@ export default function HomePage() {
 
                   {/* Product Image Link - Pure White Background for seamless product image blending */}
                   <Link
-                    href={`/product/${product.slug}`}
+                    href={isAr ? `/ar/product/${product.slug}` : `/product/${product.slug}`}
                     className="product-img-box"
                     style={{
                       backgroundColor: '#ffffff',
@@ -2365,11 +2456,11 @@ export default function HomePage() {
                         fontFamily: 'Arial, Helvetica, sans-serif'
                       }}
                     >
-                      {product.category || 'Medical Supplies'}
+                      {product.category || (isAr ? 'مستلزمات طبية' : 'Medical Supplies')}
                     </span>
 
                     <Link
-                      href={`/product/${product.slug}`}
+                      href={isAr ? `/ar/product/${product.slug}` : `/product/${product.slug}`}
                       className="product-card-title"
                       style={{
                         fontSize: '0.92rem',
@@ -2433,8 +2524,8 @@ export default function HomePage() {
                           boxShadow: '0 2px 6px rgba(0, 135, 90, 0.18)'
                         }}
                       >
-                        <span>Enquiry</span>
-                        <ChevronRight size={14} />
+                        <span>{isAr ? 'استفسار وطلب' : 'Enquiry'}</span>
+                        <ChevronRight size={14} style={isAr ? { transform: 'scaleX(-1)' } : undefined} />
                       </button>
                     </div>
                   </div>
@@ -2446,7 +2537,7 @@ export default function HomePage() {
           {/* View Full Catalog Link */}
           <div style={{ textAlign: 'center', marginTop: '38px' }}>
             <Link
-              href="/shop"
+              href={isAr ? '/ar/shop' : '/shop'}
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -2464,8 +2555,8 @@ export default function HomePage() {
                 fontFamily: 'Arial, Helvetica, sans-serif'
               }}
             >
-              <span>Explore Complete Catalog ({products.length} Items)</span>
-              <ArrowRight size={16} />
+              <span>{isAr ? `استكشف الكتالوج الكامل (${products.length} صنف طبي)` : `Explore Complete Catalog (${products.length} Items)`}</span>
+              <ArrowRight size={16} style={isAr ? { transform: 'scaleX(-1)' } : undefined} />
             </Link>
           </div>
         </div>
@@ -2597,7 +2688,7 @@ export default function HomePage() {
                 }}
               >
                 <Zap size={13} color="#00875a" />
-                <span>DIRECT CRM INTEGRATION • FAST 2-HR RESPONSE</span>
+                <span>{isAr ? 'ربط مباشر مع نظام خدمة العملاء • استجابة خلال ساعتين' : 'DIRECT CRM INTEGRATION • FAST 2-HR RESPONSE'}</span>
               </div>
 
               <h2
@@ -2612,7 +2703,7 @@ export default function HomePage() {
                   fontFamily: 'Arial, Helvetica, sans-serif'
                 }}
               >
-                Request an Equipment Quotation & Clinical Consultation
+                {isAr ? 'طلب عرض أسعار واستشارة فنية للمعدات الطبية' : 'Request an Equipment Quotation & Clinical Consultation'}
               </h2>
 
               <p
@@ -2625,7 +2716,9 @@ export default function HomePage() {
                   fontFamily: 'Arial, Helvetica, sans-serif'
                 }}
               >
-                Submit your procurement specifications directly to our UAE biomedical engineering team for official manufacturer quotations and fast dispatch across all 7 Emirates.
+                {isAr
+                  ? 'أرسل مواصفات وتجهيزات منشأتك الصحية مباشرة إلى فريق الهندسة الطبية الحيوية في الإمارات للحصول على عروض أسعار رسمية وتوريد سريع لكافة الإمارات السبع.'
+                  : 'Submit your procurement specifications directly to our UAE biomedical engineering team for official manufacturer quotations and fast dispatch across all 7 Emirates.'}
               </p>
 
               {/* 3 Key Trust Pillars */}
@@ -2648,10 +2741,10 @@ export default function HomePage() {
                   </div>
                   <div>
                     <div style={{ fontSize: '0.92rem', fontWeight: 700, color: '#0f172a', marginBottom: '2px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                      Real-Time CRM Assignment
+                      {isAr ? 'إحالة فورية للطلب عبر الـ CRM' : 'Real-Time CRM Assignment'}
                     </div>
                     <div style={{ fontSize: '0.8rem', color: '#64748b', lineHeight: 1.4, fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                      Instant ticket routing to biomedical engineers in Dubai.
+                      {isAr ? 'توجيه فوري للطلب إلى مهندسي الطب الحيوي في دبي.' : 'Instant ticket routing to biomedical engineers in Dubai.'}
                     </div>
                   </div>
                 </div>
@@ -2674,10 +2767,10 @@ export default function HomePage() {
                   </div>
                   <div>
                     <div style={{ fontSize: '0.92rem', fontWeight: 700, color: '#0f172a', marginBottom: '2px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                      Manufacturer Certified Documentation
+                      {isAr ? 'شهادات ووثائق معتمدة من المصنع' : 'Manufacturer Certified Documentation'}
                     </div>
                     <div style={{ fontSize: '0.8rem', color: '#64748b', lineHeight: 1.4, fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                      Official compliance certificates, factory calibration, and warranty.
+                      {isAr ? 'شهادات مطابقة رسمية، معايرة مصنعية، وضمان شامل.' : 'Official compliance certificates, factory calibration, and warranty.'}
                     </div>
                   </div>
                 </div>
@@ -2700,10 +2793,10 @@ export default function HomePage() {
                   </div>
                   <div>
                     <div style={{ fontSize: '0.92rem', fontWeight: 700, color: '#0f172a', marginBottom: '2px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                      Immediate UAE Stock & Deployment
+                      {isAr ? 'جاهزية التوريد الفوري في الإمارات' : 'Immediate UAE Stock & Deployment'}
                     </div>
                     <div style={{ fontSize: '0.8rem', color: '#64748b', lineHeight: 1.4, fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                      Direct dispatch from UAE fulfillment centers with biomedical installation.
+                      {isAr ? 'شحن فوري من مستودعاتنا بالإمارات مع التركيب والتشغيل الطبي.' : 'Direct dispatch from UAE fulfillment centers with biomedical installation.'}
                     </div>
                   </div>
                 </div>
@@ -2726,7 +2819,7 @@ export default function HomePage() {
               >
                 <div>
                   <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.04em', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                    Need Immediate Urgent Assistance?
+                    {isAr ? 'هل تحتاج إلى مساعدة عاجلة وفورية؟' : 'Need Immediate Urgent Assistance?'}
                   </div>
                   <div style={{ fontSize: '1rem', fontWeight: 700, color: '#0f172a', marginTop: '2px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
                     <a href="tel:+971508893589" style={{ color: '#0f172a', textDecoration: 'none' }}>+971 50 889 3589</a> / <a href="tel:+971508893586" style={{ color: '#0f172a', textDecoration: 'none' }}>+971 50 889 3586</a>
@@ -2751,7 +2844,7 @@ export default function HomePage() {
                   }}
                 >
                   <MessageCircle size={15} />
-                  <span>WhatsApp Desk</span>
+                  <span>{isAr ? 'مكتب واتساب' : 'WhatsApp Desk'}</span>
                 </a>
               </div>
             </div>
@@ -2785,7 +2878,7 @@ export default function HomePage() {
                     <CheckCircle2 size={34} />
                   </div>
                   <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#0f172a', margin: '0 0 8px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                    Inquiry Forwarded to FastonMed CRM!
+                    {isAr ? 'تم إرسال طلبك إلى نظام فاستونميد بنجاح!' : 'Inquiry Forwarded to FastonMed CRM!'}
                   </h3>
                   {leadRefId && (
                     <div
@@ -2802,11 +2895,15 @@ export default function HomePage() {
                         fontFamily: 'Arial, Helvetica, sans-serif'
                       }}
                     >
-                      Reference: #{leadRefId}
+                      {isAr ? `المرجع: #${leadRefId}` : `Reference: #${leadRefId}`}
                     </div>
                   )}
                   <p style={{ fontSize: '0.88rem', color: '#64748b', lineHeight: 1.55, maxWidth: '440px', margin: '0 auto 24px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                    Thank you, <strong>{leadForm.name}</strong>. Your equipment consultation request has been automatically synchronized to our central CRM pipeline. Our biomedical procurement engineer will reach out within 2 hours.
+                    {isAr ? (
+                      <>شكراً لك، <strong>{leadForm.name}</strong>. تمت مزامنة طلب استشارة المعدات الطبية مع نظام خدمة العملاء. سيتواصل معك مهندس المشتريات الطبية الحيوية خلال ساعتين.</>
+                    ) : (
+                      <>Thank you, <strong>{leadForm.name}</strong>. Your equipment consultation request has been automatically synchronized to our central CRM pipeline. Our biomedical procurement engineer will reach out within 2 hours.</>
+                    )}
                   </p>
                   <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', flexWrap: 'wrap' }}>
                     <a
@@ -2828,7 +2925,7 @@ export default function HomePage() {
                       }}
                     >
                       <MessageCircle size={16} />
-                      <span>Chat on WhatsApp</span>
+                      <span>{isAr ? 'محادثة عبر واتساب' : 'Chat on WhatsApp'}</span>
                     </a>
                     <button
                       type="button"
@@ -2857,7 +2954,7 @@ export default function HomePage() {
                         fontFamily: 'Arial, Helvetica, sans-serif'
                       }}
                     >
-                      Submit Another Request
+                      {isAr ? 'إرسال طلب آخر' : 'Submit Another Request'}
                     </button>
                   </div>
                 </div>
@@ -2865,10 +2962,10 @@ export default function HomePage() {
                 <form onSubmit={handleLeadSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                   <div style={{ borderBottom: '1px solid #f1f5f9', paddingBottom: '12px', marginBottom: '2px' }}>
                     <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#0f172a', margin: '0 0 4px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                      Fast Equipment RFQ & Consultation
+                      {isAr ? 'طلب تسعير واستشارة سريعة للمعدات الطبية' : 'Fast Equipment RFQ & Consultation'}
                     </h3>
                     <p style={{ fontSize: '0.8rem', color: '#64748b', margin: 0, fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                      Fill in your facility details below. Leads are directly dispatched to our UAE CRM team.
+                      {isAr ? 'أدخل بيانات منشأتك أدناه. يتم إرسال الطلبات مباشرة إلى فريق خدمة العملاء في الإمارات.' : 'Fill in your facility details below. Leads are directly dispatched to our UAE CRM team.'}
                     </p>
                   </div>
 
@@ -2893,12 +2990,12 @@ export default function HomePage() {
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }} className="rfq-form-row">
                     <div>
                       <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 600, color: '#475569', marginBottom: '6px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                        Contact Person Name *
+                        {isAr ? 'اسم مسؤول التواصل *' : 'Contact Person Name *'}
                       </label>
                       <input
                         type="text"
                         required
-                        placeholder="Full name"
+                        placeholder={isAr ? 'الاسم بالكامل' : 'Full name'}
                         className="rfq-field-input"
                         value={leadForm.name}
                         onChange={e => setLeadForm({ ...leadForm, name: e.target.value })}
@@ -2920,7 +3017,7 @@ export default function HomePage() {
 
                     <div>
                       <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 600, color: '#475569', marginBottom: '6px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                        Phone / WhatsApp *
+                        {isAr ? 'الهاتف / واتساب *' : 'Phone / WhatsApp *'}
                       </label>
                       <input
                         type="tel"
@@ -2950,7 +3047,7 @@ export default function HomePage() {
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }} className="rfq-form-row">
                     <div>
                       <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 600, color: '#475569', marginBottom: '6px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                        Official Email Address *
+                        {isAr ? 'البريد الإلكتروني الرسمي *' : 'Official Email Address *'}
                       </label>
                       <input
                         type="email"
@@ -2977,11 +3074,11 @@ export default function HomePage() {
 
                     <div>
                       <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 600, color: '#475569', marginBottom: '6px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                        Healthcare Facility / Firm Name
+                        {isAr ? 'اسم المنشأة الصحية / المركز' : 'Healthcare Facility / Firm Name'}
                       </label>
                       <input
                         type="text"
-                        placeholder="Clinic or hospital name"
+                        placeholder={isAr ? 'اسم المستشفى أو العيادة' : 'Clinic or hospital name'}
                         className="rfq-field-input"
                         value={leadForm.facilityName}
                         onChange={e => setLeadForm({ ...leadForm, facilityName: e.target.value })}
@@ -3006,7 +3103,7 @@ export default function HomePage() {
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }} className="rfq-form-row">
                     <div>
                       <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 600, color: '#475569', marginBottom: '6px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                        Facility Type
+                        {isAr ? 'نوع المنشأة' : 'Facility Type'}
                       </label>
                       <select
                         value={leadForm.facilityType}
@@ -3026,21 +3123,21 @@ export default function HomePage() {
                           transition: 'all 0.15s ease'
                         }}
                       >
-                        <option value="Hospital & Medical Center">Hospital & Medical Center</option>
-                        <option value="Medical Clinic / Polyclinic">Medical Clinic / Polyclinic</option>
-                        <option value="Clinical Diagnostic Lab">Clinical Diagnostic Lab</option>
-                        <option value="ICU & Emergency Care">ICU & Emergency Care</option>
-                        <option value="Radiology & Imaging Suite">Radiology & Imaging Suite</option>
-                        <option value="Dental Surgery Center">Dental Surgery Center</option>
-                        <option value="Rehabilitation & Physiotherapy">Rehabilitation & Physiotherapy</option>
-                        <option value="Hospital Pharmacy & Cold Chain">Hospital Pharmacy & Cold Chain</option>
-                        <option value="Other Healthcare Entity">Other Healthcare Entity</option>
+                        <option value="Hospital & Medical Center">{isAr ? 'مستشفى أو مركز طبي' : 'Hospital & Medical Center'}</option>
+                        <option value="Medical Clinic / Polyclinic">{isAr ? 'مجمع عيادات أو عيادة تخصصية' : 'Medical Clinic / Polyclinic'}</option>
+                        <option value="Clinical Diagnostic Lab">{isAr ? 'مختبر تحاليل سريرية' : 'Clinical Diagnostic Lab'}</option>
+                        <option value="ICU & Emergency Care">{isAr ? 'عناية مركزة وطوارئ' : 'ICU & Emergency Care'}</option>
+                        <option value="Radiology & Imaging Suite">{isAr ? 'مركز أشعة وتصوير طبي' : 'Radiology & Imaging Suite'}</option>
+                        <option value="Dental Surgery Center">{isAr ? 'مركز جراحة وأسنان' : 'Dental Surgery Center'}</option>
+                        <option value="Rehabilitation & Physiotherapy">{isAr ? 'علاج طبيعي وتأهيل' : 'Rehabilitation & Physiotherapy'}</option>
+                        <option value="Hospital Pharmacy & Cold Chain">{isAr ? 'صيدلية مستشفى وسلسلة تبريد' : 'Hospital Pharmacy & Cold Chain'}</option>
+                        <option value="Other Healthcare Entity">{isAr ? 'جهة رعاية صحية أخرى' : 'Other Healthcare Entity'}</option>
                       </select>
                     </div>
 
                     <div>
                       <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 600, color: '#475569', marginBottom: '6px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                        Equipment Category of Interest
+                        {isAr ? 'فئة الأجهزة المطلوبة' : 'Equipment Category of Interest'}
                       </label>
                       <select
                         value={leadForm.equipmentInterest}
@@ -3060,14 +3157,14 @@ export default function HomePage() {
                           transition: 'all 0.15s ease'
                         }}
                       >
-                        <option value="ICU & Mechanical Ventilators">ICU & Mechanical Ventilators</option>
-                        <option value="Patient Monitoring & Telemetry">Patient Monitoring & Telemetry</option>
-                        <option value="Hospital Furniture & Ward Beds">Hospital Furniture & Ward Beds</option>
-                        <option value="Laboratory & Biosafety Cabinets">Laboratory & Biosafety Cabinets</option>
-                        <option value="Ultrasound & Color Doppler">Ultrasound & Color Doppler</option>
-                        <option value="Pharmacy 2–8°C Refrigerators">Pharmacy 2–8°C Refrigerators</option>
-                        <option value="Clinical Consumables & PPE">Clinical Consumables & PPE</option>
-                        <option value="Turnkey Clinic / OT Package">Turnkey Clinic / OT Package</option>
+                        <option value="ICU & Mechanical Ventilators">{isAr ? 'أجهزة التنفس الاصطناعي والعناية المركزة' : 'ICU & Mechanical Ventilators'}</option>
+                        <option value="Patient Monitoring & Telemetry">{isAr ? 'أجهزة مراقبة المرضى وتخطيط القلب' : 'Patient Monitoring & Telemetry'}</option>
+                        <option value="Hospital Furniture & Ward Beds">{isAr ? 'أثاث المستشفيات وأسرّة المرضى' : 'Hospital Furniture & Ward Beds'}</option>
+                        <option value="Laboratory & Biosafety Cabinets">{isAr ? 'المختبرات وكبائن الأمان الحيوي' : 'Laboratory & Biosafety Cabinets'}</option>
+                        <option value="Ultrasound & Color Doppler">{isAr ? 'أجهزة السونار والموجات فوق الصوتية' : 'Ultrasound & Color Doppler'}</option>
+                        <option value="Pharmacy 2–8°C Refrigerators">{isAr ? 'ثلاجات حفظ الأدوية 2–8 درجات مئوية' : 'Pharmacy 2–8°C Refrigerators'}</option>
+                        <option value="Clinical Consumables & PPE">{isAr ? 'المستهلكات الطبية وأدوات الوقاية' : 'Clinical Consumables & PPE'}</option>
+                        <option value="Turnkey Clinic / OT Package">{isAr ? 'تجهيز كامل للعيادات وغرف العمليات' : 'Turnkey Clinic / OT Package'}</option>
                       </select>
                     </div>
                   </div>
@@ -3075,7 +3172,7 @@ export default function HomePage() {
                   {/* Row 4: Delivery Timeline */}
                   <div>
                     <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 600, color: '#475569', marginBottom: '6px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                      Delivery / Procurement Timeline
+                      {isAr ? 'الجدول الزمني للتوريد والتسليم' : 'Delivery / Procurement Timeline'}
                     </label>
                     <select
                       value={leadForm.timeline}
@@ -3095,21 +3192,21 @@ export default function HomePage() {
                         transition: 'all 0.15s ease'
                       }}
                     >
-                      <option value="Immediate (Ex-Stock UAE)">Immediate (Ex-Stock UAE - Next 48 Hours)</option>
-                      <option value="Within 1–2 Weeks">Within 1–2 Weeks</option>
-                      <option value="1–3 Months (Upcoming Expansion)">1–3 Months (Upcoming Expansion / Project)</option>
-                      <option value="Annual Budget & Tender Planning">Annual Budget & Tender Planning</option>
+                      <option value="Immediate (Ex-Stock UAE)">{isAr ? 'فوري (متوفر بمستودعات الإمارات - خلال 48 ساعة)' : 'Immediate (Ex-Stock UAE - Next 48 Hours)'}</option>
+                      <option value="Within 1–2 Weeks">{isAr ? 'خلال 1–2 أسبوع' : 'Within 1–2 Weeks'}</option>
+                      <option value="1–3 Months (Upcoming Expansion)">{isAr ? 'خلال 1–3 أشهر (مشروع توسعة قادم)' : '1–3 Months (Upcoming Expansion / Project)'}</option>
+                      <option value="Annual Budget & Tender Planning">{isAr ? 'تخطيط ميزانية سنوية أو مناقصات' : 'Annual Budget & Tender Planning'}</option>
                     </select>
                   </div>
 
                   {/* Row 5: Notes / Specifications */}
                   <div>
                     <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 600, color: '#475569', marginBottom: '6px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                      Specific Models, Quantities or Requirements
+                      {isAr ? 'الموديلات أو الكميات أو المتطلبات الخاصة' : 'Specific Models, Quantities or Requirements'}
                     </label>
                     <textarea
                       rows={2}
-                      placeholder="Brief details or specific items..."
+                      placeholder={isAr ? 'تفاصيل إضافية أو أصناف محددة...' : 'Brief details or specific items...'}
                       className="rfq-field-input"
                       value={leadForm.message}
                       onChange={e => setLeadForm({ ...leadForm, message: e.target.value })}
@@ -3154,12 +3251,12 @@ export default function HomePage() {
                       fontFamily: 'Arial, Helvetica, sans-serif'
                     }}
                   >
-                    <span>{isLeadSubmitting ? 'Synchronizing to CRM...' : 'Submit RFQ to FastonMed CRM'}</span>
-                    <Send size={15} />
+                    <span>{isLeadSubmitting ? (isAr ? 'جاري الإرسال والمزامنة...' : 'Synchronizing to CRM...') : (isAr ? 'إرسال طلب التسعير إلى فاستونميد' : 'Submit RFQ to FastonMed CRM')}</span>
+                    <Send size={15} style={isAr ? { transform: 'scaleX(-1)' } : undefined} />
                   </button>
 
                   <div style={{ textAlign: 'center', fontSize: '0.7rem', color: '#94a3b8', marginTop: '2px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                    🔒 Inquiries are directly routed to the FastonMed Biomedical CRM platform under UAE healthcare compliance.
+                    {isAr ? '🔒 يتم توجيه الاستفسارات مباشرة إلى منصة إدارة طلبات الرعاية الصحية في فاستونميد وفقاً لمعايير الامتثال الطبي في الإمارات.' : '🔒 Inquiries are directly routed to the FastonMed Biomedical CRM platform under UAE healthcare compliance.'}
                   </div>
                 </form>
               )}

@@ -12,11 +12,18 @@ import LanguageSwitcher from './LanguageSwitcher';
 import { useLocale } from '@/lib/locale-context';
 import { getEquivalentPath } from '@/lib/i18n';
 
-const tickerMessages = [
+const tickerMessagesEn = [
   'Free UAE Delivery on Orders Over AED 500',
   '100% Genuine Medical Supplies & Direct UAE Warranty',
   'Bringing Advanced Medical Equipment to Your Doorstep',
   'Precision Healthcare Solutions & Dedicated Support'
+];
+
+const tickerMessagesAr = [
+  'توصيل مجاني في الإمارات للطلبات التي تتجاوز 500 درهم',
+  'مستلزمات طبية أصلية 100% مع ضمان معتمد في الإمارات',
+  'توريد أحدث الأجهزة والمعدات الطبية مباشرة إلى منشأتك',
+  'حلول رعاية صحية دقيقة مع دعم فني وهندسي متواصل'
 ];
 
 export default function Navbar() {
@@ -55,7 +62,7 @@ export default function Navbar() {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setTickerIndex(prev => (prev + 1) % tickerMessages.length);
+      setTickerIndex(prev => (prev + 1) % tickerMessagesEn.length);
     }, 4000);
     return () => clearInterval(timer);
   }, []);
@@ -81,8 +88,21 @@ export default function Navbar() {
         { label: locale === 'ar' ? 'اتصل بنا' : 'Contact Us', href: '/contact' }
       ];
 
+  const translateNavLabel = (label: string, isAr: boolean) => {
+    if (!isAr) return label;
+    const lower = label.toLowerCase().trim();
+    if (lower === 'home') return 'الرئيسية';
+    if (lower === 'about' || lower === 'about us') return 'من نحن';
+    if (lower === 'shop' || lower === 'catalog' || lower === 'products') return 'المتجر';
+    if (lower === 'services') return 'الخدمات';
+    if (lower === 'quality') return 'الجودة';
+    if (lower === 'contact' || lower === 'contact us') return 'اتصل بنا';
+    if (lower === 'brands') return 'العلامات التجارية';
+    return label;
+  };
+
   const navLinks = baseLinks.map(l => ({
-    label: l.label,
+    label: translateNavLabel(l.label, locale === 'ar'),
     href: locale === 'ar' ? getEquivalentPath(l.href, 'ar') : l.href
   }));
 
@@ -210,7 +230,7 @@ export default function Navbar() {
             }}
           >
             <ShieldCheck size={14} strokeWidth={2.2} color="#bbf7d0" />
-            <span>{tickerMessages[tickerIndex]}</span>
+            <span>{(locale === 'ar' ? tickerMessagesAr : tickerMessagesEn)[tickerIndex % 4]}</span>
           </div>
 
           {/* Right: UAE Presence & Business Hours for visual balance */}
@@ -234,7 +254,7 @@ export default function Navbar() {
               }}
             >
               <MapPin size={13} strokeWidth={2.2} />
-              <span>Dubai, UAE</span>
+              <span>{locale === 'ar' ? 'دبي، الإمارات' : 'Dubai, UAE'}</span>
             </span>
 
             <span style={{ opacity: 0.35, fontSize: '0.75rem' }}>|</span>
@@ -248,7 +268,7 @@ export default function Navbar() {
               }}
             >
               <Clock size={13} strokeWidth={2.2} />
-              <span>Mon – Sat: 8:30 AM – 6:00 PM</span>
+              <span>{locale === 'ar' ? 'السبت – الخميس: 8:30 ص – 6:00 م' : 'Mon – Sat: 8:30 AM – 6:00 PM'}</span>
             </span>
 
             <span style={{ opacity: 0.35, fontSize: '0.75rem' }}>|</span>
@@ -606,7 +626,7 @@ export default function Navbar() {
                 fontFamily: 'Arial, Helvetica, sans-serif'
               }}
             >
-              Get in Touch
+              {locale === 'ar' ? 'تواصل معنا' : 'Get in Touch'}
             </Link>
           </div>
         </div>

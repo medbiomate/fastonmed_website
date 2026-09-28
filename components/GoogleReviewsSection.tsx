@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight, ExternalLink, MapPin, Star } from 'lucide-react';
+import { useLocale } from '@/lib/locale-context';
 
 export const GOOGLE_REVIEWS_URL = 'https://share.google/zWzPzh4XjEJlQcKK6';
 export const GOOGLE_MAPS_URL = 'https://www.google.com/maps/place/Fastonmed+Trading+L.L.C/data=!4m2!3m1!1s0x0:0x97cb43ef418cd11b';
@@ -33,6 +34,8 @@ function Stars({ compact = false, rating = 5 }: { compact?: boolean; rating?: nu
 }
 
 export default function GoogleReviewsSection() {
+  const { locale, isArabic } = useLocale();
+  const isAr = isArabic || locale === 'ar';
   const trackRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [reviews, setReviews] = useState<DisplayReview[]>(realGoogleReviews);
@@ -168,19 +171,19 @@ export default function GoogleReviewsSection() {
     `}</style>
     <div className="container">
       <div className="google-reviews-heading">
-        <span className="google-reviews-kicker"><GoogleMark size={16} /> Public Google reviews</span>
-        <h2>Feedback published by our customers on Google</h2>
-        <p>This section reflects Fastonmed Trading L.L.C’s public Google Business Profile. Reviewer names, ratings and dates are shown as published on Google.</p>
+        <span className="google-reviews-kicker"><GoogleMark size={16} /> {isAr ? 'تقييمات جوجل المعتمدة' : 'Public Google reviews'}</span>
+        <h2>{isAr ? 'آراء وتقييمات عملائنا المنشورة على جوجل' : 'Feedback published by our customers on Google'}</h2>
+        <p>{isAr ? 'يعكس هذا القسم ملف فاستونميد للتجارة ذ.م.م الرسمي على جوجل. تظهر أسماء المقيمين والتقييمات والتواريخ كما نُشرت في جوجل.' : 'This section reflects Fastonmed Trading L.L.C’s public Google Business Profile. Reviewer names, ratings and dates are shown as published on Google.'}</p>
       </div>
 
       <div className="google-review-summary">
         <div className="google-review-business">
           <div className="google-review-logo"><GoogleMark size={34} /></div>
-          <div><h3>Fastonmed Trading L.L.C</h3><div className="google-review-score"><strong>{rating.toFixed(1)}</strong><Stars rating={rating} /><p>Based on {reviewCount} Google reviews</p>{isLive && <small className="google-live-badge">Auto-updated</small>}</div></div>
+          <div><h3>Fastonmed Trading L.L.C</h3><div className="google-review-score"><strong>{rating.toFixed(1)}</strong><Stars rating={rating} /><p>{isAr ? `بناءً على ${reviewCount} تقييمات في جوجل` : `Based on ${reviewCount} Google reviews`}</p>{isLive && <small className="google-live-badge">{isAr ? 'تحديث تلقائي' : 'Auto-updated'}</small>}</div></div>
         </div>
         <div className="google-review-actions">
-          <a href={GOOGLE_REVIEWS_URL} target="_blank" rel="noopener noreferrer"><Star size={15} fill="#facc15" color="#facc15" /> Write a review <ExternalLink size={13} /></a>
-          <a href={mapsUrl} target="_blank" rel="noopener noreferrer"><MapPin size={15} /> View on Google Maps <ExternalLink size={13} /></a>
+          <a href={GOOGLE_REVIEWS_URL} target="_blank" rel="noopener noreferrer"><Star size={15} fill="#facc15" color="#facc15" /> {isAr ? 'اكتب تقييماً' : 'Write a review'} <ExternalLink size={13} /></a>
+          <a href={mapsUrl} target="_blank" rel="noopener noreferrer"><MapPin size={15} /> {isAr ? 'عرض في خرائط جوجل' : 'View on Google Maps'} <ExternalLink size={13} /></a>
         </div>
       </div>
 
@@ -200,7 +203,7 @@ export default function GoogleReviewsSection() {
                 {review.text || review.excerpt ? (
                   <blockquote>“{review.text || review.excerpt}”</blockquote>
                 ) : (
-                  <blockquote>Read this customer’s complete review on the public Google listing.</blockquote>
+                  <blockquote>{isAr ? 'اقرأ التقييم الكامل لهذا العميل على ملف جوجل العام.' : 'Read this customer’s complete review on the public Google listing.'}</blockquote>
                 )}
               </div>
               <div className="google-review-person">
@@ -220,7 +223,7 @@ export default function GoogleReviewsSection() {
                     ) : (
                       <strong>{review.name}</strong>
                     )}
-                    <small>{review.reviews ? `${review.reviews} on Google` : 'Google reviewer'}</small>
+                    <small>{review.reviews ? `${review.reviews} ${isAr ? 'على جوجل' : 'on Google'}` : (isAr ? 'عميل موثق في جوجل' : 'Google reviewer')}</small>
                   </div>
                 </div>
                 <span className="google-review-date">{review.date}</span>
@@ -264,13 +267,13 @@ export default function GoogleReviewsSection() {
 
       <div className="google-review-source">
         <span className="google-review-source-note">
-          <GoogleMark size={16} /> Verified Google Business Reviews
+          <GoogleMark size={16} /> {isAr ? 'تقييمات أعمال جوجل الموثقة' : 'Verified Google Business Reviews'}
         </span>
         <a href={GOOGLE_REVIEWS_URL} target="_blank" rel="noopener noreferrer" className="google-review-source-link">
-          Read all on Google <ExternalLink size={12} />
+          {isAr ? 'قراءة جميع التقييمات على جوجل' : 'Read all on Google'} <ExternalLink size={12} />
         </a>
       </div>
-      <p className="google-review-disclosure">Short excerpts reproduced directly from public Google listing.</p>
+      <p className="google-review-disclosure">{isAr ? 'مقتطفات قصيرة منقولة مباشرة من الملف التعريفي العام على جوجل.' : 'Short excerpts reproduced directly from public Google listing.'}</p>
     </div>
   </section>;
 }
