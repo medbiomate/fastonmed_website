@@ -398,8 +398,15 @@ export default function Navbar() {
             id="desktop-nav"
           >
             {navLinks.map(link => {
-              const isShop = link.label.toLowerCase() === 'shop' || link.href === '/shop';
-              const isActive = pathname === link.href || (isShop && pathname.startsWith('/product-category'));
+              const isShop =
+                link.label.toLowerCase() === 'shop' ||
+                link.label === 'المتجر' ||
+                link.href === '/shop' ||
+                link.href === '/ar/shop' ||
+                link.href.endsWith('/shop');
+              const isActive =
+                pathname === link.href ||
+                (isShop && (pathname.includes('/product-category') || pathname.endsWith('/shop')));
 
               if (isShop) {
                 return (
@@ -861,7 +868,12 @@ export default function Navbar() {
 
             <nav style={{ display: 'flex', flexDirection: 'column', gap: '4px', flex: 1 }}>
               {navLinks.map(l => {
-                const isShop = l.label.toLowerCase() === 'shop' || l.href === '/shop';
+                const isShop =
+                  l.label.toLowerCase() === 'shop' ||
+                  l.label === 'المتجر' ||
+                  l.href === '/shop' ||
+                  l.href === '/ar/shop' ||
+                  l.href.endsWith('/shop');
                 if (isShop) {
                   return (
                     <div key={l.href} style={{ borderBottom: '1px solid #f8fafc' }}>
