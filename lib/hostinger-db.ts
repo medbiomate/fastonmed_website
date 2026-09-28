@@ -1,11 +1,21 @@
 import mysql from 'mysql2/promise';
 
 let pool: mysql.Pool | null = null;
+let lastDbFailureTime = 0;
+const DB_FAILURE_COOLDOWN_MS = 30_000;
+
+export function isDbInCooldown(): boolean {
+  return Date.now() - lastDbFailureTime < DB_FAILURE_COOLDOWN_MS;
+}
+
+export function recordDbFailure(): void {
+  lastDbFailureTime = Date.now();
+}
 
 export function getHostingerDbPool(): mysql.Pool {
   if (!pool) {
     pool = mysql.createPool({
-      host: process.env.HOSTINGER_DB_HOST || 'srv679.hstgr.io',
+      host: process.env.HOSTINGER_DB_HOST || (process.env.NODE_ENV === 'production' ? '127.0.0.1' : 'srv679.hstgr.io'),
       port: Number(process.env.HOSTINGER_DB_PORT || 3306),
       user: process.env.HOSTINGER_DB_USER || 'u304645447_fastonmed',
       password: process.env.HOSTINGER_DB_PASSWORD || 'FastonMed_DbPass_2026#!',
@@ -13,7 +23,7 @@ export function getHostingerDbPool(): mysql.Pool {
       waitForConnections: true,
       connectionLimit: 10,
       queueLimit: 0,
-      connectTimeout: 5000,
+      connectTimeout: 1500,
       enableKeepAlive: true,
       keepAliveInitialDelay: 10000
     });
@@ -205,6 +215,7 @@ export async function saveBlogPostToHostingerDb(post: any): Promise<boolean> {
 }
 
 export async function loadProductsFromHostingerDb(): Promise<any[]> {
+  if (isDbInCooldown()) return [];
   try {
     const db = getHostingerDbPool();
     const [rows] = await db.query<any[]>('SELECT raw_data FROM products WHERE status != "trash"');
@@ -218,12 +229,14 @@ export async function loadProductsFromHostingerDb(): Promise<any[]> {
       }).filter(Boolean);
     }
   } catch (err) {
+    recordDbFailure();
     console.warn('Hostinger DB query error:', err);
   }
   return [];
 }
 
 export async function getProductBySlugOrIdFromHostingerDb(slugOrId: string): Promise<any | null> {
+  if (isDbInCooldown()) return null;
   try {
     const db = getHostingerDbPool();
     const clean = decodeURIComponent(slugOrId).trim().toLowerCase().replace(/\/+$/, '');
@@ -252,6 +265,7 @@ export async function getProductBySlugOrIdFromHostingerDb(slugOrId: string): Pro
       }
     }
   } catch (err) {
+    recordDbFailure();
     console.warn('Hostinger DB getProductBySlug error:', err);
   }
   return null;
