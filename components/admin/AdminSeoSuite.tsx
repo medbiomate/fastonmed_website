@@ -142,9 +142,9 @@ export default function AdminSeoSuite() {
             title: 'Homepage',
             slug: '',
             url: '/',
-            description: 'FastonMed healthcare equipment supplier homepage for UAE & Dubai.',
-            seoTitle: 'Best Medical Equipment Supplier in UAE & Dubai | FastonMed',
-            seoDescription: 'FastonMed is the best medical equipment supplier in UAE & Dubai. Supplying hospitals, clinics, and healthcare facilities with certified biomedical devices, ICU systems, and medical supplies.',
+            description: 'Healthcare equipment supplier homepage for UAE.',
+            seoTitle: 'Best Medical Equipment Supplier in UAE',
+            seoDescription: 'Best medical equipment supplier in UAE. Supplying hospitals, clinics, and healthcare facilities with certified biomedical devices, ICU systems, and medical supplies across the UAE.',
             canonicalUrl: 'https://www.fastonmed.com'
           },
           {

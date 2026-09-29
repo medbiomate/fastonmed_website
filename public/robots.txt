@@ -3,4 +3,7 @@ Allow: /
 Disallow: /admin
 Disallow: /api/
 
+User-agent: Googlebot-Image
+Allow: /
+
 Sitemap: https://www.fastonmed.com/sitemap.xml

@@ -6,21 +6,18 @@ import SiteShell from '@/components/SiteShell';
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.fastonmed.com'),
   title: {
-    default: 'Best Medical Equipment Supplier in UAE & Dubai | FastonMed',
+    default: 'Best Medical Equipment Supplier in UAE',
     template: '%s'
   },
   description:
-    'FastonMed is the best medical equipment supplier in UAE & Dubai. Supplying hospitals, clinics, and healthcare facilities with certified biomedical devices, ICU systems, and medical supplies.',
+    'Best medical equipment supplier in UAE. Supplying hospitals, clinics, and healthcare facilities with certified biomedical devices, ICU systems, and medical supplies across the UAE.',
   keywords: [
-    'Best Medical Equipment Supplier in UAE & Dubai',
     'Best Medical Equipment Supplier in UAE',
     'Medical Equipment Supplier in UAE',
-    'Medical Equipment Dubai',
     'Hospital Equipment UAE',
     'Healthcare Equipment UAE',
     'Medical Supplies UAE',
-    'Biomedical Equipment UAE',
-    'FastonMed'
+    'Biomedical Equipment UAE'
   ],
   authors: [{ name: 'FastonMed' }],
   creator: 'FastonMed',
@@ -33,31 +30,32 @@ export const metadata: Metadata = {
     locale: 'en_AE',
     url: 'https://www.fastonmed.com',
     siteName: 'FastonMed',
-    title: 'Best Medical Equipment Supplier in UAE & Dubai | FastonMed',
+    title: 'Best Medical Equipment Supplier in UAE',
     description:
-      'FastonMed is the best medical equipment supplier in UAE & Dubai. Supplying hospitals, clinics, and healthcare facilities with certified biomedical devices, ICU systems, and medical supplies.',
+      'Best medical equipment supplier in UAE. Supplying hospitals, clinics, and healthcare facilities with certified biomedical devices, ICU systems, and medical supplies across the UAE.',
     images: [
       {
         url: 'https://www.fastonmed.com/fastonmed-logo.png',
         width: 1200,
         height: 630,
-        alt: 'FastonMed - Best Medical Equipment Supplier in UAE & Dubai'
+        alt: 'Best Medical Equipment Supplier in UAE'
       }
     ]
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Best Medical Equipment Supplier in UAE & Dubai | FastonMed',
+    title: 'Best Medical Equipment Supplier in UAE',
     description:
-      'FastonMed is the best medical equipment supplier in UAE & Dubai. Official warranty, fast delivery across UAE, and biomedical technical support.',
+      'Best medical equipment supplier in UAE. Official warranty, fast delivery across UAE, and biomedical technical support.',
     images: ['https://www.fastonmed.com/fastonmed-logo.png']
   },
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: 'any' },
-      { url: '/favicon.svg', type: 'image/svg+xml' },
-      { url: '/favicon-32x32.png', type: 'image/png', sizes: '32x32' },
-      { url: '/favicon-16x16.png', type: 'image/png', sizes: '16x16' }
+      { url: '/favicon-48x48.png', type: 'image/png', sizes: '48x48' },
+      { url: '/favicon-96x96.png', type: 'image/png', sizes: '96x96' },
+      { url: '/favicon-192x192.png', type: 'image/png', sizes: '192x192' },
+      { url: '/favicon.svg', type: 'image/svg+xml' }
     ],
     apple: [
       { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }
@@ -164,8 +162,11 @@ export default async function RootLayout({
     <html lang={isAr ? 'ar' : 'en'} dir={isAr ? 'rtl' : 'ltr'} className={isAr ? 'rtl-arabic' : ''}>
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png" />
+        <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+        <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         <link rel="alternate" hrefLang="en" href="https://www.fastonmed.com" />
         <link rel="alternate" hrefLang="ar" href="https://www.fastonmed.com/ar" />
         <link rel="alternate" hrefLang="x-default" href="https://www.fastonmed.com" />

@@ -1970,8 +1970,8 @@ export default function HomePage() {
               }}
             >
               {isAr
-                ? 'توفر فاستونميد معدات طبية أصلية معتمدة، دعماً هندسياً حيوياً، ومستهلكات سريرية للمنشآت الصحية عبر دبي وأبوظبي وكافة أنحاء الإمارات.'
-                : 'FastonMed delivers genuine certified medical equipment, biomedical engineering support, and clinical consumables to healthcare firms across Dubai, Abu Dhabi, and the UAE.'}
+                ? 'أفضل مورد معدات طبية يوفر أجهزة معتمدة ودعماً سريرياً ومستهلكات طبية لكافة المنشآت الصحية في الإمارات.'
+                : 'Best medical equipment supplier delivering genuine certified biomedical technology, clinical support, and healthcare consumables across the UAE.'}
             </p>
           </div>
 
