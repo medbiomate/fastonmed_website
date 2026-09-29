@@ -42,15 +42,18 @@ export async function generateMetadata({
 
   if (!page) {
     return {
-      title: isAr ? 'الصفحة غير موجودة | FastonMed' : 'Page Not Found | Best Medical Equipment Supplier in UAE | FastonMed',
+      title: isAr ? 'الصفحة غير موجودة | FastOnMed' : 'Page Not Found | FastOnMed',
       robots: { index: false, follow: true }
     };
   }
 
-  let title = `${page.title} | Best Medical Equipment Supplier in UAE | FastonMed`;
+  let title = slug === 'medical-equipment-supplier-in-uae'
+    ? 'Medical Equipment Supplier in UAE & Dubai | FastOnMed'
+    : `${page.title} | FastOnMed UAE`;
+
   let description =
     page.description ||
-    `${page.title} – FastonMed is the Best Medical Equipment Supplier in UAE. Certified clinical solutions, ICU ventilators, and hospital equipment across Dubai and Abu Dhabi.`;
+    `${page.title} – FastOnMed supplies certified biomedical equipment and hospital solutions across Dubai and the UAE.`;
 
   if (isAr) {
     const [arTitle, arDesc] = await Promise.all([
@@ -67,7 +70,9 @@ export async function generateMetadata({
         sourceText: description,
       }),
     ]);
-    title = `${arTitle} | أفضل مورد للمعدات الطبية في الإمارات | FastonMed`;
+    title = slug === 'medical-equipment-supplier-in-uae'
+      ? 'مورد الأجهزة والمعدات الطبية في الإمارات ودبي | فاستونميد'
+      : `${arTitle} | فاستونميد الإمارات`;
     description = arDesc;
   }
 

@@ -156,8 +156,8 @@ export default function Footer() {
 
             <p style={{ fontSize: '0.84rem', color: '#64748b', lineHeight: 1.6, margin: '0 0 18px 0' }}>
               {isAr
-                ? 'فاستونميد هي أفضل مورد للأجهزة والمعدات الطبية في الإمارات. موزع معتمد للتقنيات الطبية الحيوية، أجهزة التنفس للعناية المركزة، أجهزة التشخيص والمعدات السريرية المعتمدة.'
-                : 'FastonMed is the Best Medical Equipment Supplier in UAE. Official distributor of certified biomedical technology, ICU ventilators, diagnostics, and clinical equipment.'}
+                ? 'توفر فاستونميد الأجهزة الطبية وأنظمة الهندسة الطبية الحيوية والحلول السريرية للمستشفيات والعيادات والمنشآت الصحية عبر كافة أنحاء الإمارات.'
+                : 'FastOnMed supplies medical equipment, biomedical systems and clinical solutions to hospitals, clinics and healthcare facilities across the UAE.'}
             </p>
 
             {/* Social Icons */}
@@ -522,8 +522,8 @@ export default function Footer() {
             </p>
             <p style={{ margin: '0 0 16px 0', fontSize: '0.72rem', color: '#475569' }}>
               {isAr
-                ? 'فاستونميد هي أفضل مورد للأجهزة والمعدات الطبية في الإمارات. موزع للتكنولوجيا الطبية الحيوية المعتمدة، أجهزة التنفس للعناية المركزة، شاشات مراقبة المرضى، أثاث المستشفيات، الإضاءة الجراحية، التبريد الطبي وأجهزة المختبرات السريرية في دبي وأبوظبي والشارقة وعجمان ورأس الخيمة والفجيرة وأم القيوين. جميع العلامات التجارية والشعارات ملك لأصحابها من الشركات المصنعة.'
-                : 'FastonMed is the Best Medical Equipment Supplier in UAE. Distributor of certified biomedical technology, ICU ventilators, multi-parameter patient monitors, hospital furniture, surgical lighting, medical cold storage, and clinical laboratory equipment across Dubai, Abu Dhabi, Sharjah, Ajman, Ras Al Khaimah, Fujairah, and Umm Al Quwain. All brand logos, trademarks, and registered marks displayed on this platform belong to their respective corporate manufacturers.'}
+                ? 'فاستونميد للتجارة ذ.م.م | موزع معتمد للتكنولوجيا الطبية الحيوية، أجهزة التنفس للعناية المركزة، شاشات مراقبة المرضى، أثاث المستشفيات، التبريد الطبي وأجهزة المختبرات السريرية في دبي وأبوظبي والشارقة وعجمان ورأس الخيمة والفجيرة وأم القيوين. جميع العلامات التجارية والشعارات ملك لأصحابها من الشركات المصنعة.'
+                : 'FastOnMed is an official UAE distributor of certified biomedical technology, ICU ventilators, multi-parameter patient monitors, hospital furniture, surgical lighting, medical cold storage, and clinical laboratory equipment across Dubai, Abu Dhabi, Sharjah, Ajman, Ras Al Khaimah, Fujairah, and Umm Al Quwain. All brand logos, trademarks, and registered marks displayed on this platform belong to their respective corporate manufacturers.'}
             </p>
 
             <div

@@ -924,8 +924,8 @@ export default function HomePage() {
                 }}
               >
                 {isAr
-                  ? 'منذ 2024 · أكثر من 10,000 جهاز طبي · معتمد 100%'
-                  : 'Since 2024 · 10,000+ Devices · 100% Certified'}
+                  ? 'منذ 2024 · أكثر من 2,700 منتج طبي · وثائق ومعايير معتمدة من المصنع'
+                  : 'Since 2024 · 2,700+ Catalog Products · Manufacturer Documentation Available'}
               </div>
 
               {/* Subtitle with SEO sub-keywords */}
@@ -942,8 +942,8 @@ export default function HomePage() {
                 }}
               >
                 {isAr
-                  ? 'فاستونميد هي المورد الرائد للمعدات والأجهزة الطبية في دولة الإمارات، حيث نقدم أحدث التقنيات الطبية الحيوية المعتمدة وأنظمة العناية المركزة والمستلزمات السريرية عبر جميع الإمارات السبع.'
-                  : 'FastonMed is the premier medical equipment supplier in UAE, delivering certified biomedical technology, ICU systems, and clinical supplies across all 7 Emirates.'}
+                  ? 'توفر فاستونميد الأجهزة الطبية وأنظمة الهندسة الطبية الحيوية والحلول السريرية للمستشفيات والعيادات والمنشآت الصحية عبر كافة أنحاء الإمارات.'
+                  : 'FastOnMed supplies medical equipment, biomedical systems and clinical solutions to hospitals, clinics and healthcare facilities across the UAE.'}
               </p>
               <p
                 className="hero-desc-mobile"
@@ -956,8 +956,8 @@ export default function HomePage() {
                 }}
               >
                 {isAr
-                  ? 'أنظمة طبية حيوية عالية الدقة ومستلزمات سريرية معتمدة عبر الإمارات.'
-                  : 'High-precision biomedical systems & clinical supplies across the UAE.'}
+                  ? 'أنظمة طبية حيوية وحلول سريرية متقدمة للمستشفيات والعيادات عبر الإمارات.'
+                  : 'Medical equipment, biomedical systems & clinical solutions across the UAE.'}
               </p>
 
               {/* Action Buttons: In-line on Laptop, Stacked on Mobile, Icon matching Logo Color #42B69C */}
@@ -1801,8 +1801,8 @@ export default function HomePage() {
               <div className="metric-stat-icon">
                 <Package size={24} color="#ffffff" />
               </div>
-              <div className="metric-stat-number">500+</div>
-              <div className="metric-stat-label">{isAr ? 'جهاز ومعدة طبية معتمدة' : 'Quality Medical Devices'}</div>
+              <div className="metric-stat-number">2,700+</div>
+              <div className="metric-stat-label">{isAr ? 'منتج ومعدة طبية بالكتالوج' : 'Catalog Medical Products'}</div>
             </div>
 
             {/* Stat 3 */}
@@ -2555,7 +2555,7 @@ export default function HomePage() {
                 fontFamily: 'Arial, Helvetica, sans-serif'
               }}
             >
-              <span>{isAr ? `استكشف الكتالوج الكامل (${products.length} صنف طبي)` : `Explore Complete Catalog (${products.length} Items)`}</span>
+              <span>{isAr ? 'استعرض أكثر من 2,700 منتج طبي' : 'Browse 2,700+ Medical Products'}</span>
               <ArrowRight size={16} style={isAr ? { transform: 'scaleX(-1)' } : undefined} />
             </Link>
           </div>

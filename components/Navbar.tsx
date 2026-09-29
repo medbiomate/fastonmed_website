@@ -81,10 +81,9 @@ export default function Navbar() {
     ? chromeSettings.headerMenu.map(m => ({ label: m.label, href: m.url }))
     : [
         { label: locale === 'ar' ? 'الرئيسية' : 'Home', href: '/' },
-        { label: locale === 'ar' ? 'من نحن' : 'About Us', href: '/about-us' },
-        { label: locale === 'ar' ? 'المتجر' : 'Products', href: '/shop' },
+        { label: locale === 'ar' ? 'المنتجات' : 'Products', href: '/shop' },
         { label: locale === 'ar' ? 'الخدمات' : 'Services', href: '/services' },
-        { label: locale === 'ar' ? 'الجودة' : 'Quality', href: '/about-us' },
+        { label: locale === 'ar' ? 'من نحن' : 'About Us', href: '/about-us' },
         { label: locale === 'ar' ? 'اتصل بنا' : 'Contact Us', href: '/contact' }
       ];
 
@@ -93,7 +92,7 @@ export default function Navbar() {
     const lower = label.toLowerCase().trim();
     if (lower === 'home') return 'الرئيسية';
     if (lower === 'about' || lower === 'about us') return 'من نحن';
-    if (lower === 'shop' || lower === 'catalog' || lower === 'products') return 'المتجر';
+    if (lower === 'shop' || lower === 'catalog' || lower === 'products') return 'المنتجات';
     if (lower === 'services') return 'الخدمات';
     if (lower === 'quality') return 'الجودة';
     if (lower === 'contact' || lower === 'contact us') return 'اتصل بنا';
@@ -294,7 +293,7 @@ export default function Navbar() {
               }}
             >
               <Clock size={13} strokeWidth={2.2} />
-              <bdi>{locale === 'ar' ? 'السبت – الخميس: 8:30 ص – 6:00 م' : 'Mon – Sat: 8:30 AM – 6:00 PM'}</bdi>
+              <bdi>{locale === 'ar' ? 'الإثنين – الجمعة: 8:30 ص – 6:00 م | السبت: 9:00 ص – 2:00 م' : 'Mon – Fri: 8:30 AM – 6:00 PM | Sat: 9:00 AM – 2:00 PM'}</bdi>
             </span>
           </div>
         </div>
@@ -400,7 +399,9 @@ export default function Navbar() {
             {navLinks.map(link => {
               const isShop =
                 link.label.toLowerCase() === 'shop' ||
+                link.label.toLowerCase() === 'products' ||
                 link.label === 'المتجر' ||
+                link.label === 'المنتجات' ||
                 link.href === '/shop' ||
                 link.href === '/ar/shop' ||
                 link.href.endsWith('/shop');
@@ -870,7 +871,9 @@ export default function Navbar() {
               {navLinks.map(l => {
                 const isShop =
                   l.label.toLowerCase() === 'shop' ||
+                  l.label.toLowerCase() === 'products' ||
                   l.label === 'المتجر' ||
+                  l.label === 'المنتجات' ||
                   l.href === '/shop' ||
                   l.href === '/ar/shop' ||
                   l.href.endsWith('/shop');
