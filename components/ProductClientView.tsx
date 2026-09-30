@@ -574,9 +574,17 @@ export default function ProductClientView({ product, similarProducts }: ProductC
               <h2 style={{ fontSize: '1.3rem', fontWeight: 800, color: '#0f172a', marginBottom: '16px' }}>
                 Clinical Performance & Indications
               </h2>
-              <p style={{ color: '#334155', lineHeight: 1.7, fontSize: '0.98rem', marginBottom: '24px', maxWidth: '850px' }}>
-                {product.fullDescription || product.shortDescription}
-              </p>
+              {/<[a-z][\s\S]*>/i.test(product.fullDescription || '') ? (
+                <div
+                  className="fm-product-rich-desc"
+                  style={{ color: '#334155', lineHeight: 1.8, fontSize: '0.98rem', marginBottom: '24px', maxWidth: '850px' }}
+                  dangerouslySetInnerHTML={{ __html: product.fullDescription || '' }}
+                />
+              ) : (
+                <p style={{ color: '#334155', lineHeight: 1.7, fontSize: '0.98rem', marginBottom: '24px', maxWidth: '850px', whiteSpace: 'pre-line' }}>
+                  {product.fullDescription || product.shortDescription}
+                </p>
+              )}
 
               <div style={{ maxWidth: '850px', marginTop: '20px' }}>
                 <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#0f172a', marginBottom: '14px' }}>
