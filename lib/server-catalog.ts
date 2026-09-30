@@ -31,6 +31,11 @@ type RawCrmProduct = {
   galleryImages?: string[];
   shortDescription?: string;
   sourcePostType?: string;
+  seoTitle?: string;
+  seoDescription?: string;
+  focusKeyword?: string;
+  ogTitle?: string;
+  ogDescription?: string;
   createdAt?: string;
   updatedAt?: string;
 };
@@ -84,6 +89,11 @@ function mapRawProduct(item: RawCrmProduct, index: number): Product {
     isBestSeller: index < 4,
     isNew: false,
     status: 'published',
+    seoTitle: item.seoTitle?.trim() || undefined,
+    seoDescription: item.seoDescription?.trim() || undefined,
+    focusKeyword: item.focusKeyword?.trim() || undefined,
+    ogTitle: item.ogTitle?.trim() || item.seoTitle?.trim() || undefined,
+    ogDescription: item.ogDescription?.trim() || item.seoDescription?.trim() || undefined,
     createdAt,
     updatedAt,
     canonicalUrl: item.productUrl || `https://www.fastonmed.com/product/${item.slug || slugify(name)}`

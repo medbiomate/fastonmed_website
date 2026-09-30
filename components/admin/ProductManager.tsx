@@ -420,6 +420,7 @@ export default function ProductManager({
   const [draftSeoTitle, setDraftSeoTitle] = useState('');
   const [draftSeoSlug, setDraftSeoSlug] = useState('');
   const [draftSeoDesc, setDraftSeoDesc] = useState('');
+  const [isSaving, setIsSaving] = useState(false);
 
   // Media Library & Uploads State
   const [mediaModalOpen, setMediaModalOpen] = useState(false);
@@ -729,16 +730,22 @@ export default function ProductManager({
     setSeoModalOpen(true);
   };
 
-  const applySeoChanges = () => {
+  const applySeoChanges = async () => {
+    const updatedSeo = {
+      seoTitle: draftSeoTitle.trim(),
+      slug: draftSeoSlug.trim() || slugify(product.name),
+      seoDescription: draftSeoDesc.trim(),
+    };
     setProduct((prev) => ({
       ...prev,
-      seoTitle: draftSeoTitle,
-      slug: draftSeoSlug,
-      seoDescription: draftSeoDesc,
+      ...updatedSeo,
     }));
-    setSeoModalOpen(false);
-    setMessage('SEO snippet updated! Save product to persist changes.');
-    setTimeout(() => setMessage(''), 3500);
+    const success = await saveProduct(updatedSeo);
+    if (success) {
+      setSeoModalOpen(false);
+      setMessage('SEO Snippet & Product saved successfully!');
+      setTimeout(() => setMessage(''), 3500);
+    }
   };
 
   // Reset page to 1 whenever search query or category filter changes
@@ -882,50 +889,74 @@ export default function ProductManager({
   };
 
   // Save product (editor mode)
-  const saveProduct = async () => {
-    const specifications = Object.fromEntries(
-      specText
-        .split('\n')
-        .map((x) => x.split(':'))
-        .filter((x) => x.length > 1)
-        .map(([k, ...v]) => [k.trim(), v.join(':').trim()])
-    );
+  const saveProduct = async (override?: Partial<Product>): Promise<boolean> => {
+    setIsSaving(true);
+    try {
+      const specifications = Object.fromEntries(
+        specText
+          .split('\n')
+          .map((x) => x.split(':'))
+          .filter((x) => x.length > 1)
+          .map(([k, ...v]) => [k.trim(), v.join(':').trim()])
+      );
 
-    const finalDescription =
-      descriptionMode === 'visual'
-        ? (editorCanvasRef.current?.innerHTML ?? product.description ?? '')
-        : (product.description || '');
+      const finalDescription =
+        descriptionMode === 'visual'
+          ? (editorCanvasRef.current?.innerHTML ?? product.description ?? '')
+          : (product.description || '');
 
-    const ready = {
-      ...product,
-      name: product.name.trim(),
-      slug: product.slug || slugify(product.name),
-      sku: product.sku || `FOM-${Date.now()}`,
-      image: product.image || '',
-      galleryImages: (product.galleryImages || []).filter(Boolean),
-      regularPrice: Number(product.regularPrice || 0),
-      salePrice: Number(product.salePrice || 0) || null,
-      sellingPrice: Number(product.salePrice || product.regularPrice || 0),
-      inStock: Number(product.inStock || 0),
-      description: finalDescription,
-      specifications,
-      updatedAt: new Date().toISOString(),
-      createdAt: product.createdAt || new Date().toISOString(),
-    };
+      const base = {
+        ...product,
+        ...(override || {}),
+      };
 
-    const r = await fetch('/api/admin/products', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(ready),
-    });
-    if (!r.ok) {
-      alert('Could not save product');
-      return;
+      const ready = {
+        ...base,
+        name: base.name.trim(),
+        slug: base.slug || slugify(base.name),
+        sku: base.sku || `FOM-${Date.now()}`,
+        image: base.image || '',
+        galleryImages: (base.galleryImages || []).filter(Boolean),
+        regularPrice: Number(base.regularPrice || 0),
+        salePrice: Number(base.salePrice || 0) || null,
+        sellingPrice: Number(base.salePrice || base.regularPrice || 0),
+        inStock: Number(base.inStock || 0),
+        description: finalDescription,
+        specifications,
+        updatedAt: new Date().toISOString(),
+        createdAt: base.createdAt || new Date().toISOString(),
+      };
+
+      const r = await fetch('/api/admin/products', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(ready),
+      });
+      if (!r.ok) {
+        alert('Could not save product');
+        return false;
+      }
+      const data = await r.json();
+      const saved = data.product || ready;
+      setProduct(saved);
+      setProducts((current) => {
+        const idx = current.findIndex((p) => p.id === saved.id || (saved.slug && p.slug === saved.slug));
+        if (idx >= 0) {
+          const updated = [...current];
+          updated[idx] = saved;
+          return updated;
+        }
+        return [saved, ...current];
+      });
+      setMessage('Product saved successfully!');
+      setTimeout(() => setMessage(''), 3000);
+      return true;
+    } catch (err: any) {
+      alert(`Save failed: ${err.message || err}`);
+      return false;
+    } finally {
+      setIsSaving(false);
     }
-    const data = await r.json();
-    setProduct(data.product || ready);
-    setMessage('Product saved successfully!');
-    setTimeout(() => setMessage(''), 3000);
   };
 
   // Filter media items in modal
@@ -1255,8 +1286,12 @@ export default function ProductManager({
             >
               <Sparkles size={14} /> SEO Snippet
             </button>
-            <button className="tk-page-action" onClick={saveProduct} disabled={isUploading}>
-              <Save size={15} /> Save Product
+            <button
+              className="tk-page-action"
+              onClick={() => saveProduct()}
+              disabled={isUploading || isSaving}
+            >
+              <Save size={15} /> {isSaving ? 'Saving...' : 'Save Product'}
             </button>
           </div>
         }
@@ -1998,113 +2033,139 @@ export default function ProductManager({
           <div className="fm-seo-modal" onClick={(e) => e.stopPropagation()}>
             <div className="fm-seo-header">
               <h2>Preview Snippet Editor</h2>
-              <button
-                type="button"
-                className="fm-seo-close"
-                onClick={() => setSeoModalOpen(false)}
-              >
-                <X size={18} />
-              </button>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <button
+                  type="button"
+                  className="fm-seo-apply-btn"
+                  style={{ padding: '6px 14px', fontSize: '12px' }}
+                  onClick={applySeoChanges}
+                  disabled={isSaving}
+                >
+                  <Save size={13} /> {isSaving ? 'Saving...' : 'Save & Apply'}
+                </button>
+                <button
+                  type="button"
+                  className="fm-seo-close"
+                  onClick={() => setSeoModalOpen(false)}
+                  title="Close modal"
+                >
+                  <X size={18} />
+                </button>
+              </div>
             </div>
 
-            {/* Google Search Result Preview */}
-            <div className="fm-seo-preview-card">
-              <h4>Preview</h4>
-              <div className="fm-seo-preview-url">
-                https://www.fastonmed.com/product/{draftSeoSlug || slugify(product.name) || 'product-slug'}
-              </div>
-              <h3 className="fm-seo-preview-title">
-                {draftSeoTitle || product.name || 'Page title'}
-              </h3>
-              <p className="fm-seo-preview-desc">
-                {draftSeoDesc || product.shortDescription || 'Add a concise description for search results.'}
-              </p>
-            </div>
-
-            {/* Title Field Box */}
-            <div className="fm-seo-field-box">
-              <div className="fm-seo-field-header">
-                <span>Title</span>
-                <span className="fm-seo-counter">{draftSeoTitle.length} / 60</span>
-              </div>
-              <input
-                className="fm-seo-input"
-                value={draftSeoTitle}
-                onChange={(e) => setDraftSeoTitle(e.target.value)}
-                placeholder="SEO title"
-              />
-              <p className="fm-seo-field-hint">This appears as the first line in search results.</p>
-            </div>
-
-            {/* Permalink Field Box */}
-            <div className="fm-seo-field-box">
-              <div className="fm-seo-field-header">
-                <span>Permalink</span>
-                <span className="fm-seo-counter">{draftSeoSlug.length} / 75</span>
-              </div>
-              <input
-                className="fm-seo-input"
-                value={draftSeoSlug}
-                onChange={(e) => setDraftSeoSlug(slugify(e.target.value))}
-                placeholder="page-url"
-              />
-              <p className="fm-seo-field-hint">The unique URL of this page.</p>
-            </div>
-
-            {/* Description Field Box */}
-            <div className="fm-seo-field-box">
-              <div className="fm-seo-field-header">
-                <span>Description</span>
-                <span className="fm-seo-counter">{draftSeoDesc.length} / 160</span>
-              </div>
-              <textarea
-                className="fm-seo-textarea"
-                rows={3}
-                value={draftSeoDesc}
-                onChange={(e) => setDraftSeoDesc(e.target.value)}
-                placeholder="Meta description"
-              />
-              <p className="fm-seo-field-hint">This appears below the title in search results.</p>
-            </div>
-
-            {/* Checklist */}
-            <div className="fm-seo-checks">
-              <div
-                className={`fm-seo-check-item ${
-                  draftSeoTitle.trim().length > 0 && draftSeoTitle.length <= 60 ? 'ok' : 'warn'
-                }`}
-              >
-                <span>
-                  {draftSeoTitle.trim().length > 0 && draftSeoTitle.length <= 60 ? '✓' : '✕'}
-                </span>
-                <div>SEO title is present and within 60 characters.</div>
+            <div className="fm-seo-body">
+              {/* Google Search Result Preview */}
+              <div className="fm-seo-preview-card">
+                <h4>Preview</h4>
+                <div className="fm-seo-preview-url">
+                  https://www.fastonmed.com/product/{draftSeoSlug || slugify(product.name) || 'product-slug'}
+                </div>
+                <h3 className="fm-seo-preview-title">
+                  {draftSeoTitle || product.name || 'Page title'}
+                </h3>
+                <p className="fm-seo-preview-desc">
+                  {draftSeoDesc || product.shortDescription || 'Add a concise description for search results.'}
+                </p>
               </div>
 
-              <div
-                className={`fm-seo-check-item ${
-                  draftSeoDesc.trim().length >= 20 && draftSeoDesc.length <= 160 ? 'ok' : 'warn'
-                }`}
-              >
-                <span>
-                  {draftSeoDesc.trim().length >= 20 && draftSeoDesc.length <= 160 ? '✓' : '✕'}
-                </span>
-                <div>Meta description has a useful search-result length.</div>
+              {/* Title Field Box */}
+              <div className="fm-seo-field-box">
+                <div className="fm-seo-field-header">
+                  <span>Title</span>
+                  <span className="fm-seo-counter">{draftSeoTitle.length} / 60</span>
+                </div>
+                <input
+                  className="fm-seo-input"
+                  value={draftSeoTitle}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    setDraftSeoTitle(val);
+                    setProduct((prev) => ({ ...prev, seoTitle: val }));
+                  }}
+                  placeholder="SEO title"
+                />
+                <p className="fm-seo-field-hint">This appears as the first line in search results.</p>
               </div>
 
-              <div
-                className={`fm-seo-check-item ${
-                  draftSeoSlug.trim().length > 0 && draftSeoSlug.length <= 75 ? 'ok' : 'warn'
-                }`}
-              >
-                <span>
-                  {draftSeoSlug.trim().length > 0 && draftSeoSlug.length <= 75 ? '✓' : '✕'}
-                </span>
-                <div>URL is concise and readable.</div>
+              {/* Permalink Field Box */}
+              <div className="fm-seo-field-box">
+                <div className="fm-seo-field-header">
+                  <span>Permalink</span>
+                  <span className="fm-seo-counter">{draftSeoSlug.length} / 75</span>
+                </div>
+                <input
+                  className="fm-seo-input"
+                  value={draftSeoSlug}
+                  onChange={(e) => {
+                    const clean = slugify(e.target.value);
+                    setDraftSeoSlug(clean);
+                    setProduct((prev) => ({ ...prev, slug: clean }));
+                  }}
+                  placeholder="page-url"
+                />
+                <p className="fm-seo-field-hint">The unique URL of this page.</p>
               </div>
 
-              <div className="fm-seo-check-item ok">
-                <span>✓</span>
-                <div>Add a focus keyword for additional checks.</div>
+              {/* Description Field Box */}
+              <div className="fm-seo-field-box">
+                <div className="fm-seo-field-header">
+                  <span>Description</span>
+                  <span className="fm-seo-counter">{draftSeoDesc.length} / 160</span>
+                </div>
+                <textarea
+                  className="fm-seo-textarea"
+                  rows={3}
+                  value={draftSeoDesc}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    setDraftSeoDesc(val);
+                    setProduct((prev) => ({ ...prev, seoDescription: val }));
+                  }}
+                  placeholder="Meta description"
+                />
+                <p className="fm-seo-field-hint">This appears below the title in search results.</p>
+              </div>
+
+              {/* Checklist */}
+              <div className="fm-seo-checks">
+                <div
+                  className={`fm-seo-check-item ${
+                    draftSeoTitle.trim().length > 0 && draftSeoTitle.length <= 60 ? 'ok' : 'warn'
+                  }`}
+                >
+                  <span>
+                    {draftSeoTitle.trim().length > 0 && draftSeoTitle.length <= 60 ? '✓' : '✕'}
+                  </span>
+                  <div>SEO title is present and within 60 characters.</div>
+                </div>
+
+                <div
+                  className={`fm-seo-check-item ${
+                    draftSeoDesc.trim().length >= 20 && draftSeoDesc.length <= 160 ? 'ok' : 'warn'
+                  }`}
+                >
+                  <span>
+                    {draftSeoDesc.trim().length >= 20 && draftSeoDesc.length <= 160 ? '✓' : '✕'}
+                  </span>
+                  <div>Meta description has a useful search-result length.</div>
+                </div>
+
+                <div
+                  className={`fm-seo-check-item ${
+                    draftSeoSlug.trim().length > 0 && draftSeoSlug.length <= 75 ? 'ok' : 'warn'
+                  }`}
+                >
+                  <span>
+                    {draftSeoSlug.trim().length > 0 && draftSeoSlug.length <= 75 ? '✓' : '✕'}
+                  </span>
+                  <div>URL is concise and readable.</div>
+                </div>
+
+                <div className="fm-seo-check-item ok">
+                  <span>✓</span>
+                  <div>Add a focus keyword for additional checks.</div>
+                </div>
               </div>
             </div>
 
@@ -2121,8 +2182,9 @@ export default function ProductManager({
                 type="button"
                 className="fm-seo-apply-btn"
                 onClick={applySeoChanges}
+                disabled={isSaving}
               >
-                Apply SEO changes
+                <Save size={14} /> {isSaving ? 'Saving Changes...' : 'Save & Apply Changes'}
               </button>
             </div>
           </div>
