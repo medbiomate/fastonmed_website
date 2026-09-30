@@ -312,6 +312,8 @@ export default function ProductManager({
   const [mediaTab, setMediaTab] = useState<'library' | 'upload'>('library');
   const [isUploading, setIsUploading] = useState(false);
   const [showDirectUrlInput, setShowDirectUrlInput] = useState(false);
+  const [isDraggingMain, setIsDraggingMain] = useState(false);
+  const [isDraggingGallery, setIsDraggingGallery] = useState(false);
 
   // File input refs
   const mainImageInputRef = useRef<HTMLInputElement>(null);
@@ -402,6 +404,50 @@ export default function ProductManager({
       reader.onerror = reject;
       reader.readAsDataURL(file);
     });
+  };
+
+  // Drag & drop handlers for main and gallery images
+  const handleMainDrop = async (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDraggingMain(false);
+    const file = e.dataTransfer.files?.[0];
+    if (!file) return;
+    setIsUploading(true);
+    try {
+      const url = await uploadFileToMedia(file);
+      setProduct((prev) => ({ ...prev, image: url }));
+      setMessage('Main image uploaded successfully!');
+      setTimeout(() => setMessage(''), 3000);
+    } catch (err: any) {
+      alert(`Upload failed: ${err.message || err}`);
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  const handleGalleryDrop = async (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDraggingGallery(false);
+    const files = Array.from(e.dataTransfer.files || []);
+    if (!files.length) return;
+    setIsUploading(true);
+    try {
+      const uploadedUrls: string[] = [];
+      for (const file of files) {
+        const url = await uploadFileToMedia(file);
+        uploadedUrls.push(url);
+      }
+      setProduct((prev) => ({
+        ...prev,
+        galleryImages: [...(prev.galleryImages || []), ...uploadedUrls],
+      }));
+      setMessage(`Added ${uploadedUrls.length} gallery image(s)!`);
+      setTimeout(() => setMessage(''), 3000);
+    } catch (err: any) {
+      alert(`Gallery upload failed: ${err.message || err}`);
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   // Handle uploading main product image directly from computer
@@ -1879,127 +1925,194 @@ export default function ProductManager({
               </label>
             </div>
 
-            {/* Product Images Panel */}
+            {/* Minimalist Product Media Studio Panel */}
             <div className="tk-panel">
-              <h3>Product Images</h3>
+              <div className="tk-media-panel-header">
+                <div className="tk-media-panel-title">
+                  <ImageIcon size={16} color="#0d9488" />
+                  <span>Product Media</span>
+                </div>
+                <span className="tk-media-badge-count">
+                  {(product.image ? 1 : 0) + (product.galleryImages || []).length} media
+                </span>
+              </div>
 
-              {/* Main Product Image */}
-              <div style={{ marginBottom: 16 }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
-                  <span style={{ fontSize: '11px', fontWeight: 750, color: '#405049' }}>
-                    Main Product Image
-                  </span>
+              {/* Main / Cover Image */}
+              <div style={{ marginBottom: 18 }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+                  <span className="tk-media-section-label">Featured Image</span>
                   <button
                     type="button"
-                    style={{ border: 0, background: 'none', color: '#2563eb', fontSize: '11px', cursor: 'pointer', padding: 0 }}
+                    style={{ border: 0, background: 'none', color: '#0d9488', fontSize: '11px', fontWeight: 600, cursor: 'pointer', padding: 0 }}
                     onClick={() => setShowDirectUrlInput(!showDirectUrlInput)}
                   >
-                    {showDirectUrlInput ? 'Hide URL input' : 'Enter Direct URL'}
+                    {showDirectUrlInput ? 'Close URL' : '+ Image URL'}
                   </button>
                 </div>
 
                 {product.image ? (
-                  <div className="tk-main-image-preview-box">
-                    <img src={product.image} alt="Main preview" />
-                    <button
-                      type="button"
-                      className="tk-main-image-remove-btn"
-                      title="Remove image"
-                      onClick={() => setProduct({ ...product, image: '' })}
-                    >
-                      <X size={14} />
-                    </button>
+                  <div className="tk-main-preview-studio">
+                    <img src={product.image} alt="Main product" className="tk-main-preview-img" />
+                    <span className="tk-main-preview-tag">Cover Photo</span>
+                    <div className="tk-main-preview-actions">
+                      <button
+                        type="button"
+                        className="tk-main-preview-action-btn"
+                        title="Change photo from computer"
+                        onClick={() => mainImageInputRef.current?.click()}
+                      >
+                        <Upload size={12} /> Replace
+                      </button>
+                      <button
+                        type="button"
+                        className="tk-main-preview-action-btn"
+                        title="Pick from website library"
+                        onClick={() => openMediaModal('main')}
+                      >
+                        <FolderOpen size={12} /> Library
+                      </button>
+                      <button
+                        type="button"
+                        className="tk-main-preview-action-btn is-delete"
+                        title="Remove image"
+                        onClick={() => setProduct({ ...product, image: '' })}
+                      >
+                        <Trash2 size={12} />
+                      </button>
+                    </div>
                   </div>
                 ) : (
                   <div
-                    style={{
-                      border: '1.5px dashed #cbd5e1',
-                      borderRadius: '8px',
-                      padding: '24px 14px',
-                      textAlign: 'center',
-                      background: '#f8fafc',
-                      marginBottom: '10px',
+                    className={`tk-media-dropzone ${isDraggingMain ? 'is-dragging' : ''}`}
+                    onDragOver={(e) => {
+                      e.preventDefault();
+                      setIsDraggingMain(true);
+                    }}
+                    onDragLeave={() => setIsDraggingMain(false)}
+                    onDrop={handleMainDrop}
+                    onClick={(e) => {
+                      if ((e.target as HTMLElement).closest('button')) return;
+                      mainImageInputRef.current?.click();
                     }}
                   >
-                    <ImageIcon size={28} color="#94a3b8" style={{ margin: '0 auto 6px' }} />
-                    <div style={{ fontSize: '12px', color: '#64748b' }}>No main image set</div>
+                    <div className="tk-media-icon-bubble">
+                      <ImageIcon size={20} />
+                    </div>
+                    <div className="tk-media-dropzone-heading">
+                      {isDraggingMain ? 'Drop image here!' : 'Drop main image here'}
+                    </div>
+                    <div className="tk-media-dropzone-hint">
+                      or choose from your files or library
+                    </div>
+                    <div className="tk-media-action-row">
+                      <button
+                        type="button"
+                        className="tk-media-btn-comp"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          mainImageInputRef.current?.click();
+                        }}
+                      >
+                        <Upload size={12} /> Computer
+                      </button>
+                      <button
+                        type="button"
+                        className="tk-media-btn-lib"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          openMediaModal('main');
+                        }}
+                      >
+                        <FolderOpen size={12} /> Library
+                      </button>
+                    </div>
                   </div>
                 )}
 
-                <div className="tk-image-upload-actions">
-                  <button
-                    type="button"
-                    className="tk-btn-media-computer"
-                    onClick={() => mainImageInputRef.current?.click()}
-                    title="Select an image file from your computer"
-                  >
-                    <Upload size={13} /> From Computer
-                  </button>
-                  <button
-                    type="button"
-                    className="tk-btn-media-library"
-                    onClick={() => openMediaModal('main')}
-                    title="Select from website media library"
-                  >
-                    <FolderOpen size={13} /> Website Library
-                  </button>
-                </div>
-
                 {showDirectUrlInput && (
-                  <div style={{ marginTop: 8 }}>
+                  <div className="tk-url-input-box">
                     <input
-                      style={{ fontSize: 12 }}
                       value={product.image || ''}
                       onChange={(e) => setProduct({ ...product, image: e.target.value })}
-                      placeholder="https://... or /products/..."
+                      placeholder="Paste image URL (https://... or /products/...)"
                     />
+                    {product.image && (
+                      <button
+                        type="button"
+                        style={{ border: 0, background: 'none', color: '#0d9488', cursor: 'pointer', padding: '0 4px' }}
+                        onClick={() => setShowDirectUrlInput(false)}
+                        title="Done"
+                      >
+                        <Check size={14} />
+                      </button>
+                    )}
                   </div>
                 )}
               </div>
 
-              {/* Gallery Images */}
-              <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: 14 }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
-                  <span style={{ fontSize: '11px', fontWeight: 750, color: '#405049' }}>
-                    Gallery Images ({(product.galleryImages || []).length})
-                  </span>
+              {/* Gallery Photos */}
+              <div className="tk-gallery-container">
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <span className="tk-media-section-label">Gallery Photos</span>
+                    <span style={{ fontSize: '11px', color: '#64748b' }}>
+                      ({(product.galleryImages || []).length})
+                    </span>
+                  </div>
                 </div>
 
-                {(product.galleryImages || []).length > 0 && (
-                  <div className="tk-gallery-grid">
-                    {(product.galleryImages || []).map((imgUrl, idx) => (
-                      <div key={idx} className="tk-gallery-item">
-                        <img src={imgUrl} alt={`Gallery ${idx + 1}`} />
-                        <button
-                          type="button"
-                          className="tk-gallery-item-remove"
-                          title="Remove image"
-                          onClick={() => {
-                            const updated = (product.galleryImages || []).filter((_, i) => i !== idx);
-                            setProduct({ ...product, galleryImages: updated });
-                          }}
-                        >
-                          <X size={12} />
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                )}
+                <div className="tk-gallery-layout">
+                  {(product.galleryImages || []).map((imgUrl, idx) => (
+                    <div key={idx} className="tk-gallery-card">
+                      <img src={imgUrl} alt={`Gallery ${idx + 1}`} />
+                      <span className="tk-gallery-card-badge">#{idx + 1}</span>
+                      <button
+                        type="button"
+                        className="tk-gallery-card-del"
+                        title="Remove photo"
+                        onClick={() => {
+                          const updated = (product.galleryImages || []).filter((_, i) => i !== idx);
+                          setProduct({ ...product, galleryImages: updated });
+                        }}
+                      >
+                        <X size={11} />
+                      </button>
+                    </div>
+                  ))}
 
-                <div className="tk-image-upload-actions">
-                  <button
-                    type="button"
-                    className="tk-btn-media-computer"
+                  {/* Add Slot directly inside the grid */}
+                  <div
+                    className={`tk-gallery-add-slot ${isDraggingGallery ? 'is-dragging' : ''}`}
+                    title="Click or drop photos here"
+                    onDragOver={(e) => {
+                      e.preventDefault();
+                      setIsDraggingGallery(true);
+                    }}
+                    onDragLeave={() => setIsDraggingGallery(false)}
+                    onDrop={handleGalleryDrop}
                     onClick={() => galleryImageInputRef.current?.click()}
                   >
-                    <Upload size={13} /> Add Computer Images
+                    <Plus size={16} />
+                    <span>Add</span>
+                  </div>
+                </div>
+
+                <div className="tk-media-action-row" style={{ justifyContent: 'stretch' }}>
+                  <button
+                    type="button"
+                    className="tk-media-btn-comp"
+                    style={{ flex: 1 }}
+                    onClick={() => galleryImageInputRef.current?.click()}
+                  >
+                    <Upload size={12} /> Add Files
                   </button>
                   <button
                     type="button"
-                    className="tk-btn-media-library"
+                    className="tk-media-btn-lib"
+                    style={{ flex: 1 }}
                     onClick={() => openMediaModal('gallery')}
                   >
-                    <FolderOpen size={13} /> Add from Library
+                    <FolderOpen size={12} /> From Library
                   </button>
                 </div>
               </div>
