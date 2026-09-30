@@ -29,6 +29,8 @@ type RawCrmProduct = {
   salePrice?: number | null;
   stockStatus?: string;
   galleryImages?: string[];
+  imageAlt?: string;
+  galleryAlts?: Record<string, string>;
   shortDescription?: string;
   sourcePostType?: string;
   seoTitle?: string;
@@ -70,7 +72,9 @@ function mapRawProduct(item: RawCrmProduct, index: number): Product {
     shortDescription: item.shortDescription || description,
     fullDescription: description,
     mainImage: item.image || '',
+    imageAlt: item.imageAlt?.trim() || undefined,
     galleryImages: item.galleryImages?.length ? item.galleryImages : item.image ? [item.image] : [],
+    galleryAlts: item.galleryAlts || {},
     stockQuantity: stock,
     lowStockThreshold: 2,
     stockStatus: item.stockStatus === 'outofstock' ? 'out_of_stock' : item.stockStatus === 'onbackorder' ? 'on_backorder' : 'in_stock',

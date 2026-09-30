@@ -187,7 +187,11 @@ export default function ProductClientView({ product, similarProducts }: ProductC
                 {selectedImage ? (
                   <Image
                     src={selectedImage}
-                    alt={product.name}
+                    alt={
+                      (selectedImage === product.mainImage ? product.imageAlt : product.galleryAlts?.[selectedImage])
+                      || product.imageAlt
+                      || product.name
+                    }
                     fill
                     priority
                   style={{ objectFit: 'contain' }}
@@ -252,7 +256,12 @@ export default function ProductClientView({ product, similarProducts }: ProductC
                       flexShrink: 0
                     }}
                   >
-                    <Image src={img} alt={`Thumbnail ${idx + 1}`} fill style={{ objectFit: 'contain' }} />
+                    <Image
+                      src={img}
+                      alt={product.galleryAlts?.[img] || (img === product.mainImage ? product.imageAlt : null) || `${product.name} thumbnail ${idx + 1}`}
+                      fill
+                      style={{ objectFit: 'contain' }}
+                    />
                   </button>
                 ))}
               </div>

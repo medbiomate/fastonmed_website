@@ -31,7 +31,9 @@ export interface Product {
   shortDescription: string;
   fullDescription: string;
   mainImage: string;
+  imageAlt?: string;
   galleryImages: string[];
+  galleryAlts?: Record<string, string>;
   stockQuantity: number;
   lowStockThreshold: number;
   stockStatus: StockStatus;

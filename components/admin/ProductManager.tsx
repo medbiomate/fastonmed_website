@@ -64,7 +64,9 @@ type Product = Record<string, any> & {
   brand: string;
   status: string;
   image?: string;
+  imageAlt?: string;
   galleryImages?: string[];
+  galleryAlts?: Record<string, string>;
   regularPrice?: number;
   salePrice?: number;
   sellingPrice?: number;
@@ -247,7 +249,9 @@ const blank = (): Product => ({
   brand: '',
   status: 'draft',
   image: '',
+  imageAlt: '',
   galleryImages: [],
+  galleryAlts: {},
   regularPrice: 0,
   salePrice: 0,
   sellingPrice: 0,
@@ -430,6 +434,7 @@ export default function ProductManager({
   const [mediaFilter, setMediaFilter] = useState<'all' | 'products' | 'showcase' | 'library' | 'uploads'>('all');
   const [mediaSearch, setMediaSearch] = useState('');
   const [selectedMediaUrl, setSelectedMediaUrl] = useState<string>('');
+  const [modalAltText, setModalAltText] = useState('');
   const [mediaTab, setMediaTab] = useState<'library' | 'upload'>('library');
   const [isUploading, setIsUploading] = useState(false);
   const [showDirectUrlInput, setShowDirectUrlInput] = useState(false);
@@ -501,6 +506,7 @@ export default function ProductManager({
   const openMediaModal = (target: 'main' | 'gallery' | 'editor') => {
     setMediaTarget(target);
     setSelectedMediaUrl('');
+    setModalAltText('');
     setMediaModalOpen(true);
     fetchMediaList();
   };
@@ -692,16 +698,26 @@ export default function ProductManager({
   // Confirm selection from Media Library Modal
   const handleInsertSelectedMedia = () => {
     if (!selectedMediaUrl) return;
+    const trimmedAlt = modalAltText.trim();
     if (mediaTarget === 'main') {
-      setProduct((prev) => ({ ...prev, image: selectedMediaUrl }));
+      setProduct((prev) => ({
+        ...prev,
+        image: selectedMediaUrl,
+        imageAlt: trimmedAlt || prev.imageAlt || '',
+      }));
     } else if (mediaTarget === 'gallery') {
       setProduct((prev) => ({
         ...prev,
         galleryImages: [...(prev.galleryImages || []), selectedMediaUrl],
+        galleryAlts: {
+          ...(prev.galleryAlts || {}),
+          ...(trimmedAlt ? { [selectedMediaUrl]: trimmedAlt } : {}),
+        },
       }));
     } else if (mediaTarget === 'editor') {
       insertImageIntoEditor(selectedMediaUrl);
     }
+    setModalAltText('');
     setMediaModalOpen(false);
   };
 
@@ -916,7 +932,9 @@ export default function ProductManager({
         slug: base.slug || slugify(base.name),
         sku: base.sku || `FOM-${Date.now()}`,
         image: base.image || '',
+        imageAlt: base.imageAlt || '',
         galleryImages: (base.galleryImages || []).filter(Boolean),
+        galleryAlts: base.galleryAlts || {},
         regularPrice: Number(base.regularPrice || 0),
         salePrice: Number(base.salePrice || 0) || null,
         sellingPrice: Number(base.salePrice || base.regularPrice || 0),
@@ -1795,34 +1813,66 @@ export default function ProductManager({
                 </div>
 
                 {product.image ? (
-                  <div className="tk-main-preview-studio">
-                    <img src={product.image} alt="Main product" className="tk-main-preview-img" />
-                    <span className="tk-main-preview-tag">Cover Photo</span>
-                    <div className="tk-main-preview-actions">
-                      <button
-                        type="button"
-                        className="tk-main-preview-action-btn"
-                        title="Change photo from computer"
-                        onClick={() => mainImageInputRef.current?.click()}
-                      >
-                        <Upload size={12} /> Replace
-                      </button>
-                      <button
-                        type="button"
-                        className="tk-main-preview-action-btn"
-                        title="Pick from website library"
-                        onClick={() => openMediaModal('main')}
-                      >
-                        <FolderOpen size={12} /> Library
-                      </button>
-                      <button
-                        type="button"
-                        className="tk-main-preview-action-btn is-delete"
-                        title="Remove image"
-                        onClick={() => setProduct({ ...product, image: '' })}
-                      >
-                        <Trash2 size={12} />
-                      </button>
+                  <div>
+                    <div className="tk-main-preview-studio">
+                      <img src={product.image} alt={product.imageAlt || product.name || 'Cover product'} className="tk-main-preview-img" />
+                      <span className="tk-main-preview-tag">Cover Photo</span>
+                      <div className="tk-main-preview-actions">
+                        <button
+                          type="button"
+                          className="tk-main-preview-action-btn"
+                          title="Change photo from computer"
+                          onClick={() => mainImageInputRef.current?.click()}
+                        >
+                          <Upload size={12} /> Replace
+                        </button>
+                        <button
+                          type="button"
+                          className="tk-main-preview-action-btn"
+                          title="Pick from website library"
+                          onClick={() => openMediaModal('main')}
+                        >
+                          <FolderOpen size={12} /> Library
+                        </button>
+                        <button
+                          type="button"
+                          className="tk-main-preview-action-btn is-delete"
+                          title="Remove image"
+                          onClick={() => setProduct({ ...product, image: '', imageAlt: '' })}
+                        >
+                          <Trash2 size={12} />
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Featured Image Alt Text Field */}
+                    <div style={{ marginTop: 8 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 }}>
+                        <label style={{ fontSize: '11px', fontWeight: 600, color: '#334155' }}>
+                          Featured Alt Text <span style={{ color: '#0d9488' }}>(SEO & Accessibility)</span>
+                        </label>
+                        <span style={{ fontSize: '10px', color: '#94a3b8' }}>
+                          {(product.imageAlt || '').length}/120
+                        </span>
+                      </div>
+                      <input
+                        type="text"
+                        value={product.imageAlt || ''}
+                        onChange={(e) => setProduct({ ...product, imageAlt: e.target.value })}
+                        placeholder="e.g. Cederroth Protection Kit front box packaging"
+                        maxLength={120}
+                        style={{
+                          width: '100%',
+                          boxSizing: 'border-box',
+                          padding: '6px 9px',
+                          fontSize: '11.5px',
+                          border: '1px solid #cbd5e1',
+                          borderRadius: 5,
+                          background: '#ffffff',
+                          color: '#1e293b',
+                          outline: 'none',
+                        }}
+                      />
                     </div>
                   </div>
                 ) : (
@@ -1908,7 +1958,7 @@ export default function ProductManager({
                 <div className="tk-gallery-layout">
                   {(product.galleryImages || []).map((imgUrl, idx) => (
                     <div key={idx} className="tk-gallery-card">
-                      <img src={imgUrl} alt={`Gallery ${idx + 1}`} />
+                      <img src={imgUrl} alt={product.galleryAlts?.[imgUrl] || `Gallery ${idx + 1}`} />
                       <span className="tk-gallery-card-badge">#{idx + 1}</span>
                       <button
                         type="button"
@@ -1916,7 +1966,9 @@ export default function ProductManager({
                         title="Remove photo"
                         onClick={() => {
                           const updated = (product.galleryImages || []).filter((_, i) => i !== idx);
-                          setProduct({ ...product, galleryImages: updated });
+                          const newAlts = { ...(product.galleryAlts || {}) };
+                          delete newAlts[imgUrl];
+                          setProduct({ ...product, galleryImages: updated, galleryAlts: newAlts });
                         }}
                       >
                         <X size={11} />
@@ -1941,7 +1993,7 @@ export default function ProductManager({
                   </div>
                 </div>
 
-                <div className="tk-media-action-row" style={{ justifyContent: 'stretch' }}>
+                <div className="tk-media-action-row" style={{ justifyContent: 'stretch', marginBottom: (product.galleryImages || []).length > 0 ? 10 : 0 }}>
                   <button
                     type="button"
                     className="tk-media-btn-comp"
@@ -1959,6 +2011,79 @@ export default function ProductManager({
                     <FolderOpen size={12} /> From Library
                   </button>
                 </div>
+
+                {/* Gallery Images Alt Text Inputs */}
+                {(product.galleryImages || []).length > 0 && (
+                  <div style={{ marginTop: 10, display: 'flex', flexDirection: 'column', gap: 6 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <span style={{ fontSize: '11px', fontWeight: 600, color: '#334155' }}>
+                        Gallery Alt Texts <span style={{ color: '#0d9488' }}>(SEO & Screen Readers)</span>
+                      </span>
+                      <span style={{ fontSize: '10px', color: '#94a3b8' }}>
+                        {(product.galleryImages || []).length} photos
+                      </span>
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 6, maxHeight: 180, overflowY: 'auto', paddingRight: 2 }}>
+                      {(product.galleryImages || []).map((imgUrl, idx) => (
+                        <div
+                          key={`${imgUrl}-${idx}`}
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 8,
+                            padding: '4px 8px',
+                            background: '#f8fafc',
+                            border: '1px solid #e2e8f0',
+                            borderRadius: 6,
+                          }}
+                        >
+                          <span style={{ fontSize: '11px', fontWeight: 700, color: '#0d9488', minWidth: 20 }}>
+                            #{idx + 1}
+                          </span>
+                          <img
+                            src={imgUrl}
+                            alt=""
+                            style={{
+                              width: 26,
+                              height: 26,
+                              objectFit: 'contain',
+                              background: '#fff',
+                              borderRadius: 4,
+                              border: '1px solid #cbd5e1',
+                              flexShrink: 0,
+                            }}
+                          />
+                          <input
+                            type="text"
+                            value={product.galleryAlts?.[imgUrl] || ''}
+                            onChange={(e) => {
+                              const val = e.target.value;
+                              setProduct({
+                                ...product,
+                                galleryAlts: {
+                                  ...(product.galleryAlts || {}),
+                                  [imgUrl]: val,
+                                },
+                              });
+                            }}
+                            placeholder={`Alt text for photo #${idx + 1}...`}
+                            maxLength={120}
+                            style={{
+                              flex: 1,
+                              fontSize: '11px',
+                              padding: '4px 7px',
+                              border: '1px solid #cbd5e1',
+                              borderRadius: 4,
+                              background: '#ffffff',
+                              color: '#1e293b',
+                              outline: 'none',
+                            }}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -2314,9 +2439,30 @@ export default function ProductManager({
             )}
 
             <div className="fm-media-modal-footer">
-              <div className="fm-media-footer-info">
+              <div className="fm-media-footer-info" style={{ display: 'flex', flexDirection: 'column', gap: 4, flex: 1, marginRight: 12 }}>
                 {selectedMediaUrl ? (
-                  <span>Selected: <strong>{selectedMediaUrl}</strong></span>
+                  <>
+                    <span style={{ fontSize: '11.5px', color: '#334155', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      Selected: <strong>{selectedMediaUrl.split('/').pop()}</strong>
+                    </span>
+                    <input
+                      type="text"
+                      value={modalAltText}
+                      onChange={(e) => setModalAltText(e.target.value)}
+                      placeholder="Image Alt Text (optional SEO description)..."
+                      maxLength={120}
+                      style={{
+                        padding: '4px 8px',
+                        fontSize: '11.5px',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: 4,
+                        outline: 'none',
+                        maxWidth: 320,
+                        background: '#ffffff',
+                        color: '#1e293b',
+                      }}
+                    />
+                  </>
                 ) : (
                   <span>Click an image to select it</span>
                 )}
