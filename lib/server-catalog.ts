@@ -4,9 +4,6 @@ import type { Product, ProductCategory } from './types';
 import { initialCategories, initialProducts } from './mock-data';
 import { getProductBySlugOrIdFromHostingerDb, loadProductsFromHostingerDb } from './hostinger-db';
 
-let cachedProducts: Product[] | null = null;
-let cacheExpiresAt = 0;
-
 type RawCrmProduct = {
   id?: string;
   name?: string;

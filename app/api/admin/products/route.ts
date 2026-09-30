@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
+import { revalidatePath } from 'next/cache';
+import { saveProductToHostingerDb, deleteProductFromHostingerDb, loadProductsFromHostingerDb } from '@/lib/hostinger-db';
+import { invalidateServerCatalogCache } from '@/lib/server-catalog';
 
 export const dynamic = 'force-dynamic';
 
@@ -171,65 +174,99 @@ const getBackendUrls = () => {
 
 export async function GET() {
   const cached = getCachedProducts();
-  // CRM MySQL is authoritative. The file is only an offline fallback.
-  for (const url of getBackendUrls()) {
-    try {
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 3000);
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: { Accept: 'application/json' },
-        signal: controller.signal,
-        cache: 'no-store'
-      });
-      clearTimeout(timeout);
-      if (response.ok) {
-        const data = await response.json();
-        const products = normalizeProducts(Array.isArray(data) ? data : Array.isArray(data.products) ? data.products : []);
-        if (products && products.length > 0) {
-          saveFileCache(products);
-          return NextResponse.json(
-            { success: true, products, count: products.length, source: 'backend' },
-            { headers: { 'Cache-Control': 'no-store' } }
-          );
-        }
-      }
-    } catch {}
-  }
-
   if (cached.length > 0) {
     return NextResponse.json(
       { success: true, products: cached, count: cached.length, source: 'cache' },
-      { headers: { 'Cache-Control': 'no-store' } }
+      { headers: { 'Cache-Control': 'no-cache, no-store, must-revalidate' } }
     );
   }
 
+  // Fallback to Hostinger MySQL live database
+  try {
+    const dbProducts = await loadProductsFromHostingerDb();
+    if (Array.isArray(dbProducts) && dbProducts.length > 0) {
+      const normalized = normalizeProducts(dbProducts);
+      saveFileCache(normalized);
+      return NextResponse.json(
+        { success: true, products: normalized, count: normalized.length, source: 'database' },
+        { headers: { 'Cache-Control': 'no-cache, no-store, must-revalidate' } }
+      );
+    }
+  } catch {}
+
   return NextResponse.json(
     { success: true, products: [], count: 0, warning: 'No products in database or cache' },
-    { headers: { 'Cache-Control': 'no-store' } }
+    { headers: { 'Cache-Control': 'no-cache, no-store, must-revalidate' } }
   );
 }
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    for (const url of getBackendUrls()) {
-      try {
-        const response = await fetch(url, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(body),
-          cache: 'no-store'
-        });
-        const data = await response.json().catch(() => null);
-        if (response.ok && data?.success && data?.product) {
-          const updatedList = normalizeProducts(data.products || [data.product, ...getCachedProducts()]);
-          saveFileCache(updatedList);
-          return NextResponse.json({ success: true, product: data.product, count: updatedList.length });
-        }
-      } catch {}
+    const current = getCachedProducts();
+    const existingIndex = current.findIndex(
+      (p: any) => p.id === body.id || (body.slug && p.slug === body.slug)
+    );
+
+    let updatedList: any[];
+    let productToSave: any;
+
+    if (existingIndex >= 0) {
+      productToSave = {
+        ...current[existingIndex],
+        ...body,
+        updatedAt: new Date().toISOString(),
+      };
+      updatedList = [...current];
+      updatedList[existingIndex] = productToSave;
+    } else {
+      productToSave = {
+        ...body,
+        id: body.id || `prod-${Date.now()}`,
+        createdAt: body.createdAt || new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+      updatedList = [productToSave, ...current];
     }
-    return NextResponse.json({ success: false, error: 'Shared product database is unavailable' }, { status: 503 });
+
+    const normalizedList = normalizeProducts(updatedList);
+
+    // 1. Instantly save to local file cache
+    saveFileCache(normalizedList);
+
+    // 2. Persist directly to Hostinger MySQL Database
+    await saveProductToHostingerDb(productToSave).catch((err) =>
+      console.warn('Could not save to Hostinger DB:', err)
+    );
+
+    // 3. Invalidate all in-memory caches instantly (0ms delay)
+    invalidateServerCatalogCache();
+
+    // 4. Purge Next.js page route cache so visitors see updates immediately
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath('/shop');
+      if (productToSave.slug) {
+        revalidatePath(`/product/${productToSave.slug}`);
+      }
+    } catch (e) {
+      console.warn('Revalidation warning:', e);
+    }
+
+    // 5. Fire-and-forget background sync to secondary backends if configured
+    for (const url of getBackendUrls()) {
+      fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(productToSave),
+      }).catch(() => {});
+    }
+
+    return NextResponse.json({
+      success: true,
+      product: productToSave,
+      count: normalizedList.length,
+    });
   } catch (error) {
     return NextResponse.json({ success: false, error: 'Failed to save product' }, { status: 500 });
   }
@@ -242,27 +279,48 @@ export async function DELETE(request: Request) {
     const ids = url.searchParams.get('ids');
 
     let current = getCachedProducts();
+    const toDelete: string[] = [];
+
     if (id) {
+      toDelete.push(id);
       current = current.filter((p: any) => p.id !== id);
     } else if (ids) {
-      const idList = ids.split(',').map((x) => x.trim());
-      // Safety limit: avoid bulk-deleting more than 50 products in one call without confirmation
+      const idList = ids.split(',').map((x) => x.trim()).filter(Boolean);
       if (idList.length > 50) {
-        return NextResponse.json({ success: false, error: 'Safety limit: Cannot delete more than 50 products in one request' }, { status: 400 });
+        return NextResponse.json(
+          { success: false, error: 'Safety limit: Cannot delete more than 50 products in one request' },
+          { status: 400 }
+        );
       }
+      toDelete.push(...idList);
       current = current.filter((p: any) => !idList.includes(p.id));
     }
 
-    let deleted = false;
-    for (const u of getBackendUrls()) {
-      try {
-        const response = await fetch(`${u}?${url.searchParams.toString()}`, { method: 'DELETE', cache: 'no-store' });
-        if (response.ok) { deleted = true; break; }
-      } catch {}
+    const normalized = normalizeProducts(current);
+
+    // 1. Update local file cache
+    saveFileCache(normalized);
+
+    // 2. Delete from Hostinger MySQL
+    for (const targetId of toDelete) {
+      await deleteProductFromHostingerDb(targetId).catch(() => {});
     }
-    if (!deleted) return NextResponse.json({ success: false, error: 'Shared product database is unavailable' }, { status: 503 });
-    saveFileCache(normalizeProducts(current));
-    return NextResponse.json({ success: true, count: current.length });
+
+    // 3. Invalidate caches
+    invalidateServerCatalogCache();
+
+    // 4. Revalidate routes
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath('/shop');
+    } catch {}
+
+    // 5. Fire-and-forget notify backends
+    for (const u of getBackendUrls()) {
+      fetch(`${u}?${url.searchParams.toString()}`, { method: 'DELETE' }).catch(() => {});
+    }
+
+    return NextResponse.json({ success: true, count: normalized.length });
   } catch (error) {
     return NextResponse.json({ success: false, error: 'Failed to delete product' }, { status: 500 });
   }

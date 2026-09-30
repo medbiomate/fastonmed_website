@@ -238,14 +238,23 @@ function catalogPage(products: Product[], request: Request) {
 
 let inMemoryProducts: Product[] | null = null;
 let inMemoryCategories: ProductCategory[] | null = null;
+let lastCacheMtime = 0;
 
 function getLocalProducts(): { products: Product[]; categories: ProductCategory[] } {
-  if (inMemoryProducts && inMemoryCategories) {
+  const cacheFile = path.join(process.cwd(), 'data', 'products-cache.json');
+  let currentMtime = 0;
+  try {
+    if (fs.existsSync(cacheFile)) {
+      currentMtime = fs.statSync(cacheFile).mtimeMs;
+    }
+  } catch {}
+
+  if (inMemoryProducts && inMemoryCategories && currentMtime > 0 && currentMtime === lastCacheMtime) {
     return { products: inMemoryProducts, categories: inMemoryCategories };
   }
 
   const candidates = [
-    path.join(process.cwd(), 'data', 'products-cache.json'),
+    cacheFile,
     path.join(process.cwd(), 'data', 'products-master-baseline.json')
   ];
 
@@ -271,6 +280,7 @@ function getLocalProducts(): { products: Product[]; categories: ProductCategory[
             )
             .map(mapCrmProduct);
           inMemoryCategories = buildCategories(inMemoryProducts);
+          lastCacheMtime = currentMtime;
           return { products: inMemoryProducts, categories: inMemoryCategories };
         }
       }
@@ -281,6 +291,7 @@ function getLocalProducts(): { products: Product[]; categories: ProductCategory[
 
   inMemoryProducts = initialProducts;
   inMemoryCategories = initialCategories;
+  lastCacheMtime = currentMtime;
   return { products: inMemoryProducts, categories: inMemoryCategories };
 }
 
