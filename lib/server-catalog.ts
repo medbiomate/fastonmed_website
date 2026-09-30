@@ -104,20 +104,35 @@ function mapRawProduct(item: RawCrmProduct, index: number): Product {
   };
 }
 
+const CACHE_FILE = path.join(process.cwd(), 'data', 'products-cache.json');
+const BASELINE_FILE = path.join(process.cwd(), 'data', 'products-master-baseline.json');
+
+let cachedProducts: Product[] | null = null;
+let lastCacheMtime = 0;
+
+export function invalidateServerCatalogCache() {
+  cachedProducts = null;
+  lastCacheMtime = 0;
+}
+
 export async function getAllProducts(): Promise<Product[]> {
-  const now = Date.now();
-  if (cachedProducts && cacheExpiresAt > now && cachedProducts.length > 10) {
+  // 1. Instant check: If cache is valid and file has not been modified, return cached in <0.05ms
+  let currentMtime = 0;
+  try {
+    if (fs.existsSync(CACHE_FILE)) {
+      currentMtime = fs.statSync(CACHE_FILE).mtimeMs;
+    }
+  } catch {}
+
+  if (cachedProducts && currentMtime > 0 && currentMtime === lastCacheMtime && cachedProducts.length > 0) {
     return cachedProducts;
   }
 
   let rawList: RawCrmProduct[] = [];
 
-  // Source 1: Local file cache (fastest & 100% reliable across restarts & Hostinger passenger)
+  // Source 1: Local file cache (primary, fastest, updated instantly on admin save)
   try {
-    const candidateFiles = [
-      path.join(process.cwd(), 'data', 'products-cache.json'),
-      path.join(process.cwd(), 'data', 'products-master-baseline.json')
-    ];
+    const candidateFiles = [CACHE_FILE, BASELINE_FILE];
     for (const filePath of candidateFiles) {
       if (fs.existsSync(filePath)) {
         const content = fs.readFileSync(filePath, 'utf8');
@@ -133,7 +148,7 @@ export async function getAllProducts(): Promise<Product[]> {
     console.warn('[server-catalog] Local file load warning:', err);
   }
 
-  // Source 2: Hostinger MySQL live database (if local file was empty or missing)
+  // Source 2: Hostinger MySQL live database (reliable persistent backup)
   if (rawList.length === 0) {
     try {
       const dbProducts = await loadProductsFromHostingerDb();
@@ -145,32 +160,24 @@ export async function getAllProducts(): Promise<Product[]> {
     }
   }
 
-  // Source 3: Remote CRM backend if configured
-  if (rawList.length === 0) {
-    const crmUrls = [
-      ...(process.env.CRM_BACKEND_URL ? [process.env.CRM_BACKEND_URL.replace(/\/$/, '')] : []),
-      'https://api.fastonmed.com',
-      'http://127.0.0.1:3000'
-    ];
-    for (const url of crmUrls) {
-      try {
-        const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 2500);
-        const response = await fetch(`${url}/api/products?view=storefront`, {
-          cache: 'no-store',
-          headers: { Accept: 'application/json' },
-          signal: controller.signal
-        });
-        clearTimeout(timeout);
-        if (response.ok) {
-          const data = await response.json();
-          if (data?.success && Array.isArray(data.products) && data.products.length > 0) {
-            rawList = data.products;
-            break;
-          }
+  // Source 3: Remote backend ONLY if explicitly set in environment
+  if (rawList.length === 0 && process.env.CRM_BACKEND_URL) {
+    try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 1500);
+      const response = await fetch(`${process.env.CRM_BACKEND_URL.replace(/\/$/, '')}/api/products?view=storefront`, {
+        cache: 'no-store',
+        headers: { Accept: 'application/json' },
+        signal: controller.signal
+      });
+      clearTimeout(timeout);
+      if (response.ok) {
+        const data = await response.json();
+        if (data?.success && Array.isArray(data.products) && data.products.length > 0) {
+          rawList = data.products;
         }
-      } catch {}
-    }
+      }
+    } catch {}
   }
 
   if (rawList.length > 0) {
@@ -186,7 +193,7 @@ export async function getAllProducts(): Promise<Product[]> {
       .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
     cachedProducts = mapped;
-    cacheExpiresAt = now + 120_000; // 2 minutes in-memory cache
+    lastCacheMtime = currentMtime;
     return mapped;
   }
 
