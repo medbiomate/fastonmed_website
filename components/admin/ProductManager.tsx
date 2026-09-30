@@ -1295,23 +1295,13 @@ export default function ProductManager({
       <Title
         title={id ? 'Edit Product' : 'Add Product'}
         action={
-          <div className="tk-editor-top-actions">
-            <button
-              type="button"
-              className="tk-seo-badge-btn"
-              onClick={openSeoModal}
-              title="Open Google Search Preview & SEO Editor"
-            >
-              <Sparkles size={14} /> SEO Snippet
-            </button>
-            <button
-              className="tk-page-action"
-              onClick={() => saveProduct()}
-              disabled={isUploading || isSaving}
-            >
-              <Save size={15} /> {isSaving ? 'Saving...' : 'Save Product'}
-            </button>
-          </div>
+          <button
+            className="tk-page-action"
+            onClick={() => saveProduct()}
+            disabled={isUploading || isSaving}
+          >
+            <Save size={15} /> {isSaving ? 'Saving...' : 'Save Product'}
+          </button>
         }
       />
 
@@ -2085,68 +2075,6 @@ export default function ProductManager({
                   </div>
                 )}
               </div>
-            </div>
-
-            {/* SEO & Search Snippet Panel */}
-            <div className="tk-panel">
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
-                <h3 style={{ margin: 0, padding: 0, border: 0 }}>SEO & Search Snippet</h3>
-                <button
-                  type="button"
-                  onClick={openSeoModal}
-                  style={{
-                    border: '1px solid #cbd5e1',
-                    borderRadius: '5px',
-                    padding: '3px 8px',
-                    fontSize: '11px',
-                    fontWeight: 600,
-                    color: '#2563eb',
-                    background: '#eff6ff',
-                    cursor: 'pointer',
-                  }}
-                >
-                  Edit Snippet
-                </button>
-              </div>
-
-              {/* Google Preview Mini Card */}
-              <div
-                style={{
-                  background: '#f8fafc',
-                  border: '1px solid #e2e8f0',
-                  borderRadius: '6px',
-                  padding: '10px 12px',
-                  marginBottom: '14px',
-                }}
-              >
-                <div style={{ fontSize: '10.5px', color: '#64748b', marginBottom: '2px', wordBreak: 'break-all' }}>
-                  https://www.fastonmed.com/product/{product.slug || slugify(product.name) || 'product-slug'}
-                </div>
-                <div style={{ fontSize: '13px', fontWeight: 600, color: '#1d4ed8', lineHeight: 1.3, marginBottom: '4px' }}>
-                  {product.seoTitle || product.name || 'Product Title'}
-                </div>
-                <div style={{ fontSize: '11px', color: '#475569', lineHeight: 1.4 }}>
-                  {product.seoDescription || product.shortDescription || 'Add a concise description for search results.'}
-                </div>
-              </div>
-
-              <label>
-                SEO title
-                <input
-                  value={product.seoTitle || ''}
-                  onChange={(e) => setProduct({ ...product, seoTitle: e.target.value })}
-                  placeholder="e.g. ZOLL AED Plus Defibrillator in UAE | FastonMed"
-                />
-              </label>
-              <label>
-                Meta description
-                <textarea
-                  rows={3}
-                  value={product.seoDescription || ''}
-                  onChange={(e) => setProduct({ ...product, seoDescription: e.target.value })}
-                  placeholder="Search engine meta description..."
-                />
-              </label>
             </div>
           </aside>
         </div>
