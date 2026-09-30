@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { ExternalLink, Plus, Search, LogOut, ChevronDown, User as UserIcon, Shield } from 'lucide-react';
+import { Plus, Search, LogOut, ChevronDown, User as UserIcon, Shield } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
@@ -119,9 +119,6 @@ export default function AdminTopHeader() {
       </label>
 
       <div className="tk-admin-header-right">
-        <Link href="/" target="_blank" className="tk-header-button secondary">
-          <ExternalLink size={15} /> Live Store ↗
-        </Link>
         <Link href={meta.href} className="tk-header-button primary">
           <Plus size={15} /> {meta.action}
         </Link>

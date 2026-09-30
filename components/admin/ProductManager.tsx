@@ -34,6 +34,13 @@ import {
   FolderOpen,
   Check,
   Eye,
+  Smartphone,
+  Monitor,
+  ExternalLink,
+  ShieldCheck,
+  Truck,
+  MessageCircle,
+  ShoppingBag,
   FileText,
   AlertTriangle,
   Globe,
@@ -435,6 +442,9 @@ export default function ProductManager({
   const [mediaSearch, setMediaSearch] = useState('');
   const [selectedMediaUrl, setSelectedMediaUrl] = useState<string>('');
   const [modalAltText, setModalAltText] = useState('');
+  const [previewModalOpen, setPreviewModalOpen] = useState(false);
+  const [previewDevice, setPreviewDevice] = useState<'desktop' | 'mobile'>('desktop');
+  const [activePreviewImage, setActivePreviewImage] = useState<string>('');
   const [mediaTab, setMediaTab] = useState<'library' | 'upload'>('library');
   const [isUploading, setIsUploading] = useState(false);
   const [showDirectUrlInput, setShowDirectUrlInput] = useState(false);
@@ -1295,13 +1305,38 @@ export default function ProductManager({
       <Title
         title={id ? 'Edit Product' : 'Add Product'}
         action={
-          <button
-            className="tk-page-action"
-            onClick={() => saveProduct()}
-            disabled={isUploading || isSaving}
-          >
-            <Save size={15} /> {isSaving ? 'Saving...' : 'Save Product'}
-          </button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <button
+              type="button"
+              onClick={() => {
+                setActivePreviewImage(product.image || (product.galleryImages && product.galleryImages[0]) || '');
+                setPreviewDevice('desktop');
+                setPreviewModalOpen(true);
+              }}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 6,
+                padding: '8px 14px',
+                borderRadius: 7,
+                fontSize: '13px',
+                fontWeight: 600,
+                color: '#0d9488',
+                background: '#f0fdfa',
+                border: '1px solid #99f6e4',
+                cursor: 'pointer',
+              }}
+            >
+              <Eye size={15} /> Preview Storefront
+            </button>
+            <button
+              className="tk-page-action"
+              onClick={() => saveProduct()}
+              disabled={isUploading || isSaving}
+            >
+              <Save size={15} /> {isSaving ? 'Saving...' : 'Save Product'}
+            </button>
+          </div>
         }
       />
 
@@ -1727,6 +1762,33 @@ export default function ProductManager({
                   <option value="enquire">Enquiry only</option>
                 </select>
               </label>
+              <div style={{ marginTop: 12, paddingTop: 12, borderTop: '1px solid #f1f5f9' }}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setActivePreviewImage(product.image || (product.galleryImages && product.galleryImages[0]) || '');
+                    setPreviewDevice('desktop');
+                    setPreviewModalOpen(true);
+                  }}
+                  style={{
+                    width: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 6,
+                    padding: '8px 12px',
+                    fontSize: '12px',
+                    fontWeight: 600,
+                    borderRadius: 6,
+                    background: '#f0fdfa',
+                    border: '1px solid #ccfbf1',
+                    color: '#0d9488',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <Eye size={14} color="#0d9488" /> Preview Storefront
+                </button>
+              </div>
             </div>
 
             {/* Organisation Panel */}
@@ -2080,169 +2142,661 @@ export default function ProductManager({
         </div>
       </main>
 
-      {/* SEO Preview Snippet Editor Modal (matching screenshot) */}
-      {seoModalOpen && (
-        <div className="fm-modal-backdrop" onClick={() => setSeoModalOpen(false)}>
-          <div className="fm-seo-modal" onClick={(e) => e.stopPropagation()}>
-            <div className="fm-seo-header">
-              <h2>Preview Snippet Editor</h2>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <button
-                  type="button"
-                  className="fm-seo-apply-btn"
-                  style={{ padding: '6px 14px', fontSize: '12px' }}
-                  onClick={applySeoChanges}
-                  disabled={isSaving}
-                >
-                  <Save size={13} /> {isSaving ? 'Saving...' : 'Save & Apply'}
-                </button>
-                <button
-                  type="button"
-                  className="fm-seo-close"
-                  onClick={() => setSeoModalOpen(false)}
-                  title="Close modal"
-                >
-                  <X size={18} />
-                </button>
-              </div>
-            </div>
+      {/* Product Storefront Live Preview Modal */}
+      {previewModalOpen && (() => {
+        const currentMainImg = activePreviewImage || product.image || (product.galleryImages && product.galleryImages[0]) || '';
+        const currentDesc = descriptionMode === 'visual'
+          ? (editorCanvasRef.current?.innerHTML ?? product.description ?? '')
+          : (product.description || '');
+        const allPreviewImages = Array.from(new Set([product.image, ...(product.galleryImages || [])].filter(Boolean) as string[]));
+        const specsEntries = Object.entries(
+          Object.fromEntries(
+            specText
+              .split('\n')
+              .map((x) => x.split(':'))
+              .filter((x) => x.length > 1)
+              .map(([k, ...v]) => [k.trim(), v.join(':').trim()])
+          )
+        );
 
-            <div className="fm-seo-body">
-              {/* Google Search Result Preview */}
-              <div className="fm-seo-preview-card">
-                <h4>Preview</h4>
-                <div className="fm-seo-preview-url">
-                  https://www.fastonmed.com/product/{draftSeoSlug || slugify(product.name) || 'product-slug'}
-                </div>
-                <h3 className="fm-seo-preview-title">
-                  {draftSeoTitle || product.name || 'Page title'}
-                </h3>
-                <p className="fm-seo-preview-desc">
-                  {draftSeoDesc || product.shortDescription || 'Add a concise description for search results.'}
-                </p>
-              </div>
-
-              {/* Title Field Box */}
-              <div className="fm-seo-field-box">
-                <div className="fm-seo-field-header">
-                  <span>Title</span>
-                  <span className="fm-seo-counter">{draftSeoTitle.length} / 60</span>
-                </div>
-                <input
-                  className="fm-seo-input"
-                  value={draftSeoTitle}
-                  onChange={(e) => {
-                    const val = e.target.value;
-                    setDraftSeoTitle(val);
-                    setProduct((prev) => ({ ...prev, seoTitle: val }));
-                  }}
-                  placeholder="SEO title"
-                />
-                <p className="fm-seo-field-hint">This appears as the first line in search results.</p>
-              </div>
-
-              {/* Permalink Field Box */}
-              <div className="fm-seo-field-box">
-                <div className="fm-seo-field-header">
-                  <span>Permalink</span>
-                  <span className="fm-seo-counter">{draftSeoSlug.length} / 75</span>
-                </div>
-                <input
-                  className="fm-seo-input"
-                  value={draftSeoSlug}
-                  onChange={(e) => {
-                    const clean = slugify(e.target.value);
-                    setDraftSeoSlug(clean);
-                    setProduct((prev) => ({ ...prev, slug: clean }));
-                  }}
-                  placeholder="page-url"
-                />
-                <p className="fm-seo-field-hint">The unique URL of this page.</p>
-              </div>
-
-              {/* Description Field Box */}
-              <div className="fm-seo-field-box">
-                <div className="fm-seo-field-header">
-                  <span>Description</span>
-                  <span className="fm-seo-counter">{draftSeoDesc.length} / 160</span>
-                </div>
-                <textarea
-                  className="fm-seo-textarea"
-                  rows={3}
-                  value={draftSeoDesc}
-                  onChange={(e) => {
-                    const val = e.target.value;
-                    setDraftSeoDesc(val);
-                    setProduct((prev) => ({ ...prev, seoDescription: val }));
-                  }}
-                  placeholder="Meta description"
-                />
-                <p className="fm-seo-field-hint">This appears below the title in search results.</p>
-              </div>
-
-              {/* Checklist */}
-              <div className="fm-seo-checks">
-                <div
-                  className={`fm-seo-check-item ${
-                    draftSeoTitle.trim().length > 0 && draftSeoTitle.length <= 60 ? 'ok' : 'warn'
-                  }`}
-                >
-                  <span>
-                    {draftSeoTitle.trim().length > 0 && draftSeoTitle.length <= 60 ? '✓' : '✕'}
-                  </span>
-                  <div>SEO title is present and within 60 characters.</div>
-                </div>
-
-                <div
-                  className={`fm-seo-check-item ${
-                    draftSeoDesc.trim().length >= 20 && draftSeoDesc.length <= 160 ? 'ok' : 'warn'
-                  }`}
-                >
-                  <span>
-                    {draftSeoDesc.trim().length >= 20 && draftSeoDesc.length <= 160 ? '✓' : '✕'}
-                  </span>
-                  <div>Meta description has a useful search-result length.</div>
-                </div>
-
-                <div
-                  className={`fm-seo-check-item ${
-                    draftSeoSlug.trim().length > 0 && draftSeoSlug.length <= 75 ? 'ok' : 'warn'
-                  }`}
-                >
-                  <span>
-                    {draftSeoSlug.trim().length > 0 && draftSeoSlug.length <= 75 ? '✓' : '✕'}
-                  </span>
-                  <div>URL is concise and readable.</div>
-                </div>
-
-                <div className="fm-seo-check-item ok">
-                  <span>✓</span>
-                  <div>Add a focus keyword for additional checks.</div>
-                </div>
-              </div>
-            </div>
-
-            {/* Modal Footer */}
-            <div className="fm-seo-footer">
-              <button
-                type="button"
-                className="fm-seo-cancel-btn"
-                onClick={() => setSeoModalOpen(false)}
+        return (
+          <div
+            className="fm-preview-modal-backdrop"
+            onClick={() => setPreviewModalOpen(false)}
+            style={{
+              position: 'fixed',
+              inset: 0,
+              zIndex: 9999,
+              background: 'rgba(15, 23, 42, 0.75)',
+              backdropFilter: 'blur(5px)',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '16px',
+            }}
+          >
+            <div
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                width: previewDevice === 'mobile' ? '410px' : '1120px',
+                maxWidth: '96vw',
+                height: '92vh',
+                background: '#ffffff',
+                borderRadius: previewDevice === 'mobile' ? 28 : 16,
+                boxShadow: '0 25px 60px -15px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1)',
+                display: 'flex',
+                flexDirection: 'column',
+                overflow: 'hidden',
+                transition: 'width 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
+                border: previewDevice === 'mobile' ? '8px solid #1e293b' : '1px solid #e2e8f0',
+              }}
+            >
+              {/* Header Toolbar */}
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  padding: '12px 18px',
+                  borderBottom: '1px solid #e2e8f0',
+                  background: '#f8fafc',
+                  flexShrink: 0,
+                }}
               >
-                Cancel
-              </button>
-              <button
-                type="button"
-                className="fm-seo-apply-btn"
-                onClick={applySeoChanges}
-                disabled={isSaving}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 6,
+                      fontSize: '13px',
+                      fontWeight: 700,
+                      color: '#0f172a',
+                    }}
+                  >
+                    <Eye size={16} color="#0d9488" />
+                    <span>Storefront Preview</span>
+                  </div>
+                  <span
+                    style={{
+                      fontSize: '11px',
+                      fontWeight: 600,
+                      padding: '2px 8px',
+                      borderRadius: 999,
+                      background: product.status === 'published' ? '#ecfdf5' : '#fef3c7',
+                      color: product.status === 'published' ? '#047857' : '#92400e',
+                      border: product.status === 'published' ? '1px solid #a7f3d0' : '1px solid #fde68a',
+                    }}
+                  >
+                    {product.status === 'published' ? '● Published' : '○ Draft Preview'}
+                  </span>
+                </div>
+
+                {/* Device Toggle */}
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    background: '#e2e8f0',
+                    padding: 3,
+                    borderRadius: 8,
+                    gap: 2,
+                  }}
+                >
+                  <button
+                    type="button"
+                    onClick={() => setPreviewDevice('desktop')}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 5,
+                      padding: '4px 10px',
+                      borderRadius: 6,
+                      border: 'none',
+                      fontSize: '11.5px',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                      background: previewDevice === 'desktop' ? '#ffffff' : 'transparent',
+                      color: previewDevice === 'desktop' ? '#0f172a' : '#64748b',
+                      boxShadow: previewDevice === 'desktop' ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
+                    }}
+                  >
+                    <Monitor size={13} /> Desktop
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setPreviewDevice('mobile')}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 5,
+                      padding: '4px 10px',
+                      borderRadius: 6,
+                      border: 'none',
+                      fontSize: '11.5px',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                      background: previewDevice === 'mobile' ? '#ffffff' : 'transparent',
+                      color: previewDevice === 'mobile' ? '#0f172a' : '#64748b',
+                      boxShadow: previewDevice === 'mobile' ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
+                    }}
+                  >
+                    <Smartphone size={13} /> Mobile
+                  </button>
+                </div>
+
+                {/* Actions */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  {product.slug && (
+                    <a
+                      href={`/product/${product.slug}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 4,
+                        fontSize: '11.5px',
+                        color: '#0d9488',
+                        textDecoration: 'none',
+                        fontWeight: 600,
+                        padding: '5px 10px',
+                        borderRadius: 6,
+                        background: '#f0fdfa',
+                        border: '1px solid #ccfbf1',
+                      }}
+                    >
+                      Open Live Tab <ExternalLink size={12} />
+                    </a>
+                  )}
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      await saveProduct({ status: 'published' });
+                      setPreviewModalOpen(false);
+                    }}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 5,
+                      padding: '6px 14px',
+                      fontSize: '12px',
+                      fontWeight: 600,
+                      background: '#0d9488',
+                      color: '#ffffff',
+                      border: 'none',
+                      borderRadius: 6,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <CheckCircle2 size={13} /> Publish Now
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setPreviewModalOpen(false)}
+                    style={{
+                      border: 'none',
+                      background: 'none',
+                      cursor: 'pointer',
+                      color: '#64748b',
+                      padding: '4px',
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <X size={20} />
+                  </button>
+                </div>
+              </div>
+
+              {/* Scrollable Storefront Simulation Body */}
+              <div
+                style={{
+                  flex: 1,
+                  overflowY: 'auto',
+                  padding: previewDevice === 'mobile' ? '16px' : '28px 36px',
+                  background: '#fafafa',
+                }}
               >
-                <Save size={14} /> {isSaving ? 'Saving Changes...' : 'Save & Apply Changes'}
-              </button>
+                {/* Storefront Navigation Bar Pill Mockup */}
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: '8px 14px',
+                    background: '#ffffff',
+                    borderRadius: 8,
+                    border: '1px solid #e2e8f0',
+                    marginBottom: 16,
+                    fontSize: '11.5px',
+                    color: '#64748b',
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6, overflow: 'hidden' }}>
+                    <span style={{ fontWeight: 800, color: '#0d9488', letterSpacing: '0.5px' }}>FASTONMED</span>
+                    <span>/</span>
+                    <span>{product.category || 'Medical Equipment'}</span>
+                    <span>/</span>
+                    <span style={{ color: '#0f172a', fontWeight: 600, maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      {product.name || 'Product'}
+                    </span>
+                  </div>
+                  <span style={{ fontSize: '10.5px', color: '#94a3b8', flexShrink: 0 }}>Preview Mode • fastonmed.com</span>
+                </div>
+
+                {/* Main Product Showcase Card */}
+                <div
+                  style={{
+                    background: '#ffffff',
+                    borderRadius: 14,
+                    border: '1px solid #e2e8f0',
+                    padding: previewDevice === 'mobile' ? '18px' : '28px',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
+                    marginBottom: 20,
+                  }}
+                >
+                  <div
+                    style={{
+                      display: 'grid',
+                      gridTemplateColumns: previewDevice === 'mobile' ? '1fr' : '1.1fr 1fr',
+                      gap: previewDevice === 'mobile' ? 20 : 36,
+                    }}
+                  >
+                    {/* Left Column: Image Gallery */}
+                    <div>
+                      {/* Primary Display Frame */}
+                      <div
+                        style={{
+                          width: '100%',
+                          height: previewDevice === 'mobile' ? '280px' : '380px',
+                          background: '#f8fafc',
+                          borderRadius: 10,
+                          border: '1px solid #f1f5f9',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          position: 'relative',
+                          overflow: 'hidden',
+                          padding: 16,
+                        }}
+                      >
+                        {currentMainImg ? (
+                          <img
+                            src={currentMainImg}
+                            alt={
+                              (currentMainImg === product.image ? product.imageAlt : product.galleryAlts?.[currentMainImg]) ||
+                              product.imageAlt ||
+                              product.name ||
+                              'Product preview'
+                            }
+                            style={{
+                              maxWidth: '100%',
+                              maxHeight: '100%',
+                              objectFit: 'contain',
+                            }}
+                          />
+                        ) : (
+                          <div style={{ textAlign: 'center', color: '#94a3b8' }}>
+                            <ImageIcon size={44} strokeWidth={1.5} style={{ margin: '0 auto 8px', opacity: 0.6 }} />
+                            <p style={{ margin: 0, fontSize: '12px' }}>No featured image uploaded yet</p>
+                          </div>
+                        )}
+
+                        {/* Alt text tag if present */}
+                        {((currentMainImg === product.image ? product.imageAlt : product.galleryAlts?.[currentMainImg]) || product.imageAlt) && (
+                          <div
+                            style={{
+                              position: 'absolute',
+                              bottom: 8,
+                              left: 8,
+                              background: 'rgba(15, 23, 42, 0.75)',
+                              color: '#ffffff',
+                              fontSize: '10px',
+                              padding: '2px 8px',
+                              borderRadius: 4,
+                              maxWidth: '90%',
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              whiteSpace: 'nowrap',
+                            }}
+                            title="Image Alt Tag (SEO)"
+                          >
+                            Alt: {(currentMainImg === product.image ? product.imageAlt : product.galleryAlts?.[currentMainImg]) || product.imageAlt}
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Thumbnail Strip */}
+                      {allPreviewImages.length > 1 && (
+                        <div
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 8,
+                            marginTop: 12,
+                            overflowX: 'auto',
+                            paddingBottom: 4,
+                          }}
+                        >
+                          {allPreviewImages.map((img, i) => {
+                            const isSelected = img === currentMainImg;
+                            return (
+                              <button
+                                key={i}
+                                type="button"
+                                onClick={() => setActivePreviewImage(img)}
+                                style={{
+                                  width: 56,
+                                  height: 56,
+                                  padding: 3,
+                                  borderRadius: 6,
+                                  border: isSelected ? '2px solid #0d9488' : '1px solid #cbd5e1',
+                                  background: '#ffffff',
+                                  cursor: 'pointer',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  flexShrink: 0,
+                                  opacity: isSelected ? 1 : 0.7,
+                                }}
+                              >
+                                <img src={img} alt="" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
+                              </button>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Right Column: Details & Actions */}
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                      {/* Brand and Verification */}
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+                        <span
+                          style={{
+                            fontSize: '11px',
+                            fontWeight: 700,
+                            textTransform: 'uppercase',
+                            color: '#0d9488',
+                            letterSpacing: '0.8px',
+                          }}
+                        >
+                          {product.brand || 'FASTONMED PARTNER'}
+                        </span>
+                        <span
+                          style={{
+                            fontSize: '10.5px',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: 4,
+                            background: '#f0fdfa',
+                            color: '#0f766e',
+                            padding: '2px 8px',
+                            borderRadius: 999,
+                            border: '1px solid #ccfbf1',
+                          }}
+                        >
+                          <ShieldCheck size={11} /> Clinical Grade
+                        </span>
+                      </div>
+
+                      {/* Title */}
+                      <h1
+                        style={{
+                          fontSize: previewDevice === 'mobile' ? '18px' : '22px',
+                          fontWeight: 700,
+                          color: '#0f172a',
+                          lineHeight: 1.3,
+                          margin: '0 0 10px',
+                        }}
+                      >
+                        {product.name || 'Untitled Medical Product'}
+                      </h1>
+
+                      {/* SKU & Category Row */}
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 14, fontSize: '11.5px', color: '#64748b', marginBottom: 14 }}>
+                        <span>SKU: <strong style={{ color: '#334155' }}>{product.sku || 'FOM-AUTO'}</strong></span>
+                        <span>•</span>
+                        <span>Category: <strong style={{ color: '#334155' }}>{product.category || 'General'}</strong></span>
+                      </div>
+
+                      {/* Pricing Block */}
+                      <div
+                        style={{
+                          padding: '12px 16px',
+                          background: '#f8fafc',
+                          borderRadius: 10,
+                          border: '1px solid #f1f5f9',
+                          marginBottom: 16,
+                        }}
+                      >
+                        {product.salePrice && product.salePrice > 0 ? (
+                          <div style={{ display: 'flex', alignItems: 'baseline', gap: 10 }}>
+                            <span style={{ fontSize: '24px', fontWeight: 800, color: '#0d9488' }}>
+                              AED {Number(product.salePrice).toLocaleString()}
+                            </span>
+                            {product.regularPrice && product.regularPrice > product.salePrice && (
+                              <>
+                                <span style={{ fontSize: '15px', color: '#94a3b8', textDecoration: 'line-through' }}>
+                                  AED {Number(product.regularPrice).toLocaleString()}
+                                </span>
+                                <span
+                                  style={{
+                                    fontSize: '11px',
+                                    fontWeight: 700,
+                                    color: '#dc2626',
+                                    background: '#fee2e2',
+                                    padding: '2px 6px',
+                                    borderRadius: 4,
+                                  }}
+                                >
+                                  Save {Math.round((1 - product.salePrice / product.regularPrice) * 100)}%
+                                </span>
+                              </>
+                            )}
+                          </div>
+                        ) : product.regularPrice && product.regularPrice > 0 ? (
+                          <div style={{ fontSize: '24px', fontWeight: 800, color: '#0f172a' }}>
+                            AED {Number(product.regularPrice).toLocaleString()}
+                          </div>
+                        ) : (
+                          <div style={{ fontSize: '16px', fontWeight: 700, color: '#0d9488' }}>
+                            Price on Enquiry / Request Quote (RFQ)
+                          </div>
+                        )}
+
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 8, fontSize: '11.5px' }}>
+                          <span
+                            style={{
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: 5,
+                              fontWeight: 600,
+                              color: product.stockStatus === 'outofstock' ? '#dc2626' : '#16a34a',
+                            }}
+                          >
+                            <span
+                              style={{
+                                width: 7,
+                                height: 7,
+                                borderRadius: '50%',
+                                background: product.stockStatus === 'outofstock' ? '#dc2626' : '#16a34a',
+                              }}
+                            />
+                            {product.stockStatus === 'outofstock'
+                              ? 'Out of Stock'
+                              : product.inStock && product.inStock > 0
+                              ? `In Stock (${product.inStock} units available)`
+                              : 'In Stock (UAE Warehouse)'}
+                          </span>
+                          {product.warrantyPeriod && (
+                            <>
+                              <span style={{ color: '#cbd5e1' }}>•</span>
+                              <span style={{ color: '#475569' }}>Warranty: {product.warrantyPeriod}</span>
+                            </>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Short Description */}
+                      {product.shortDescription && (
+                        <p
+                          style={{
+                            fontSize: '13px',
+                            color: '#475569',
+                            lineHeight: 1.6,
+                            margin: '0 0 16px',
+                          }}
+                        >
+                          {product.shortDescription}
+                        </p>
+                      )}
+
+                      {/* Call to Actions Preview */}
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 'auto' }}>
+                        <div style={{ display: 'flex', gap: 10 }}>
+                          <button
+                            type="button"
+                            style={{
+                              flex: 1,
+                              padding: '12px',
+                              background: '#0d9488',
+                              color: '#ffffff',
+                              fontWeight: 600,
+                              fontSize: '13px',
+                              borderRadius: 8,
+                              border: 'none',
+                              cursor: 'pointer',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              gap: 8,
+                            }}
+                          >
+                            <ShoppingBag size={15} />
+                            {product.purchaseMode === 'quote'
+                              ? 'Request Official Quote'
+                              : product.purchaseMode === 'enquire'
+                              ? 'Enquire on Availability'
+                              : 'Add to Cart'}
+                          </button>
+                          <a
+                            href="https://wa.me/971508893589"
+                            target="_blank"
+                            rel="noreferrer"
+                            style={{
+                              padding: '12px 16px',
+                              background: '#25D366',
+                              color: '#ffffff',
+                              fontWeight: 600,
+                              fontSize: '13px',
+                              borderRadius: 8,
+                              border: 'none',
+                              textDecoration: 'none',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              gap: 6,
+                            }}
+                          >
+                            <MessageCircle size={15} /> WhatsApp
+                          </a>
+                        </div>
+
+                        {/* Storefront Trust Highlights */}
+                        <div
+                          style={{
+                            display: 'grid',
+                            gridTemplateColumns: '1fr 1fr',
+                            gap: 8,
+                            marginTop: 8,
+                            paddingTop: 10,
+                            borderTop: '1px solid #f1f5f9',
+                            fontSize: '11px',
+                            color: '#64748b',
+                          }}
+                        >
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                            <Truck size={13} color="#0d9488" /> Fast UAE & GCC Delivery
+                          </div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                            <ShieldCheck size={13} color="#0d9488" /> Certified Biomedical Gear
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Technical Specifications Section */}
+                {specsEntries.length > 0 && (
+                  <div
+                    style={{
+                      background: '#ffffff',
+                      borderRadius: 12,
+                      border: '1px solid #e2e8f0',
+                      padding: '18px 22px',
+                      marginBottom: 18,
+                    }}
+                  >
+                    <h3 style={{ fontSize: '14.5px', fontWeight: 700, color: '#0f172a', margin: '0 0 12px' }}>
+                      Technical Specifications
+                    </h3>
+                    <div
+                      style={{
+                        display: 'grid',
+                        gridTemplateColumns: previewDevice === 'mobile' ? '1fr' : '1fr 1fr',
+                        gap: '6px 20px',
+                      }}
+                    >
+                      {specsEntries.map(([key, value]) => (
+                        <div
+                          key={key}
+                          style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            padding: '6px 0',
+                            borderBottom: '1px solid #f8fafc',
+                            fontSize: '12px',
+                          }}
+                        >
+                          <span style={{ color: '#64748b' }}>{key}</span>
+                          <strong style={{ color: '#1e293b' }}>{value}</strong>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Description Section */}
+                {currentDesc && (
+                  <div
+                    style={{
+                      background: '#ffffff',
+                      borderRadius: 12,
+                      border: '1px solid #e2e8f0',
+                      padding: '18px 22px',
+                      fontSize: '13px',
+                      color: '#334155',
+                      lineHeight: 1.7,
+                    }}
+                  >
+                    <h3 style={{ fontSize: '14.5px', fontWeight: 700, color: '#0f172a', margin: '0 0 12px' }}>
+                      Product Description & Clinical Overview
+                    </h3>
+                    <div
+                      className="fm-rendered-description"
+                      dangerouslySetInnerHTML={{ __html: currentDesc }}
+                    />
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        );
+      })()}
 
       {/* Website Media Library & Upload Modal */}
       {mediaModalOpen && (
