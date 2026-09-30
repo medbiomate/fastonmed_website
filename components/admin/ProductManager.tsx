@@ -787,7 +787,7 @@ export default function ProductManager({
 
   if (mode === 'list') {
     return (
-      <div>
+      <div style={{ maxWidth: '100%', margin: '0 auto' }}>
         <Title
           title="Products"
           action={
@@ -797,236 +797,265 @@ export default function ProductManager({
           }
         />
 
-        {message && <div className="tk-save-message">{message}</div>}
+        <div style={{ padding: '24px 28px' }}>
+          {message && <div className="tk-save-message">{message}</div>}
 
-        <div className="tk-panel">
-          <div className="tk-product-status-tabs">
-            <button
-              type="button"
-              className={statusFilter === 'all' ? 'active' : ''}
-              onClick={() => setStatusFilter('all')}
-            >
-              All <span>{statusCounts.all}</span>
-            </button>
-            <button
-              type="button"
-              className={statusFilter === 'published' ? 'active' : ''}
-              onClick={() => setStatusFilter('published')}
-            >
-              Published <span>{statusCounts.published}</span>
-            </button>
-            <button
-              type="button"
-              className={statusFilter === 'draft' ? 'active' : ''}
-              onClick={() => setStatusFilter('draft')}
-            >
-              Drafts <span>{statusCounts.draft}</span>
-            </button>
-            <button
-              type="button"
-              className={statusFilter === 'trash' ? 'active' : ''}
-              onClick={() => setStatusFilter('trash')}
-            >
-              Trash <span>{statusCounts.trash}</span>
-            </button>
-          </div>
-
-          <div className="tk-list-tools">
-            <div className="tk-search">
-              <Search size={16} />
-              <input
-                placeholder="Search products by name, SKU, brand or category..."
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-              />
+          <div className="tk-minimal-card">
+            {/* Status Filter Tabs */}
+            <div className="tk-minimal-tabs">
+              <button
+                type="button"
+                className={`tk-minimal-tab-btn ${statusFilter === 'all' ? 'active' : ''}`}
+                onClick={() => setStatusFilter('all')}
+              >
+                All <span className="tk-minimal-tab-count">{statusCounts.all.toLocaleString()}</span>
+              </button>
+              <button
+                type="button"
+                className={`tk-minimal-tab-btn ${statusFilter === 'published' ? 'active' : ''}`}
+                onClick={() => setStatusFilter('published')}
+              >
+                Published <span className="tk-minimal-tab-count">{statusCounts.published.toLocaleString()}</span>
+              </button>
+              <button
+                type="button"
+                className={`tk-minimal-tab-btn ${statusFilter === 'draft' ? 'active' : ''}`}
+                onClick={() => setStatusFilter('draft')}
+              >
+                Drafts <span className="tk-minimal-tab-count">{statusCounts.draft.toLocaleString()}</span>
+              </button>
+              <button
+                type="button"
+                className={`tk-minimal-tab-btn ${statusFilter === 'trash' ? 'active' : ''}`}
+                onClick={() => setStatusFilter('trash')}
+              >
+                Trash <span className="tk-minimal-tab-count">{statusCounts.trash.toLocaleString()}</span>
+              </button>
             </div>
-            <select
-              value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
-            >
-              <option value="">All Categories ({categories.length})</option>
-              {categories.map((c) => (
-                <option key={c} value={c}>
-                  {c}
-                </option>
-              ))}
-            </select>
-          </div>
 
-          {selectedIds.length > 0 && (
-            <div className="tk-selection-bar">
-              <div className="tk-selection-info">
-                <span>
-                  <strong>{selectedIds.length}</strong> product{selectedIds.length === 1 ? '' : 's'} selected
-                </span>
-                {selectedIds.length < filtered.length && (
-                  <button type="button" className="tk-select-all-btn" onClick={selectAllFiltered}>
-                    Select all {filtered.length} matching products
-                  </button>
-                )}
-                <button type="button" className="tk-clear-select-btn" onClick={clearSelection}>
-                  Clear selection
-                </button>
-              </div>
-              <div className="tk-selection-actions">
-                <button
-                  type="button"
-                  className="tk-bulk-trash-btn"
-                  onClick={handleBulkDelete}
-                  disabled={isDeletingBulk}
-                >
-                  <Trash2 size={14} />
-                  {statusFilter === 'trash' ? 'Delete Permanently' : 'Move to Trash'}
-                </button>
-              </div>
-            </div>
-          )}
-
-          <table className="tk-table">
-            <thead>
-              <tr>
-                <th style={{ width: 38, textAlign: 'center' }}>
+            {/* Search and Category Filters */}
+            <div className="tk-minimal-toolbar">
+              <div className="tk-minimal-search">
+                <Search size={15} color="#94a3b8" />
+                <input
+                  placeholder="Search products by name, SKU, brand..."
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                />
+                {query && (
                   <button
                     type="button"
-                    className="tk-checkbox-btn"
-                    onClick={toggleSelectCurrentPage}
-                    title={allCurrentPageSelected ? 'Deselect page' : 'Select page'}
+                    onClick={() => setQuery('')}
+                    style={{ border: 0, background: 'none', cursor: 'pointer', color: '#94a3b8', padding: 0 }}
                   >
-                    {allCurrentPageSelected ? (
-                      <CheckSquare size={17} color="#21785a" />
-                    ) : someCurrentPageSelected ? (
-                      <CheckSquare size={17} color="#889890" />
-                    ) : (
-                      <Square size={17} color="#889890" />
-                    )}
+                    <X size={14} />
                   </button>
-                </th>
-                <th>Product</th>
-                <th>SKU</th>
-                <th>Category</th>
-                <th>Price</th>
-                <th>Stock</th>
-                <th>Status</th>
-                <th>Date</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {loading ? (
-                <tr>
-                  <td colSpan={9} style={{ textAlign: 'center', padding: '40px' }}>
-                    Loading products...
-                  </td>
-                </tr>
-              ) : paginated.length === 0 ? (
-                <tr>
-                  <td colSpan={9} style={{ textAlign: 'center', padding: '40px' }}>
-                    No products found.
-                  </td>
-                </tr>
-              ) : (
-                paginated.map((p) => {
-                  const isChecked = selectedIds.includes(p.id);
-                  const { date, time } = formatProductDate(p);
-                  return (
-                    <tr key={p.id} className={isChecked ? 'tk-row-selected' : ''}>
-                      <td style={{ textAlign: 'center' }}>
-                        <button
-                          type="button"
-                          className="tk-checkbox-btn"
-                          onClick={() => toggleSelectRow(p.id)}
-                        >
-                          {isChecked ? (
-                            <CheckSquare size={17} color="#21785a" />
-                          ) : (
-                            <Square size={17} color="#889890" />
-                          )}
-                        </button>
-                      </td>
-                      <td>
-                        <div className="tk-product-cell">
-                          {p.image ? (
-                            <img src={p.image} alt={decodeHtml(p.name)} />
-                          ) : (
-                            <div className="tk-no-thumb">No img</div>
-                          )}
-                          <div>
-                            <strong>
-                              <Link href={`/admin/products/${p.id}`}>{decodeHtml(p.name)}</Link>
-                            </strong>
-                            <div style={{ fontSize: 11, color: '#78877f' }}>
-                              Brand: {decodeHtml(p.brand) || '—'}
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-                      <td>{p.sku || '—'}</td>
-                      <td>{decodeHtml(p.category) || '—'}</td>
-                      <td>AED {Number(p.salePrice || p.regularPrice || 0).toLocaleString()}</td>
-                      <td>{p.inStock || 0}</td>
-                      <td>
-                        <span className={`tk-post-status ${productStatus(p)}`}>
-                          {productStatus(p)}
-                        </span>
-                      </td>
-                      <td>
-                        <div style={{ fontSize: 12 }}>{date}</div>
-                        <div style={{ fontSize: 10, color: '#889890' }}>{time}</div>
-                      </td>
-                      <td>
-                        <div style={{ display: 'flex', gap: 8 }}>
-                          <Link
-                            href={`/admin/products/${p.id}`}
-                            className="tk-icon-btn"
-                            title="Edit Product"
-                          >
-                            <Edit3 size={15} />
-                          </Link>
-                          <button
-                            type="button"
-                            className="tk-icon-btn danger"
-                            onClick={() => remove(p)}
-                            title="Delete"
-                          >
-                            <Trash2 size={15} />
-                          </button>
-                        </div>
+                )}
+              </div>
+              <select
+                className="tk-minimal-select"
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
+              >
+                <option value="">All Categories ({categories.length})</option>
+                {categories.map((c) => (
+                  <option key={c} value={c}>
+                    {c}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Bulk Selection Bar */}
+            {selectedIds.length > 0 && (
+              <div className="tk-selection-bar" style={{ margin: '12px 18px' }}>
+                <div className="tk-selection-info">
+                  <span>
+                    <strong>{selectedIds.length}</strong> product{selectedIds.length === 1 ? '' : 's'} selected
+                  </span>
+                  {selectedIds.length < filtered.length && (
+                    <button type="button" className="tk-select-all-btn" onClick={selectAllFiltered}>
+                      Select all {filtered.length} matching
+                    </button>
+                  )}
+                  <button type="button" className="tk-clear-select-btn" onClick={clearSelection}>
+                    Clear
+                  </button>
+                </div>
+                <div className="tk-selection-actions">
+                  <button
+                    type="button"
+                    className="tk-bulk-trash-btn"
+                    onClick={handleBulkDelete}
+                    disabled={isDeletingBulk}
+                  >
+                    <Trash2 size={13} />
+                    {statusFilter === 'trash' ? 'Delete Permanently' : 'Move to Trash'}
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Table */}
+            <div style={{ overflowX: 'auto' }}>
+              <table className="tk-minimal-table">
+                <thead>
+                  <tr>
+                    <th style={{ width: 44, textAlign: 'center' }}>
+                      <input
+                        type="checkbox"
+                        className="tk-checkbox"
+                        checked={allCurrentPageSelected}
+                        ref={(input) => {
+                          if (input) input.indeterminate = !allCurrentPageSelected && someCurrentPageSelected;
+                        }}
+                        onChange={toggleSelectCurrentPage}
+                      />
+                    </th>
+                    <th>Product</th>
+                    <th>SKU</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th style={{ textAlign: 'right', paddingRight: '20px' }}>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {loading ? (
+                    <tr>
+                      <td colSpan={9} style={{ textAlign: 'center', padding: '50px 20px', color: '#64748b' }}>
+                        Loading products...
                       </td>
                     </tr>
-                  );
-                })
-              )}
-            </tbody>
-          </table>
-
-          {totalPages > 1 && (
-            <div className="tk-pagination">
-              <span>
-                Showing {startIndex + 1}–{endIndex} of {totalItems}
-              </span>
-              <div style={{ display: 'flex', gap: 6 }}>
-                <button
-                  type="button"
-                  disabled={safePage <= 1}
-                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                  className="tk-icon-btn"
-                >
-                  <ChevronLeft size={16} />
-                </button>
-                <span style={{ padding: '0 8px', fontSize: 13, alignSelf: 'center' }}>
-                  {safePage} / {totalPages}
-                </span>
-                <button
-                  type="button"
-                  disabled={safePage >= totalPages}
-                  onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-                  className="tk-icon-btn"
-                >
-                  <ChevronRight size={16} />
-                </button>
-              </div>
+                  ) : paginated.length === 0 ? (
+                    <tr>
+                      <td colSpan={9} style={{ textAlign: 'center', padding: '50px 20px', color: '#64748b' }}>
+                        No products found.
+                      </td>
+                    </tr>
+                  ) : (
+                    paginated.map((p) => {
+                      const isChecked = selectedIds.includes(p.id);
+                      const { date, time } = formatProductDate(p);
+                      return (
+                        <tr key={p.id} className={isChecked ? 'tk-row-selected' : ''}>
+                          <td style={{ textAlign: 'center' }}>
+                            <input
+                              type="checkbox"
+                              className="tk-checkbox"
+                              checked={isChecked}
+                              onChange={() => toggleSelectRow(p.id)}
+                            />
+                          </td>
+                          <td>
+                            <div className="tk-minimal-product-cell">
+                              {p.image ? (
+                                <img src={p.image} alt={decodeHtml(p.name)} className="tk-minimal-thumb" />
+                              ) : (
+                                <div className="tk-minimal-no-thumb">No img</div>
+                              )}
+                              <div>
+                                <Link href={`/admin/products/${p.id}`} className="tk-minimal-product-title">
+                                  {decodeHtml(p.name)}
+                                </Link>
+                                <div className="tk-minimal-brand">
+                                  {decodeHtml(p.brand) ? `Brand: ${decodeHtml(p.brand)}` : '—'}
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            {p.sku ? (
+                              <span className="tk-minimal-sku">{p.sku}</span>
+                            ) : (
+                              <span style={{ color: '#94a3b8' }}>—</span>
+                            )}
+                          </td>
+                          <td>
+                            <span style={{ color: '#475569', fontSize: '12.5px' }}>
+                              {decodeHtml(p.category) || '—'}
+                            </span>
+                          </td>
+                          <td>
+                            <strong style={{ color: '#0f172a', fontSize: '13px' }}>
+                              AED {Number(p.salePrice || p.regularPrice || 0).toLocaleString()}
+                            </strong>
+                          </td>
+                          <td>
+                            <span style={{ color: (p.inStock || 0) > 0 ? '#0f172a' : '#dc2626', fontWeight: 500 }}>
+                              {p.inStock || 0}
+                            </span>
+                          </td>
+                          <td>
+                            <span className={`tk-minimal-badge ${productStatus(p)}`}>
+                              {productStatus(p)}
+                            </span>
+                          </td>
+                          <td style={{ whiteSpace: 'nowrap' }}>
+                            <div style={{ fontSize: '12px', color: '#334155', fontWeight: 500 }}>{date}</div>
+                            <div style={{ fontSize: '10.5px', color: '#94a3b8' }}>{time}</div>
+                          </td>
+                          <td style={{ textAlign: 'right', paddingRight: '16px' }}>
+                            <div style={{ display: 'inline-flex', gap: 4 }}>
+                              <Link
+                                href={`/admin/products/${p.id}`}
+                                className="tk-minimal-action-btn"
+                                title="Edit Product"
+                              >
+                                <Edit3 size={14} />
+                              </Link>
+                              <button
+                                type="button"
+                                className="tk-minimal-action-btn danger"
+                                onClick={() => remove(p)}
+                                title="Delete"
+                              >
+                                <Trash2 size={14} />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })
+                  )}
+                </tbody>
+              </table>
             </div>
-          )}
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="tk-minimal-pagination">
+                <span>
+                  Showing <strong>{startIndex + 1}</strong>–<strong>{endIndex}</strong> of <strong>{totalItems.toLocaleString()}</strong> products
+                </span>
+                <div className="tk-minimal-page-nav">
+                  <button
+                    type="button"
+                    disabled={safePage <= 1}
+                    onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                    className="tk-minimal-action-btn"
+                    style={{ border: '1px solid #e2e8f0', width: 'auto', padding: '0 10px', height: '30px', fontSize: '12px' }}
+                  >
+                    <ChevronLeft size={14} /> Prev
+                  </button>
+                  <span style={{ padding: '0 8px', fontSize: '12px', fontWeight: 600, color: '#334155' }}>
+                    {safePage} / {totalPages}
+                  </span>
+                  <button
+                    type="button"
+                    disabled={safePage >= totalPages}
+                    onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                    className="tk-minimal-action-btn"
+                    style={{ border: '1px solid #e2e8f0', width: 'auto', padding: '0 10px', height: '30px', fontSize: '12px' }}
+                  >
+                    Next <ChevronRight size={14} />
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     );

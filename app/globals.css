@@ -1655,3 +1655,305 @@ nav[aria-label="Breadcrumbs"] svg,
   align-items: center;
   gap: 10px;
 }
+
+/* ==========================================================================
+   Minimalist Modern Products List Styling
+   ========================================================================== */
+.tk-minimal-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+  overflow: hidden;
+}
+
+.tk-minimal-tabs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 20px;
+  border-bottom: 1px solid #f1f5f9;
+  background: #ffffff;
+  flex-wrap: wrap;
+}
+
+.tk-minimal-tab-btn {
+  border: 1px solid transparent;
+  background: transparent;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  transition: all 0.15s ease;
+}
+
+.tk-minimal-tab-btn:hover {
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+.tk-minimal-tab-btn.active {
+  background: #ecfdf5;
+  color: #065f46;
+  border-color: #a7f3d0;
+}
+
+.tk-minimal-tab-count {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 1px 7px;
+  border-radius: 99px;
+  background: #f1f5f9;
+  color: #64748b;
+}
+
+.tk-minimal-tab-btn.active .tk-minimal-tab-count {
+  background: #d1fae5;
+  color: #047857;
+}
+
+.tk-minimal-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 12px 20px;
+  background: #ffffff;
+  border-bottom: 1px solid #f1f5f9;
+  flex-wrap: wrap;
+}
+
+.tk-minimal-search {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 8px 12px;
+  flex: 1;
+  max-width: 440px;
+  min-width: 240px;
+  transition: all 0.15s ease;
+}
+
+.tk-minimal-search:focus-within {
+  background: #ffffff;
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.tk-minimal-search input {
+  border: 0 !important;
+  outline: 0 !important;
+  background: transparent !important;
+  padding: 0 !important;
+  font-size: 13px !important;
+  color: #0f172a !important;
+  width: 100% !important;
+}
+
+.tk-minimal-search input::placeholder {
+  color: #94a3b8;
+}
+
+.tk-minimal-select {
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 13px;
+  color: #334155;
+  font-weight: 500;
+  outline: none;
+  cursor: pointer;
+  min-width: 200px;
+  transition: all 0.15s ease;
+}
+
+.tk-minimal-select:focus {
+  background: #ffffff;
+  border-color: #10b981;
+}
+
+.tk-minimal-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.tk-minimal-table th {
+  background: #f8fafc;
+  padding: 12px 16px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b;
+  border-bottom: 1px solid #e2e8f0;
+  white-space: nowrap;
+}
+
+.tk-minimal-table td {
+  padding: 13px 16px;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 13px;
+  color: #334155;
+  vertical-align: middle;
+}
+
+.tk-minimal-table tr {
+  transition: background-color 0.15s ease;
+}
+
+.tk-minimal-table tbody tr:hover {
+  background-color: #f8fafc;
+}
+
+.tk-minimal-table tbody tr.tk-row-selected {
+  background-color: #f0fdf4 !important;
+}
+
+.tk-minimal-product-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 260px;
+}
+
+.tk-minimal-thumb {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.tk-minimal-no-thumb {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  background: #f1f5f9;
+  color: #94a3b8;
+  display: grid;
+  place-items: center;
+  font-size: 10px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.tk-minimal-product-title {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #0f172a;
+  text-decoration: none;
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  transition: color 0.15s ease;
+}
+
+.tk-minimal-product-title:hover {
+  color: #10b981;
+}
+
+.tk-minimal-brand {
+  font-size: 11.5px;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+.tk-minimal-sku {
+  font-family: ui-monospace, SFMono-Regular, monospace;
+  font-size: 12px;
+  color: #64748b;
+  background: #f1f5f9;
+  padding: 2px 6px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.tk-minimal-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border-radius: 99px;
+  font-size: 11.5px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.tk-minimal-badge.published {
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+}
+
+.tk-minimal-badge.draft {
+  background: #fffbeb;
+  color: #b45309;
+  border: 1px solid #fde68a;
+}
+
+.tk-minimal-badge.trash {
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+.tk-minimal-action-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: #64748b;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-decoration: none;
+}
+
+.tk-minimal-action-btn:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+  border-color: #e2e8f0;
+}
+
+.tk-minimal-action-btn.danger:hover {
+  background: #fee2e2;
+  color: #dc2626;
+  border-color: #fca5a5;
+}
+
+.tk-minimal-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  background: #ffffff;
+  border-top: 1px solid #f1f5f9;
+  font-size: 12.5px;
+  color: #64748b;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.tk-minimal-page-nav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
