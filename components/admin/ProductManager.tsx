@@ -23,6 +23,7 @@ import {
   Code,
   Quote,
   List,
+  ListOrdered,
   AlignLeft,
   AlignCenter,
   AlignRight,
@@ -264,6 +265,129 @@ const blank = (): Product => ({
 
 const PAGE_SIZE = 25;
 
+function SearchableCombobox({
+  value,
+  onChange,
+  options,
+  placeholder,
+  counts,
+  allowCustom = true,
+}: {
+  value: string;
+  onChange: (val: string) => void;
+  options: string[];
+  placeholder: string;
+  counts?: Record<string, number>;
+  allowCustom?: boolean;
+}) {
+  const [open, setOpen] = useState(false);
+  const [search, setSearch] = useState('');
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const filtered = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    if (!q) return options;
+    return options.filter((o) => o.toLowerCase().includes(q));
+  }, [options, search]);
+
+  const exactMatch = options.some(
+    (o) => o.toLowerCase() === search.trim().toLowerCase()
+  );
+
+  return (
+    <div className="tk-searchable-combobox" ref={containerRef}>
+      <button
+        type="button"
+        className={`tk-combobox-trigger ${open ? 'is-open' : ''}`}
+        onClick={() => setOpen(!open)}
+      >
+        <span style={{ color: value ? '#0f172a' : '#94a3b8', fontWeight: value ? 500 : 400 }}>
+          {value || placeholder}
+        </span>
+        <ChevronDown
+          size={14}
+          color="#64748b"
+          style={{ transform: open ? 'rotate(180deg)' : 'none', transition: 'transform 0.15s ease' }}
+        />
+      </button>
+
+      {open && (
+        <div className="tk-combobox-dropdown">
+          <div className="tk-combobox-search-bar">
+            <Search size={13} color="#94a3b8" />
+            <input
+              type="text"
+              className="tk-combobox-search-input"
+              placeholder={`Search ${placeholder.toLowerCase()}...`}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              autoFocus
+            />
+            {search && (
+              <button
+                type="button"
+                style={{ border: 0, background: 'none', cursor: 'pointer', padding: 0 }}
+                onClick={() => setSearch('')}
+              >
+                <X size={12} color="#94a3b8" />
+              </button>
+            )}
+          </div>
+
+          <div className="tk-combobox-list">
+            {filtered.length === 0 && !search && (
+              <div style={{ padding: '12px 10px', fontSize: '11.5px', color: '#94a3b8', textAlign: 'center' }}>
+                No options available
+              </div>
+            )}
+            {filtered.map((opt) => (
+              <button
+                key={opt}
+                type="button"
+                className={`tk-combobox-item ${opt === value ? 'selected' : ''}`}
+                onClick={() => {
+                  onChange(opt);
+                  setOpen(false);
+                  setSearch('');
+                }}
+              >
+                <span>{opt}</span>
+                {counts && counts[opt] !== undefined && (
+                  <span className="tk-combobox-item-count">{counts[opt]}</span>
+                )}
+              </button>
+            ))}
+          </div>
+
+          {allowCustom && search.trim() && !exactMatch && (
+            <div
+              className="tk-combobox-create-new"
+              onClick={() => {
+                onChange(search.trim());
+                setOpen(false);
+                setSearch('');
+              }}
+            >
+              <Plus size={13} />
+              <span>Use &quot;{search.trim()}&quot; as new</span>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function ProductManager({
   mode,
   id,
@@ -287,12 +411,9 @@ export default function ProductManager({
 
   // Description Editor State
   const [descriptionMode, setDescriptionMode] = useState<'visual' | 'html'>('visual');
-  const [blocks, setBlocksState] = useState<Block[]>([block('paragraph')]);
-  const [activeBlockId, setActiveBlockId] = useState<string | null>(null);
-  const [typeMenuOpen, setTypeMenuOpen] = useState(false);
-  const [alignMenuOpen, setAlignMenuOpen] = useState(false);
-  const [moreMenuOpen, setMoreMenuOpen] = useState(false);
-  const [showBlockPicker, setShowBlockPicker] = useState(false);
+  const [formatMenuOpen, setFormatMenuOpen] = useState(false);
+  const editorCanvasRef = useRef<HTMLDivElement>(null);
+  const editorImageInputRef = useRef<HTMLInputElement>(null);
 
   // SEO Modal State
   const [seoModalOpen, setSeoModalOpen] = useState(false);
@@ -302,8 +423,7 @@ export default function ProductManager({
 
   // Media Library & Uploads State
   const [mediaModalOpen, setMediaModalOpen] = useState(false);
-  const [mediaTarget, setMediaTarget] = useState<'main' | 'gallery' | 'block' | null>(null);
-  const [targetBlockId, setTargetBlockId] = useState<string | null>(null);
+  const [mediaTarget, setMediaTarget] = useState<'main' | 'gallery' | 'editor' | null>(null);
   const [mediaList, setMediaList] = useState<MediaItem[]>([]);
   const [mediaLoading, setMediaLoading] = useState(false);
   const [mediaFilter, setMediaFilter] = useState<'all' | 'products' | 'showcase' | 'library' | 'uploads'>('all');
@@ -318,7 +438,6 @@ export default function ProductManager({
   // File input refs
   const mainImageInputRef = useRef<HTMLInputElement>(null);
   const galleryImageInputRef = useRef<HTMLInputElement>(null);
-  const blockImageInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     let active = true;
@@ -338,12 +457,18 @@ export default function ProductManager({
                 .map(([k, v]) => `${k}: ${v}`)
                 .join('\n')
             );
-            const loadedBlocks = deserializeToBlocks(p.description || '');
-            setBlocksState(loadedBlocks);
-            if (loadedBlocks.length > 0) {
-              setActiveBlockId(loadedBlocks[0].id);
-            }
+            setTimeout(() => {
+              if (editorCanvasRef.current) {
+                editorCanvasRef.current.innerHTML = p.description || '';
+              }
+            }, 0);
           }
+        } else {
+          setTimeout(() => {
+            if (editorCanvasRef.current) {
+              editorCanvasRef.current.innerHTML = '';
+            }
+          }, 0);
         }
       })
       .catch((err) => console.error('Failed to load products:', err))
@@ -372,9 +497,8 @@ export default function ProductManager({
     }
   };
 
-  const openMediaModal = (target: 'main' | 'gallery' | 'block', bId: string | null = null) => {
+  const openMediaModal = (target: 'main' | 'gallery' | 'editor') => {
     setMediaTarget(target);
-    setTargetBlockId(bId);
     setSelectedMediaUrl('');
     setMediaModalOpen(true);
     fetchMediaList();
@@ -493,17 +617,68 @@ export default function ProductManager({
     }
   };
 
-  // Handle uploading image for a block in the rich description
-  const handleBlockImageUpload = async (e: ChangeEvent<HTMLInputElement>) => {
+  const insertImageIntoEditor = (url: string) => {
+    if (!url) return;
+    if (editorCanvasRef.current) {
+      editorCanvasRef.current.focus();
+      document.execCommand(
+        'insertHTML',
+        false,
+        `<p><img src="${url}" alt="Product illustration" style="max-width: 100%; border-radius: 8px; margin: 14px 0; display: block;" /></p><p></p>`
+      );
+      setProduct((prev) => ({
+        ...prev,
+        description: editorCanvasRef.current?.innerHTML || prev.description,
+      }));
+    }
+  };
+
+  const executeEditorCommand = (command: string, value: string | undefined = undefined) => {
+    if (editorCanvasRef.current) {
+      editorCanvasRef.current.focus();
+      document.execCommand(command, false, value);
+      setProduct((prev) => ({
+        ...prev,
+        description: editorCanvasRef.current?.innerHTML || prev.description,
+      }));
+    }
+  };
+
+  const handleFormatBlock = (tag: string) => {
+    if (editorCanvasRef.current) {
+      editorCanvasRef.current.focus();
+      if (tag === 'ul') {
+        document.execCommand('insertUnorderedList', false);
+      } else if (tag === 'ol') {
+        document.execCommand('insertOrderedList', false);
+      } else if (tag === 'blockquote') {
+        document.execCommand('formatBlock', false, '<blockquote>');
+      } else {
+        document.execCommand('formatBlock', false, `<${tag}>`);
+      }
+      setProduct((prev) => ({
+        ...prev,
+        description: editorCanvasRef.current?.innerHTML || prev.description,
+      }));
+      setFormatMenuOpen(false);
+    }
+  };
+
+  const handleEditorLink = () => {
+    const url = prompt('Enter web link URL (https://...):');
+    if (url) {
+      executeEditorCommand('createLink', url);
+    }
+  };
+
+  const handleEditorImageUpload = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file || !targetBlockId) return;
+    if (!file) return;
     setIsUploading(true);
     try {
       const url = await uploadFileToMedia(file);
-      setBlocks(
-        blocks.map((b) => (b.id === targetBlockId ? { ...b, content: url } : b))
-      );
-      setMessage('Description image added!');
+      insertImageIntoEditor(url);
+      setMessage('Image inserted into description!');
       setTimeout(() => setMessage(''), 3000);
     } catch (err: any) {
       alert(`Image upload failed: ${err.message || err}`);
@@ -523,10 +698,8 @@ export default function ProductManager({
         ...prev,
         galleryImages: [...(prev.galleryImages || []), selectedMediaUrl],
       }));
-    } else if (mediaTarget === 'block' && targetBlockId) {
-      setBlocks(
-        blocks.map((b) => (b.id === targetBlockId ? { ...b, content: selectedMediaUrl } : b))
-      );
+    } else if (mediaTarget === 'editor') {
+      insertImageIntoEditor(selectedMediaUrl);
     }
     setMediaModalOpen(false);
   };
@@ -568,75 +741,6 @@ export default function ProductManager({
     setTimeout(() => setMessage(''), 3500);
   };
 
-  // Description Block helpers
-  const setBlocks = (next: Block[]) => {
-    setBlocksState(next);
-    setProduct((prev) => ({
-      ...prev,
-      description: serializeBlocks(next),
-    }));
-  };
-
-  const addBlock = (type: BlockType, afterIndex?: number) => {
-    const newB = block(type);
-    if (typeof afterIndex === 'number') {
-      const next = [...blocks];
-      next.splice(afterIndex + 1, 0, newB);
-      setBlocks(next);
-    } else {
-      setBlocks([...blocks, newB]);
-    }
-    setActiveBlockId(newB.id);
-    setShowBlockPicker(false);
-  };
-
-  // Text formatting commands
-  const applyFormat = (cmd: string, val: string | null = null) => {
-    document.execCommand(cmd, false, val ?? undefined);
-    if (activeBlockId) {
-      const el = document.getElementById(`fm-block-content-${activeBlockId}`);
-      if (el) {
-        setBlocks(
-          blocks.map((b) => (b.id === activeBlockId ? { ...b, content: el.innerHTML } : b))
-        );
-      }
-    }
-  };
-
-  const applyLink = () => {
-    const url = prompt('Enter link URL:', 'https://');
-    if (url) applyFormat('createLink', url);
-  };
-
-  const applyHighlight = () => {
-    applyFormat('hiliteColor', '#fecdd3');
-  };
-
-  const applyInlineCode = () => {
-    const sel = window.getSelection();
-    if (sel && sel.rangeCount > 0 && !sel.isCollapsed) {
-      const range = sel.getRangeAt(0);
-      const code = document.createElement('code');
-      code.textContent = sel.toString();
-      range.deleteContents();
-      range.insertNode(code);
-      if (activeBlockId) {
-        const el = document.getElementById(`fm-block-content-${activeBlockId}`);
-        if (el) {
-          setBlocks(
-            blocks.map((b) => (b.id === activeBlockId ? { ...b, content: el.innerHTML } : b))
-          );
-        }
-      }
-    }
-  };
-
-  const changeActiveBlockType = (type: BlockType) => {
-    if (!activeBlockId) return;
-    setBlocks(blocks.map((b) => (b.id === activeBlockId ? { ...b, type } : b)));
-    setTypeMenuOpen(false);
-  };
-
   // Reset page to 1 whenever search query or category filter changes
   useEffect(() => {
     setCurrentPage(1);
@@ -655,15 +759,19 @@ export default function ProductManager({
     trash: products.filter((p) => productStatus(p) === 'trash').length,
   }), [products]);
 
-  // Decoded category counts
-  const { categories } = useMemo(() => {
+  // Decoded category counts & existing brands
+  const { categories, categoryCounts, brands } = useMemo(() => {
     const counts: Record<string, number> = {};
+    const brandSet = new Set<string>();
     for (const p of products) {
       const cat = decodeHtml(p.category?.trim()) || 'Uncategorized';
       counts[cat] = (counts[cat] || 0) + 1;
+      const b = decodeHtml(p.brand?.trim());
+      if (b) brandSet.add(b);
     }
     const cats = Object.keys(counts).sort((a, b) => a.localeCompare(b));
-    return { categories: cats, categoryCounts: counts };
+    const sortedBrands = Array.from(brandSet).sort((a, b) => a.localeCompare(b));
+    return { categories: cats, categoryCounts: counts, brands: sortedBrands };
   }, [products]);
 
   // Filtered products list
@@ -784,7 +892,9 @@ export default function ProductManager({
     );
 
     const finalDescription =
-      descriptionMode === 'visual' ? serializeBlocks(blocks) : (product.description || '');
+      descriptionMode === 'visual'
+        ? (editorCanvasRef.current?.innerHTML ?? product.description ?? '')
+        : (product.description || '');
 
     const ready = {
       ...product,
@@ -1126,11 +1236,11 @@ export default function ProductManager({
         onChange={handleGalleryUpload}
       />
       <input
-        ref={blockImageInputRef}
+        ref={editorImageInputRef}
         type="file"
         accept="image/*"
         hidden
-        onChange={handleBlockImageUpload}
+        onChange={handleEditorImageUpload}
       />
 
       <Title
@@ -1171,7 +1281,7 @@ export default function ProductManager({
                     slug: product.slug || slugify(e.target.value),
                   })
                 }
-                placeholder="e.g. ZOLL AED Plus Automated External Defibrillator"
+                placeholder="Product name"
               />
             </label>
 
@@ -1181,7 +1291,7 @@ export default function ProductManager({
                 <input
                   value={product.sku}
                   onChange={(e) => setProduct({ ...product, sku: e.target.value })}
-                  placeholder="e.g. FOM-AED-200"
+                  placeholder="SKU identifier"
                 />
               </label>
               <label>
@@ -1189,7 +1299,7 @@ export default function ProductManager({
                 <input
                   value={product.slug}
                   onChange={(e) => setProduct({ ...product, slug: slugify(e.target.value) })}
-                  placeholder="zoll-aed-plus-defibrillator"
+                  placeholder="product-url-slug"
                 />
               </label>
             </div>
@@ -1200,17 +1310,17 @@ export default function ProductManager({
                 rows={3}
                 value={product.shortDescription || ''}
                 onChange={(e) => setProduct({ ...product, shortDescription: e.target.value })}
-                placeholder="Concise 1-2 sentence overview of the equipment, key clinical applications and warranty status..."
+                placeholder="Brief summary for catalog cards and search..."
               />
             </label>
 
-            {/* Rich Gutenberg-Style Full Product Description */}
+            {/* Rich Unified Single-Canvas Product Description */}
             <div className="tk-desc-card">
               <div className="tk-desc-card-header">
                 <div>
-                  <h3>Full Product Description</h3>
+                  <h3>Product Description</h3>
                   <p style={{ margin: '3px 0 0', fontSize: '11.5px', color: '#64748b' }}>
-                    Rich block editor for clinical specifications, features, bullet points & images.
+                    Clinical features, specifications, and details.
                   </p>
                 </div>
                 <div className="tk-desc-mode-toggle">
@@ -1218,10 +1328,12 @@ export default function ProductManager({
                     type="button"
                     className={`tk-desc-mode-btn ${descriptionMode === 'visual' ? 'active' : ''}`}
                     onClick={() => {
-                      if (descriptionMode === 'html') {
-                        setBlocksState(deserializeToBlocks(product.description || ''));
-                      }
                       setDescriptionMode('visual');
+                      setTimeout(() => {
+                        if (editorCanvasRef.current) {
+                          editorCanvasRef.current.innerHTML = product.description || '';
+                        }
+                      }, 0);
                     }}
                   >
                     Visual Editor
@@ -1230,8 +1342,11 @@ export default function ProductManager({
                     type="button"
                     className={`tk-desc-mode-btn ${descriptionMode === 'html' ? 'active' : ''}`}
                     onClick={() => {
-                      if (descriptionMode === 'visual') {
-                        setProduct((p) => ({ ...p, description: serializeBlocks(blocks) }));
+                      if (editorCanvasRef.current) {
+                        setProduct((p) => ({
+                          ...p,
+                          description: editorCanvasRef.current?.innerHTML || p.description,
+                        }));
                       }
                       setDescriptionMode('html');
                     }}
@@ -1242,551 +1357,248 @@ export default function ProductManager({
               </div>
 
               {descriptionMode === 'visual' ? (
-                <div className="tk-rich-editor-box">
-                  <div className="tk-blocks-container">
-                    {blocks.map((b, i) => {
-                      const isActive = activeBlockId === b.id;
-                      return (
+                <div className="tk-unified-editor">
+                  {/* Clean Formatting Toolbar */}
+                  <div className="tk-unified-toolbar">
+                    {/* Format Block (Paragraph, Headings, Lists, Quote) */}
+                    <div style={{ position: 'relative' }}>
+                      <button
+                        type="button"
+                        className={`tk-unified-toolbar-btn ${formatMenuOpen ? 'active' : ''}`}
+                        onClick={() => setFormatMenuOpen(!formatMenuOpen)}
+                      >
+                        <AlignLeft size={13} />
+                        <span>Style</span>
+                        <ChevronDown size={11} />
+                      </button>
+
+                      {formatMenuOpen && (
                         <div
-                          key={b.id}
-                          className={`tk-block-wrapper ${isActive ? 'active-block' : ''}`}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setActiveBlockId(b.id);
-                          }}
+                          className="fm-toolbar-dropdown"
+                          style={{ minWidth: 160, position: 'absolute', top: '100%', left: 0, zIndex: 50 }}
                         >
-                          {/* Floating Gutenberg Toolbar above active block */}
-                          {isActive && (
-                            <div
-                              className="fm-floating-toolbar"
-                              onMouseDown={(e) => e.stopPropagation()}
-                            >
-                              {/* Block Type Dropdown */}
-                              <div style={{ position: 'relative' }}>
-                                <button
-                                  type="button"
-                                  className={`fm-toolbar-btn ${typeMenuOpen ? 'active' : ''}`}
-                                  onMouseDown={(e) => {
-                                    e.preventDefault();
-                                    setTypeMenuOpen(!typeMenuOpen);
-                                    setAlignMenuOpen(false);
-                                    setMoreMenuOpen(false);
-                                  }}
-                                >
-                                  {getBlockTypeMeta(b.type).icon}
-                                  <span>{getBlockTypeMeta(b.type).label}</span>
-                                  {typeMenuOpen ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
-                                </button>
-
-                                {typeMenuOpen && (
-                                  <div className="fm-toolbar-dropdown">
-                                    <button
-                                      type="button"
-                                      className={`fm-dropdown-item ${b.type === 'paragraph' ? 'active' : ''}`}
-                                      onMouseDown={(e) => {
-                                        e.preventDefault();
-                                        changeActiveBlockType('paragraph');
-                                      }}
-                                    >
-                                      <AlignLeft size={15} />
-                                      <span>Paragraph</span>
-                                    </button>
-                                    <button
-                                      type="button"
-                                      className={`fm-dropdown-item ${b.type === 'heading' || b.type === 'heading2' ? 'active' : ''}`}
-                                      onMouseDown={(e) => {
-                                        e.preventDefault();
-                                        changeActiveBlockType('heading2');
-                                      }}
-                                    >
-                                      <b>H2</b>
-                                      <span>Heading 2</span>
-                                    </button>
-                                    <button
-                                      type="button"
-                                      className={`fm-dropdown-item ${b.type === 'heading3' ? 'active' : ''}`}
-                                      onMouseDown={(e) => {
-                                        e.preventDefault();
-                                        changeActiveBlockType('heading3');
-                                      }}
-                                    >
-                                      <b>H3</b>
-                                      <span>Heading 3</span>
-                                    </button>
-                                    <button
-                                      type="button"
-                                      className={`fm-dropdown-item ${b.type === 'heading4' ? 'active' : ''}`}
-                                      onMouseDown={(e) => {
-                                        e.preventDefault();
-                                        changeActiveBlockType('heading4');
-                                      }}
-                                    >
-                                      <b>H4</b>
-                                      <span>Heading 4</span>
-                                    </button>
-                                    <button
-                                      type="button"
-                                      className={`fm-dropdown-item ${b.type === 'list' ? 'active' : ''}`}
-                                      onMouseDown={(e) => {
-                                        e.preventDefault();
-                                        changeActiveBlockType('list');
-                                      }}
-                                    >
-                                      <List size={15} />
-                                      <span>Bullet List</span>
-                                    </button>
-                                    <button
-                                      type="button"
-                                      className={`fm-dropdown-item ${b.type === 'quote' ? 'active' : ''}`}
-                                      onMouseDown={(e) => {
-                                        e.preventDefault();
-                                        changeActiveBlockType('quote');
-                                      }}
-                                    >
-                                      <Quote size={15} />
-                                      <span>Quote</span>
-                                    </button>
-                                    <button
-                                      type="button"
-                                      className={`fm-dropdown-item ${b.type === 'code' ? 'active' : ''}`}
-                                      onMouseDown={(e) => {
-                                        e.preventDefault();
-                                        changeActiveBlockType('code');
-                                      }}
-                                    >
-                                      <Code size={15} />
-                                      <span>Code Block</span>
-                                    </button>
-                                  </div>
-                                )}
-                              </div>
-
-                              <div className="fm-toolbar-divider" />
-
-                              {/* Alignment */}
-                              <div style={{ position: 'relative' }}>
-                                <button
-                                  type="button"
-                                  className={`fm-toolbar-btn ${alignMenuOpen ? 'active' : ''}`}
-                                  onMouseDown={(e) => {
-                                    e.preventDefault();
-                                    setAlignMenuOpen(!alignMenuOpen);
-                                    setTypeMenuOpen(false);
-                                    setMoreMenuOpen(false);
-                                  }}
-                                >
-                                  <AlignLeft size={15} />
-                                  <ChevronDown size={13} />
-                                </button>
-
-                                {alignMenuOpen && (
-                                  <div className="fm-toolbar-dropdown" style={{ minWidth: 140 }}>
-                                    <button
-                                      type="button"
-                                      className="fm-dropdown-item"
-                                      onMouseDown={(e) => {
-                                        e.preventDefault();
-                                        applyFormat('justifyLeft');
-                                        setAlignMenuOpen(false);
-                                      }}
-                                    >
-                                      <AlignLeft size={15} />
-                                      <span>Align Left</span>
-                                    </button>
-                                    <button
-                                      type="button"
-                                      className="fm-dropdown-item"
-                                      onMouseDown={(e) => {
-                                        e.preventDefault();
-                                        applyFormat('justifyCenter');
-                                        setAlignMenuOpen(false);
-                                      }}
-                                    >
-                                      <AlignCenter size={15} />
-                                      <span>Align Center</span>
-                                    </button>
-                                    <button
-                                      type="button"
-                                      className="fm-dropdown-item"
-                                      onMouseDown={(e) => {
-                                        e.preventDefault();
-                                        applyFormat('justifyRight');
-                                        setAlignMenuOpen(false);
-                                      }}
-                                    >
-                                      <AlignRight size={15} />
-                                      <span>Align Right</span>
-                                    </button>
-                                  </div>
-                                )}
-                              </div>
-
-                              <div className="fm-toolbar-divider" />
-
-                              {/* Bold */}
-                              <button
-                                type="button"
-                                className="fm-toolbar-btn"
-                                title="Bold"
-                                onMouseDown={(e) => {
-                                  e.preventDefault();
-                                  applyFormat('bold');
-                                }}
-                              >
-                                <span style={{ fontWeight: 800, fontSize: 14 }}>B</span>
-                              </button>
-
-                              {/* Italic */}
-                              <button
-                                type="button"
-                                className="fm-toolbar-btn"
-                                title="Italic"
-                                onMouseDown={(e) => {
-                                  e.preventDefault();
-                                  applyFormat('italic');
-                                }}
-                              >
-                                <span style={{ fontStyle: 'italic', fontFamily: 'serif', fontWeight: 600, fontSize: 15 }}>
-                                  I
-                                </span>
-                              </button>
-
-                              {/* Underline */}
-                              <button
-                                type="button"
-                                className="fm-toolbar-btn"
-                                title="Underline"
-                                onMouseDown={(e) => {
-                                  e.preventDefault();
-                                  applyFormat('underline');
-                                }}
-                              >
-                                <span style={{ textDecoration: 'underline', fontWeight: 600, fontSize: 14 }}>
-                                  U
-                                </span>
-                              </button>
-
-                              <div className="fm-toolbar-divider" />
-
-                              {/* Link */}
-                              <button
-                                type="button"
-                                className="fm-toolbar-btn"
-                                title="Link"
-                                onMouseDown={(e) => {
-                                  e.preventDefault();
-                                  applyLink();
-                                }}
-                              >
-                                <Link2 size={15} />
-                              </button>
-
-                              {/* Highlight */}
-                              <button
-                                type="button"
-                                className="fm-toolbar-btn"
-                                title="Highlight"
-                                onMouseDown={(e) => {
-                                  e.preventDefault();
-                                  applyHighlight();
-                                }}
-                              >
-                                <Highlighter size={15} color="#e11d48" />
-                              </button>
-
-                              <div className="fm-toolbar-divider" />
-
-                              {/* More Options ⋮ */}
-                              <div style={{ position: 'relative' }}>
-                                <button
-                                  type="button"
-                                  className={`fm-toolbar-btn ${moreMenuOpen ? 'active' : ''}`}
-                                  title="More formatting"
-                                  onMouseDown={(e) => {
-                                    e.preventDefault();
-                                    setMoreMenuOpen(!moreMenuOpen);
-                                    setTypeMenuOpen(false);
-                                    setAlignMenuOpen(false);
-                                  }}
-                                >
-                                  <MoreVertical size={16} />
-                                </button>
-
-                                {moreMenuOpen && (
-                                  <div className="fm-toolbar-dropdown right">
-                                    <button
-                                      type="button"
-                                      className="fm-dropdown-item"
-                                      onMouseDown={(e) => {
-                                        e.preventDefault();
-                                        applyFormat('strikeThrough');
-                                        setMoreMenuOpen(false);
-                                      }}
-                                    >
-                                      <Strikethrough size={14} />
-                                      <span>Strikethrough</span>
-                                    </button>
-                                    <button
-                                      type="button"
-                                      className="fm-dropdown-item"
-                                      onMouseDown={(e) => {
-                                        e.preventDefault();
-                                        applyInlineCode();
-                                        setMoreMenuOpen(false);
-                                      }}
-                                    >
-                                      <Code size={14} />
-                                      <span>Inline Code</span>
-                                    </button>
-                                    <button
-                                      type="button"
-                                      className="fm-dropdown-item"
-                                      onMouseDown={(e) => {
-                                        e.preventDefault();
-                                        applyFormat('subscript');
-                                        setMoreMenuOpen(false);
-                                      }}
-                                    >
-                                      <span style={{ fontSize: 13, fontWeight: 700 }}>
-                                        X<sub style={{ fontSize: 10 }}>2</sub>
-                                      </span>
-                                      <span>Subscript</span>
-                                    </button>
-                                    <button
-                                      type="button"
-                                      className="fm-dropdown-item"
-                                      onMouseDown={(e) => {
-                                        e.preventDefault();
-                                        applyFormat('superscript');
-                                        setMoreMenuOpen(false);
-                                      }}
-                                    >
-                                      <span style={{ fontSize: 13, fontWeight: 700 }}>
-                                        X<sup style={{ fontSize: 10 }}>2</sup>
-                                      </span>
-                                      <span>Superscript</span>
-                                    </button>
-                                    <div className="fm-dropdown-sep" />
-                                    <button
-                                      type="button"
-                                      className="fm-dropdown-item danger"
-                                      onMouseDown={(e) => {
-                                        e.preventDefault();
-                                        applyFormat('removeFormat');
-                                        setMoreMenuOpen(false);
-                                      }}
-                                    >
-                                      <X size={13} />
-                                      <span>Clear Formatting</span>
-                                    </button>
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                          )}
-
-                          {/* Block Content */}
-                          {b.type === 'image' ? (
-                            <div className="tk-image-block">
-                              {b.content ? (
-                                <div>
-                                  <img src={b.content} alt="Product description image" />
-                                  <div className="tk-image-block-actions">
-                                    <button
-                                      type="button"
-                                      className="tk-btn-media-computer"
-                                      onClick={() => {
-                                        setTargetBlockId(b.id);
-                                        blockImageInputRef.current?.click();
-                                      }}
-                                    >
-                                      <Upload size={13} /> Replace from Computer
-                                    </button>
-                                    <button
-                                      type="button"
-                                      className="tk-btn-media-library"
-                                      onClick={() => openMediaModal('block', b.id)}
-                                    >
-                                      <FolderOpen size={13} /> Select from Library
-                                    </button>
-                                    <button
-                                      type="button"
-                                      className="tk-btn-media-computer"
-                                      onClick={() => {
-                                        const url = prompt('Image URL:', b.content);
-                                        if (url !== null) {
-                                          setBlocks(blocks.map((x) => (x.id === b.id ? { ...x, content: url } : x)));
-                                        }
-                                      }}
-                                    >
-                                      Edit URL
-                                    </button>
-                                  </div>
-                                </div>
-                              ) : (
-                                <div>
-                                  <ImageIcon size={32} color="#94a3b8" style={{ margin: '0 auto 8px' }} />
-                                  <p style={{ margin: '0 0 10px', fontSize: '13px', color: '#64748b' }}>
-                                    Insert an image illustration or diagram into description
-                                  </p>
-                                  <div className="tk-image-block-actions">
-                                    <button
-                                      type="button"
-                                      className="tk-btn-media-computer"
-                                      onClick={() => {
-                                        setTargetBlockId(b.id);
-                                        blockImageInputRef.current?.click();
-                                      }}
-                                    >
-                                      <Upload size={13} /> Upload from Computer
-                                    </button>
-                                    <button
-                                      type="button"
-                                      className="tk-btn-media-library"
-                                      onClick={() => openMediaModal('block', b.id)}
-                                    >
-                                      <FolderOpen size={13} /> Choose from Website Library
-                                    </button>
-                                  </div>
-                                </div>
-                              )}
-                            </div>
-                          ) : (
-                            <BlockContentEditor
-                              block={b}
-                              onFocus={() => setActiveBlockId(b.id)}
-                              onChange={(content) =>
-                                setBlocks(blocks.map((x) => (x.id === b.id ? { ...x, content } : x)))
-                              }
-                              onEnter={() => addBlock('paragraph', i)}
-                            />
-                          )}
-
-                          {/* Block Right Controls */}
-                          <div className="tk-block-controls">
-                            {i > 0 && (
-                              <button
-                                type="button"
-                                className="tk-block-ctrl-btn"
-                                title="Move block up"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  const n = [...blocks];
-                                  [n[i - 1], n[i]] = [n[i], n[i - 1]];
-                                  setBlocks(n);
-                                }}
-                              >
-                                <ChevronUp size={13} />
-                              </button>
-                            )}
-                            {i < blocks.length - 1 && (
-                              <button
-                                type="button"
-                                className="tk-block-ctrl-btn"
-                                title="Move block down"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  const n = [...blocks];
-                                  [n[i], n[i + 1]] = [n[i + 1], n[i]];
-                                  setBlocks(n);
-                                }}
-                              >
-                                <ChevronDown size={13} />
-                              </button>
-                            )}
-                            <button
-                              type="button"
-                              className="tk-block-ctrl-btn"
-                              title="Add block below"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                addBlock('paragraph', i);
-                              }}
-                            >
-                              <Plus size={13} />
-                            </button>
-                            {blocks.length > 1 && (
-                              <button
-                                type="button"
-                                className="tk-block-ctrl-btn danger"
-                                title="Delete block"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  setBlocks(blocks.filter((x) => x.id !== b.id));
-                                }}
-                              >
-                                <Trash2 size={13} />
-                              </button>
-                            )}
-                          </div>
+                          <button
+                            type="button"
+                            className="fm-dropdown-item"
+                            onClick={() => handleFormatBlock('p')}
+                          >
+                            <AlignLeft size={13} />
+                            <span>Paragraph</span>
+                          </button>
+                          <button
+                            type="button"
+                            className="fm-dropdown-item"
+                            onClick={() => handleFormatBlock('h2')}
+                          >
+                            <b>H2</b>
+                            <span>Heading 2</span>
+                          </button>
+                          <button
+                            type="button"
+                            className="fm-dropdown-item"
+                            onClick={() => handleFormatBlock('h3')}
+                          >
+                            <b>H3</b>
+                            <span>Heading 3</span>
+                          </button>
+                          <button
+                            type="button"
+                            className="fm-dropdown-item"
+                            onClick={() => handleFormatBlock('h4')}
+                          >
+                            <b>H4</b>
+                            <span>Heading 4</span>
+                          </button>
+                          <button
+                            type="button"
+                            className="fm-dropdown-item"
+                            onClick={() => handleFormatBlock('ul')}
+                          >
+                            <List size={13} />
+                            <span>Bullet List</span>
+                          </button>
+                          <button
+                            type="button"
+                            className="fm-dropdown-item"
+                            onClick={() => handleFormatBlock('ol')}
+                          >
+                            <ListOrdered size={13} />
+                            <span>Numbered List</span>
+                          </button>
+                          <button
+                            type="button"
+                            className="fm-dropdown-item"
+                            onClick={() => handleFormatBlock('blockquote')}
+                          >
+                            <Quote size={13} />
+                            <span>Quote</span>
+                          </button>
                         </div>
-                      );
-                    })}
-                  </div>
+                      )}
+                    </div>
 
-                  {/* Add Block Row */}
-                  <div className="tk-add-block-row">
+                    <div className="tk-unified-toolbar-sep" />
+
+                    {/* Bold */}
                     <button
                       type="button"
-                      className="tk-add-block-btn"
-                      onClick={() => setShowBlockPicker(!showBlockPicker)}
+                      className="tk-unified-toolbar-btn"
+                      title="Bold"
+                      onClick={() => executeEditorCommand('bold')}
                     >
-                      <Plus size={14} /> Add Block (Heading, List, Quote, Image...)
+                      <b style={{ fontSize: 13 }}>B</b>
+                    </button>
+
+                    {/* Italic */}
+                    <button
+                      type="button"
+                      className="tk-unified-toolbar-btn"
+                      title="Italic"
+                      onClick={() => executeEditorCommand('italic')}
+                    >
+                      <i style={{ fontFamily: 'serif', fontSize: 14 }}>I</i>
+                    </button>
+
+                    {/* Underline */}
+                    <button
+                      type="button"
+                      className="tk-unified-toolbar-btn"
+                      title="Underline"
+                      onClick={() => executeEditorCommand('underline')}
+                    >
+                      <u style={{ fontSize: 13 }}>U</u>
+                    </button>
+
+                    {/* Strikethrough */}
+                    <button
+                      type="button"
+                      className="tk-unified-toolbar-btn"
+                      title="Strikethrough"
+                      onClick={() => executeEditorCommand('strikeThrough')}
+                    >
+                      <Strikethrough size={13} />
+                    </button>
+
+                    <div className="tk-unified-toolbar-sep" />
+
+                    {/* Link */}
+                    <button
+                      type="button"
+                      className="tk-unified-toolbar-btn"
+                      title="Insert Link"
+                      onClick={handleEditorLink}
+                    >
+                      <Link2 size={13} />
+                    </button>
+
+                    {/* Highlight */}
+                    <button
+                      type="button"
+                      className="tk-unified-toolbar-btn"
+                      title="Highlight Text"
+                      onClick={() => executeEditorCommand('hiliteColor', '#fef08a')}
+                    >
+                      <Highlighter size={13} color="#ca8a04" />
+                    </button>
+
+                    <div className="tk-unified-toolbar-sep" />
+
+                    {/* Alignment */}
+                    <button
+                      type="button"
+                      className="tk-unified-toolbar-btn"
+                      title="Align Left"
+                      onClick={() => executeEditorCommand('justifyLeft')}
+                    >
+                      <AlignLeft size={13} />
+                    </button>
+                    <button
+                      type="button"
+                      className="tk-unified-toolbar-btn"
+                      title="Align Center"
+                      onClick={() => executeEditorCommand('justifyCenter')}
+                    >
+                      <AlignCenter size={13} />
+                    </button>
+                    <button
+                      type="button"
+                      className="tk-unified-toolbar-btn"
+                      title="Align Right"
+                      onClick={() => executeEditorCommand('justifyRight')}
+                    >
+                      <AlignRight size={13} />
+                    </button>
+
+                    <div className="tk-unified-toolbar-sep" />
+
+                    {/* Insert Image */}
+                    <button
+                      type="button"
+                      className="tk-unified-toolbar-btn"
+                      title="Upload Image from Computer"
+                      onClick={() => editorImageInputRef.current?.click()}
+                    >
+                      <Upload size={13} />
+                      <span>Upload Image</span>
+                    </button>
+                    <button
+                      type="button"
+                      className="tk-unified-toolbar-btn"
+                      title="Insert Image from Website Library"
+                      onClick={() => openMediaModal('editor')}
+                    >
+                      <FolderOpen size={13} />
+                      <span>Media Library</span>
+                    </button>
+
+                    <div className="tk-unified-toolbar-sep" />
+
+                    {/* Clear Formatting */}
+                    <button
+                      type="button"
+                      className="tk-unified-toolbar-btn"
+                      title="Clear Formatting"
+                      onClick={() => executeEditorCommand('removeFormat')}
+                    >
+                      <X size={13} />
                     </button>
                   </div>
 
-                  {showBlockPicker && (
-                    <div className="fm-picker" style={{ position: 'relative', margin: '14px 0 0', top: 'auto', left: 'auto', width: '100%', maxWidth: 480 }}>
-                      <button
-                        type="button"
-                        className="fm-picker-x"
-                        onClick={() => setShowBlockPicker(false)}
-                      >
-                        <X size={16} />
-                      </button>
-                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8, padding: 12 }}>
-                        <button type="button" onClick={() => addBlock('paragraph')}>
-                          <AlignLeft size={16} /> Paragraph
-                        </button>
-                        <button type="button" onClick={() => addBlock('heading2')}>
-                          <span style={{ fontWeight: 800 }}>H2</span> Heading 2
-                        </button>
-                        <button type="button" onClick={() => addBlock('heading3')}>
-                          <span style={{ fontWeight: 800 }}>H3</span> Heading 3
-                        </button>
-                        <button type="button" onClick={() => addBlock('list')}>
-                          <List size={16} /> Bullet List
-                        </button>
-                        <button type="button" onClick={() => addBlock('quote')}>
-                          <Quote size={16} /> Quote
-                        </button>
-                        <button type="button" onClick={() => addBlock('image')}>
-                          <ImageIcon size={16} /> Image
-                        </button>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <div>
-                  <textarea
-                    rows={16}
-                    value={product.description || ''}
-                    onChange={(e) => {
-                      setProduct({ ...product, description: e.target.value });
+                  {/* Single Unified ContentEditable Canvas */}
+                  <div
+                    ref={editorCanvasRef}
+                    className="tk-unified-canvas"
+                    contentEditable
+                    suppressContentEditableWarning
+                    data-placeholder="Write rich product description, clinical applications, bullet points, and key details..."
+                    onInput={() => {
+                      if (editorCanvasRef.current) {
+                        setProduct((prev) => ({
+                          ...prev,
+                          description: editorCanvasRef.current?.innerHTML || '',
+                        }));
+                      }
                     }}
-                    style={{
-                      width: '100%',
-                      fontFamily: 'monospace',
-                      fontSize: '13px',
-                      lineHeight: '1.6',
-                      padding: '14px',
-                      borderRadius: '8px',
-                      border: '1px solid #cbd5e1',
-                    }}
-                    placeholder="<p>Write raw HTML product description...</p>"
                   />
                 </div>
+              ) : (
+                <textarea
+                  rows={16}
+                  value={product.description || ''}
+                  onChange={(e) => setProduct({ ...product, description: e.target.value })}
+                  style={{
+                    width: '100%',
+                    fontFamily: 'monospace',
+                    fontSize: '12.5px',
+                    lineHeight: '1.6',
+                    padding: '14px',
+                    borderRadius: '8px',
+                    border: '1px solid #cbd5e1',
+                    background: '#f8fafc',
+                    outline: 'none',
+                  }}
+                  placeholder="<p>Write raw HTML product description...</p>"
+                />
               )}
             </div>
 
@@ -1841,7 +1653,7 @@ export default function ProductManager({
                 rows={7}
                 value={specText}
                 onChange={(e) => setSpecText(e.target.value)}
-                placeholder={'Model: AED-Plus-Pro\nWarranty: 2 Years Official UAE\nPower: Lithium 123A Battery\nCertifications: CE, ISO 13485'}
+                placeholder={'Feature: Value (one per line)'}
               />
             </label>
           </section>
@@ -1879,24 +1691,21 @@ export default function ProductManager({
               <h3>Organisation</h3>
               <label>
                 Category
-                <input
-                  list="product-categories"
+                <SearchableCombobox
                   value={product.category || ''}
-                  onChange={(e) => setProduct({ ...product, category: e.target.value })}
-                  placeholder="e.g. ICU & Critical Care"
+                  onChange={(cat) => setProduct({ ...product, category: cat })}
+                  options={categories}
+                  counts={categoryCounts}
+                  placeholder="Select category"
                 />
-                <datalist id="product-categories">
-                  {categories.map((c) => (
-                    <option key={c} value={c} />
-                  ))}
-                </datalist>
               </label>
               <label>
                 Brand
-                <input
+                <SearchableCombobox
                   value={product.brand || ''}
-                  onChange={(e) => setProduct({ ...product, brand: e.target.value })}
-                  placeholder="e.g. ZOLL Medical"
+                  onChange={(b) => setProduct({ ...product, brand: b })}
+                  options={brands}
+                  placeholder="Select brand"
                 />
               </label>
               <label>
@@ -1912,7 +1721,7 @@ export default function ProductManager({
                         .filter(Boolean),
                     })
                   }
-                  placeholder="defibrillator, critical care, uae hospital"
+                  placeholder="Enter tags separated by comma"
                 />
               </label>
               <label>
@@ -1920,7 +1729,7 @@ export default function ProductManager({
                 <input
                   value={product.warrantyPeriod || ''}
                   onChange={(e) => setProduct({ ...product, warrantyPeriod: e.target.value })}
-                  placeholder="e.g. 2 Years FastonMed UAE"
+                  placeholder="Warranty period"
                 />
               </label>
             </div>
@@ -2473,55 +2282,6 @@ export default function ProductManager({
         </div>
       )}
     </div>
-  );
-}
-
-function BlockContentEditor({
-  block,
-  onFocus,
-  onChange,
-  onEnter,
-}: {
-  block: Block;
-  onFocus: () => void;
-  onChange: (html: string) => void;
-  onEnter: () => void;
-}) {
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (ref.current && ref.current.innerHTML !== block.content && document.activeElement !== ref.current) {
-      ref.current.innerHTML = block.content;
-    }
-  }, [block.content]);
-
-  return (
-    <div
-      id={`fm-block-content-${block.id}`}
-      ref={ref}
-      contentEditable
-      suppressContentEditableWarning
-      className={`fm-block-editable ${block.type}`}
-      data-placeholder={
-        block.type.startsWith('heading')
-          ? 'Heading...'
-          : block.type === 'quote'
-          ? 'Write a clinical quote, testimonial or highlight...'
-          : block.type === 'list'
-          ? 'Feature or spec bullet item (press Enter for next)...'
-          : block.type === 'code'
-          ? 'Write technical specifications or parameters...'
-          : 'Write product description or details (Type / to choose a block)...'
-      }
-      onFocus={onFocus}
-      onInput={(e) => onChange(e.currentTarget.innerHTML)}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' && !e.shiftKey && block.type !== 'code') {
-          e.preventDefault();
-          onEnter();
-        }
-      }}
-    />
   );
 }
 
