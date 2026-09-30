@@ -2,6 +2,7 @@ import AdminResourcePage, { type AdminResourceItem } from '@/components/admin/Ad
 import PageManager from '@/components/admin/PageManager';
 import SiteChromeBuilder from '@/components/admin/SiteChromeBuilder';
 import AdminSeoSuite from '@/components/admin/AdminSeoSuite';
+import EnquiryManager from '@/components/admin/EnquiryManager';
 import { getAllProducts } from '@/lib/server-catalog';
 import { getSharedEditorialPages } from '@/lib/server-pages';
 import { store } from '@/lib/store';
@@ -93,6 +94,7 @@ export default async function AdminSection({
   if (key === 'appearance/footer') return <SiteChromeBuilder initialPanel="footer"/>;
   if (key === 'content/pages') return <PageManager mode="list" initialType={pageType} />;
   if (key === 'seo' || key === 'seo/redirects') return <AdminSeoSuite />;
+  if (key === 'enquiries') return <EnquiryManager />;
   let [title, eyebrow, description, actionLabel] = meta[key] || ['Admin Console', 'Fastonmed', 'Manage this website resource.', 'Add Record'];
   let items: AdminResourceItem[] = emptyRows(title);
 

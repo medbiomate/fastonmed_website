@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { useState, type ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { Archive, BarChart3, BookOpen, ChevronDown, ChevronRight, ExternalLink, FileText, Files, FolderTree, Image as ImageIcon, Languages, LayoutDashboard, MessageSquare, Package, PanelLeftClose, PanelLeftOpen, Settings, ShoppingCart, Tag } from 'lucide-react';
 import { store } from '@/lib/store';
 
@@ -50,10 +50,18 @@ export default function AdminSidebar() {
   const products = store.getProducts({ status: 'all' });
   const orders = store.getOrders();
   const customers = store.getCustomers();
-  const enquiries = store.getEnquiries();
+  const [enquiryCount, setEnquiryCount] = useState(0);
   const posts = store.getBlogPosts();
   const pages = store.getPages();
   const pendingOrders = orders.filter((order) => ['pending_payment', 'processing'].includes(order.status)).length;
+  useEffect(() => {
+    let active = true;
+    fetch('/api/admin/enquiries', { cache: 'no-store' })
+      .then((response) => response.json())
+      .then((payload) => { if (active && payload?.success) setEnquiryCount(payload.enquiries?.length || 0); })
+      .catch(() => {});
+    return () => { active = false; };
+  }, [pathname]);
   const direct = (href: string, label: string, icon: ReactNode) => <Link href={href} className={`tk-nav-parent tk-nav-link${pathname === href ? ' active' : ''}`}><span className="tk-nav-parent-main">{icon}<span className="tk-nav-title">{label}</span></span></Link>;
 
   return (
@@ -66,7 +74,7 @@ export default function AdminSidebar() {
         <NavGroup label="Media" icon={<ImageIcon size={18} />} items={[{ label: 'Library', href: '/admin/media' }]} />
         <div className="tk-nav-section-label">COMMERCE</div>
         <NavGroup label="Orders" icon={<ShoppingCart size={18} />} count={pendingOrders || orders.length} items={[{ label: 'All Orders', href: '/admin/orders' }, { label: 'Customers', href: '/admin/customers', count: customers.length }]} />
-        <NavGroup label="Enquiries" icon={<MessageSquare size={18} />} count={enquiries.length} items={[{ label: 'All Enquiries', href: '/admin/enquiries' }]} />
+        <NavGroup label="Enquiries" icon={<MessageSquare size={18} />} count={enquiryCount} items={[{ label: 'All Enquiries', href: '/admin/enquiries' }]} />
         {direct('/admin/reports', 'Reports', <BarChart3 size={18} />)}
         <div className="tk-nav-section-label">CONTENT</div>
         <NavGroup label="Posts" icon={<BookOpen size={18} />} count={posts.length} items={[{ label: 'All Posts', href: '/admin/content/blog' }, { label: 'Add Post', href: '/admin/content/blog/new' }, { label: 'Categories', href: '/admin/content/blog/categories' }]} />

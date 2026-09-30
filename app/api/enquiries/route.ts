@@ -76,9 +76,11 @@ export async function POST(request: NextRequest) {
     ];
 
     // 2. Always persist to Hostinger MySQL Database
-    saveLeadToHostingerDb(lead).then((ok) => {
-      if (ok) saved = true;
-    }).catch((err) => console.warn('Could not save lead to Hostinger DB:', err));
+    try {
+      if (await saveLeadToHostingerDb(lead)) saved = true;
+    } catch (err) {
+      console.warn('Could not save lead to Hostinger DB:', err);
+    }
 
     // 3. Also forward to CRM/API endpoints
     for (const url of candidateUrls) {
@@ -101,7 +103,13 @@ export async function POST(request: NextRequest) {
       } catch {}
     }
 
-    return NextResponse.json({ success: true, leadId: lead.id, savedToRemote: saved });
+    if (!saved) {
+      return NextResponse.json(
+        { success: false, error: 'The CRM could not save this enquiry. Please try again.' },
+        { status: 503 }
+      );
+    }
+    return NextResponse.json({ success: true, leadId: lead.id, savedToRemote: true });
   } catch (error) {
     console.error('Website enquiry error:', error);
     return NextResponse.json({ success: false, error: 'The enquiry could not be processed. Please try again or contact us directly.' }, { status: 500 });

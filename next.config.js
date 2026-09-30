@@ -2,8 +2,7 @@
 const nextConfig = {
   images: {
     remotePatterns: [
-      { protocol: 'https', hostname: 'www.fastonmed.com' },
-      { protocol: 'https', hostname: 'fastonmed.com' },
+      { protocol: 'https', hostname: '**' },
       { protocol: 'http', hostname: 'localhost' }
     ]
   },

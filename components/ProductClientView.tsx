@@ -35,7 +35,9 @@ interface ProductClientViewProps {
 export default function ProductClientView({ product, similarProducts }: ProductClientViewProps) {
   const { locale, isRtl, isArabic, localizeUrl, t } = useLocale();
   const [quantity, setQuantity] = useState<number>(1);
-  const [selectedImage, setSelectedImage] = useState<string>(product.mainImage || '');
+  const initialImg = product.mainImage || (product.galleryImages && product.galleryImages[0]) || '';
+  const [selectedImage, setSelectedImage] = useState<string>(initialImg);
+  const [imageError, setImageError] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<'specs' | 'features' | 'faq'>('specs');
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [copied, setCopied] = useState<boolean>(false);
@@ -184,7 +186,7 @@ export default function ProductClientView({ product, similarProducts }: ProductC
                   padding: '24px'
                 }}
               >
-                {selectedImage ? (
+                {selectedImage && !imageError ? (
                   <Image
                     src={selectedImage}
                     alt={
@@ -194,15 +196,17 @@ export default function ProductClientView({ product, similarProducts }: ProductC
                     }
                     fill
                     priority
-                  style={{ objectFit: 'contain' }}
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                />
-              ) : (
-                <div style={{ textAlign: 'center', color: '#94a3b8' }}>
-                  <Layers size={48} strokeWidth={1.5} style={{ margin: '0 auto 12px' }} />
-                  <p style={{ fontSize: '0.9rem', fontWeight: 600 }}>Medical Catalog Image</p>
-                </div>
-              )}
+                    unoptimized={selectedImage.startsWith('/uploads') || selectedImage.startsWith('data:') || selectedImage.startsWith('http')}
+                    onError={() => setImageError(true)}
+                    style={{ objectFit: 'contain' }}
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
+                ) : (
+                  <div style={{ textAlign: 'center', color: '#94a3b8' }}>
+                    <Layers size={48} strokeWidth={1.5} style={{ margin: '0 auto 12px' }} />
+                    <p style={{ fontSize: '0.9rem', fontWeight: 600 }}>Medical Catalog Image</p>
+                  </div>
+                )}
 
               {/* Badges */}
               <div style={{ position: 'absolute', top: '16px', left: '16px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -242,7 +246,10 @@ export default function ProductClientView({ product, similarProducts }: ProductC
                   <button
                     key={idx}
                     type="button"
-                    onClick={() => setSelectedImage(img)}
+                    onClick={() => {
+                      setSelectedImage(img);
+                      setImageError(false);
+                    }}
                     style={{
                       width: '72px',
                       height: '72px',
@@ -260,6 +267,7 @@ export default function ProductClientView({ product, similarProducts }: ProductC
                       src={img}
                       alt={product.galleryAlts?.[img] || (img === product.mainImage ? product.imageAlt : null) || `${product.name} thumbnail ${idx + 1}`}
                       fill
+                      unoptimized={img.startsWith('/uploads') || img.startsWith('data:') || img.startsWith('http')}
                       style={{ objectFit: 'contain' }}
                     />
                   </button>

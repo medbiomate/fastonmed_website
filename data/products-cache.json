@@ -1,5 +1,39 @@
 [
   {
+    "id": "prod-1790769337206",
+    "name": "Cederroth Mouth-to-Mouth Resuscitation Protection Kit | 2596",
+    "slug": "cederroth-mouth-to-mouth-resuscitation-protection-kit-2596",
+    "sku": "FOM-1790769618972",
+    "category": "General Medical Devices",
+    "brand": "Cederroth",
+    "status": "published",
+    "image": "/uploads/1790769533856-protection-kit.jpg",
+    "galleryImages": [
+      "/uploads/1790769533856-protection-kit.jpg"
+    ],
+    "regularPrice": 0,
+    "salePrice": null,
+    "sellingPrice": 0,
+    "inStock": 10,
+    "stockStatus": "instock",
+    "description": "<p>The <strong>Cederroth Mouth-to-Mouth Resuscitation Protection Kit 2596</strong> is designed to help reduce direct contact between the first-aider and the casualty during mouth-to-mouth resuscitation. It includes a breathing mask fitted with a one-way valve, providing a protective barrier during rescue breathing.</p><p>The kit features a plastic cloth with clear, colour-printed instructions to help guide the first-aider during an emergency. Its practical design makes it suitable for first aid kits and emergency preparedness equipment.</p><h2>Key Features</h2><ul><li>Designed for mouth-to-mouth resuscitation</li><li>Helps limit direct contact between the first-aider and the casualty</li><li>Includes a breathing mask with a one-way valve</li><li>Features clear, colour-printed instructions on the plastic cloth</li><li>Supports quick reference during emergency situations</li><li>Suitable for first aid and emergency response kits</li></ul>",
+    "shortDescription": "The Cederroth Mouth-to-Mouth Resuscitation Protection Kit 2596 includes a breathing mask with a one-way valve and a plastic cloth featuring clear, colour-printed instructions to help limit contact during rescue breathing.",
+    "specifications": {},
+    "tags": [
+      "Emergency",
+      "First Aid",
+      "Cederroth",
+      "Resuscitation",
+      "Breathing Mask"
+    ],
+    "purchaseMode": "quote",
+    "warrantyPeriod": "1 Year Official UAE Warranty",
+    "seoTitle": "Buy Cederroth Resuscitation Protection Kit 2596",
+    "seoDescription": "Buy Cederroth Resuscitation Protection Kit 2596 with a one-way-valve breathing mask and clear instructions for emergency rescue breathing.",
+    "updatedAt": "2026-09-30T13:01:15.394Z",
+    "createdAt": "2026-09-30T12:00:18.972Z"
+  },
+  {
     "id": "woo-6947",
     "name": "3M Littmann Classic III Stethoscope Black 5620",
     "model": "",

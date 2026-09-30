@@ -34,9 +34,24 @@ export function getHostingerDbPool(): mysql.Pool {
 export async function saveProductToHostingerDb(p: any): Promise<boolean> {
   try {
     const db = getHostingerDbPool();
-    const id = String(p.id || 'prod-' + Date.now());
-    const name = String(p.name || 'Unnamed Product').slice(0, 500);
     const slug = String(p.slug || '').slice(0, 255);
+    let id = String(p.id || 'prod-' + Date.now());
+
+    // Deduplicate by slug so multiple records don't conflict
+    if (slug) {
+      try {
+        const [existing] = await db.query<any[]>(
+          'SELECT id FROM products WHERE slug = ? LIMIT 1',
+          [slug]
+        );
+        if (Array.isArray(existing) && existing.length > 0 && existing[0]?.id) {
+          id = existing[0].id;
+          p.id = id;
+        }
+      } catch {}
+    }
+
+    const name = String(p.name || 'Unnamed Product').slice(0, 500);
     const sku = String(p.sku || p.model || '').slice(0, 100);
     const category = String(p.category || 'General').slice(0, 255);
     const brand = String(p.brand || '').slice(0, 255);
@@ -241,9 +256,12 @@ export async function getProductBySlugOrIdFromHostingerDb(slugOrId: string): Pro
     const db = getHostingerDbPool();
     const clean = decodeURIComponent(slugOrId).trim().toLowerCase().replace(/\/+$/, '');
     
-    // 1. Direct match on slug, id, sku, or lower(slug)
+    // 1. Direct match on slug, id, sku, or lower(slug) - prioritize published products with images
     const [rows] = await db.query<any[]>(
-      'SELECT raw_data FROM products WHERE slug = ? OR id = ? OR sku = ? OR LOWER(slug) = ? LIMIT 1',
+      `SELECT raw_data FROM products 
+       WHERE (slug = ? OR id = ? OR sku = ? OR LOWER(slug) = ?) AND status != 'trash'
+       ORDER BY (status = 'published') DESC, (image != '' AND image IS NOT NULL) DESC, updated_at DESC 
+       LIMIT 1`,
       [clean, clean, clean, clean]
     );
 
@@ -255,7 +273,10 @@ export async function getProductBySlugOrIdFromHostingerDb(slugOrId: string): Pro
     // 2. Fallback fuzzy match on slug
     if (clean.length > 3) {
       const [fuzzyRows] = await db.query<any[]>(
-        'SELECT raw_data FROM products WHERE slug LIKE ? LIMIT 1',
+        `SELECT raw_data FROM products 
+         WHERE slug LIKE ? AND status != 'trash'
+         ORDER BY (status = 'published') DESC, (image != '' AND image IS NOT NULL) DESC, updated_at DESC 
+         LIMIT 1`,
         [`%${clean}%`]
       );
 
@@ -270,4 +291,29 @@ export async function getProductBySlugOrIdFromHostingerDb(slugOrId: string): Pro
   }
   return null;
 }
+
+export async function saveMediaFileToHostingerDb(
+  filename: string,
+  mimeType: string,
+  buffer: Buffer
+): Promise<boolean> {
+  try {
+    const db = getHostingerDbPool();
+    const id = 'media-' + Date.now() + '-' + Math.random().toString(36).substring(2, 7);
+    await db.query(
+      `INSERT INTO media_files (id, filename, mime_type, data, size)
+       VALUES (?, ?, ?, ?, ?)
+       ON DUPLICATE KEY UPDATE
+         mime_type = VALUES(mime_type),
+         data = VALUES(data),
+         size = VALUES(size)`,
+      [id, filename, mimeType, buffer, buffer.length]
+    );
+    return true;
+  } catch (err) {
+    console.error('Hostinger DB: Error saving media file:', err);
+    return false;
+  }
+}
+
 

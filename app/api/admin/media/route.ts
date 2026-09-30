@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
+import { saveMediaFileToHostingerDb } from '@/lib/hostinger-db';
 
 export const dynamic = 'force-dynamic';
 
@@ -143,6 +144,11 @@ export async function POST(request: Request) {
 
       fs.writeFileSync(filePath, buffer);
 
+      // Persist to MySQL media_files table so Git deploys never delete it
+      saveMediaFileToHostingerDb(filename, file.type || 'image/jpeg', buffer).catch((e) =>
+        console.warn('Could not save media file to MySQL:', e)
+      );
+
       return NextResponse.json({
         success: true,
         url: `/uploads/${filename}`,
@@ -158,7 +164,8 @@ export async function POST(request: Request) {
         return NextResponse.json({ success: false, error: 'Invalid data URL' }, { status: 400 });
       }
 
-      const ext = matches[1].split('/')[1]?.replace('jpeg', 'jpg') || 'png';
+      const mimeType = matches[1];
+      const ext = mimeType.split('/')[1]?.replace('jpeg', 'jpg') || 'png';
       const safeName = (body.filename || 'upload')
         .toLowerCase()
         .replace(/[^a-z0-9.]+/g, '-')
@@ -168,6 +175,11 @@ export async function POST(request: Request) {
       const filePath = path.join(UPLOADS_DIR, filename);
 
       fs.writeFileSync(filePath, buffer);
+
+      // Persist to MySQL media_files table
+      saveMediaFileToHostingerDb(filename, mimeType, buffer).catch((e) =>
+        console.warn('Could not save media file to MySQL:', e)
+      );
 
       return NextResponse.json({
         success: true,
