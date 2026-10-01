@@ -174,15 +174,17 @@ const getBackendUrls = () => {
   return Array.from(new Set(urls));
 };
 
-export async function GET() {
-  const cached = getCachedProducts();
+let mediaRecoveryPromise: Promise<void> | null = null;
+let lastMediaRecovery = 0;
+
+async function recoverDurableMedia() {
   // Deployments recreate bundled cache files. Recover verified media links
   // from their durable database records before returning the catalog.
   try {
     const durable = await loadProductsFromHostingerDb();
     const media = new Map(durable.filter((p: any) => p.mediaOriginals).map((p: any) => [p.id, p]));
     let changed = false;
-    const restored = cached.map((p: any) => {
+    const restored = getCachedProducts().map((p: any) => {
       const saved: any = media.get(p.id);
       if (!saved || JSON.stringify(p.mediaOriginals) === JSON.stringify(saved.mediaOriginals)) return p;
       changed = true;
@@ -190,6 +192,18 @@ export async function GET() {
     });
     if (changed) saveFileCache(restored);
   } catch {}
+}
+
+export async function GET() {
+  if (Date.now() - lastMediaRecovery >= CACHE_TTL_MS) {
+    if (!mediaRecoveryPromise) {
+      mediaRecoveryPromise = recoverDurableMedia().finally(() => {
+        lastMediaRecovery = Date.now();
+        mediaRecoveryPromise = null;
+      });
+    }
+    await mediaRecoveryPromise;
+  }
   const active = getCachedProducts();
   if (active.length > 0) {
     return NextResponse.json(
