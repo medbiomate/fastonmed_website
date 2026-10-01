@@ -176,9 +176,24 @@ const getBackendUrls = () => {
 
 export async function GET() {
   const cached = getCachedProducts();
-  if (cached.length > 0) {
+  // Deployments recreate bundled cache files. Recover verified media links
+  // from their durable database records before returning the catalog.
+  try {
+    const durable = await loadProductsFromHostingerDb();
+    const media = new Map(durable.filter((p: any) => p.mediaOriginals).map((p: any) => [p.id, p]));
+    let changed = false;
+    const restored = cached.map((p: any) => {
+      const saved: any = media.get(p.id);
+      if (!saved || JSON.stringify(p.mediaOriginals) === JSON.stringify(saved.mediaOriginals)) return p;
+      changed = true;
+      return { ...p, image: saved.image, galleryImages: saved.galleryImages, mediaOriginals: saved.mediaOriginals };
+    });
+    if (changed) saveFileCache(restored);
+  } catch {}
+  const active = getCachedProducts();
+  if (active.length > 0) {
     return NextResponse.json(
-      { success: true, products: cached, count: cached.length, source: 'cache' },
+      { success: true, products: active, count: active.length, source: 'cache' },
       { headers: { 'Cache-Control': 'no-cache, no-store, must-revalidate' } }
     );
   }
