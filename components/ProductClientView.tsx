@@ -81,29 +81,8 @@ export default function ProductClientView({ product, similarProducts }: ProductC
   );
   const waUrl = `https://wa.me/971508893589?text=${waOrderText}`;
 
-  // Default clinical specs if not explicitly set
-  const specs = Object.entries(product.technicalSpecs || {});
-  const displaySpecs: [string, string][] = specs.length > 0 ? specs : (
-    isArabic ? [
-      ['فئة المنتج', product.category || 'معدات طبية'],
-      ['العلامة التجارية / الشركة المصنعة', product.brand || 'شريك فاستونميد'],
-      ['رمز المنتج (SKU)', product.sku || 'N/A'],
-      ['الامتثال التنظيمي', 'مطابق لمعايير المستشفيات والعيادات في الإمارات'],
-      ['الضمان', product.warrantyPeriod || 'ضمان طبي حيوي لمدة عام'],
-      ['الجهد والطاقة الكهربائية', '220V - 240V / 50-60Hz (المعيار الإماراتي)'],
-      ['الاستخدام السريري', 'أجنحة المستشفيات، العناية المركزة، العيادات والرعاية المنزلية'],
-      ['خدمة ما بعد البيع', 'مركز فاستونميد للهندسة الطبية الحيوية - DIP-1، دبي']
-    ] : [
-      ['Product Category', product.category || 'Medical Equipment'],
-      ['Brand / Manufacturer', product.brand || 'FastonMed Partner'],
-      ['SKU / Catalog ID', product.sku || 'N/A'],
-      ['Regulatory Compliance', 'UAE Standard Hospital & Clinical Grade'],
-      ['Warranty', product.warrantyPeriod || '1 Year Biomedical Warranty'],
-      ['Supply Voltage / Power', '220V - 240V / 50-60Hz (UAE Standard)'],
-      ['Clinical Application', 'Hospital Inpatient, ICU, Clinic & Homecare'],
-      ['After-Sales Service', 'FastonMed DIP-1 Engineering Center']
-    ]
-  );
+  // Display only explicitly saved, non-empty specifications.
+  const displaySpecs = Object.entries(product.technicalSpecs || {}).filter(([label, value]) => label.trim() && String(value ?? '').trim());
 
   return (
     <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', paddingBottom: '70px' }}>

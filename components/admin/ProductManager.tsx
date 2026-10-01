@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import SpecificationFields from './SpecificationFields';
 import { useEffect, useMemo, useRef, useState, ChangeEvent } from 'react';
 import {
   Edit3,
@@ -1718,15 +1719,7 @@ export default function ProductManager({
               </label>
             </div>
 
-            <label>
-              Technical specifications <small>One per line: Label: Value</small>
-              <textarea
-                rows={7}
-                value={specText}
-                onChange={(e) => setSpecText(e.target.value)}
-                placeholder={'Feature: Value (one per line)'}
-              />
-            </label>
+            <SpecificationFields value={specText} onChange={setSpecText} />
           </section>
 
           {/* Sidebar */}
