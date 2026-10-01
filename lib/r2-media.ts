@@ -23,6 +23,12 @@ export async function readR2Image(key: string) {
   return client().send(new GetObjectCommand({ Bucket: process.env.R2_BUCKET_NAME, Key: key }));
 }
 export async function listR2Images() {
-  const result = await client().send(new ListObjectsV2Command({ Bucket: process.env.R2_BUCKET_NAME, Prefix: 'products/', MaxKeys: 1000 }));
-  return (result.Contents || []).filter(item => item.Key).map(item => ({ url: mediaUrl(item.Key!), name: item.Key!.split('/').pop()!, category: 'uploads' as const, mtime: item.LastModified?.getTime() }));
+  const images = [];
+  let continuationToken: string | undefined;
+  do {
+    const result = await client().send(new ListObjectsV2Command({ Bucket: process.env.R2_BUCKET_NAME, Prefix: 'products/', MaxKeys: 1000, ContinuationToken: continuationToken }));
+    images.push(...(result.Contents || []).filter(item => item.Key).map(item => ({ url: mediaUrl(item.Key!), name: item.Key!.split('/').pop()!, category: 'uploads' as const, mtime: item.LastModified?.getTime() })));
+    continuationToken = result.IsTruncated ? result.NextContinuationToken : undefined;
+  } while (continuationToken);
+  return images;
 }

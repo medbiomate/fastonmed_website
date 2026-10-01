@@ -4,6 +4,8 @@ import path from 'path';
 import { revalidatePath } from 'next/cache';
 import { saveProductToHostingerDb, deleteProductFromHostingerDb, loadProductsFromHostingerDb } from '@/lib/hostinger-db';
 import { invalidateServerCatalogCache } from '@/lib/server-catalog';
+import { canUploadMedia } from '@/lib/media-access';
+import { uploadR2Image } from '@/lib/r2-media';
 
 export const dynamic = 'force-dynamic';
 
@@ -204,6 +206,56 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     const current = getCachedProducts();
+    // Migrate one existing record at a time; never create a product or overwrite
+    // staff edits using a stale client-side catalog snapshot.
+    if (body.action === 'migrate-product-media') {
+      if (!await canUploadMedia(request)) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      const index = current.findIndex((p: any) => p.id === body.id);
+      if (index < 0) return NextResponse.json({ error: 'Product not found' }, { status: 404 });
+      const original = current[index];
+      const product = { ...original };
+      const originals = { ...(original.mediaOriginals || {}) };
+      const migrate = async (value: string) => {
+        if (!value || value.startsWith('/api/media/')) return value;
+        // No arbitrary remote fetching or file access through this endpoint.
+        if (!/^\/(wp-content\/uploads|uploads|products)\//.test(value)) return value;
+        const root = path.resolve(process.cwd(), 'public');
+        const file = path.resolve(root, '.' + decodeURIComponent(value));
+        if (!file.startsWith(root + path.sep)) throw new Error('Invalid image path');
+        const mime = ({ '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.webp': 'image/webp', '.gif': 'image/gif', '.avif': 'image/avif' } as Record<string, string>)[path.extname(file).toLowerCase()];
+        if (!mime) return value;
+        const result = await uploadR2Image(fs.readFileSync(file), path.basename(file), mime);
+        originals[result.url] = value;
+        return result.url;
+      };
+      product.image = await migrate(original.image);
+      if (Array.isArray(original.galleryImages)) product.galleryImages = await Promise.all(original.galleryImages.map(migrate));
+      if (product.image === original.image && JSON.stringify(product.galleryImages) === JSON.stringify(original.galleryImages)) {
+        return NextResponse.json({ success: true, changed: false, id: original.id });
+      }
+      product.mediaOriginals = originals;
+      // Keep creation/listing dates and all catalog fields unchanged.
+      const recovery = path.join(BACKUPS_DIR, 'media-migration-originals.json');
+      ensureDirectories();
+      if (!fs.existsSync(recovery)) fs.writeFileSync(recovery, JSON.stringify(current), { flag: 'wx' });
+      if (!await saveProductToHostingerDb({ ...product })) {
+        return NextResponse.json({ error: 'Database persistence failed; original links retained' }, { status: 503 });
+      }
+      const latest = getCachedProducts();
+      const latestIndex = latest.findIndex((p: any) => p.id === original.id);
+      if (latestIndex < 0 || JSON.stringify(latest[latestIndex]) !== JSON.stringify(original)) {
+        // Restore the concurrently edited record to the database rather than
+        // publishing an outdated migration snapshot.
+        if (latestIndex >= 0) await saveProductToHostingerDb(latest[latestIndex]);
+        return NextResponse.json({ error: 'Product changed during migration; retry' }, { status: 409 });
+      }
+      const next = [...latest];
+      next[latestIndex] = product;
+      saveFileCache(next);
+      invalidateServerCatalogCache();
+      revalidatePath('/', 'layout');
+      return NextResponse.json({ success: true, changed: true, id: product.id, image: product.image });
+    }
     const existingIndex = current.findIndex(
       (p: any) => p.id === body.id || (body.slug && p.slug === body.slug)
     );
