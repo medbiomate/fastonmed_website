@@ -534,17 +534,10 @@ export default function ProductManager({
       if (data.success && data.url) {
         return data.url;
       }
+      throw new Error(data.error || 'Image upload failed');
     } catch (e) {
-      console.warn('Media API upload error, falling back to data URL', e);
+      throw e;
     }
-
-    // Fallback to Data URL
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(String(reader.result));
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
   };
 
   // Drag & drop handlers for main and gallery images

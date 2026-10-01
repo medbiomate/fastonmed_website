@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 import { saveMediaFileToHostingerDb } from '@/lib/hostinger-db';
+import { r2Configured, uploadR2Image, listR2Images } from '@/lib/r2-media';
+import { canUploadMedia } from '@/lib/media-access';
 
 export const dynamic = 'force-dynamic';
 
@@ -81,6 +83,7 @@ export async function GET(request: Request) {
     const original = scanDir(path.join(PUBLIC_DIR, 'images', 'original'), '/images/original', 'library', 60);
 
     let all: MediaItem[] = [
+      ...(r2Configured() ? await listR2Images() : []),
       ...uploads,
       ...products,
       ...showcase,
@@ -118,6 +121,7 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
+  if (!canUploadMedia(request)) return NextResponse.json({ success: false, error: 'Please sign in to upload media' }, { status: 401 });
   try {
     ensureUploadsDir();
 
@@ -134,6 +138,8 @@ export async function POST(request: Request) {
 
       const bytes = await file.arrayBuffer();
       const buffer = Buffer.from(bytes);
+      if (r2Configured()) return NextResponse.json(await uploadR2Image(buffer, file.name, file.type));
+      if (process.env.NODE_ENV === 'production') throw new Error('Cloud image storage is not configured');
 
       const safeBase = file.name
         .toLowerCase()
@@ -172,6 +178,8 @@ export async function POST(request: Request) {
         .replace(/\.[^/.]+$/, '');
       const filename = `${Date.now()}-${safeName}.${ext}`;
       const buffer = Buffer.from(matches[2], 'base64');
+      if (r2Configured()) return NextResponse.json(await uploadR2Image(buffer, filename, mimeType));
+      if (process.env.NODE_ENV === 'production') throw new Error('Cloud image storage is not configured');
       const filePath = path.join(UPLOADS_DIR, filename);
 
       fs.writeFileSync(filePath, buffer);
