@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { saveLeadToHostingerDb } from '@/lib/hostinger-db';
+import { getHostingerDbPool, saveLeadToHostingerDb } from '@/lib/hostinger-db';
 
 export const dynamic = 'force-dynamic';
 
@@ -15,7 +15,6 @@ export async function POST(request: NextRequest) {
     const phone = clean(body.phone, 50);
     const rawMessage = clean(body.message || body.notes || body.requirement, 4000);
     const message = rawMessage || 'Direct medical equipment procurement & RFQ consultation request.';
-    const clinicName = clean(body.clinicName || body.facilityName, 180);
     const productName = clean(body.productName || body.equipmentInterest, 240);
     if (!name || !email || !phone) {
       return NextResponse.json({ success: false, error: 'Name, email, and phone number are required.' }, { status: 400 });
@@ -49,28 +48,12 @@ export async function POST(request: NextRequest) {
     };
 
     let saved = false;
-
-    // 1. Direct local CRM store sync if running in the workspace
-    try {
-      const fs = await import('fs');
-      const path = await import('path');
-      const crmStorePath = path.resolve(process.cwd(), '../CRM/data/leads_store.json');
-      if (fs.existsSync(crmStorePath)) {
-        const raw = fs.readFileSync(crmStorePath, 'utf-8');
-        const list = JSON.parse(raw);
-        if (Array.isArray(list)) {
-          list.unshift(lead);
-          fs.writeFileSync(crmStorePath, JSON.stringify(list, null, 2), 'utf-8');
-          saved = true;
-        }
-      }
-    } catch (e) {
-      console.warn('Local CRM file sync error:', e);
-    }
+    let savedToCRM = false;
 
     const candidateUrls = [
       ...(process.env.CRM_BACKEND_URL ? [`${process.env.CRM_BACKEND_URL.replace(/\/$/, '')}/api/leads`] : []),
       ...(process.env.FAST_API_URL ? [`${process.env.FAST_API_URL.replace(/\/$/, '')}/api/leads`] : []),
+      'https://crm.fastonmed.com/api/leads',
       'https://api.fastonmed.com/api/leads',
       'http://127.0.0.1:3000/api/leads'
     ];
@@ -97,7 +80,7 @@ export async function POST(request: NextRequest) {
         clearTimeout(timeout);
         const result = await response.json().catch(() => null);
         if (response.ok && (result?.success || result?.data || result?.id)) {
-          saved = true;
+          savedToCRM = true;
           break;
         }
       } catch {}
@@ -109,9 +92,69 @@ export async function POST(request: NextRequest) {
         { status: 503 }
       );
     }
-    return NextResponse.json({ success: true, leadId: lead.id, savedToRemote: true });
+    return NextResponse.json({ success: true, leadId: lead.id, savedToRemote: saved, savedToCRM });
   } catch (error) {
     console.error('Website enquiry error:', error);
     return NextResponse.json({ success: false, error: 'The enquiry could not be processed. Please try again or contact us directly.' }, { status: 500 });
+  }
+}
+
+
+async function requireCRMUser(request: NextRequest): Promise<boolean> {
+  const authorization = request.headers.get('authorization');
+  if (!authorization?.startsWith('Bearer ') || authorization.includes('session-token-')) return false;
+  const origin = (process.env.NEXT_PUBLIC_API_BASE_URL || 'https://api.fastonmed.com').replace(/\/$/, '');
+  const response = await fetch(`${origin}/api/auth/me`, { headers: { Authorization: authorization }, cache: 'no-store', signal: AbortSignal.timeout(10000) });
+  const data = await response.json();
+  return response.ok && data.success === true && Boolean(data.data?.id);
+}
+
+export async function GET(request: NextRequest) {
+  try {
+    if (!await requireCRMUser(request)) return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+    const [rows] = await getHostingerDbPool().query<import('mysql2').RowDataPacket[]>('SELECT raw_data FROM leads_enquiries ORDER BY created_at DESC');
+    const leads = rows.map(row => typeof row.raw_data === 'string' ? JSON.parse(row.raw_data) : row.raw_data).filter(lead => lead && lead.id);
+    return NextResponse.json({ success: true, leads }, { headers: { 'Cache-Control': 'no-store' } });
+  } catch (error) {
+    console.error('Read website enquiries failed:', error);
+    return NextResponse.json({ success: false, error: 'Website enquiry database is unavailable. Please retry.' }, { status: 503 });
+  }
+}
+
+export async function PUT(request: NextRequest) {
+  try {
+    if (!await requireCRMUser(request)) return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+    const body = await request.json();
+    const id = clean(body.id, 120);
+    const stage = clean(body.data?.stage || body.stage, 60);
+    if (!id || !['New Lead', 'Contacted', 'Qualified', 'Proposal Sent', 'Negotiation', 'Won', 'Lost', 'Closed', 'Closed Won', 'Closed Lost'].includes(stage)) return NextResponse.json({ success: false, error: 'Invalid enquiry status' }, { status: 400 });
+    const db = await getHostingerDbPool().getConnection();
+    try {
+      await db.beginTransaction();
+      const [rows] = await db.query<import('mysql2').RowDataPacket[]>('SELECT raw_data FROM leads_enquiries WHERE id = ? FOR UPDATE', [id]);
+      if (!rows[0]) { await db.rollback(); return NextResponse.json({ success: false, error: 'Enquiry not found' }, { status: 404 }); }
+      const original = typeof rows[0].raw_data === 'string' ? JSON.parse(rows[0].raw_data) : rows[0].raw_data;
+      const lead = { ...original, stage, updatedAt: new Date().toISOString() };
+      await db.query('UPDATE leads_enquiries SET stage = ?, raw_data = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?', [stage, JSON.stringify(lead), id]);
+      await db.commit();
+      return NextResponse.json({ success: true, lead });
+    } catch (error) { await db.rollback(); throw error; }
+    finally { db.release(); }
+  } catch (error) {
+    console.error('Update website enquiry failed:', error);
+    return NextResponse.json({ success: false, error: 'Enquiry status could not be saved' }, { status: 503 });
+  }
+}
+
+export async function DELETE(request: NextRequest) {
+  try {
+    if (!await requireCRMUser(request)) return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+    const id = clean(request.nextUrl.searchParams.get('id'), 120);
+    if (!id) return NextResponse.json({ success: false, error: 'Enquiry id is required' }, { status: 400 });
+    await getHostingerDbPool().query('DELETE FROM leads_enquiries WHERE id = ?', [id]);
+    return NextResponse.json({ success: true, deletedId: id });
+  } catch (error) {
+    console.error('Delete website enquiry failed:', error);
+    return NextResponse.json({ success: false, error: 'Enquiry could not be deleted' }, { status: 503 });
   }
 }

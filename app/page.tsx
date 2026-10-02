@@ -2878,7 +2878,7 @@ export default function HomePage() {
                     <CheckCircle2 size={34} />
                   </div>
                   <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#0f172a', margin: '0 0 8px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                    {isAr ? 'تم إرسال طلبك إلى نظام فاستونميد بنجاح!' : 'Inquiry Forwarded to FastonMed CRM!'}
+                    {isAr ? 'تم استلام طلبك بنجاح!' : 'Enquiry received successfully!'}
                   </h3>
                   {leadRefId && (
                     <div
@@ -2900,9 +2900,9 @@ export default function HomePage() {
                   )}
                   <p style={{ fontSize: '0.88rem', color: '#64748b', lineHeight: 1.55, maxWidth: '440px', margin: '0 auto 24px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
                     {isAr ? (
-                      <>شكراً لك، <strong>{leadForm.name}</strong>. تمت مزامنة طلب استشارة المعدات الطبية مع نظام خدمة العملاء. سيتواصل معك مهندس المشتريات الطبية الحيوية خلال ساعتين.</>
+                      <>شكراً لك، <strong>{leadForm.name}</strong>. تم حفظ طلب استشارة المعدات الطبية الخاص بك. سيراجع فريقنا متطلباتك ويتواصل معك قريباً.</>
                     ) : (
-                      <>Thank you, <strong>{leadForm.name}</strong>. Your equipment consultation request has been automatically synchronized to our central CRM pipeline. Our biomedical procurement engineer will reach out within 2 hours.</>
+                      <>Thank you, <strong>{leadForm.name}</strong>. Your equipment consultation request has been saved. Our team will review your requirements and contact you soon.</>
                     )}
                   </p>
                   <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', flexWrap: 'wrap' }}>
