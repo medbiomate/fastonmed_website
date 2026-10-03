@@ -20,6 +20,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Name, email, and phone number are required.' }, { status: 400 });
     }
 
+    const enquiryType = body.enquiryType === 'Service' ? 'Service' : 'Sales';
+    const serviceType = enquiryType === 'Service' ? clean(body.serviceType, 100) : '';
     const now = new Date().toISOString();
     const facilityName = clean(body.facilityName || body.clinicName, 180);
     const facilityType = clean(body.facilityType, 100);
@@ -32,7 +34,7 @@ export async function POST(request: NextRequest) {
       contactName: name,
       phone,
       email,
-      enquiryType: 'Sales',
+      enquiryType,
       category: equipmentInterest || 'Website RFQ',
       product: equipmentInterest || productName || message.slice(0, 160),
       quantity: Math.max(1, Number(body.quantity) || 1),
@@ -42,7 +44,7 @@ export async function POST(request: NextRequest) {
       assignedTo: 'Unassigned',
       assignedToId: '',
       priority: 'High',
-      notes: `[Facility: ${facilityName || 'N/A'}] [Type: ${facilityType || 'General'}] [Interest: ${equipmentInterest || 'General'}] [Timeline: ${timeline || 'Immediate'}] Notes: ${message}`,
+      notes: `${serviceType ? `[Service: ${serviceType}] ` : ''}[Facility: ${facilityName || 'N/A'}] [Type: ${facilityType || 'General'}] [Interest: ${equipmentInterest || 'General'}] [Timeline: ${timeline || 'Immediate'}] Notes: ${message}`,
       createdAt: now,
       updatedAt: now
     };

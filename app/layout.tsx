@@ -106,7 +106,7 @@ const orgSchema = {
   alternateName: ['فاستونميد للتجارة ذ.م.م', 'FastOnMed'],
   vatID: '105373862900003',
   taxID: '105373862900003',
-  foundingDate: '2024',
+  foundingDate: '2025',
   identifier: [
     {
       '@type': 'PropertyValue',

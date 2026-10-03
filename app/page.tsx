@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { createPortal } from 'react-dom';
 import Image from 'next/image';
 import {
   ArrowRight,
@@ -44,6 +45,7 @@ import {
 import { useApp } from '@/lib/context';
 import { useLocale } from '@/lib/locale-context';
 import type { Product } from '@/lib/types';
+import EnquirySelect from '@/components/EnquirySelect';
 import GoogleReviewsSection from '@/components/GoogleReviewsSection';
 
 const baseDate = '2026-01-01T00:00:00.000Z';
@@ -743,19 +745,86 @@ export default function HomePage() {
     email: '',
     phone: '',
     facilityName: '',
-    facilityType: 'Hospital & Medical Center',
-    equipmentInterest: 'ICU & Mechanical Ventilators',
+    facilityType: '',
+    equipmentInterest: '',
     timeline: 'Immediate (Ex-Stock UAE)',
     message: ''
   });
+  const [showEnquiryPopup, setShowEnquiryPopup] = useState(false);
+  const enquirySectionRef = useRef<HTMLElement>(null);
+  const popupCloseRef = useRef<HTMLButtonElement>(null);
+  const enquiryInteractedRef = useRef(false);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      if (!enquiryInteractedRef.current) setShowEnquiryPopup(true);
+    }, 30000);
+    return () => window.clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    if (!showEnquiryPopup) return;
+    const previousFocus = document.activeElement as HTMLElement | null;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    popupCloseRef.current?.focus();
+    const handleKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setShowEnquiryPopup(false);
+      if (event.key !== 'Tab') return;
+      const controls = Array.from(enquirySectionRef.current?.querySelectorAll<HTMLElement>('button:not([disabled]), a[href], input, select, textarea') || []);
+      const first = controls[0];
+      const last = controls[controls.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+    };
+    document.addEventListener('keydown', handleKey);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener('keydown', handleKey);
+      previousFocus?.focus();
+    };
+  }, [showEnquiryPopup]);
+
+  const [enquiryType, setEnquiryType] = useState<'Sales' | 'Service'>('Sales');
+  const [customFacility, setCustomFacility] = useState(false);
+  const [customEquipment, setCustomEquipment] = useState(false);
+  const [serviceType, setServiceType] = useState('Repair / Breakdown');
+  const [serviceTimeline, setServiceTimeline] = useState('Urgent');
+  const isServiceEnquiry = enquiryType === 'Service';
   const [isLeadSubmitting, setIsLeadSubmitting] = useState(false);
   const [leadSubmitted, setLeadSubmitted] = useState(false);
   const [leadRefId, setLeadRefId] = useState<string | null>(null);
   const [leadError, setLeadError] = useState<string | null>(null);
+  const [leadValidationAttempted, setLeadValidationAttempted] = useState(false);
+  const leadWhatsAppMessage = [
+    'Hello FastonMed, I submitted the following request on your website:',
+    '',
+    `Enquiry reference: ${leadRefId || 'N/A'}`,
+    `Enquiry type: ${enquiryType}`,
+    `Contact name: ${leadForm.name.trim()}`,
+    `Phone / WhatsApp: ${leadForm.phone.trim()}`,
+    `Email: ${leadForm.email.trim()}`,
+    `Facility / firm name: ${leadForm.facilityName.trim() || 'Not provided'}`,
+    `Facility type: ${leadForm.facilityType.trim() || 'Not provided'}`,
+    `Equipment category: ${leadForm.equipmentInterest.trim() || 'Not provided'}`,
+    ...(isServiceEnquiry ? [`Service required: ${serviceType}`] : []),
+    `${isServiceEnquiry ? 'Service urgency' : 'Delivery / procurement timeline'}: ${isServiceEnquiry ? serviceTimeline : leadForm.timeline}`,
+    '',
+    'Requirements / equipment details:',
+    leadForm.message.trim() || (isServiceEnquiry ? 'Medical equipment service request from homepage.' : 'Direct equipment procurement & RFQ consultation request from homepage.')
+  ].join('\n');
+
 
   const handleLeadSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLeadError(null);
+    setLeadValidationAttempted(true);
+    const form = e.currentTarget as HTMLFormElement;
+    if (!form.checkValidity()) {
+      setLeadError(isAr ? 'يرجى إكمال الحقول المطلوبة وإدخال بريد إلكتروني صحيح.' : 'Please complete the required fields and enter a valid email address.');
+      form.querySelector<HTMLElement>(':invalid')?.focus();
+      return;
+    }
     if (!leadForm.name.trim() || !leadForm.phone.trim() || !leadForm.email.trim()) {
       setLeadError('Please provide your name, official email, and contact phone number.');
       return;
@@ -767,14 +836,16 @@ export default function HomePage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          enquiryType,
+          serviceType: isServiceEnquiry ? serviceType : undefined,
           name: leadForm.name.trim(),
           email: leadForm.email.trim(),
           phone: leadForm.phone.trim(),
           facilityName: leadForm.facilityName.trim() || `${leadForm.facilityType} - ${leadForm.name.trim()}`,
           facilityType: leadForm.facilityType,
           equipmentInterest: leadForm.equipmentInterest,
-          timeline: leadForm.timeline,
-          message: leadForm.message.trim() || 'Direct equipment procurement & RFQ consultation request from homepage.'
+          timeline: isServiceEnquiry ? serviceTimeline : leadForm.timeline,
+          message: leadForm.message.trim() || (isServiceEnquiry ? 'Medical equipment service request from homepage.' : 'Direct equipment procurement & RFQ consultation request from homepage.')
         })
       });
       const data = await res.json();
@@ -802,7 +873,9 @@ export default function HomePage() {
           if (selectedCategory === 'all' || selectedCategory === 'recent') return true;
           const text = `${p.name} ${p.category}`.toLowerCase();
           if (selectedCategory === 'icu')
-            return (
+
+
+  return (
               text.includes('icu') ||
               text.includes('ventilator') ||
               text.includes('monitor') ||
@@ -832,6 +905,723 @@ export default function HomePage() {
             );
           return true;
         });
+
+  const enquirySection = (
+      <section ref={enquirySectionRef} onFocusCapture={() => { enquiryInteractedRef.current = true; }} id="rfq-crm-section" style={{ backgroundColor: '#ffffff', padding: '86px 0 92px', borderTop: '1px solid #e2e8f0', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+        {showEnquiryPopup && <button ref={popupCloseRef} type="button" className="rfq-popup-close" aria-label="Close quotation form" onClick={() => setShowEnquiryPopup(false)}>×</button>}
+        <div className="container" style={{ maxWidth: '1240px', margin: '0 auto', padding: '0 20px' }}>
+          <div
+            id="rfq-two-column-layout"
+            style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 1.15fr',
+              gap: '40px',
+              alignItems: 'start'
+            }}
+          >
+            {/* Left Column: Context, Value Props & Fast Contact */}
+            <div>
+              <div
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  backgroundColor: '#e6f7f0',
+                  color: '#00875a',
+                  padding: '5px 12px',
+                  borderRadius: '999px',
+                  fontSize: '0.74rem',
+                  fontWeight: 700,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.04em',
+                  marginBottom: '14px',
+                  fontFamily: 'Arial, Helvetica, sans-serif'
+                }}
+              >
+                <Zap size={13} color="#00875a" />
+                <span>{isAr ? 'ربط مباشر مع نظام خدمة العملاء • استجابة خلال ساعتين' : 'DIRECT CRM INTEGRATION • FAST 2-HR RESPONSE'}</span>
+              </div>
+
+              <h2
+                id="rfq-main-heading"
+                style={{
+                  fontSize: '2.1rem',
+                  fontWeight: 800,
+                  color: '#0f172a',
+                  letterSpacing: '-0.02em',
+                  lineHeight: 1.25,
+                  margin: '0 0 14px',
+                  fontFamily: 'Arial, Helvetica, sans-serif'
+                }}
+              >
+                {isAr ? 'طلب شراء معدات أو دعم وصيانة' : 'Request Equipment Sales or Service Support'}
+              </h2>
+
+              <p
+                id="rfq-main-desc"
+                style={{
+                  fontSize: '0.92rem',
+                  color: '#64748b',
+                  lineHeight: 1.6,
+                  margin: '0 0 24px',
+                  fontFamily: 'Arial, Helvetica, sans-serif'
+                }}
+              >
+                {isAr
+                  ? 'أرسل مواصفات وتجهيزات منشأتك الصحية مباشرة إلى فريق الهندسة الطبية الحيوية في الإمارات للحصول على عروض أسعار رسمية وتوريد سريع لكافة الإمارات السبع.'
+                  : 'Contact our UAE biomedical engineering team for equipment quotations, repairs, maintenance and calibration across all 7 Emirates.'}
+              </p>
+
+              {/* 3 Key Trust Pillars */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '26px' }}>
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+                  <div
+                    style={{
+                      width: '36px',
+                      height: '36px',
+                      borderRadius: '8px',
+                      backgroundColor: '#e6f7f0',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: '#00875a',
+                      flexShrink: 0
+                    }}
+                  >
+                    <CheckCircle2 size={18} />
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.92rem', fontWeight: 700, color: '#0f172a', marginBottom: '2px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                      {isAr ? 'إحالة فورية للطلب عبر الـ CRM' : 'Real-Time CRM Assignment'}
+                    </div>
+                    <div style={{ fontSize: '0.8rem', color: '#64748b', lineHeight: 1.4, fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                      {isAr ? 'توجيه فوري للطلب إلى مهندسي الطب الحيوي في دبي.' : 'Instant ticket routing to biomedical engineers in Dubai.'}
+                    </div>
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+                  <div
+                    style={{
+                      width: '36px',
+                      height: '36px',
+                      borderRadius: '8px',
+                      backgroundColor: '#e6f7f0',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: '#00875a',
+                      flexShrink: 0
+                    }}
+                  >
+                    <ShieldCheck size={18} />
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.92rem', fontWeight: 700, color: '#0f172a', marginBottom: '2px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                      {isAr ? 'شهادات ووثائق معتمدة من المصنع' : 'Manufacturer Certified Documentation'}
+                    </div>
+                    <div style={{ fontSize: '0.8rem', color: '#64748b', lineHeight: 1.4, fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                      {isAr ? 'شهادات مطابقة رسمية، معايرة مصنعية، وضمان شامل.' : 'Official compliance certificates, factory calibration, and warranty.'}
+                    </div>
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+                  <div
+                    style={{
+                      width: '36px',
+                      height: '36px',
+                      borderRadius: '8px',
+                      backgroundColor: '#e6f7f0',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: '#00875a',
+                      flexShrink: 0
+                    }}
+                  >
+                    <Truck size={18} />
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.92rem', fontWeight: 700, color: '#0f172a', marginBottom: '2px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                      {isAr ? 'جاهزية التوريد الفوري في الإمارات' : 'Immediate UAE Stock & Deployment'}
+                    </div>
+                    <div style={{ fontSize: '0.8rem', color: '#64748b', lineHeight: 1.4, fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                      {isAr ? 'شحن فوري من مستودعاتنا بالإمارات مع التركيب والتشغيل الطبي.' : 'Direct dispatch from UAE fulfillment centers with biomedical installation.'}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Direct Urgent Contact Box */}
+              <div
+                style={{
+                  backgroundColor: '#f8fafc',
+                  border: '1px solid #e2e8f0',
+                  borderRadius: '12px',
+                  padding: '16px 20px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  flexWrap: 'wrap',
+                  gap: '12px',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.02)'
+                }}
+              >
+                <div>
+                  <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.04em', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                    {isAr ? 'هل تحتاج إلى مساعدة عاجلة وفورية؟' : 'Need Immediate Urgent Assistance?'}
+                  </div>
+                  <div style={{ fontSize: '1rem', fontWeight: 700, color: '#0f172a', marginTop: '2px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                    <a href="tel:+971508893589" style={{ color: '#0f172a', textDecoration: 'none' }}>+971 50 889 3589</a> / <a href="tel:+971508893586" style={{ color: '#0f172a', textDecoration: 'none' }}>+971 50 889 3586</a>
+                  </div>
+                </div>
+                <a
+                  href="https://wa.me/971508893589?text=Hello%20FastonMed%20team,%20I%20need%20an%20urgent%20medical%20equipment%20quotation."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    backgroundColor: '#25D366',
+                    color: '#ffffff',
+                    padding: '8px 16px',
+                    borderRadius: '8px',
+                    fontSize: '0.82rem',
+                    fontWeight: 700,
+                    textDecoration: 'none',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    fontFamily: 'Arial, Helvetica, sans-serif'
+                  }}
+                >
+                  <MessageCircle size={15} />
+                  <span>{isAr ? 'مكتب واتساب' : 'WhatsApp Desk'}</span>
+                </a>
+              </div>
+            </div>
+
+            {/* Right Column: Modern CRM Lead Capture Form */}
+            <div
+              style={{
+                backgroundColor: '#ffffff',
+                borderRadius: '16px',
+                border: '1px solid #e2e8f0',
+                padding: '30px 28px',
+                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.04)',
+                fontFamily: 'Arial, Helvetica, sans-serif'
+              }}
+            >
+              {leadSubmitted ? (
+                <div style={{ textAlign: 'center', padding: '36px 12px' }}>
+                  <div
+                    style={{
+                      width: '64px',
+                      height: '64px',
+                      borderRadius: '50%',
+                      backgroundColor: '#e6f7f0',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      margin: '0 auto 18px',
+                      color: '#00875a'
+                    }}
+                  >
+                    <CheckCircle2 size={34} />
+                  </div>
+                  <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#0f172a', margin: '0 0 8px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                    {isAr ? 'تم استلام طلبك بنجاح!' : 'Enquiry received successfully!'}
+                  </h3>
+                  {leadRefId && (
+                    <div
+                      style={{
+                        display: 'inline-block',
+                        backgroundColor: '#f8fafc',
+                        border: '1px solid #e2e8f0',
+                        padding: '4px 14px',
+                        borderRadius: '999px',
+                        fontSize: '0.8rem',
+                        fontWeight: 700,
+                        color: '#00875a',
+                        marginBottom: '16px',
+                        fontFamily: 'Arial, Helvetica, sans-serif'
+                      }}
+                    >
+                      {isAr ? `المرجع: #${leadRefId}` : `Reference: #${leadRefId}`}
+                    </div>
+                  )}
+                  <p style={{ fontSize: '0.88rem', color: '#64748b', lineHeight: 1.55, maxWidth: '440px', margin: '0 auto 24px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                    {isAr ? (
+                      <>شكراً لك، <strong>{leadForm.name}</strong>. تم حفظ طلبك. سيراجع فريقنا متطلباتك ويتواصل معك قريباً.</>
+                    ) : (
+                      <>Thank you, <strong>{leadForm.name}</strong>. Your {isServiceEnquiry ? 'service' : 'sales'} enquiry has been saved. Our team will review your requirements and contact you soon.</>
+                    )}
+                  </p>
+                  <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', flexWrap: 'wrap' }}>
+                    <a
+                      href={`https://wa.me/971508893589?text=${encodeURIComponent(leadWhatsAppMessage)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        backgroundColor: '#25D366',
+                        color: '#ffffff',
+                        padding: '10px 20px',
+                        borderRadius: '8px',
+                        fontSize: '0.86rem',
+                        fontWeight: 700,
+                        textDecoration: 'none',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        fontFamily: 'Arial, Helvetica, sans-serif'
+                      }}
+                    >
+                      <MessageCircle size={16} />
+                      <span>{isAr ? 'محادثة عبر واتساب' : 'Chat on WhatsApp'}</span>
+                    </a>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setLeadSubmitted(false);
+                        setLeadValidationAttempted(false);
+                        setCustomFacility(false);
+                        setCustomEquipment(false);
+                        setLeadForm({
+                          name: '',
+                          email: '',
+                          phone: '',
+                          facilityName: '',
+                          facilityType: '',
+                          equipmentInterest: '',
+                          timeline: 'Immediate (Ex-Stock UAE)',
+                          message: ''
+                        });
+                      }}
+                      style={{
+                        backgroundColor: '#ffffff',
+                        border: '1px solid #cbd5e1',
+                        color: '#0f172a',
+                        padding: '10px 20px',
+                        borderRadius: '8px',
+                        fontSize: '0.86rem',
+                        fontWeight: 700,
+                        cursor: 'pointer',
+                        fontFamily: 'Arial, Helvetica, sans-serif'
+                      }}
+                    >
+                      {isAr ? 'إرسال طلب آخر' : 'Submit Another Request'}
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <form noValidate className={leadValidationAttempted ? 'rfq-enquiry-form rfq-validation-attempted' : 'rfq-enquiry-form'} onSubmit={handleLeadSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  <div className="rfq-form-heading">
+                    <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: '#0f172a', margin: 0, fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                      {isAr ? 'كيف يمكننا مساعدتك؟' : 'How can we help?'}
+                    </h3>
+                    <div className="rfq-type-switch" role="group" aria-label={isAr ? 'نوع الطلب' : 'Enquiry type'}>
+                      {(['Sales', 'Service'] as const).map(type => (
+                        <button key={type} type="button" aria-pressed={enquiryType === type} disabled={isLeadSubmitting}
+                          onClick={() => { setEnquiryType(type); setLeadError(null); }}>
+                          {type === 'Sales' ? <ShoppingBag size={15} aria-hidden="true" /> : <Wrench size={15} aria-hidden="true" />}
+                          {type === 'Sales' ? (isAr ? 'المبيعات' : 'Sales') : (isAr ? 'الصيانة' : 'Service')}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="rfq-enquiry-intro" aria-live="polite">
+                    <div className="rfq-enquiry-icon">{isServiceEnquiry ? <Wrench size={22} aria-hidden="true" /> : <ShoppingBag size={22} aria-hidden="true" />}</div>
+                    <div>
+                      <h4>{isServiceEnquiry ? (isAr ? 'طلب خدمة وصيانة للمعدات' : 'Request Equipment Service') : (isAr ? 'طلب عرض أسعار للمعدات' : 'Get an Equipment Quotation')}</h4>
+                      <p>{isServiceEnquiry ? (isAr ? 'أخبرنا عن جهازك وما يحتاجه من إصلاح أو صيانة أو معايرة.' : 'Tell us about your equipment and the repair, maintenance or calibration you need.') : (isAr ? 'شارك احتياجات منشأتك للحصول على عرض أسعار من فريق المبيعات.' : 'Share your facility’s equipment needs for a quotation from our sales team.')}</p>
+                    </div>
+                  </div>
+                  {isServiceEnquiry && (
+                    <div>
+                      <label htmlFor="service-type" style={{ display: 'block', fontSize: '0.76rem', fontWeight: 600, color: '#475569', marginBottom: '6px' }}>{isAr ? 'نوع الخدمة' : 'Service Required'}</label>
+                      <EnquirySelect id="service-type" className="rfq-field-input" value={serviceType} onChange={e => setServiceType(e.target.value)} style={{ width: '100%', padding: '9px 12px', borderRadius: '8px', border: '1px solid #e2e8f0', background: '#f8fafc', color: '#0f172a' }}>
+                        <option value="Repair / Breakdown">{isAr ? 'إصلاح / عطل' : 'Repair / Breakdown'}</option>
+                        <option value="Preventive Maintenance">{isAr ? 'صيانة وقائية' : 'Preventive Maintenance'}</option>
+                        <option value="Calibration">{isAr ? 'معايرة' : 'Calibration'}</option>
+                        <option value="Annual Maintenance Contract">{isAr ? 'عقد صيانة سنوي' : 'Annual Maintenance Contract (AMC)'}</option>
+                        <option value="Installation / Technical Support">{isAr ? 'تركيب / دعم فني' : 'Installation / Technical Support'}</option>
+                      </EnquirySelect>
+                    </div>
+                  )}
+
+                  {leadError && (
+                    <div
+                      style={{
+                        backgroundColor: '#fef2f2',
+                        border: '1px solid #fecaca',
+                        color: '#b91c1c',
+                        padding: '10px 14px',
+                        borderRadius: '8px',
+                        fontSize: '0.8rem',
+                        fontWeight: 600,
+                        fontFamily: 'Arial, Helvetica, sans-serif'
+                      }}
+                    >
+                      <span role="alert">{leadError}</span>
+                    </div>
+                  )}
+
+                  {/* Row 1: Contact Name & Phone */}
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }} className="rfq-form-row">
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 600, color: '#475569', marginBottom: '6px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                        {isAr ? 'اسم مسؤول التواصل *' : 'Contact Person Name *'}
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        placeholder={isAr ? 'الاسم بالكامل' : 'Full name'}
+                        className="rfq-field-input"
+                        value={leadForm.name}
+                        onChange={e => setLeadForm({ ...leadForm, name: e.target.value })}
+                        style={{
+                          width: '100%',
+                          padding: '9px 12px',
+                          borderRadius: '8px',
+                          border: '1px solid #e2e8f0',
+                          backgroundColor: '#f8fafc',
+                          fontSize: '0.84rem',
+                          color: '#0f172a',
+                          outline: 'none',
+                          boxSizing: 'border-box',
+                          fontFamily: 'Arial, Helvetica, sans-serif',
+                          transition: 'all 0.15s ease'
+                        }}
+                      />
+                    </div>
+
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 600, color: '#475569', marginBottom: '6px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                        {isAr ? 'الهاتف / واتساب *' : 'Phone / WhatsApp *'}
+                      </label>
+                      <input
+                        type="tel"
+                        required
+                        placeholder="+971 50 000 0000"
+                        className="rfq-field-input"
+                        value={leadForm.phone}
+                        onChange={e => setLeadForm({ ...leadForm, phone: e.target.value })}
+                        style={{
+                          width: '100%',
+                          padding: '9px 12px',
+                          borderRadius: '8px',
+                          border: '1px solid #e2e8f0',
+                          backgroundColor: '#f8fafc',
+                          fontSize: '0.84rem',
+                          color: '#0f172a',
+                          outline: 'none',
+                          boxSizing: 'border-box',
+                          fontFamily: 'Arial, Helvetica, sans-serif',
+                          transition: 'all 0.15s ease'
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Row 2: Email & Healthcare Facility Name */}
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }} className="rfq-form-row">
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 600, color: '#475569', marginBottom: '6px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                        {isAr ? 'البريد الإلكتروني الرسمي *' : 'Official Email Address *'}
+                      </label>
+                      <input
+                        type="email"
+                        required
+                        placeholder="name@organization.ae"
+                        className="rfq-field-input"
+                        value={leadForm.email}
+                        onChange={e => setLeadForm({ ...leadForm, email: e.target.value })}
+                        style={{
+                          width: '100%',
+                          padding: '9px 12px',
+                          borderRadius: '8px',
+                          border: '1px solid #e2e8f0',
+                          backgroundColor: '#f8fafc',
+                          fontSize: '0.84rem',
+                          color: '#0f172a',
+                          outline: 'none',
+                          boxSizing: 'border-box',
+                          fontFamily: 'Arial, Helvetica, sans-serif',
+                          transition: 'all 0.15s ease'
+                        }}
+                      />
+                    </div>
+
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 600, color: '#475569', marginBottom: '6px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                        {isAr ? 'اسم المنشأة الصحية / المركز' : 'Healthcare Facility / Firm Name'}
+                      </label>
+                      <input
+                        type="text"
+                        placeholder={isAr ? 'اسم المستشفى أو العيادة' : 'Clinic or hospital name'}
+                        className="rfq-field-input"
+                        value={leadForm.facilityName}
+                        onChange={e => setLeadForm({ ...leadForm, facilityName: e.target.value })}
+                        style={{
+                          width: '100%',
+                          padding: '9px 12px',
+                          borderRadius: '8px',
+                          border: '1px solid #e2e8f0',
+                          backgroundColor: '#f8fafc',
+                          fontSize: '0.84rem',
+                          color: '#0f172a',
+                          outline: 'none',
+                          boxSizing: 'border-box',
+                          fontFamily: 'Arial, Helvetica, sans-serif',
+                          transition: 'all 0.15s ease'
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Row 3: Facility Type & Equipment Category */}
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }} className="rfq-form-row">
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 600, color: '#475569', marginBottom: '6px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                        {isAr ? 'نوع المنشأة' : 'Facility Type'}
+                      </label>
+                      <EnquirySelect
+                        aria-label={isAr ? 'اختر أو أضف قيمة مخصصة' : 'Select facility type'}
+                        className="rfq-field-input"
+                        value={customFacility ? '__custom__' : leadForm.facilityType}
+                        onChange={e => {
+                          const isCustom = e.target.value === '__custom__';
+                          setCustomFacility(isCustom);
+                          setLeadForm({ ...leadForm, facilityType: isCustom ? '' : e.target.value });
+                        }}
+                        style={{ width: '100%', padding: '9px 12px', borderRadius: '8px', border: '1px solid #e2e8f0', backgroundColor: '#f8fafc', fontSize: '0.84rem', color: '#0f172a' }}>
+                        <option value="">{isAr ? 'اختر من القائمة' : 'Select facility type...'}</option>
+                        <option value="Hospital & Medical Center">{isAr ? 'مستشفى أو مركز طبي' : 'Hospital & Medical Center'}</option>
+                        <option value="Medical Clinic / Polyclinic">{isAr ? 'مجمع عيادات أو عيادة تخصصية' : 'Medical Clinic / Polyclinic'}</option>
+                        <option value="Clinical Diagnostic Lab">{isAr ? 'مختبر تحاليل سريرية' : 'Clinical Diagnostic Lab'}</option>
+                        <option value="ICU & Emergency Care">{isAr ? 'عناية مركزة وطوارئ' : 'ICU & Emergency Care'}</option>
+                        <option value="Radiology & Imaging Suite">{isAr ? 'مركز أشعة وتصوير طبي' : 'Radiology & Imaging Suite'}</option>
+                        <option value="Dental Surgery Center">{isAr ? 'مركز جراحة وأسنان' : 'Dental Surgery Center'}</option>
+                        <option value="Rehabilitation & Physiotherapy">{isAr ? 'علاج طبيعي وتأهيل' : 'Rehabilitation & Physiotherapy'}</option>
+                        <option value="Hospital Pharmacy & Cold Chain">{isAr ? 'صيدلية مستشفى وسلسلة تبريد' : 'Hospital Pharmacy & Cold Chain'}</option>
+                        <option value="Other Healthcare Entity">{isAr ? 'جهة رعاية صحية أخرى' : 'Other Healthcare Entity'}</option>
+                        <option value="__custom__">{isAr ? 'أخرى / إضافة نص مخصص' : 'Other / Add Custom Text'}</option>
+                      </EnquirySelect>
+                      {customFacility && (
+                        <div style={{ marginTop: '10px' }}>
+                          <label htmlFor="rfq-facility-suggestions-custom" style={{ display: 'block', fontSize: '.76rem', color: '#475569', fontWeight: 600, marginBottom: '6px' }}>{isAr ? 'أدخل القيمة المخصصة *' : 'Custom facility type *'}</label>
+                          <input id="rfq-facility-suggestions-custom" type="text" required className="rfq-field-input"
+                            value={leadForm.facilityType} onChange={e => setLeadForm({ ...leadForm, facilityType: e.target.value })}
+                            placeholder={isAr ? 'اكتب هنا...' : 'Enter your facility type...'}
+                            style={{ width: '100%', padding: '9px 12px', border: '1px solid #e2e8f0', background: '#f8fafc', fontSize: '.84rem', color: '#0f172a', boxSizing: 'border-box' }} />
+                        </div>
+                      )}
+                    </div>
+
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 600, color: '#475569', marginBottom: '6px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                        {isAr ? 'فئة الأجهزة المطلوبة' : 'Equipment Category of Interest'}
+                      </label>
+                      <EnquirySelect
+                        aria-label={isAr ? 'اختر أو أضف قيمة مخصصة' : 'Select equipment category'}
+                        className="rfq-field-input"
+                        value={customEquipment ? '__custom__' : leadForm.equipmentInterest}
+                        onChange={e => {
+                          const isCustom = e.target.value === '__custom__';
+                          setCustomEquipment(isCustom);
+                          setLeadForm({ ...leadForm, equipmentInterest: isCustom ? '' : e.target.value });
+                        }}
+                        style={{ width: '100%', padding: '9px 12px', borderRadius: '8px', border: '1px solid #e2e8f0', backgroundColor: '#f8fafc', fontSize: '0.84rem', color: '#0f172a' }}>
+                        <option value="">{isAr ? 'اختر من القائمة' : 'Select equipment category...'}</option>
+                        <option value="ICU & Mechanical Ventilators">{isAr ? 'أجهزة التنفس الاصطناعي والعناية المركزة' : 'ICU & Mechanical Ventilators'}</option>
+                        <option value="Patient Monitoring & Telemetry">{isAr ? 'أجهزة مراقبة المرضى وتخطيط القلب' : 'Patient Monitoring & Telemetry'}</option>
+                        <option value="Hospital Furniture & Ward Beds">{isAr ? 'أثاث المستشفيات وأسرّة المرضى' : 'Hospital Furniture & Ward Beds'}</option>
+                        <option value="Laboratory & Biosafety Cabinets">{isAr ? 'المختبرات وكبائن الأمان الحيوي' : 'Laboratory & Biosafety Cabinets'}</option>
+                        <option value="Ultrasound & Color Doppler">{isAr ? 'أجهزة السونار والموجات فوق الصوتية' : 'Ultrasound & Color Doppler'}</option>
+                        <option value="Pharmacy 2–8°C Refrigerators">{isAr ? 'ثلاجات حفظ الأدوية 2–8 درجات مئوية' : 'Pharmacy 2–8°C Refrigerators'}</option>
+                        <option value="Clinical Consumables & PPE">{isAr ? 'المستهلكات الطبية وأدوات الوقاية' : 'Clinical Consumables & PPE'}</option>
+                        <option value="Turnkey Clinic / OT Package">{isAr ? 'تجهيز كامل للعيادات وغرف العمليات' : 'Turnkey Clinic / OT Package'}</option>
+                        <option value="__custom__">{isAr ? 'أخرى / إضافة نص مخصص' : 'Other / Add Custom Text'}</option>
+                      </EnquirySelect>
+                      {customEquipment && (
+                        <div style={{ marginTop: '10px' }}>
+                          <label htmlFor="rfq-equipment-suggestions-custom" style={{ display: 'block', fontSize: '.76rem', color: '#475569', fontWeight: 600, marginBottom: '6px' }}>{isAr ? 'أدخل القيمة المخصصة *' : 'Custom equipment category *'}</label>
+                          <input id="rfq-equipment-suggestions-custom" type="text" required className="rfq-field-input"
+                            value={leadForm.equipmentInterest} onChange={e => setLeadForm({ ...leadForm, equipmentInterest: e.target.value })}
+                            placeholder={isAr ? 'اكتب هنا...' : 'Enter your equipment category...'}
+                            style={{ width: '100%', padding: '9px 12px', border: '1px solid #e2e8f0', background: '#f8fafc', fontSize: '.84rem', color: '#0f172a', boxSizing: 'border-box' }} />
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Row 4: Delivery Timeline */}
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 600, color: '#475569', marginBottom: '6px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                      {isServiceEnquiry ? (isAr ? 'مدى إلحاح الخدمة' : 'Service Urgency') : (isAr ? 'الجدول الزمني للتوريد والتسليم' : 'Delivery / Procurement Timeline')}
+                    </label>
+                    <EnquirySelect
+                      value={isServiceEnquiry ? serviceTimeline : leadForm.timeline}
+                      onChange={e => isServiceEnquiry ? setServiceTimeline(e.target.value) : setLeadForm({ ...leadForm, timeline: e.target.value })}
+                      className="rfq-field-input"
+                      style={{
+                        width: '100%',
+                        padding: '9px 12px',
+                        borderRadius: '8px',
+                        border: '1px solid #e2e8f0',
+                        backgroundColor: '#f8fafc',
+                        fontSize: '0.84rem',
+                        color: '#0f172a',
+                        outline: 'none',
+                        boxSizing: 'border-box',
+                        fontFamily: 'Arial, Helvetica, sans-serif',
+                        transition: 'all 0.15s ease'
+                      }}
+                    >
+                      {isServiceEnquiry ? <>
+                        <option value="Urgent">{isAr ? 'عاجل — الجهاز متوقف' : 'Urgent — Equipment Down'}</option>
+                        <option value="Within This Week">{isAr ? 'خلال هذا الأسبوع' : 'Within This Week'}</option>
+                        <option value="Scheduled Service">{isAr ? 'خدمة مجدولة' : 'Scheduled Service / Maintenance'}</option>
+                      </> : <>
+                      <option value="Immediate (Ex-Stock UAE)">{isAr ? 'فوري (متوفر بمستودعات الإمارات - خلال 48 ساعة)' : 'Immediate (Ex-Stock UAE - Next 48 Hours)'}</option>
+                      <option value="Within 1–2 Weeks">{isAr ? 'خلال 1–2 أسبوع' : 'Within 1–2 Weeks'}</option>
+                      <option value="1–3 Months (Upcoming Expansion)">{isAr ? 'خلال 1–3 أشهر (مشروع توسعة قادم)' : '1–3 Months (Upcoming Expansion / Project)'}</option>
+                      <option value="Annual Budget & Tender Planning">{isAr ? 'تخطيط ميزانية سنوية أو مناقصات' : 'Annual Budget & Tender Planning'}</option>
+                      </>}
+                    </EnquirySelect>
+                  </div>
+
+                  {/* Row 5: Notes / Specifications */}
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 600, color: '#475569', marginBottom: '6px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                      {isServiceEnquiry ? (isAr ? 'الماركة والموديل والرقم التسلسلي وتفاصيل المشكلة *' : 'Equipment Brand, Model, Serial Number & Issue *') : (isAr ? 'الموديلات أو الكميات أو المتطلبات الخاصة' : 'Specific Models, Quantities or Requirements')}
+                    </label>
+                    <textarea
+                      rows={2}
+                      required={isServiceEnquiry}
+                      placeholder={isServiceEnquiry ? (isAr ? 'اذكر تفاصيل الجهاز والمشكلة أو الخدمة المطلوبة...' : 'Describe your equipment and the fault or service needed...') : (isAr ? 'تفاصيل إضافية أو أصناف محددة...' : 'Brief details or specific items...')}
+                      className="rfq-field-input"
+                      value={leadForm.message}
+                      onChange={e => setLeadForm({ ...leadForm, message: e.target.value })}
+                      style={{
+                        width: '100%',
+                        padding: '9px 12px',
+                        borderRadius: '8px',
+                        border: '1px solid #e2e8f0',
+                        backgroundColor: '#f8fafc',
+                        fontSize: '0.84rem',
+                        color: '#0f172a',
+                        outline: 'none',
+                        resize: 'vertical',
+                        boxSizing: 'border-box',
+                        fontFamily: 'Arial, Helvetica, sans-serif',
+                        transition: 'all 0.15s ease'
+                      }}
+                    />
+                  </div>
+
+                  {/* Submit Button */}
+                  <button
+                    type="submit"
+                    disabled={isLeadSubmitting}
+                    style={{
+                      backgroundColor: '#00875a',
+                      color: '#ffffff',
+                      border: 'none',
+                      borderRadius: '8px',
+                      padding: '13px 22px',
+                      fontSize: '0.92rem',
+                      fontWeight: 700,
+                      cursor: isLeadSubmitting ? 'not-allowed' : 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px',
+                      boxShadow: '0 4px 12px rgba(0, 135, 90, 0.22)',
+                      transition: 'all 0.2s ease',
+                      marginTop: '4px',
+                      opacity: isLeadSubmitting ? 0.75 : 1,
+                      fontFamily: 'Arial, Helvetica, sans-serif'
+                    }}
+                  >
+                    <span>{isLeadSubmitting ? (isAr ? 'جاري الإرسال والمزامنة...' : 'Synchronizing to CRM...') : (isServiceEnquiry ? (isAr ? 'إرسال طلب الخدمة' : 'Submit Service Request') : (isAr ? 'إرسال طلب المبيعات' : 'Submit Sales Enquiry'))}</span>
+                    <Send size={15} style={isAr ? { transform: 'scaleX(-1)' } : undefined} />
+                  </button>
+
+                  <div style={{ textAlign: 'center', fontSize: '0.7rem', color: '#94a3b8', marginTop: '2px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                    {isAr ? '🔒 يتم توجيه الاستفسارات مباشرة إلى منصة إدارة طلبات الرعاية الصحية في فاستونميد وفقاً لمعايير الامتثال الطبي في الإمارات.' : '🔒 Inquiries are directly routed to the FastonMed Biomedical CRM platform under UAE healthcare compliance.'}
+                  </div>
+                </form>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <style>{`
+          .rfq-popup-backdrop { position: fixed; inset: 0; z-index: 10000; background: rgba(15,23,42,.55); display: flex; justify-content: center; align-items: flex-start; overflow-y: auto; padding: 24px 16px; }
+          .rfq-popup-backdrop #rfq-crm-section { position: relative; width: 100%; max-width: 680px; padding: 48px 0 24px !important; border-radius: 20px; margin: auto; box-shadow: 0 24px 80px rgba(15,23,42,.25); }
+          .rfq-popup-backdrop #rfq-two-column-layout { display: block !important; }
+          .rfq-popup-backdrop #rfq-two-column-layout > div:first-child { display: none; }
+          .rfq-popup-backdrop #rfq-two-column-layout > div:last-child { border: 0 !important; padding: 0 !important; box-shadow: none !important; }
+          @media (min-width: 961px) {
+            .rfq-popup-backdrop #rfq-crm-section { max-width: 1080px; }
+            .rfq-popup-backdrop #rfq-crm-section > .container { padding: 0 40px !important; }
+            .rfq-popup-backdrop .rfq-form-row { gap: 24px !important; }
+          }
+          .rfq-popup-close { position: absolute; top: 10px; right: 14px; border: none; background: #f1f5f9; color: #475569; border-radius: 50%; width: 32px; height: 32px; font-size: 24px; cursor: pointer; }
+          .rfq-popup-close:focus-visible { outline: 2px solid #00875a; outline-offset: 2px; }
+          .rfq-form-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+          .rfq-type-switch { display: flex; gap: 4px; padding: 4px; background: #f1f5f4; border: 1px solid #e2e8e5; border-radius: 12px; }
+          .rfq-type-switch button { display: inline-flex; align-items: center; justify-content: center; gap: 7px; padding: 9px 14px; border: 0; border-radius: 8px; background: transparent; color: #64748b; font-size: .8rem; font-weight: 700; cursor: pointer; transition: background .15s ease, color .15s ease; }
+          .rfq-type-switch button[aria-pressed="true"] { background: #00875a; color: white; box-shadow: 0 2px 5px rgba(0,135,90,.15); }
+          .rfq-type-switch button:focus-visible { outline: 2px solid #00875a; outline-offset: 3px; }
+          .rfq-type-switch button:disabled { cursor: wait; opacity: .65; }
+          .rfq-enquiry-intro { display: flex; align-items: flex-start; gap: 12px; padding: 18px 0 20px; border-bottom: 1px solid #e8eeeb; margin-bottom: 2px; }
+          .rfq-enquiry-icon { display: flex; align-items: center; justify-content: center; flex-shrink: 0; width: 44px; height: 44px; border-radius: 12px; background: #e5f6ef; color: #00875a; }
+          .rfq-enquiry-intro h4 { margin: 0 0 6px; font-size: 1.15rem; line-height: 1.3; font-weight: 800; color: #0f172a; }
+          .rfq-enquiry-intro p { margin: 0; font-size: .8rem; line-height: 1.6; color: #64748b; }
+          @media (max-width: 420px) { .rfq-type-switch { width: 100%; } .rfq-type-switch button { flex: 1; } }
+          .rfq-enquiry-form .rfq-field-input { min-height: 44px; border-radius: 10px !important; font-family: Arial, Helvetica, sans-serif; }
+          .rfq-enquiry-form .rfq-field-input:focus-visible { outline: none; border-color: #00875a !important; box-shadow: 0 0 0 3px rgba(0,135,90,.12) !important; }
+          .rfq-validation-attempted .rfq-field-input:invalid { border-color: #dc6b6b !important; background: #fffafa !important; }
+          .rfq-validation-attempted .rfq-field-input:invalid:focus { box-shadow: 0 0 0 3px rgba(220,107,107,.12) !important; }
+          .rfq-field-input::placeholder {
+            color: #94a3b8 !important;
+            font-weight: 400 !important;
+            opacity: 0.7 !important;
+          }
+          .rfq-field-input:focus {
+            border-color: #00875a !important;
+            background-color: #ffffff !important;
+            box-shadow: 0 0 0 3px rgba(0, 135, 90, 0.08) !important;
+          }
+          @media (max-width: 960px) {
+            #rfq-crm-section {
+              padding: 44px 0 54px !important;
+            }
+            #rfq-two-column-layout {
+              grid-template-columns: 1fr !important;
+              gap: 24px !important;
+            }
+            #rfq-main-heading {
+              font-size: 1.48rem !important;
+              line-height: 1.25 !important;
+              margin-bottom: 10px !important;
+            }
+            #rfq-main-desc {
+              font-size: 0.85rem !important;
+              line-height: 1.5 !important;
+              margin-bottom: 16px !important;
+            }
+          }
+          @media (max-width: 600px) {
+            .rfq-form-row {
+              grid-template-columns: 1fr !important;
+              gap: 12px !important;
+            }
+          }
+        `}</style>
+      </section>
+  );
 
   return (
     <div style={{ backgroundColor: '#ffffff', color: '#0f172a', minHeight: '100vh', overflowX: 'hidden', fontFamily: 'Arial, Helvetica, sans-serif' }}>
@@ -924,8 +1714,8 @@ export default function HomePage() {
                 }}
               >
                 {isAr
-                  ? 'منذ 2024 · أكثر من 2,700 منتج طبي · وثائق ومعايير معتمدة من المصنع'
-                  : 'Since 2024 · 2,700+ Catalog Products · Manufacturer Documentation Available'}
+                  ? 'منذ 2025 · أكثر من 2,700 منتج طبي · وثائق ومعايير معتمدة من المصنع'
+                  : 'Since 2025 · 2,700+ Catalog Products · Manufacturer Documentation Available'}
               </div>
 
               {/* Subtitle with SEO sub-keywords */}
@@ -961,7 +1751,7 @@ export default function HomePage() {
               </p>
 
               {/* Action Buttons: In-line on Laptop, Stacked on Mobile, Icon matching Logo Color #42B69C */}
-              <div 
+              <div
                 id="hero-actions-container"
               >
                 <Link
@@ -1558,7 +2348,7 @@ export default function HomePage() {
                   />
                 </div>
 
-                {/* Floating Since 2024 Badge */}
+                {/* Floating Since 2025 Badge */}
                 <div
                   style={{
                     position: 'absolute',
@@ -1574,7 +2364,7 @@ export default function HomePage() {
                   }}
                 >
                   <div style={{ fontSize: '1.85rem', fontWeight: 800, color: '#00875a', lineHeight: 1, fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                    {isAr ? 'منذ 2024' : 'Since 2024'}
+                    {isAr ? 'منذ 2025' : 'Since 2025'}
                   </div>
                   <div style={{ fontSize: '0.78rem', fontWeight: 600, color: '#64748b', marginTop: '4px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
                     {isAr ? 'ريادة الرعاية الصحية بالإمارات' : 'Pioneering UAE Healthcare'}
@@ -1819,7 +2609,7 @@ export default function HomePage() {
               <div className="metric-stat-icon">
                 <Award size={24} color="#ffffff" />
               </div>
-              <div className="metric-stat-number">2024</div>
+              <div className="metric-stat-number">2025</div>
               <div className="metric-stat-label">{isAr ? 'تأسست لخدمة القطاع الصحي' : 'Since Established in UAE'}</div>
             </div>
           </div>
@@ -2657,651 +3447,11 @@ export default function HomePage() {
       </section>
 
       {/* SECTION 8: FAST CRM LEAD GENERATION & EQUIPMENT RFQ FORM */}
-      <section id="rfq-crm-section" style={{ backgroundColor: '#ffffff', padding: '86px 0 92px', borderTop: '1px solid #e2e8f0', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-        <div className="container" style={{ maxWidth: '1240px', margin: '0 auto', padding: '0 20px' }}>
-          <div
-            id="rfq-two-column-layout"
-            style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 1.15fr',
-              gap: '40px',
-              alignItems: 'start'
-            }}
-          >
-            {/* Left Column: Context, Value Props & Fast Contact */}
-            <div>
-              <div
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  backgroundColor: '#e6f7f0',
-                  color: '#00875a',
-                  padding: '5px 12px',
-                  borderRadius: '999px',
-                  fontSize: '0.74rem',
-                  fontWeight: 700,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.04em',
-                  marginBottom: '14px',
-                  fontFamily: 'Arial, Helvetica, sans-serif'
-                }}
-              >
-                <Zap size={13} color="#00875a" />
-                <span>{isAr ? 'ربط مباشر مع نظام خدمة العملاء • استجابة خلال ساعتين' : 'DIRECT CRM INTEGRATION • FAST 2-HR RESPONSE'}</span>
-              </div>
-
-              <h2
-                id="rfq-main-heading"
-                style={{
-                  fontSize: '2.1rem',
-                  fontWeight: 800,
-                  color: '#0f172a',
-                  letterSpacing: '-0.02em',
-                  lineHeight: 1.25,
-                  margin: '0 0 14px',
-                  fontFamily: 'Arial, Helvetica, sans-serif'
-                }}
-              >
-                {isAr ? 'طلب عرض أسعار واستشارة فنية للمعدات الطبية' : 'Request an Equipment Quotation & Clinical Consultation'}
-              </h2>
-
-              <p
-                id="rfq-main-desc"
-                style={{
-                  fontSize: '0.92rem',
-                  color: '#64748b',
-                  lineHeight: 1.6,
-                  margin: '0 0 24px',
-                  fontFamily: 'Arial, Helvetica, sans-serif'
-                }}
-              >
-                {isAr
-                  ? 'أرسل مواصفات وتجهيزات منشأتك الصحية مباشرة إلى فريق الهندسة الطبية الحيوية في الإمارات للحصول على عروض أسعار رسمية وتوريد سريع لكافة الإمارات السبع.'
-                  : 'Submit your procurement specifications directly to our UAE biomedical engineering team for official manufacturer quotations and fast dispatch across all 7 Emirates.'}
-              </p>
-
-              {/* 3 Key Trust Pillars */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '26px' }}>
-                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
-                  <div
-                    style={{
-                      width: '36px',
-                      height: '36px',
-                      borderRadius: '8px',
-                      backgroundColor: '#e6f7f0',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: '#00875a',
-                      flexShrink: 0
-                    }}
-                  >
-                    <CheckCircle2 size={18} />
-                  </div>
-                  <div>
-                    <div style={{ fontSize: '0.92rem', fontWeight: 700, color: '#0f172a', marginBottom: '2px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                      {isAr ? 'إحالة فورية للطلب عبر الـ CRM' : 'Real-Time CRM Assignment'}
-                    </div>
-                    <div style={{ fontSize: '0.8rem', color: '#64748b', lineHeight: 1.4, fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                      {isAr ? 'توجيه فوري للطلب إلى مهندسي الطب الحيوي في دبي.' : 'Instant ticket routing to biomedical engineers in Dubai.'}
-                    </div>
-                  </div>
-                </div>
-
-                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
-                  <div
-                    style={{
-                      width: '36px',
-                      height: '36px',
-                      borderRadius: '8px',
-                      backgroundColor: '#e6f7f0',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: '#00875a',
-                      flexShrink: 0
-                    }}
-                  >
-                    <ShieldCheck size={18} />
-                  </div>
-                  <div>
-                    <div style={{ fontSize: '0.92rem', fontWeight: 700, color: '#0f172a', marginBottom: '2px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                      {isAr ? 'شهادات ووثائق معتمدة من المصنع' : 'Manufacturer Certified Documentation'}
-                    </div>
-                    <div style={{ fontSize: '0.8rem', color: '#64748b', lineHeight: 1.4, fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                      {isAr ? 'شهادات مطابقة رسمية، معايرة مصنعية، وضمان شامل.' : 'Official compliance certificates, factory calibration, and warranty.'}
-                    </div>
-                  </div>
-                </div>
-
-                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
-                  <div
-                    style={{
-                      width: '36px',
-                      height: '36px',
-                      borderRadius: '8px',
-                      backgroundColor: '#e6f7f0',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: '#00875a',
-                      flexShrink: 0
-                    }}
-                  >
-                    <Truck size={18} />
-                  </div>
-                  <div>
-                    <div style={{ fontSize: '0.92rem', fontWeight: 700, color: '#0f172a', marginBottom: '2px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                      {isAr ? 'جاهزية التوريد الفوري في الإمارات' : 'Immediate UAE Stock & Deployment'}
-                    </div>
-                    <div style={{ fontSize: '0.8rem', color: '#64748b', lineHeight: 1.4, fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                      {isAr ? 'شحن فوري من مستودعاتنا بالإمارات مع التركيب والتشغيل الطبي.' : 'Direct dispatch from UAE fulfillment centers with biomedical installation.'}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Direct Urgent Contact Box */}
-              <div
-                style={{
-                  backgroundColor: '#f8fafc',
-                  border: '1px solid #e2e8f0',
-                  borderRadius: '12px',
-                  padding: '16px 20px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  flexWrap: 'wrap',
-                  gap: '12px',
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.02)'
-                }}
-              >
-                <div>
-                  <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.04em', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                    {isAr ? 'هل تحتاج إلى مساعدة عاجلة وفورية؟' : 'Need Immediate Urgent Assistance?'}
-                  </div>
-                  <div style={{ fontSize: '1rem', fontWeight: 700, color: '#0f172a', marginTop: '2px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                    <a href="tel:+971508893589" style={{ color: '#0f172a', textDecoration: 'none' }}>+971 50 889 3589</a> / <a href="tel:+971508893586" style={{ color: '#0f172a', textDecoration: 'none' }}>+971 50 889 3586</a>
-                  </div>
-                </div>
-                <a
-                  href="https://wa.me/971508893589?text=Hello%20FastonMed%20team,%20I%20need%20an%20urgent%20medical%20equipment%20quotation."
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    backgroundColor: '#25D366',
-                    color: '#ffffff',
-                    padding: '8px 16px',
-                    borderRadius: '8px',
-                    fontSize: '0.82rem',
-                    fontWeight: 700,
-                    textDecoration: 'none',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    fontFamily: 'Arial, Helvetica, sans-serif'
-                  }}
-                >
-                  <MessageCircle size={15} />
-                  <span>{isAr ? 'مكتب واتساب' : 'WhatsApp Desk'}</span>
-                </a>
-              </div>
-            </div>
-
-            {/* Right Column: Modern CRM Lead Capture Form */}
-            <div
-              style={{
-                backgroundColor: '#ffffff',
-                borderRadius: '16px',
-                border: '1px solid #e2e8f0',
-                padding: '30px 28px',
-                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.04)',
-                fontFamily: 'Arial, Helvetica, sans-serif'
-              }}
-            >
-              {leadSubmitted ? (
-                <div style={{ textAlign: 'center', padding: '36px 12px' }}>
-                  <div
-                    style={{
-                      width: '64px',
-                      height: '64px',
-                      borderRadius: '50%',
-                      backgroundColor: '#e6f7f0',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      margin: '0 auto 18px',
-                      color: '#00875a'
-                    }}
-                  >
-                    <CheckCircle2 size={34} />
-                  </div>
-                  <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#0f172a', margin: '0 0 8px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                    {isAr ? 'تم استلام طلبك بنجاح!' : 'Enquiry received successfully!'}
-                  </h3>
-                  {leadRefId && (
-                    <div
-                      style={{
-                        display: 'inline-block',
-                        backgroundColor: '#f8fafc',
-                        border: '1px solid #e2e8f0',
-                        padding: '4px 14px',
-                        borderRadius: '999px',
-                        fontSize: '0.8rem',
-                        fontWeight: 700,
-                        color: '#00875a',
-                        marginBottom: '16px',
-                        fontFamily: 'Arial, Helvetica, sans-serif'
-                      }}
-                    >
-                      {isAr ? `المرجع: #${leadRefId}` : `Reference: #${leadRefId}`}
-                    </div>
-                  )}
-                  <p style={{ fontSize: '0.88rem', color: '#64748b', lineHeight: 1.55, maxWidth: '440px', margin: '0 auto 24px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                    {isAr ? (
-                      <>شكراً لك، <strong>{leadForm.name}</strong>. تم حفظ طلب استشارة المعدات الطبية الخاص بك. سيراجع فريقنا متطلباتك ويتواصل معك قريباً.</>
-                    ) : (
-                      <>Thank you, <strong>{leadForm.name}</strong>. Your equipment consultation request has been saved. Our team will review your requirements and contact you soon.</>
-                    )}
-                  </p>
-                  <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', flexWrap: 'wrap' }}>
-                    <a
-                      href={`https://wa.me/971508893589?text=Hello%20FastonMed,%20I%20just%20submitted%20inquiry%20%23${leadRefId || ''}%20for%20${encodeURIComponent(leadForm.equipmentInterest)}.`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        backgroundColor: '#25D366',
-                        color: '#ffffff',
-                        padding: '10px 20px',
-                        borderRadius: '8px',
-                        fontSize: '0.86rem',
-                        fontWeight: 700,
-                        textDecoration: 'none',
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '8px',
-                        fontFamily: 'Arial, Helvetica, sans-serif'
-                      }}
-                    >
-                      <MessageCircle size={16} />
-                      <span>{isAr ? 'محادثة عبر واتساب' : 'Chat on WhatsApp'}</span>
-                    </a>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setLeadSubmitted(false);
-                        setLeadForm({
-                          name: '',
-                          email: '',
-                          phone: '',
-                          facilityName: '',
-                          facilityType: 'Hospital & Medical Center',
-                          equipmentInterest: 'ICU & Mechanical Ventilators',
-                          timeline: 'Immediate (Ex-Stock UAE)',
-                          message: ''
-                        });
-                      }}
-                      style={{
-                        backgroundColor: '#ffffff',
-                        border: '1px solid #cbd5e1',
-                        color: '#0f172a',
-                        padding: '10px 20px',
-                        borderRadius: '8px',
-                        fontSize: '0.86rem',
-                        fontWeight: 700,
-                        cursor: 'pointer',
-                        fontFamily: 'Arial, Helvetica, sans-serif'
-                      }}
-                    >
-                      {isAr ? 'إرسال طلب آخر' : 'Submit Another Request'}
-                    </button>
-                  </div>
-                </div>
-              ) : (
-                <form onSubmit={handleLeadSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                  <div style={{ borderBottom: '1px solid #f1f5f9', paddingBottom: '12px', marginBottom: '2px' }}>
-                    <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#0f172a', margin: '0 0 4px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                      {isAr ? 'طلب تسعير واستشارة سريعة للمعدات الطبية' : 'Fast Equipment RFQ & Consultation'}
-                    </h3>
-                    <p style={{ fontSize: '0.8rem', color: '#64748b', margin: 0, fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                      {isAr ? 'أدخل بيانات منشأتك أدناه. يتم إرسال الطلبات مباشرة إلى فريق خدمة العملاء في الإمارات.' : 'Fill in your facility details below. Leads are directly dispatched to our UAE CRM team.'}
-                    </p>
-                  </div>
-
-                  {leadError && (
-                    <div
-                      style={{
-                        backgroundColor: '#fef2f2',
-                        border: '1px solid #fecaca',
-                        color: '#b91c1c',
-                        padding: '10px 14px',
-                        borderRadius: '8px',
-                        fontSize: '0.8rem',
-                        fontWeight: 600,
-                        fontFamily: 'Arial, Helvetica, sans-serif'
-                      }}
-                    >
-                      {leadError}
-                    </div>
-                  )}
-
-                  {/* Row 1: Contact Name & Phone */}
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }} className="rfq-form-row">
-                    <div>
-                      <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 600, color: '#475569', marginBottom: '6px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                        {isAr ? 'اسم مسؤول التواصل *' : 'Contact Person Name *'}
-                      </label>
-                      <input
-                        type="text"
-                        required
-                        placeholder={isAr ? 'الاسم بالكامل' : 'Full name'}
-                        className="rfq-field-input"
-                        value={leadForm.name}
-                        onChange={e => setLeadForm({ ...leadForm, name: e.target.value })}
-                        style={{
-                          width: '100%',
-                          padding: '9px 12px',
-                          borderRadius: '8px',
-                          border: '1px solid #e2e8f0',
-                          backgroundColor: '#f8fafc',
-                          fontSize: '0.84rem',
-                          color: '#0f172a',
-                          outline: 'none',
-                          boxSizing: 'border-box',
-                          fontFamily: 'Arial, Helvetica, sans-serif',
-                          transition: 'all 0.15s ease'
-                        }}
-                      />
-                    </div>
-
-                    <div>
-                      <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 600, color: '#475569', marginBottom: '6px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                        {isAr ? 'الهاتف / واتساب *' : 'Phone / WhatsApp *'}
-                      </label>
-                      <input
-                        type="tel"
-                        required
-                        placeholder="+971 50 000 0000"
-                        className="rfq-field-input"
-                        value={leadForm.phone}
-                        onChange={e => setLeadForm({ ...leadForm, phone: e.target.value })}
-                        style={{
-                          width: '100%',
-                          padding: '9px 12px',
-                          borderRadius: '8px',
-                          border: '1px solid #e2e8f0',
-                          backgroundColor: '#f8fafc',
-                          fontSize: '0.84rem',
-                          color: '#0f172a',
-                          outline: 'none',
-                          boxSizing: 'border-box',
-                          fontFamily: 'Arial, Helvetica, sans-serif',
-                          transition: 'all 0.15s ease'
-                        }}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Row 2: Email & Healthcare Facility Name */}
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }} className="rfq-form-row">
-                    <div>
-                      <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 600, color: '#475569', marginBottom: '6px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                        {isAr ? 'البريد الإلكتروني الرسمي *' : 'Official Email Address *'}
-                      </label>
-                      <input
-                        type="email"
-                        required
-                        placeholder="name@organization.ae"
-                        className="rfq-field-input"
-                        value={leadForm.email}
-                        onChange={e => setLeadForm({ ...leadForm, email: e.target.value })}
-                        style={{
-                          width: '100%',
-                          padding: '9px 12px',
-                          borderRadius: '8px',
-                          border: '1px solid #e2e8f0',
-                          backgroundColor: '#f8fafc',
-                          fontSize: '0.84rem',
-                          color: '#0f172a',
-                          outline: 'none',
-                          boxSizing: 'border-box',
-                          fontFamily: 'Arial, Helvetica, sans-serif',
-                          transition: 'all 0.15s ease'
-                        }}
-                      />
-                    </div>
-
-                    <div>
-                      <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 600, color: '#475569', marginBottom: '6px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                        {isAr ? 'اسم المنشأة الصحية / المركز' : 'Healthcare Facility / Firm Name'}
-                      </label>
-                      <input
-                        type="text"
-                        placeholder={isAr ? 'اسم المستشفى أو العيادة' : 'Clinic or hospital name'}
-                        className="rfq-field-input"
-                        value={leadForm.facilityName}
-                        onChange={e => setLeadForm({ ...leadForm, facilityName: e.target.value })}
-                        style={{
-                          width: '100%',
-                          padding: '9px 12px',
-                          borderRadius: '8px',
-                          border: '1px solid #e2e8f0',
-                          backgroundColor: '#f8fafc',
-                          fontSize: '0.84rem',
-                          color: '#0f172a',
-                          outline: 'none',
-                          boxSizing: 'border-box',
-                          fontFamily: 'Arial, Helvetica, sans-serif',
-                          transition: 'all 0.15s ease'
-                        }}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Row 3: Facility Type & Equipment Category */}
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }} className="rfq-form-row">
-                    <div>
-                      <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 600, color: '#475569', marginBottom: '6px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                        {isAr ? 'نوع المنشأة' : 'Facility Type'}
-                      </label>
-                      <select
-                        value={leadForm.facilityType}
-                        onChange={e => setLeadForm({ ...leadForm, facilityType: e.target.value })}
-                        className="rfq-field-input"
-                        style={{
-                          width: '100%',
-                          padding: '9px 12px',
-                          borderRadius: '8px',
-                          border: '1px solid #e2e8f0',
-                          backgroundColor: '#f8fafc',
-                          fontSize: '0.84rem',
-                          color: '#0f172a',
-                          outline: 'none',
-                          boxSizing: 'border-box',
-                          fontFamily: 'Arial, Helvetica, sans-serif',
-                          transition: 'all 0.15s ease'
-                        }}
-                      >
-                        <option value="Hospital & Medical Center">{isAr ? 'مستشفى أو مركز طبي' : 'Hospital & Medical Center'}</option>
-                        <option value="Medical Clinic / Polyclinic">{isAr ? 'مجمع عيادات أو عيادة تخصصية' : 'Medical Clinic / Polyclinic'}</option>
-                        <option value="Clinical Diagnostic Lab">{isAr ? 'مختبر تحاليل سريرية' : 'Clinical Diagnostic Lab'}</option>
-                        <option value="ICU & Emergency Care">{isAr ? 'عناية مركزة وطوارئ' : 'ICU & Emergency Care'}</option>
-                        <option value="Radiology & Imaging Suite">{isAr ? 'مركز أشعة وتصوير طبي' : 'Radiology & Imaging Suite'}</option>
-                        <option value="Dental Surgery Center">{isAr ? 'مركز جراحة وأسنان' : 'Dental Surgery Center'}</option>
-                        <option value="Rehabilitation & Physiotherapy">{isAr ? 'علاج طبيعي وتأهيل' : 'Rehabilitation & Physiotherapy'}</option>
-                        <option value="Hospital Pharmacy & Cold Chain">{isAr ? 'صيدلية مستشفى وسلسلة تبريد' : 'Hospital Pharmacy & Cold Chain'}</option>
-                        <option value="Other Healthcare Entity">{isAr ? 'جهة رعاية صحية أخرى' : 'Other Healthcare Entity'}</option>
-                      </select>
-                    </div>
-
-                    <div>
-                      <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 600, color: '#475569', marginBottom: '6px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                        {isAr ? 'فئة الأجهزة المطلوبة' : 'Equipment Category of Interest'}
-                      </label>
-                      <select
-                        value={leadForm.equipmentInterest}
-                        onChange={e => setLeadForm({ ...leadForm, equipmentInterest: e.target.value })}
-                        className="rfq-field-input"
-                        style={{
-                          width: '100%',
-                          padding: '9px 12px',
-                          borderRadius: '8px',
-                          border: '1px solid #e2e8f0',
-                          backgroundColor: '#f8fafc',
-                          fontSize: '0.84rem',
-                          color: '#0f172a',
-                          outline: 'none',
-                          boxSizing: 'border-box',
-                          fontFamily: 'Arial, Helvetica, sans-serif',
-                          transition: 'all 0.15s ease'
-                        }}
-                      >
-                        <option value="ICU & Mechanical Ventilators">{isAr ? 'أجهزة التنفس الاصطناعي والعناية المركزة' : 'ICU & Mechanical Ventilators'}</option>
-                        <option value="Patient Monitoring & Telemetry">{isAr ? 'أجهزة مراقبة المرضى وتخطيط القلب' : 'Patient Monitoring & Telemetry'}</option>
-                        <option value="Hospital Furniture & Ward Beds">{isAr ? 'أثاث المستشفيات وأسرّة المرضى' : 'Hospital Furniture & Ward Beds'}</option>
-                        <option value="Laboratory & Biosafety Cabinets">{isAr ? 'المختبرات وكبائن الأمان الحيوي' : 'Laboratory & Biosafety Cabinets'}</option>
-                        <option value="Ultrasound & Color Doppler">{isAr ? 'أجهزة السونار والموجات فوق الصوتية' : 'Ultrasound & Color Doppler'}</option>
-                        <option value="Pharmacy 2–8°C Refrigerators">{isAr ? 'ثلاجات حفظ الأدوية 2–8 درجات مئوية' : 'Pharmacy 2–8°C Refrigerators'}</option>
-                        <option value="Clinical Consumables & PPE">{isAr ? 'المستهلكات الطبية وأدوات الوقاية' : 'Clinical Consumables & PPE'}</option>
-                        <option value="Turnkey Clinic / OT Package">{isAr ? 'تجهيز كامل للعيادات وغرف العمليات' : 'Turnkey Clinic / OT Package'}</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  {/* Row 4: Delivery Timeline */}
-                  <div>
-                    <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 600, color: '#475569', marginBottom: '6px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                      {isAr ? 'الجدول الزمني للتوريد والتسليم' : 'Delivery / Procurement Timeline'}
-                    </label>
-                    <select
-                      value={leadForm.timeline}
-                      onChange={e => setLeadForm({ ...leadForm, timeline: e.target.value })}
-                      className="rfq-field-input"
-                      style={{
-                        width: '100%',
-                        padding: '9px 12px',
-                        borderRadius: '8px',
-                        border: '1px solid #e2e8f0',
-                        backgroundColor: '#f8fafc',
-                        fontSize: '0.84rem',
-                        color: '#0f172a',
-                        outline: 'none',
-                        boxSizing: 'border-box',
-                        fontFamily: 'Arial, Helvetica, sans-serif',
-                        transition: 'all 0.15s ease'
-                      }}
-                    >
-                      <option value="Immediate (Ex-Stock UAE)">{isAr ? 'فوري (متوفر بمستودعات الإمارات - خلال 48 ساعة)' : 'Immediate (Ex-Stock UAE - Next 48 Hours)'}</option>
-                      <option value="Within 1–2 Weeks">{isAr ? 'خلال 1–2 أسبوع' : 'Within 1–2 Weeks'}</option>
-                      <option value="1–3 Months (Upcoming Expansion)">{isAr ? 'خلال 1–3 أشهر (مشروع توسعة قادم)' : '1–3 Months (Upcoming Expansion / Project)'}</option>
-                      <option value="Annual Budget & Tender Planning">{isAr ? 'تخطيط ميزانية سنوية أو مناقصات' : 'Annual Budget & Tender Planning'}</option>
-                    </select>
-                  </div>
-
-                  {/* Row 5: Notes / Specifications */}
-                  <div>
-                    <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 600, color: '#475569', marginBottom: '6px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                      {isAr ? 'الموديلات أو الكميات أو المتطلبات الخاصة' : 'Specific Models, Quantities or Requirements'}
-                    </label>
-                    <textarea
-                      rows={2}
-                      placeholder={isAr ? 'تفاصيل إضافية أو أصناف محددة...' : 'Brief details or specific items...'}
-                      className="rfq-field-input"
-                      value={leadForm.message}
-                      onChange={e => setLeadForm({ ...leadForm, message: e.target.value })}
-                      style={{
-                        width: '100%',
-                        padding: '9px 12px',
-                        borderRadius: '8px',
-                        border: '1px solid #e2e8f0',
-                        backgroundColor: '#f8fafc',
-                        fontSize: '0.84rem',
-                        color: '#0f172a',
-                        outline: 'none',
-                        resize: 'vertical',
-                        boxSizing: 'border-box',
-                        fontFamily: 'Arial, Helvetica, sans-serif',
-                        transition: 'all 0.15s ease'
-                      }}
-                    />
-                  </div>
-
-                  {/* Submit Button */}
-                  <button
-                    type="submit"
-                    disabled={isLeadSubmitting}
-                    style={{
-                      backgroundColor: '#00875a',
-                      color: '#ffffff',
-                      border: 'none',
-                      borderRadius: '8px',
-                      padding: '13px 22px',
-                      fontSize: '0.92rem',
-                      fontWeight: 700,
-                      cursor: isLeadSubmitting ? 'not-allowed' : 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: '8px',
-                      boxShadow: '0 4px 12px rgba(0, 135, 90, 0.22)',
-                      transition: 'all 0.2s ease',
-                      marginTop: '4px',
-                      opacity: isLeadSubmitting ? 0.75 : 1,
-                      fontFamily: 'Arial, Helvetica, sans-serif'
-                    }}
-                  >
-                    <span>{isLeadSubmitting ? (isAr ? 'جاري الإرسال والمزامنة...' : 'Synchronizing to CRM...') : (isAr ? 'إرسال طلب التسعير إلى فاستونميد' : 'Submit RFQ to FastonMed CRM')}</span>
-                    <Send size={15} style={isAr ? { transform: 'scaleX(-1)' } : undefined} />
-                  </button>
-
-                  <div style={{ textAlign: 'center', fontSize: '0.7rem', color: '#94a3b8', marginTop: '2px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                    {isAr ? '🔒 يتم توجيه الاستفسارات مباشرة إلى منصة إدارة طلبات الرعاية الصحية في فاستونميد وفقاً لمعايير الامتثال الطبي في الإمارات.' : '🔒 Inquiries are directly routed to the FastonMed Biomedical CRM platform under UAE healthcare compliance.'}
-                  </div>
-                </form>
-              )}
-            </div>
-          </div>
-        </div>
-
-        <style>{`
-          .rfq-field-input::placeholder {
-            color: #94a3b8 !important;
-            font-weight: 400 !important;
-            opacity: 0.7 !important;
-          }
-          .rfq-field-input:focus {
-            border-color: #00875a !important;
-            background-color: #ffffff !important;
-            box-shadow: 0 0 0 3px rgba(0, 135, 90, 0.08) !important;
-          }
-          @media (max-width: 960px) {
-            #rfq-crm-section {
-              padding: 44px 0 54px !important;
-            }
-            #rfq-two-column-layout {
-              grid-template-columns: 1fr !important;
-              gap: 24px !important;
-            }
-            #rfq-main-heading {
-              font-size: 1.48rem !important;
-              line-height: 1.25 !important;
-              margin-bottom: 10px !important;
-            }
-            #rfq-main-desc {
-              font-size: 0.85rem !important;
-              line-height: 1.5 !important;
-              margin-bottom: 16px !important;
-            }
-          }
-          @media (max-width: 600px) {
-            .rfq-form-row {
-              grid-template-columns: 1fr !important;
-              gap: 12px !important;
-            }
-          }
-        `}</style>
-      </section>
+      {showEnquiryPopup ? createPortal(
+        <div className="rfq-popup-backdrop" role="dialog" aria-modal="true" aria-label="Sales and service enquiry" onClick={event => { if (event.target === event.currentTarget) setShowEnquiryPopup(false); }}>
+          {enquirySection}
+        </div>, document.body
+      ) : enquirySection}
 
       {/* SECTION 9: GOOGLE REVIEWS & CLINICAL CLIENT ACCREDITATIONS */}
       <GoogleReviewsSection />

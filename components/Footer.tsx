@@ -87,13 +87,15 @@ export default function Footer() {
             gap: 36px !important;
           }
           .fm-top-columns {
-            grid-template-columns: repeat(2, 1fr) !important;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            width: 100%;
+            flex: none !important;
             gap: 28px 20px !important;
           }
         }
         @media (max-width: 640px) {
           .fm-top-columns {
-            grid-template-columns: 1fr !important;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
             gap: 26px 16px !important;
           }
           .fm-bottom-legal-row {
