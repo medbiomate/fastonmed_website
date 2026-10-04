@@ -284,6 +284,7 @@ function SearchableCombobox({
   placeholder,
   counts,
   allowCustom = true,
+  entityLabel,
 }: {
   value: string;
   onChange: (val: string) => void;
@@ -291,9 +292,11 @@ function SearchableCombobox({
   placeholder: string;
   counts?: Record<string, number>;
   allowCustom?: boolean;
+  entityLabel?: string;
 }) {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState('');
+  const [creating, setCreating] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -321,7 +324,7 @@ function SearchableCombobox({
       <button
         type="button"
         className={`tk-combobox-trigger ${open ? 'is-open' : ''}`}
-        onClick={() => setOpen(!open)}
+        onClick={() => { setOpen(!open); setCreating(false); setSearch(''); }}
       >
         <span style={{ color: value ? '#0f172a' : '#94a3b8', fontWeight: value ? 500 : 400 }}>
           {value || placeholder}
@@ -340,7 +343,16 @@ function SearchableCombobox({
             <input
               type="text"
               className="tk-combobox-search-input"
-              placeholder={`Search ${placeholder.toLowerCase()}...`}
+              placeholder={creating ? `New ${entityLabel} name` : `Search ${entityLabel || placeholder.toLowerCase()}...`}
+              aria-label={creating ? `New ${entityLabel} name` : `Search ${entityLabel || 'options'}`}
+              onKeyDown={event => {
+                if (event.key === 'Escape') { setOpen(false); setCreating(false); }
+                if (event.key === 'Enter' && creating && search.trim()) {
+                  event.preventDefault();
+                  onChange(options.find(option => option.toLowerCase() === search.trim().toLowerCase()) || search.trim());
+                  setOpen(false); setCreating(false); setSearch('');
+                }
+              }}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               autoFocus
@@ -356,7 +368,15 @@ function SearchableCombobox({
             )}
           </div>
 
-          <div className="tk-combobox-list">
+          {entityLabel && allowCustom && <div style={{ padding: 8, borderBottom: '1px solid #e2e8f0' }}>
+            <button type="button" className="tk-combobox-create-new" style={{ width: '100%', border: '1px solid #99dace', borderRadius: 7, textAlign: 'left' }} disabled={creating && !search.trim()} onClick={() => {
+              if (!creating) { setCreating(true); return; }
+              onChange(options.find(option => option.toLowerCase() === search.trim().toLowerCase()) || search.trim());
+              setOpen(false); setCreating(false); setSearch('');
+            }}><Plus size={13} /> {creating ? `Add ${entityLabel}${search.trim() ? ` “${search.trim()}”` : ''}` : `Add ${entityLabel}`}</button>
+            {creating && <><p style={{ fontSize: 11, color: '#64748b', margin: '8px 0' }}>Save the product to keep this {entityLabel} in the catalog.</p><button type="button" onClick={() => { setCreating(false); setSearch(''); }}>Cancel</button></>}
+          </div>}
+          <div className="tk-combobox-list" style={creating ? { display: 'none' } : undefined}>
             {filtered.length === 0 && !search && (
               <div style={{ padding: '12px 10px', fontSize: '11.5px', color: '#94a3b8', textAlign: 'center' }}>
                 No options available
@@ -381,7 +401,7 @@ function SearchableCombobox({
             ))}
           </div>
 
-          {allowCustom && search.trim() && !exactMatch && (
+          {!entityLabel && allowCustom && search.trim() && !exactMatch && (
             <div
               className="tk-combobox-create-new"
               onClick={() => {
@@ -789,17 +809,17 @@ export default function ProductManager({
   // Decoded category counts & existing brands
   const { categories, categoryCounts, brands } = useMemo(() => {
     const counts: Record<string, number> = {};
-    const brandSet = new Set<string>();
+    const brandSet = new Set<string>(product.brand ? [decodeHtml(product.brand)] : []);
     for (const p of products) {
       const cat = decodeHtml(p.category?.trim()) || 'Uncategorized';
       counts[cat] = (counts[cat] || 0) + 1;
       const b = decodeHtml(p.brand?.trim());
       if (b) brandSet.add(b);
     }
-    const cats = Object.keys(counts).sort((a, b) => a.localeCompare(b));
+    const cats = [...new Set([...Object.keys(counts), ...(product.category ? [decodeHtml(product.category)] : [])])].sort((a, b) => a.localeCompare(b));
     const sortedBrands = Array.from(brandSet).sort((a, b) => a.localeCompare(b));
     return { categories: cats, categoryCounts: counts, brands: sortedBrands };
-  }, [products]);
+  }, [products, product.category, product.brand]);
 
   // Filtered products list
   const filtered = useMemo(() => {
@@ -1778,7 +1798,7 @@ export default function ProductManager({
             </div>
 
             {/* Organisation Panel */}
-            <div className="tk-panel">
+            <div className="tk-panel" style={{ overflow: 'visible' }}>
               <h3>Organisation</h3>
               <label>
                 Category
@@ -1786,6 +1806,7 @@ export default function ProductManager({
                   value={product.category || ''}
                   onChange={(cat) => setProduct({ ...product, category: cat })}
                   options={categories}
+                  entityLabel="category"
                   counts={categoryCounts}
                   placeholder="Select category"
                 />
@@ -1796,6 +1817,7 @@ export default function ProductManager({
                   value={product.brand || ''}
                   onChange={(b) => setProduct({ ...product, brand: b })}
                   options={brands}
+                  entityLabel="brand"
                   placeholder="Select brand"
                 />
               </label>
