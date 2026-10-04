@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { after, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 import { revalidatePath } from 'next/cache';
@@ -194,7 +194,24 @@ async function recoverDurableMedia() {
   } catch {}
 }
 
-export async function GET() {
+function responseProducts(products: any[], listView: boolean) {
+  return products.map(product => {
+    const { wordpressSource, ...fields } = product;
+    const createdAt = product.createdAt || wordpressSource?.createdAt;
+    if (!listView) return { ...fields, createdAt, sourcePostType: product.sourcePostType || wordpressSource?.postType };
+    return {
+      id: product.id, name: product.name, slug: product.slug, sku: product.sku,
+      category: product.category, categories: product.categories, brand: product.brand,
+      image: product.image, regularPrice: product.regularPrice, salePrice: product.salePrice,
+      sellingPrice: product.sellingPrice, inStock: product.inStock, stockStatus: product.stockStatus,
+      status: product.status, createdAt, updatedAt: product.updatedAt,
+    };
+  });
+}
+
+export async function GET(request: Request) {
+  const listView = new URL(request.url).searchParams.get('view') === 'list';
+  const cached = getCachedProducts();
   if (Date.now() - lastMediaRecovery >= CACHE_TTL_MS) {
     if (!mediaRecoveryPromise) {
       mediaRecoveryPromise = recoverDurableMedia().finally(() => {
@@ -202,12 +219,19 @@ export async function GET() {
         mediaRecoveryPromise = null;
       });
     }
-    await mediaRecoveryPromise;
+    // Keep the database recovery alive after sending the cached catalogue.
+    // A cold database must not block the product list on every deployment.
+    if (cached.length > 0) {
+      const recovery = mediaRecoveryPromise;
+      after(() => recovery);
+    } else {
+      await mediaRecoveryPromise;
+    }
   }
   const active = getCachedProducts();
   if (active.length > 0) {
     return NextResponse.json(
-      { success: true, products: active, count: active.length, source: 'cache' },
+      { success: true, products: responseProducts(active, listView), count: active.length, mediaRecoveryPending: !!mediaRecoveryPromise, source: 'cache' },
       { headers: { 'Cache-Control': 'no-cache, no-store, must-revalidate' } }
     );
   }
@@ -219,7 +243,7 @@ export async function GET() {
       const normalized = normalizeProducts(dbProducts);
       saveFileCache(normalized);
       return NextResponse.json(
-        { success: true, products: normalized, count: normalized.length, source: 'database' },
+        { success: true, products: responseProducts(normalized, listView), count: normalized.length, source: 'database' },
         { headers: { 'Cache-Control': 'no-cache, no-store, must-revalidate' } }
       );
     }

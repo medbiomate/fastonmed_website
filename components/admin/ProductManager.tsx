@@ -459,7 +459,7 @@ export default function ProductManager({
   useEffect(() => {
     let active = true;
     setLoading(true);
-    fetch('/api/admin/products', { cache: 'no-store' })
+    fetch(mode === 'list' ? '/api/admin/products?view=list' : '/api/admin/products', { cache: 'no-store' })
       .then((r) => r.json())
       .then((x) => {
         if (!active) return;
@@ -496,7 +496,7 @@ export default function ProductManager({
     return () => {
       active = false;
     };
-  }, [id]);
+  }, [id, mode]);
 
   // Load website media library list when modal opens
   const fetchMediaList = async () => {
