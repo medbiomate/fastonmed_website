@@ -173,9 +173,10 @@ export default function ProductClientView({ product, similarProducts }: ProductC
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '48px', alignItems: 'start' }}>
 
             {/* Left Column: Product Imagery */}
-            <div>
+            <div className="fm-product-gallery-sticky">
               <div
                 ref={imageFrameRef}
+                className="fm-product-image-frame"
                 style={{
                   position: 'relative',
                   width: '100%',

@@ -2233,3 +2233,15 @@ nav[aria-label="Breadcrumbs"] svg,
   align-items: center;
   gap: 6px;
 }
+
+/* Keep the gallery beside product details without covering the navigation. */
+@media (min-width: 992px) {
+  .fm-product-gallery-sticky {
+    position: sticky;
+    top: 94px;
+    align-self: start;
+  }
+  .fm-product-gallery-sticky .fm-product-image-frame {
+    max-height: calc(100dvh - 220px);
+  }
+}
