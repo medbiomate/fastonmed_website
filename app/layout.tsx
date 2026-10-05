@@ -11,7 +11,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const locale = headersList.get('x-locale') === 'ar' ? 'ar' : 'en';
   const isAr = locale === 'ar';
 
-  const titleEn = 'Medical Equipment & Biomedical Solutions UAE | FastOnMed';
+  const titleEn = 'Best Medical Equipment Supplier in UAE | Fastonmed';
   const titleAr = 'مورد الأجهزة والمعدات الطبية في الإمارات | فاستونميد';
 
   const descEn =
