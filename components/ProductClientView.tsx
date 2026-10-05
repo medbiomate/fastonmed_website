@@ -1,6 +1,7 @@
 'use client';
 
 import sanitizeHtml from 'sanitize-html';
+import { brandName, brandSlug } from '@/lib/brand-utils';
 
 import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
@@ -475,9 +476,9 @@ export default function ProductClientView({ product, similarProducts }: ProductC
             {product.brand?.trim() && (
               <div style={{ marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <span style={{ color: '#64748b', fontSize: '0.9rem', fontWeight: 600 }}>{isArabic ? 'العلامة التجارية' : 'Brand'}</span>
-                <span style={{ color: '#5b3ba4', backgroundColor: '#f0eafa', border: '1px solid #ded2f2', borderRadius: '7px', padding: '7px 12px', fontSize: '0.95rem', fontWeight: 700 }}>
-                  {product.brand.replace(/&amp;/gi, '&')}
-                </span>
+                <Link href={localizeUrl(`/brand/${brandSlug(product.brand)}`)} style={{ textDecoration: 'none', color: '#5b3ba4', backgroundColor: '#f0eafa', border: '1px solid #ded2f2', borderRadius: '7px', padding: '7px 12px', fontSize: '0.95rem', fontWeight: 700 }}>
+                  {brandName(product.brand)}
+                </Link>
               </div>
             )}
 
