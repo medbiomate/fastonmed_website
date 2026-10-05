@@ -50,6 +50,7 @@ import type { Product } from '@/lib/types';
 import EnquirySelect from '@/components/EnquirySelect';
 import AssociatedBrands from '@/components/AssociatedBrands';
 import HomeFAQs from '@/components/HomeFAQs';
+import HashimInsight, { HashimAuthorCredit } from '@/components/HashimInsight';
 import PurchaseGuide, { SwitchProviderGuide } from '@/components/PurchaseGuide';
 import GoogleReviewsSection from '@/components/GoogleReviewsSection';
 
@@ -3473,6 +3474,7 @@ export default function HomePage() {
       </section>
 
       {/* SECTION 9: GOOGLE REVIEWS & CLINICAL CLIENT ACCREDITATIONS */}
+      <HashimInsight />
       <PurchaseGuide onEnquire={type => { setEnquiryType(type); setShowEnquiryPopup(true); }} />
       <GoogleReviewsSection />
       <SwitchProviderGuide onEnquire={() => { setEnquiryType('Service'); setShowEnquiryPopup(true); }} />
@@ -3523,6 +3525,7 @@ export default function HomePage() {
       </section>
 
       <HomeFAQs />
+      <HashimAuthorCredit />
     </div>
   );
 }
