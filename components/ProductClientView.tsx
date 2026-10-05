@@ -2,7 +2,7 @@
 
 import sanitizeHtml from 'sanitize-html';
 
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -36,6 +36,33 @@ interface ProductClientViewProps {
 
 export default function ProductClientView({ product, similarProducts }: ProductClientViewProps) {
   const { locale, isRtl, isArabic, localizeUrl, t } = useLocale();
+  const imageFrameRef = useRef<HTMLDivElement>(null);
+  const descriptionRef = useRef<HTMLDivElement>(null);
+  const [descriptionExpanded, setDescriptionExpanded] = useState(false);
+  const [descriptionLimit, setDescriptionLimit] = useState(220);
+  const [descriptionOverflows, setDescriptionOverflows] = useState(false);
+
+  useEffect(() => {
+    setDescriptionExpanded(false);
+    const image = imageFrameRef.current;
+    const description = descriptionRef.current;
+    if (!image || !description) return;
+    const measure = () => {
+      const imageRect = image.getBoundingClientRect();
+      const descriptionRect = description.getBoundingClientRect();
+      const sideBySide = descriptionRect.left >= imageRect.right || descriptionRect.right <= imageRect.left;
+      const limit = sideBySide ? Math.max(120, imageRect.bottom - descriptionRect.top - 36) : 180;
+      setDescriptionLimit(limit);
+      setDescriptionOverflows(description.scrollHeight > limit + 2);
+    };
+    const observer = new ResizeObserver(measure);
+    observer.observe(image);
+    observer.observe(description);
+    window.addEventListener('resize', measure);
+    measure();
+    return () => { observer.disconnect(); window.removeEventListener('resize', measure); };
+  }, [product.id, product.shortDescription, product.fullDescription]);
+
   const [quantity, setQuantity] = useState<number>(1);
   const initialImg = product.mainImage || (product.galleryImages && product.galleryImages[0]) || '';
   const [selectedImage, setSelectedImage] = useState<string>(initialImg);
@@ -152,6 +179,7 @@ export default function ProductClientView({ product, similarProducts }: ProductC
             {/* Left Column: Product Imagery */}
             <div>
               <div
+                ref={imageFrameRef}
                 style={{
                   position: 'relative',
                   width: '100%',
@@ -314,12 +342,25 @@ export default function ProductClientView({ product, similarProducts }: ProductC
               </div>
             )}
 
-            {/* Short Description */}
-            <div
-              className="fm-product-rich-desc"
-              style={{ color: '#475569', fontSize: '0.98rem', lineHeight: 1.65, marginBottom: '28px', whiteSpace: 'pre-line' }}
-              dangerouslySetInnerHTML={{ __html: sanitizeHtml(product.shortDescription || product.fullDescription || '') }}
-            />
+            <div style={{ marginBottom: '28px' }}>
+              <div
+                id="product-summary-description"
+                ref={descriptionRef}
+                className="fm-product-rich-desc"
+                style={{ color: '#475569', fontSize: '0.98rem', lineHeight: 1.65, whiteSpace: 'pre-line', maxHeight: descriptionExpanded ? undefined : descriptionLimit, overflow: 'hidden' }}
+                dangerouslySetInnerHTML={{ __html: sanitizeHtml(product.shortDescription || product.fullDescription || '') }}
+              />
+              {descriptionOverflows && <button
+                type="button"
+                aria-expanded={descriptionExpanded}
+                aria-controls="product-summary-description"
+                onClick={() => setDescriptionExpanded(expanded => !expanded)}
+                style={{ display: 'inline-flex', alignItems: 'center', gap: 5, marginTop: 8, padding: 0, border: 0, background: 'transparent', color: '#287d63', fontWeight: 700, cursor: 'pointer', fontSize: '0.95rem' }}
+              >
+                {descriptionExpanded ? (isArabic ? 'عرض أقل' : 'Read less') : (isArabic ? 'اقرأ المزيد' : 'Read more')}
+                {descriptionExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+              </button>}
+            </div>
 
             {/* Quantity Selector & CTAs */}
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', alignItems: 'center', marginBottom: '32px' }}>
