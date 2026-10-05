@@ -7,6 +7,8 @@ import Image from 'next/image';
 import {
   ArrowRight,
   ShieldCheck,
+  BadgeCheck,
+  UserRoundCog,
   Truck,
   CheckCircle2,
   Wrench,
@@ -2408,7 +2410,7 @@ export default function HomePage() {
               { number: '01', title: isAr ? 'شركة ذات مسؤولية محدودة مرخصة في الإمارات' : 'A UAE-licensed LLC', body: isAr ? 'تعامل مع شركة ذات مسؤولية محدودة مرخصة في الإمارات. يدعم فريقنا اختيار المعدات وعروض الأسعار وتنسيق التسليم وخدمة ما بعد البيع.' : 'Purchase from a UAE-licensed limited liability company. Our team supports equipment selection, quotations, delivery coordination and after-sales enquiries, giving your facility a local point of contact.' },
               { number: '02', title: isAr ? 'خمس مراحل للتحقق من الجودة' : 'Five-layer quality assurance', body: isAr ? 'نطبق خمس مراحل للتحقق من الجودة قبل تسليم المنتج إلى المستخدم النهائي. يشرف فريق الهندسة الطبية على الفحوصات ويتابع أي ملاحظات قبل التسليم.' : 'We apply five layers of quality checks before a product reaches the end user. Our biomedical engineering team oversees these checks and follows up on any issues before delivery, with quality assurance built into the handover process.' },
               { number: '03', title: isAr ? 'فريق من مهندسي المعدات الطبية' : 'A team of biomedical engineers', body: isAr ? 'مهندسو المعدات الطبية هم أعضاء في فريقنا ويشاركون في التحقق من الجودة والدعم الفني. يساعدون على مراجعة متطلبات المعدات وشرح استخدامها وتنسيق الدعم بعد التسليم.' : 'Biomedical engineers are part of our team and actively handle quality checks and technical support. They help review equipment requirements, explain product operation and coordinate support after delivery, so you have access to people who understand the equipment.' }
-            ].map(reason => <article key={reason.number} className="fm-equipment-reason"><span className="fm-equipment-number">{reason.number}.</span><h4>{reason.title}</h4><p>{reason.body}</p></article>)}
+            ].map(reason => <article key={reason.number} className="fm-equipment-reason"><span className="fm-equipment-reason-icon" aria-hidden="true">{reason.number === '01' ? <BadgeCheck size={26} /> : reason.number === '02' ? <ShieldCheck size={26} /> : <UserRoundCog size={26} />}</span><h4>{reason.title}</h4><p>{reason.body}</p></article>)}
           </div>
         </div>
       </section>
@@ -2442,7 +2444,6 @@ export default function HomePage() {
             </article>)}
           </div>
           <div className="fm-biomedical-controls">
-            
             <div><button type="button" aria-label="Previous equipment types" disabled={biomedicalSlide === 0} onClick={() => biomedicalScrollRef.current?.scrollBy({ left: -((biomedicalScrollRef.current.firstElementChild as HTMLElement).offsetWidth + 20), behavior: 'smooth' })}><ChevronLeft size={21} /></button>
             <button type="button" aria-label="Next equipment types" disabled={biomedicalSlide >= 10 - Math.round((biomedicalScrollRef.current?.clientWidth || 1) / (((biomedicalScrollRef.current?.firstElementChild as HTMLElement)?.offsetWidth || 1) + 20))} onClick={() => biomedicalScrollRef.current?.scrollBy({ left: (biomedicalScrollRef.current.firstElementChild as HTMLElement).offsetWidth + 20, behavior: 'smooth' })}><ChevronRight size={21} /></button></div>
           </div>

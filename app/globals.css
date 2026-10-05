@@ -2357,3 +2357,5 @@ html:has(.fm-product-gallery-sticky), body:has(.fm-product-gallery-sticky) {
 .fm-biomedical-controls button:focus-visible, .fm-biomedical-type-grid:focus-visible { outline: 3px solid #53b497; outline-offset: 4px; }
 @media (max-width: 1000px) { .fm-biomedical-type { flex-basis: calc((100% - 20px) / 2); } }
 @media (max-width: 640px) { .fm-biomedical-type { flex-basis: 88%; padding: 22px; } .fm-biomedical-types { padding: 28px 0; } .fm-biomedical-controls > span { max-width: 190px; } }
+
+.fm-equipment-reason-icon { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 12px; background: #e0f2e9; color: #00875a; margin-bottom: 12px; }
