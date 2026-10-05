@@ -610,6 +610,8 @@ export default function HomePage() {
   }, []);
 
   // Healthcare facilities slider state & handlers (for mobile slider)
+  const biomedicalScrollRef = useRef<HTMLDivElement>(null);
+  const [biomedicalSlide, setBiomedicalSlide] = useState(0);
   const facilitiesScrollRef = useRef<HTMLDivElement>(null);
   const [activeFacilityIndex, setActiveFacilityIndex] = useState(0);
 
@@ -2413,9 +2415,13 @@ export default function HomePage() {
 
       <section className="fm-biomedical-types">
         <div className="container">
-          <h2>Types of Biomedical Equipment</h2>
+          <div className="fm-biomedical-heading"><span>EXPLORE EQUIPMENT TYPES</span><h2>Types of Biomedical Equipment</h2></div>
           <p className="fm-equipment-intro">Biomedical equipment supports diagnosis, patient monitoring, treatment and everyday clinical care. The categories below explain what each type does, common equipment and features, and where it is typically used. Some devices serve more than one purpose.</p>
-          <div className="fm-biomedical-type-grid">
+          <div className="fm-biomedical-type-grid" ref={biomedicalScrollRef} role="region" aria-label="Biomedical equipment types" tabIndex={0} onScroll={() => {
+            const track = biomedicalScrollRef.current;
+            const card = track?.firstElementChild as HTMLElement | null;
+            if (track && card) setBiomedicalSlide(Math.round(Math.abs(track.scrollLeft) / (card.offsetWidth + 20)));
+          }}>
             {[
               { title: 'Diagnostic Equipment', description: 'Helps healthcare professionals assess symptoms and measure clinical parameters.', features: 'ECG machines, blood pressure monitors, spirometers and otoscopes.', used: 'Clinics, outpatient departments and diagnostic centres.' },
               { title: 'Patient Monitoring Equipment', description: 'Tracks patient measurements over time to support clinical observation.', features: 'Multi-parameter monitors, pulse oximeters and telemetry systems; alarms and trend displays vary by model.', used: 'ICUs, emergency departments, operating theatres and hospital wards.' },
@@ -2428,12 +2434,17 @@ export default function HomePage() {
               { title: 'Hospital & Clinical Equipment', description: 'Supports everyday patient care and the practical needs of healthcare facilities.', features: 'Hospital beds, examination couches, medical scales and patient-transfer equipment.', used: 'Hospital wards, clinics, nursing facilities and examination rooms.' },
               { title: 'Dermatology & Aesthetic Equipment', description: 'Supports skin assessment and selected dermatological or aesthetic treatments.', features: 'Dermatoscopes, treatment lasers, IPL systems and other skin-treatment devices, selected for the intended procedure.', used: 'Dermatology clinics, licensed aesthetic centres and specialist treatment rooms.' }
             ].map((type, index) => <article className="fm-biomedical-type" key={type.title}>
-              <span className="fm-equipment-number">{String(index + 1).padStart(2, '0')}.</span>
+              <div className="fm-biomedical-card-top"><span className="fm-biomedical-icon">{React.createElement([Stethoscope, HeartPulse, Zap, Activity, FlaskConical, Wrench, Radio, Accessibility, Hospital, Sparkles][index], { size: 28, 'aria-hidden': true })}</span><span className="fm-equipment-number">{String(index + 1).padStart(2, '0')}</span></div>
               <h3>{type.title}</h3>
               <p>{type.description}</p>
               <h4>Common equipment & features</h4><p>{type.features}</p>
               <h4>Where it is used</h4><p>{type.used}</p>
             </article>)}
+          </div>
+          <div className="fm-biomedical-controls">
+            <span>Swipe or use the arrows to explore all 10 types</span>
+            <div><button type="button" aria-label="Previous equipment types" disabled={biomedicalSlide === 0} onClick={() => biomedicalScrollRef.current?.scrollBy({ left: -((biomedicalScrollRef.current.firstElementChild as HTMLElement).offsetWidth + 20), behavior: 'smooth' })}><ChevronLeft size={21} /></button>
+            <button type="button" aria-label="Next equipment types" disabled={biomedicalSlide >= 10 - Math.round((biomedicalScrollRef.current?.clientWidth || 1) / (((biomedicalScrollRef.current?.firstElementChild as HTMLElement)?.offsetWidth || 1) + 20))} onClick={() => biomedicalScrollRef.current?.scrollBy({ left: (biomedicalScrollRef.current.firstElementChild as HTMLElement).offsetWidth + 20, behavior: 'smooth' })}><ChevronRight size={21} /></button></div>
           </div>
         </div>
       </section>
