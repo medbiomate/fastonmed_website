@@ -175,7 +175,7 @@ function responseProducts(products: any[], listView: boolean) {
     if (!listView) return { ...fields, createdAt, sourcePostType: product.sourcePostType || wordpressSource?.postType };
     return {
       id: product.id, name: product.name, slug: product.slug, sku: product.sku,
-      category: product.category, categories: product.categories, brand: product.brand,
+      category: product.category, parentCategory: product.parentCategory, categories: product.categories, brand: product.brand,
       image: product.image, regularPrice: product.regularPrice, salePrice: product.salePrice,
       sellingPrice: product.sellingPrice, inStock: product.inStock, stockStatus: product.stockStatus,
       status: product.status, createdAt, updatedAt: product.updatedAt,

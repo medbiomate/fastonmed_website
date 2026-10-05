@@ -285,6 +285,7 @@ function SearchableCombobox({
   counts,
   allowCustom = true,
   entityLabel,
+  onCreate,
 }: {
   value: string;
   onChange: (val: string) => void;
@@ -293,10 +294,18 @@ function SearchableCombobox({
   counts?: Record<string, number>;
   allowCustom?: boolean;
   entityLabel?: string;
+  onCreate?: (name: string, parent: string) => void;
 }) {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState('');
   const [creating, setCreating] = useState(false);
+  const [parentCategory, setParentCategory] = useState('');
+  const createOption = () => {
+    const name = options.find(option => option.toLowerCase() === search.trim().toLowerCase()) || search.trim();
+    if (onCreate) onCreate(name, parentCategory === name ? '' : parentCategory);
+    else onChange(name);
+    setOpen(false); setCreating(false); setSearch(''); setParentCategory('');
+  };
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -349,8 +358,7 @@ function SearchableCombobox({
                 if (event.key === 'Escape') { setOpen(false); setCreating(false); }
                 if (event.key === 'Enter' && creating && search.trim()) {
                   event.preventDefault();
-                  onChange(options.find(option => option.toLowerCase() === search.trim().toLowerCase()) || search.trim());
-                  setOpen(false); setCreating(false); setSearch('');
+                  createOption();
                 }
               }}
               value={search}
@@ -369,10 +377,16 @@ function SearchableCombobox({
           </div>
 
           {entityLabel && allowCustom && <div style={{ padding: 8, borderBottom: '1px solid #e2e8f0' }}>
+            {creating && onCreate && <div style={{ marginBottom: 10 }}>
+              <label htmlFor="new-category-parent" style={{ fontSize: 12, fontWeight: 600 }}>Parent category</label>
+              <select id="new-category-parent" value={parentCategory} onChange={event => setParentCategory(event.target.value)} style={{ width: '100%', marginTop: 6 }}>
+                <option value="">None (top-level category)</option>
+                {options.filter(option => option.toLowerCase() !== search.trim().toLowerCase()).map(option => <option key={option} value={option}>{option}</option>)}
+              </select>
+            </div>}
             <button type="button" className="tk-combobox-create-new" style={{ width: '100%', border: '1px solid #99dace', borderRadius: 7, textAlign: 'left' }} disabled={creating && !search.trim()} onClick={() => {
-              if (!creating) { setCreating(true); return; }
-              onChange(options.find(option => option.toLowerCase() === search.trim().toLowerCase()) || search.trim());
-              setOpen(false); setCreating(false); setSearch('');
+              if (!creating) { setCreating(true); setParentCategory(''); return; }
+              createOption();
             }}><Plus size={13} /> {creating ? `Add ${entityLabel}${search.trim() ? ` “${search.trim()}”` : ''}` : `Add ${entityLabel}`}</button>
             {creating && <><p style={{ fontSize: 11, color: '#64748b', margin: '8px 0' }}>Save the product to keep this {entityLabel} in the catalog.</p><button type="button" onClick={() => { setCreating(false); setSearch(''); }}>Cancel</button></>}
           </div>}
@@ -816,7 +830,7 @@ export default function ProductManager({
       const b = decodeHtml(p.brand?.trim());
       if (b) brandSet.add(b);
     }
-    const cats = [...new Set([...Object.keys(counts), ...(product.category ? [decodeHtml(product.category)] : [])])].sort((a, b) => a.localeCompare(b));
+    const cats = [...new Set([...Object.keys(counts), ...products.map(item => item.parentCategory).filter(Boolean).map(decodeHtml), ...(product.category ? [decodeHtml(product.category)] : [])])].sort((a, b) => a.localeCompare(b));
     const sortedBrands = Array.from(brandSet).sort((a, b) => a.localeCompare(b));
     return { categories: cats, categoryCounts: counts, brands: sortedBrands };
   }, [products, product.category, product.brand]);
@@ -1808,7 +1822,8 @@ export default function ProductManager({
                 Category
                 <SearchableCombobox
                   value={product.category || ''}
-                  onChange={(cat) => setProduct({ ...product, category: cat })}
+                  onChange={(cat) => setProduct({ ...product, category: cat, parentCategory: products.find(item => decodeHtml(item.category) === cat && item.parentCategory)?.parentCategory || '' })}
+                  onCreate={(cat, parent) => setProduct({ ...product, category: cat, parentCategory: parent })}
                   options={categories}
                   entityLabel="category"
                   counts={categoryCounts}
