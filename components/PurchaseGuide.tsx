@@ -25,7 +25,7 @@ export default function PurchaseGuide({ onEnquire }: { onEnquire: (type: 'Sales'
       {(['Sales', 'Service'] as const).map(type => <button key={type} type="button" role="tab" id={`purchase-tab-${type}`} aria-controls={`purchase-panel-${type}`} aria-selected={active === type} tabIndex={active === type ? 0 : -1} onClick={() => setActive(type)} onKeyDown={event => { if (['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) { event.preventDefault(); const next = event.key === 'Home' ? 'Sales' : event.key === 'End' ? 'Service' : active === 'Sales' ? 'Service' : 'Sales'; setActive(next); document.getElementById(`purchase-tab-${next}`)?.focus(); } }}>{type === 'Sales' ? <ShoppingBag size={18} /> : <Wrench size={18} />}{type === 'Sales' ? 'Buy equipment' : 'Request a service'}</button>)}
     </div>
     <div className="fm-purchase-panel" role="tabpanel" id={`purchase-panel-${active}`} aria-labelledby={`purchase-tab-${active}`}>
-      <img src={service ? '/images/hero-medical-light.jpg' : '/images/hero-medical-equipment.jpg'} alt={service ? 'Hospital room with a patient monitor, infusion equipment and an adjustable bed' : 'Patient monitors, ultrasound system, defibrillator and infusion equipment'} width={service ? 1368 : 1024} height={service ? 768 : 1024} loading="lazy" />
+      <img src={service ? '/images/illustrations/request-service.svg' : '/images/illustrations/buy-equipment.svg'} alt={service ? 'Illustration of equipment maintenance and a service checklist' : 'Illustration of selecting and ordering medical equipment online'} width={640} height={400} loading="lazy" />
       <div><ol className="fm-purchase-steps">{steps.map(([title, body], index) => <li key={title}><span aria-hidden="true">{index + 1}</span><div><h3>{title}</h3><p>{body}</p></div></li>)}</ol>
       <div className="fm-purchase-actions"><button type="button" onClick={() => onEnquire(active)}>{service ? 'Send a service enquiry' : 'Request a quotation'}<ArrowRight size={16} /></button>{!service && <Link href={localizeUrl('/shop')}>Browse products <ArrowRight size={16} /></Link>}</div></div>
     </div>
@@ -44,7 +44,7 @@ export function SwitchProviderGuide({ onEnquire }: { onEnquire: () => void }) {
     <h2>Switch your service provider to Fastonmed</h2>
     <p className="fm-purchase-subtitle">Already working with another provider? Discuss a planned handover for your medical equipment support.</p>
     <div className="fm-purchase-panel">
-      <img src="/images/hero-medical-equipment.jpg" alt="Medical equipment including patient monitors, ultrasound, a defibrillator and infusion systems" width={1024} height={1024} loading="lazy" />
+      <img src="/images/illustrations/switch-provider.svg" alt="Illustration of transferring equipment support records to a new provider" width={640} height={400} loading="lazy" />
       <div><ol className="fm-purchase-steps">{steps.map(([title, body], index) => <li key={title}><span aria-hidden="true">{index + 1}</span><div><h3>{title}</h3><p>{body}</p></div></li>)}</ol>
       <div className="fm-purchase-actions"><button type="button" onClick={onEnquire}>Discuss switching to Fastonmed <ArrowRight size={16} /></button></div></div>
     </div>
