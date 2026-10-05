@@ -2444,3 +2444,5 @@ html:has(.fm-product-gallery-sticky), body:has(.fm-product-gallery-sticky) {
 .fm-purchase-actions a { color: #00865f; }
 .fm-purchase-guide button:focus-visible, .fm-purchase-guide a:focus-visible { outline: 3px solid #53b497; outline-offset: 3px; }
 @media (max-width: 700px) { .fm-purchase-panel { grid-template-columns: 1fr; gap: 20px; } .fm-purchase-panel > img { height: 220px; } .fm-purchase-tabs button { padding: 11px 10px; font-size: 14px; } }
+
+.fm-switch-guide { background: #f6faf8; }

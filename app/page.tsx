@@ -50,7 +50,7 @@ import type { Product } from '@/lib/types';
 import EnquirySelect from '@/components/EnquirySelect';
 import AssociatedBrands from '@/components/AssociatedBrands';
 import HomeFAQs from '@/components/HomeFAQs';
-import PurchaseGuide from '@/components/PurchaseGuide';
+import PurchaseGuide, { SwitchProviderGuide } from '@/components/PurchaseGuide';
 import GoogleReviewsSection from '@/components/GoogleReviewsSection';
 
 const baseDate = '2026-01-01T00:00:00.000Z';
@@ -3521,6 +3521,7 @@ export default function HomePage() {
       {/* SECTION 9: GOOGLE REVIEWS & CLINICAL CLIENT ACCREDITATIONS */}
       <GoogleReviewsSection />
       <PurchaseGuide onEnquire={type => { setEnquiryType(type); setShowEnquiryPopup(true); }} />
+      <SwitchProviderGuide onEnquire={() => { setEnquiryType('Service'); setShowEnquiryPopup(true); }} />
       <HomeFAQs />
     </div>
   );

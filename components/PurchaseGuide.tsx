@@ -30,4 +30,23 @@ export default function PurchaseGuide({ onEnquire }: { onEnquire: (type: 'Sales'
       <div className="fm-purchase-actions"><button type="button" onClick={() => onEnquire(active)}>{service ? 'Send a service enquiry' : 'Request a quotation'}<ArrowRight size={16} /></button>{!service && <Link href={localizeUrl('/shop')}>Browse products <ArrowRight size={16} /></Link>}</div></div>
     </div>
   </div></section>;
+
+}
+
+export function SwitchProviderGuide({ onEnquire }: { onEnquire: () => void }) {
+  const steps = [
+    ['Share your equipment list', 'Send the brands, models, serial numbers and location of the equipment you want Fastonmed to support. Tell us your current service needs and preferred start date.'],
+    ['Review your current arrangement', 'Share relevant maintenance records, warranty details and the end date of your current service agreement. Confirm any notice or handover requirements with your existing provider.'],
+    ['Agree the support plan', 'Our team reviews equipment compatibility and service availability, then discusses the scope, assessment requirements, schedule and quotation with you.'],
+    ['Confirm the handover', 'Once the scope is agreed, coordinate records, equipment access and the start date with our team. Keep existing support in place until the new arrangements are confirmed.']
+  ];
+  return <section className="fm-purchase-guide fm-switch-guide"><div className="container">
+    <h2>Switch your service provider to Fastonmed</h2>
+    <p className="fm-purchase-subtitle">Already working with another provider? Discuss a planned handover for your medical equipment support.</p>
+    <div className="fm-purchase-panel">
+      <img src="/images/hero-medical-equipment.jpg" alt="Medical equipment including patient monitors, ultrasound, a defibrillator and infusion systems" width={1024} height={1024} loading="lazy" />
+      <div><ol className="fm-purchase-steps">{steps.map(([title, body], index) => <li key={title}><span aria-hidden="true">{index + 1}</span><div><h3>{title}</h3><p>{body}</p></div></li>)}</ol>
+      <div className="fm-purchase-actions"><button type="button" onClick={onEnquire}>Discuss switching to Fastonmed <ArrowRight size={16} /></button></div></div>
+    </div>
+  </div></section>;
 }
