@@ -2234,14 +2234,35 @@ nav[aria-label="Breadcrumbs"] svg,
   gap: 6px;
 }
 
-/* Keep the gallery beside product details without covering the navigation. */
+/* Clip horizontal overflow without creating a scroll container that breaks sticky. */
+html:has(.fm-product-gallery-sticky), body:has(.fm-product-gallery-sticky) {
+  overflow-x: clip;
+}
 @media (min-width: 992px) {
   .fm-product-gallery-sticky {
     position: sticky;
     top: 94px;
     align-self: start;
+    display: grid;
+    grid-template-columns: 64px minmax(0, 1fr);
+    gap: 14px;
   }
   .fm-product-gallery-sticky .fm-product-image-frame {
-    max-height: calc(100dvh - 220px);
+    grid-column: 2;
+    grid-row: 1;
+    max-height: calc(100dvh - 130px);
+  }
+  .fm-product-gallery-sticky .fm-product-thumbnails {
+    grid-column: 1;
+    grid-row: 1;
+    flex-direction: column;
+    margin-top: 0 !important;
+    overflow-x: hidden !important;
+    overflow-y: auto;
+    max-height: calc(100dvh - 130px);
+  }
+  .fm-product-thumbnails > button {
+    width: 60px !important;
+    height: 60px !important;
   }
 }

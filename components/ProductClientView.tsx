@@ -235,7 +235,7 @@ export default function ProductClientView({ product, similarProducts }: ProductC
 
             {/* Thumbnail Gallery */}
             {images.length > 1 && (
-              <div style={{ display: 'flex', gap: '12px', marginTop: '16px', overflowX: 'auto', paddingBottom: '4px' }}>
+              <div className="fm-product-thumbnails" style={{ display: 'flex', gap: '12px', marginTop: '16px', overflowX: 'auto', paddingBottom: '4px' }}>
                 {images.map((img, idx) => (
                   <button
                     key={idx}
