@@ -1558,14 +1558,16 @@ export default function HomePage() {
 
         <style>{`
           .rfq-popup-backdrop { position: fixed; inset: 0; z-index: 10000; background: rgba(15,23,42,.55); display: flex; justify-content: center; align-items: flex-start; overflow-y: auto; padding: 24px 16px; }
-          .rfq-popup-backdrop #rfq-crm-section { position: relative; width: 100%; max-width: 680px; padding: 48px 0 24px !important; border-radius: 20px; margin: auto; box-shadow: 0 24px 80px rgba(15,23,42,.25); }
+          .rfq-popup-backdrop #rfq-crm-section { position: relative; width: 100%; max-width: 720px; max-height: calc(100dvh - 48px); overflow-y: auto; padding: 40px 0 20px !important; border-radius: 20px; margin: auto; box-shadow: 0 24px 80px rgba(15,23,42,.25); }
           .rfq-popup-backdrop #rfq-two-column-layout { display: block !important; }
           .rfq-popup-backdrop #rfq-two-column-layout > div:first-child { display: none; }
           .rfq-popup-backdrop #rfq-two-column-layout > div:last-child { border: 0 !important; padding: 0 !important; box-shadow: none !important; }
           @media (min-width: 961px) {
-            .rfq-popup-backdrop #rfq-crm-section { max-width: 1080px; }
-            .rfq-popup-backdrop #rfq-crm-section > .container { padding: 0 40px !important; }
-            .rfq-popup-backdrop .rfq-form-row { gap: 24px !important; }
+            .rfq-popup-backdrop #rfq-crm-section { max-width: 720px; }
+            .rfq-popup-backdrop #rfq-crm-section > .container { padding: 0 24px !important; }
+            .rfq-popup-backdrop .rfq-form-row { gap: 16px !important; }
+            .rfq-popup-backdrop .rfq-enquiry-form { gap: 12px !important; }
+            .rfq-popup-backdrop .rfq-field-input { padding: 10px 12px !important; }
           }
           .rfq-popup-close { position: absolute; top: 10px; right: 14px; border: none; background: #f1f5f9; color: #475569; border-radius: 50%; width: 32px; height: 32px; font-size: 24px; cursor: pointer; }
           .rfq-popup-close:focus-visible { outline: 2px solid #00875a; outline-offset: 2px; }
