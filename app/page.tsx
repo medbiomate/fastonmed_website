@@ -3473,8 +3473,8 @@ export default function HomePage() {
       </section>
 
       {/* SECTION 9: GOOGLE REVIEWS & CLINICAL CLIENT ACCREDITATIONS */}
-      <GoogleReviewsSection />
       <PurchaseGuide onEnquire={type => { setEnquiryType(type); setShowEnquiryPopup(true); }} />
+      <GoogleReviewsSection />
       <SwitchProviderGuide onEnquire={() => { setEnquiryType('Service'); setShowEnquiryPopup(true); }} />
       {/* SECTION 8: FAST CRM LEAD GENERATION & EQUIPMENT RFQ FORM */}
       {showEnquiryPopup ? createPortal(
