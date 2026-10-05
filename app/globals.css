@@ -2334,3 +2334,12 @@ html:has(.fm-product-gallery-sticky), body:has(.fm-product-gallery-sticky) {
   .fm-equipment-reason { padding: 24px; }
   .fm-equipment-explainer h3 { font-size: 22px; }
 }
+
+.fm-biomedical-types { padding: 56px 0; background: #f8fafc; }
+.fm-biomedical-types h2 { font-size: clamp(28px, 3vw, 38px); color: #193c30; margin-bottom: 20px; }
+.fm-biomedical-type-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.fm-biomedical-type { background: #fff; border: 1px solid #e2ebe6; border-radius: 20px; padding: 28px; }
+.fm-biomedical-type h3 { font-size: 21px; color: #193c30; margin: 12px 0; }
+.fm-biomedical-type h4 { font-size: 14px; color: #287d63; margin: 20px 0 6px; }
+.fm-biomedical-type p { color: #52635d; font-size: 16px; line-height: 1.7; margin: 0; }
+@media (max-width: 640px) { .fm-biomedical-type-grid { grid-template-columns: 1fr; } .fm-biomedical-type { padding: 24px; } .fm-biomedical-types { padding: 40px 0; } }

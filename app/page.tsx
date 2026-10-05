@@ -2411,6 +2411,33 @@ export default function HomePage() {
         </div>
       </section>
 
+      <section className="fm-biomedical-types">
+        <div className="container">
+          <h2>Types of Biomedical Equipment</h2>
+          <p className="fm-equipment-intro">Biomedical equipment supports diagnosis, patient monitoring, treatment and everyday clinical care. The categories below explain what each type does, common equipment and features, and where it is typically used. Some devices serve more than one purpose.</p>
+          <div className="fm-biomedical-type-grid">
+            {[
+              { title: 'Diagnostic Equipment', description: 'Helps healthcare professionals assess symptoms and measure clinical parameters.', features: 'ECG machines, blood pressure monitors, spirometers and otoscopes.', used: 'Clinics, outpatient departments and diagnostic centres.' },
+              { title: 'Patient Monitoring Equipment', description: 'Tracks patient measurements over time to support clinical observation.', features: 'Multi-parameter monitors, pulse oximeters and telemetry systems; alarms and trend displays vary by model.', used: 'ICUs, emergency departments, operating theatres and hospital wards.' },
+              { title: 'Therapeutic Equipment', description: 'Delivers a treatment or supports a prescribed therapy.', features: 'Infusion pumps, nebulizers and electrotherapy units with model-specific treatment settings.', used: 'Hospitals, respiratory clinics and physiotherapy departments.' },
+              { title: 'Life Support Equipment', description: 'Supports essential functions such as breathing in critical care.', features: 'Ventilators, defibrillators and oxygen delivery systems with monitoring and safety functions appropriate to each device.', used: 'ICUs, emergency departments, ambulances and operating theatres.' },
+              { title: 'Laboratory Equipment', description: 'Processes and analyses samples to support clinical testing.', features: 'Centrifuges, microscopes, analysers and laboratory refrigerators.', used: 'Clinical laboratories, hospitals and research facilities.' },
+              { title: 'Surgical Equipment', description: 'Supports surgical procedures, instrument handling and the operating environment.', features: 'Electrosurgical units, surgical lights, operating tables and suction systems.', used: 'Operating theatres, day-surgery centres and procedure rooms.' },
+              { title: 'Imaging Equipment', description: 'Produces images used to examine internal structures and guide assessment.', features: 'Ultrasound, X-ray, CT and MRI systems; image modes and software depend on the system.', used: 'Radiology departments, imaging centres and specialist clinics.' },
+              { title: 'Rehabilitation Equipment', description: 'Supports movement training, recovery and functional rehabilitation.', features: 'Therapy tables, exercise systems, gait-training aids and rehabilitation devices.', used: 'Physiotherapy clinics, rehabilitation centres and supervised home-care programmes.' },
+              { title: 'Hospital & Clinical Equipment', description: 'Supports everyday patient care and the practical needs of healthcare facilities.', features: 'Hospital beds, examination couches, medical scales and patient-transfer equipment.', used: 'Hospital wards, clinics, nursing facilities and examination rooms.' },
+              { title: 'Dermatology & Aesthetic Equipment', description: 'Supports skin assessment and selected dermatological or aesthetic treatments.', features: 'Dermatoscopes, treatment lasers, IPL systems and other skin-treatment devices, selected for the intended procedure.', used: 'Dermatology clinics, licensed aesthetic centres and specialist treatment rooms.' }
+            ].map((type, index) => <article className="fm-biomedical-type" key={type.title}>
+              <span className="fm-equipment-number">{String(index + 1).padStart(2, '0')}.</span>
+              <h3>{type.title}</h3>
+              <p>{type.description}</p>
+              <h4>Common equipment & features</h4><p>{type.features}</p>
+              <h4>Where it is used</h4><p>{type.used}</p>
+            </article>)}
+          </div>
+        </div>
+      </section>
+
       {/* SECTION 4: OUR PRODUCTS / MEDICAL EQUIPMENT SPECIALTIES */}
       <section style={{ backgroundColor: '#fafcfa', padding: '80px 0 90px', borderTop: '1px solid #f1f5f9', fontFamily: 'Arial, Helvetica, sans-serif' }}>
         <div className="container" style={{ maxWidth: '1240px', margin: '0 auto', padding: '0 20px' }}>
