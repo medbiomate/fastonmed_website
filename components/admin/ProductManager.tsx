@@ -975,7 +975,8 @@ export default function ProductManager({
         body: JSON.stringify(ready),
       });
       if (!r.ok) {
-        alert('Could not save product');
+        const failure = await r.json().catch(() => ({}));
+        alert(failure.error || 'Could not save product');
         return false;
       }
       const data = await r.json();

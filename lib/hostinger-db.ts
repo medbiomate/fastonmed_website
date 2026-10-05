@@ -229,25 +229,25 @@ export async function saveBlogPostToHostingerDb(post: any): Promise<boolean> {
   }
 }
 
-export async function loadProductsFromHostingerDb(): Promise<any[]> {
-  if (isDbInCooldown()) return [];
+// null distinguishes an unavailable database from a valid empty catalog.
+export async function readDurableProductCatalog(): Promise<any[] | null> {
+  if (isDbInCooldown()) return null;
   try {
-    const db = getHostingerDbPool();
-    const [rows] = await db.query<any[]>('SELECT raw_data FROM products WHERE status != "trash"');
-    if (Array.isArray(rows) && rows.length > 0) {
-      return rows.map((r) => {
-        try {
-          return typeof r.raw_data === 'string' ? JSON.parse(r.raw_data) : r.raw_data;
-        } catch {
-          return null;
-        }
-      }).filter(Boolean);
-    }
+    const [rows] = await getHostingerDbPool().query<any[]>('SELECT id, status, raw_data FROM products');
+    return rows.map((row) => {
+      const product = typeof row.raw_data === 'string' ? JSON.parse(row.raw_data) : row.raw_data;
+      if (!product || typeof product !== 'object') throw new Error('Invalid durable product record');
+      return { ...product, id: row.id, status: row.status };
+    });
   } catch (err) {
     recordDbFailure();
-    console.warn('Hostinger DB query error:', err);
+    console.warn('Hostinger DB catalog unavailable:', err);
+    return null;
   }
-  return [];
+}
+
+export async function loadProductsFromHostingerDb(): Promise<any[]> {
+  return (await readDurableProductCatalog() || []).filter(p => p.status !== 'trash');
 }
 
 export async function getProductBySlugOrIdFromHostingerDb(slugOrId: string): Promise<any | null> {

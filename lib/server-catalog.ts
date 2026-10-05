@@ -1,3 +1,4 @@
+import { getDurableCatalog, invalidateDurableCatalog } from './durable-catalog';
 import fs from 'fs';
 import path from 'path';
 import type { Product, ProductCategory } from './types';
@@ -108,11 +109,18 @@ let cachedProducts: Product[] | null = null;
 let lastCacheMtime = 0;
 
 export function invalidateServerCatalogCache() {
+  invalidateDurableCatalog();
   cachedProducts = null;
   lastCacheMtime = 0;
 }
 
 export async function getAllProducts(): Promise<Product[]> {
+  const durable = await getDurableCatalog();
+  if (durable !== null) {
+    return durable.filter(item => item.sourcePostType !== 'product_variation' && item.name !== 'AUTO-DRAFT' &&
+      (!item.status || item.status === 'publish' || item.status === 'published'))
+      .map(mapRawProduct).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }
   // 1. Instant check: If cache is valid and file has not been modified, return cached in <0.05ms
   let currentMtime = 0;
   try {

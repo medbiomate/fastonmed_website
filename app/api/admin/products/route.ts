@@ -1,9 +1,10 @@
-import { after, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 import { revalidatePath } from 'next/cache';
 import { saveProductToHostingerDb, deleteProductFromHostingerDb, loadProductsFromHostingerDb } from '@/lib/hostinger-db';
 import { invalidateServerCatalogCache } from '@/lib/server-catalog';
+import { getDurableCatalog, invalidateDurableCatalog } from '@/lib/durable-catalog';
 import { canUploadMedia } from '@/lib/media-access';
 import { uploadR2Image } from '@/lib/r2-media';
 
@@ -144,7 +145,9 @@ function saveFileCache(products: any[]) {
     // Create automatic snapshot before every change
     createSnapshotBackup(products);
 
-    fs.writeFileSync(CACHE_FILE, JSON.stringify(products), 'utf8');
+    const temporary = `${CACHE_FILE}.${process.pid}.${Date.now()}.tmp`;
+    fs.writeFileSync(temporary, JSON.stringify(products), 'utf8');
+    fs.renameSync(temporary, CACHE_FILE);
     inMemoryProducts = products;
     lastCacheTime = Date.now();
   } catch (err) {
@@ -165,35 +168,6 @@ function getCachedProducts(): any[] {
   return inMemoryProducts || [];
 }
 
-const getBackendUrls = () => {
-  const envUrl = process.env.CRM_BACKEND_URL || process.env.FAST_API_URL;
-  const urls: string[] = [];
-  if (envUrl) urls.push(`${envUrl.replace(/\/$/, '')}/api/products`);
-  urls.push('https://api.fastonmed.com/api/products');
-  urls.push('http://127.0.0.1:3000/api/products');
-  return Array.from(new Set(urls));
-};
-
-let mediaRecoveryPromise: Promise<void> | null = null;
-let lastMediaRecovery = 0;
-
-async function recoverDurableMedia() {
-  // Deployments recreate bundled cache files. Recover verified media links
-  // from their durable database records before returning the catalog.
-  try {
-    const durable = await loadProductsFromHostingerDb();
-    const media = new Map(durable.filter((p: any) => p.mediaOriginals).map((p: any) => [p.id, p]));
-    let changed = false;
-    const restored = getCachedProducts().map((p: any) => {
-      const saved: any = media.get(p.id);
-      if (!saved || JSON.stringify(p.mediaOriginals) === JSON.stringify(saved.mediaOriginals)) return p;
-      changed = true;
-      return { ...p, image: saved.image, galleryImages: saved.galleryImages, mediaOriginals: saved.mediaOriginals };
-    });
-    if (changed) saveFileCache(restored);
-  } catch {}
-}
-
 function responseProducts(products: any[], listView: boolean) {
   return products.map(product => {
     const { wordpressSource, ...fields } = product;
@@ -211,54 +185,22 @@ function responseProducts(products: any[], listView: boolean) {
 
 export async function GET(request: Request) {
   const listView = new URL(request.url).searchParams.get('view') === 'list';
-  const cached = getCachedProducts();
-  if (Date.now() - lastMediaRecovery >= CACHE_TTL_MS) {
-    if (!mediaRecoveryPromise) {
-      mediaRecoveryPromise = recoverDurableMedia().finally(() => {
-        lastMediaRecovery = Date.now();
-        mediaRecoveryPromise = null;
-      });
-    }
-    // Keep the database recovery alive after sending the cached catalogue.
-    // A cold database must not block the product list on every deployment.
-    if (cached.length > 0) {
-      const recovery = mediaRecoveryPromise;
-      after(() => recovery);
-    } else {
-      await mediaRecoveryPromise;
-    }
-  }
-  const active = getCachedProducts();
-  if (active.length > 0) {
-    return NextResponse.json(
-      { success: true, products: responseProducts(active, listView), count: active.length, mediaRecoveryPending: !!mediaRecoveryPromise, source: 'cache' },
-      { headers: { 'Cache-Control': 'no-cache, no-store, must-revalidate' } }
-    );
-  }
-
-  // Fallback to Hostinger MySQL live database
-  try {
-    const dbProducts = await loadProductsFromHostingerDb();
-    if (Array.isArray(dbProducts) && dbProducts.length > 0) {
-      const normalized = normalizeProducts(dbProducts);
-      saveFileCache(normalized);
-      return NextResponse.json(
-        { success: true, products: responseProducts(normalized, listView), count: normalized.length, source: 'database' },
-        { headers: { 'Cache-Control': 'no-cache, no-store, must-revalidate' } }
-      );
-    }
-  } catch {}
-
+  const durable = await getDurableCatalog();
+  const products = durable ?? getCachedProducts();
   return NextResponse.json(
-    { success: true, products: [], count: 0, warning: 'No products in database or cache' },
-    { headers: { 'Cache-Control': 'no-cache, no-store, must-revalidate' } }
+    { success: true, products: responseProducts(products, listView), count: products.length,
+      source: durable === null ? 'cache' : 'database',
+      ...(durable === null ? { warning: 'Database unavailable; showing cached products' } : {}) },
+    { headers: { 'Cache-Control': 'no-store' } }
   );
 }
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const current = getCachedProducts();
+    const durable = await getDurableCatalog();
+    if (durable === null) return NextResponse.json({ success: false, error: 'Database unavailable. Product was not saved; please retry.' }, { status: 503 });
+    const current = durable;
     // Migrate one existing record at a time; never create a product or overwrite
     // staff edits using a stale client-side catalog snapshot.
     if (body.action === 'migrate-product-media') {
@@ -291,20 +233,20 @@ export async function POST(request: Request) {
       const recovery = path.join(BACKUPS_DIR, 'media-migration-originals.json');
       ensureDirectories();
       if (!fs.existsSync(recovery)) fs.writeFileSync(recovery, JSON.stringify(current), { flag: 'wx' });
-      if (!await saveProductToHostingerDb({ ...product })) {
-        return NextResponse.json({ error: 'Database persistence failed; original links retained' }, { status: 503 });
-      }
-      const latest = getCachedProducts();
+      invalidateDurableCatalog();
+      const latest = await getDurableCatalog();
+      if (latest === null) return NextResponse.json({ error: 'Database unavailable; retry migration' }, { status: 503 });
       const latestIndex = latest.findIndex((p: any) => p.id === original.id);
       if (latestIndex < 0 || JSON.stringify(latest[latestIndex]) !== JSON.stringify(original)) {
-        // Restore the concurrently edited record to the database rather than
-        // publishing an outdated migration snapshot.
-        if (latestIndex >= 0) await saveProductToHostingerDb(latest[latestIndex]);
         return NextResponse.json({ error: 'Product changed during migration; retry' }, { status: 409 });
+      }
+      if (!await saveProductToHostingerDb({ ...product })) {
+        return NextResponse.json({ error: 'Database persistence failed; original links retained' }, { status: 503 });
       }
       const next = [...latest];
       next[latestIndex] = product;
       saveFileCache(next);
+      invalidateDurableCatalog();
       invalidateServerCatalogCache();
       revalidatePath('/', 'layout');
       return NextResponse.json({ success: true, changed: true, id: product.id, image: product.image });
@@ -334,15 +276,14 @@ export async function POST(request: Request) {
       updatedList = [productToSave, ...current];
     }
 
-    const normalizedList = normalizeProducts(updatedList);
-
-    // 1. Instantly save to local file cache
+    // A successful response requires a confirmed durable database write.
+    if (!await saveProductToHostingerDb(productToSave)) {
+      return NextResponse.json({ success: false, error: 'Database persistence failed. Product was not saved; please retry.' }, { status: 503 });
+    }
+    invalidateDurableCatalog();
+    const latest = await getDurableCatalog();
+    const normalizedList = latest ?? updatedList;
     saveFileCache(normalizedList);
-
-    // 2. Persist directly to Hostinger MySQL Database
-    await saveProductToHostingerDb(productToSave).catch((err) =>
-      console.warn('Could not save to Hostinger DB:', err)
-    );
 
     // 3. Invalidate all in-memory caches instantly (0ms delay)
     invalidateServerCatalogCache();
@@ -356,15 +297,6 @@ export async function POST(request: Request) {
       }
     } catch (e) {
       console.warn('Revalidation warning:', e);
-    }
-
-    // 5. Fire-and-forget background sync to secondary backends if configured
-    for (const url of getBackendUrls()) {
-      fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(productToSave),
-      }).catch(() => {});
     }
 
     return NextResponse.json({
@@ -383,7 +315,9 @@ export async function DELETE(request: Request) {
     const id = url.searchParams.get('id');
     const ids = url.searchParams.get('ids');
 
-    let current = getCachedProducts();
+    const durable = await getDurableCatalog();
+    if (durable === null) return NextResponse.json({ success: false, error: 'Database unavailable; deletion was not saved' }, { status: 503 });
+    let current = durable;
     const toDelete: string[] = [];
 
     if (id) {
@@ -403,13 +337,15 @@ export async function DELETE(request: Request) {
 
     const normalized = normalizeProducts(current);
 
-    // 1. Update local file cache
-    saveFileCache(normalized);
-
-    // 2. Delete from Hostinger MySQL
     for (const targetId of toDelete) {
-      await deleteProductFromHostingerDb(targetId).catch(() => {});
+      if (!await deleteProductFromHostingerDb(targetId)) {
+        invalidateDurableCatalog();
+        invalidateServerCatalogCache();
+        return NextResponse.json({ success: false, error: 'Database deletion failed; reload before retrying' }, { status: 503 });
+      }
     }
+    invalidateDurableCatalog();
+    saveFileCache(await getDurableCatalog() ?? normalized);
 
     // 3. Invalidate caches
     invalidateServerCatalogCache();
@@ -419,11 +355,6 @@ export async function DELETE(request: Request) {
       revalidatePath('/', 'layout');
       revalidatePath('/shop');
     } catch {}
-
-    // 5. Fire-and-forget notify backends
-    for (const u of getBackendUrls()) {
-      fetch(`${u}?${url.searchParams.toString()}`, { method: 'DELETE' }).catch(() => {});
-    }
 
     return NextResponse.json({ success: true, count: normalized.length });
   } catch (error) {

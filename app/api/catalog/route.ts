@@ -1,3 +1,4 @@
+import { getDurableCatalog } from '@/lib/durable-catalog';
 import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
@@ -296,6 +297,13 @@ function getLocalProducts(): { products: Product[]; categories: ProductCategory[
 }
 
 export async function GET(request: Request) {
+  const durable = await getDurableCatalog();
+  if (durable !== null) {
+    const products = durable.filter(item => item.sourcePostType !== 'product_variation' && item.name !== 'AUTO-DRAFT' &&
+      (!item.status || item.status === 'publish' || item.status === 'published')).map(mapCrmProduct);
+    return NextResponse.json({ success: true, ...catalogPage(products, request), categories: buildCategories(products), source: 'database' },
+      { headers: { 'Cache-Control': 'no-store' } });
+  }
   // Check remote backend ONLY if explicitly configured in environment
   const remoteUrl = process.env.CRM_BACKEND_URL || process.env.FAST_API_URL;
   if (remoteUrl) {
