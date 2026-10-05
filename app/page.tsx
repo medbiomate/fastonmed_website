@@ -2202,263 +2202,6 @@ export default function HomePage() {
         `}</style>
       </div>
 
-      {/* SECTION 3: ABOUT US / A LEGACY OF TRUST (ENCLOSED IN STYLISH SUITABLE MINT CARD BOX) */}
-      <section style={{ backgroundColor: '#ffffff', padding: '90px 0 80px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-        <div className="container" style={{ maxWidth: '1240px', margin: '0 auto', padding: '0 20px' }}>
-          {/* THE SUITABLE COLORED CARD BOX */}
-          <div
-            id="about-us-card-box"
-            style={{
-              background: 'linear-gradient(135deg, #f2faf6 0%, #eaf7f1 100%)',
-              border: '1.5px solid #bbf2dc',
-              borderRadius: '24px',
-              padding: '52px 48px',
-              boxShadow: '0 16px 40px -10px rgba(0, 135, 90, 0.08)'
-            }}
-          >
-            <div
-              id="about-two-col-grid"
-              style={{
-                display: 'grid',
-                gridTemplateColumns: '1.05fr 1fr',
-                gap: '48px',
-                alignItems: 'center'
-              }}
-            >
-              {/* Left Column: Content */}
-              <div>
-                <div
-                  style={{
-                    display: 'inline-block',
-                    backgroundColor: '#ffffff',
-                    color: '#00875a',
-                    border: '1px solid #a7f3d0',
-                    padding: '5px 14px',
-                    borderRadius: '999px',
-                    fontSize: '0.76rem',
-                    fontWeight: 800,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.04em',
-                    marginBottom: '16px',
-                    fontFamily: 'Arial, Helvetica, sans-serif'
-                  }}
-                >
-                  {isAr ? 'عن فاستونميد' : 'ABOUT FASTONMED'}
-                </div>
-
-                <h2
-                  id="about-headline"
-                  style={{
-                    fontSize: '2.5rem',
-                    fontWeight: 800,
-                    color: '#0f172a',
-                    lineHeight: 1.2,
-                    letterSpacing: '-0.02em',
-                    margin: '0 0 18px',
-                    fontFamily: 'Arial, Helvetica, sans-serif'
-                  }}
-                >
-                  {isAr ? (
-                    <>شريك موثوق ومسيرة تميز<br />في الرعاية الصحية بالإمارات</>
-                  ) : (
-                    <>A Legacy of Trust<br />in UAE Healthcare</>
-                  )}
-                </h2>
-
-                <p
-                  style={{
-                    fontSize: '0.96rem',
-                    color: '#475569',
-                    lineHeight: 1.65,
-                    margin: '0 0 24px',
-                    fontFamily: 'Arial, Helvetica, sans-serif'
-                  }}
-                >
-                  {isAr
-                    ? 'بفضل منشآت الهندسة الطبية الحيوية المتقدمة وفريق الدعم السريري المتخصص، تلتزم فاستونميد بتمكين المستشفيات ومراكز جراحة اليوم الواحد والعيادات في الإمارات بأحدث التقنيات الطبية الموثوقة والدعم السريع الفوري.'
-                    : 'With professional biomedical engineering facilities and a dedicated clinical support team, FastonMed is dedicated to empowering UAE hospitals, day surgery centers, and clinics with dependable medical technologies and responsive support.'}
-                </p>
-
-                {/* 4 Checkpoint Items */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '30px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <CheckCircle2 size={18} color="#00875a" />
-                    <span style={{ fontSize: '0.9rem', fontWeight: 600, color: '#1e293b', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                      {isAr ? 'مورد معتمد للرعاية الصحية والأجهزة الطبية الحيوية في الإمارات' : 'UAE Registered Healthcare & Biomedical Supplier'}
-                    </span>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <CheckCircle2 size={18} color="#00875a" />
-                    <span style={{ fontSize: '0.9rem', fontWeight: 600, color: '#1e293b', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                      {isAr ? 'مجموعة متكاملة من أجهزة العناية المركزة والمعدات الطبية' : 'Comprehensive Range of Biomedical & ICU Products'}
-                    </span>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <CheckCircle2 size={18} color="#00875a" />
-                    <span style={{ fontSize: '0.9rem', fontWeight: 600, color: '#1e293b', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                      {isAr ? 'فريق هندسة طبية حيوية داخلي وعقود صيانة ومعايرة معتمدة' : 'In-House Biomedical Engineering & Calibration AMC'}
-                    </span>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <CheckCircle2 size={18} color="#00875a" />
-                    <span style={{ fontSize: '0.9rem', fontWeight: 600, color: '#1e293b', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                      {isAr ? 'توريد وتسليم مباشر للمستشفيات في جميع الإمارات السبع' : 'Direct Hospital Supply Across All 7 Emirates'}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Learn More Button */}
-                <Link
-                  href={isAr ? '/ar/about-us' : '/about-us'}
-                  style={{
-                    backgroundColor: '#00875a',
-                    color: '#ffffff',
-                    padding: '12px 26px',
-                    borderRadius: '8px',
-                    fontWeight: 700,
-                    fontSize: '0.9rem',
-                    textDecoration: 'none',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    boxShadow: '0 4px 14px rgba(0, 135, 90, 0.22)',
-                    transition: 'all 0.2s ease',
-                    fontFamily: 'Arial, Helvetica, sans-serif'
-                  }}
-                >
-                  <span>{isAr ? 'تعرف على المزيد' : 'Learn More'}</span>
-                  <ArrowRight size={16} style={isAr ? { transform: 'scaleX(-1)' } : undefined} />
-                </Link>
-              </div>
-
-              {/* Right Column: Medical Equipment Showcase with Signature Arched Corner & Badge */}
-              <div style={{ position: 'relative' }}>
-                <div
-                  style={{
-                    borderRadius: '40px 16px 16px 16px',
-                    overflow: 'hidden',
-                    boxShadow: '0 20px 40px -10px rgba(0, 0, 0, 0.15)',
-                    position: 'relative',
-                    border: '3px solid #ffffff',
-                    backgroundColor: '#ffffff',
-                    padding: '8px'
-                  }}
-                >
-                  <img
-                    src="/images/hero-medical-equipment.jpg"
-                    alt="FastonMed Medical Equipment & Biomedical Technologies Range"
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      display: 'block',
-                      borderRadius: '32px 12px 12px 12px',
-                      objectFit: 'contain'
-                    }}
-                  />
-                </div>
-
-                {/* Floating Since 2025 Badge */}
-                <div
-                  style={{
-                    position: 'absolute',
-                    bottom: '-18px',
-                    left: '20px',
-                    backgroundColor: '#ffffff',
-                    borderRadius: '12px',
-                    padding: '14px 22px',
-                    boxShadow: '0 10px 30px rgba(0, 0, 0, 0.12)',
-                    border: '1.5px solid #d1fae5',
-                    textAlign: 'center',
-                    zIndex: 2
-                  }}
-                >
-                  <div style={{ fontSize: '1.85rem', fontWeight: 800, color: '#00875a', lineHeight: 1, fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                    {isAr ? 'منذ 2025' : 'Since 2025'}
-                  </div>
-                  <div style={{ fontSize: '0.78rem', fontWeight: 600, color: '#64748b', marginTop: '4px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                    {isAr ? 'ريادة الرعاية الصحية بالإمارات' : 'Pioneering UAE Healthcare'}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <style>{`
-          @media (max-width: 900px) {
-            #about-us-card-box {
-              padding: 22px 16px !important;
-              border-radius: 16px !important;
-            }
-            #about-two-col-grid {
-              grid-template-columns: 1fr !important;
-              gap: 22px !important;
-            }
-            #about-headline {
-              font-size: 1.38rem !important;
-              line-height: 1.25 !important;
-              margin-bottom: 10px !important;
-            }
-          }
-        `}</style>
-      </section>
-
-      <AssociatedBrands />
-
-      <section className="fm-equipment-explainer">
-        <div className="container">
-          <h2>{isAr ? 'ما هي المعدات الطبية؟' : 'What is'} <span>{isAr ? '' : 'Medical Equipment?'}</span></h2>
-          <p className="fm-equipment-intro">{isAr ? 'المعدات الطبية هي الأجهزة والأدوات والأنظمة التي تدعم التشخيص والمراقبة والعلاج ورعاية المرضى. من أجهزة مراقبة المرضى إلى معدات المختبرات وأثاث المستشفيات، يساعد اختيار المعدات المناسبة فرق الرعاية الصحية على تقديم الرعاية.' : 'Medical equipment includes the devices, instruments and systems used to support diagnosis, monitoring, treatment and patient care. From patient monitors and diagnostic devices to laboratory equipment and hospital furniture, choosing the right equipment helps healthcare teams meet the needs of their patients and facilities.'}</p>
-          <h3>{isAr ? 'لماذا تشتري المعدات الطبية من فاستونميد؟' : 'Why purchase medical equipment from Fastonmed?'}</h3>
-          <div className="fm-equipment-reasons">
-            {[
-              { number: '01', title: isAr ? 'شركة ذات مسؤولية محدودة مرخصة في الإمارات' : 'A UAE-licensed LLC', body: isAr ? 'تعامل مع شركة ذات مسؤولية محدودة مرخصة في الإمارات. يدعم فريقنا اختيار المعدات وعروض الأسعار وتنسيق التسليم وخدمة ما بعد البيع.' : 'Purchase from a UAE-licensed limited liability company. Our team supports equipment selection, quotations, delivery coordination and after-sales enquiries, giving your facility a local point of contact.' },
-              { number: '02', title: isAr ? 'خمس مراحل للتحقق من الجودة' : 'Five-layer quality assurance', body: isAr ? 'نطبق خمس مراحل للتحقق من الجودة قبل تسليم المنتج إلى المستخدم النهائي. يشرف فريق الهندسة الطبية على الفحوصات ويتابع أي ملاحظات قبل التسليم.' : 'We apply five layers of quality checks before a product reaches the end user. Our biomedical engineering team oversees these checks and follows up on any issues before delivery, with quality assurance built into the handover process.' },
-              { number: '03', title: isAr ? 'فريق من مهندسي المعدات الطبية' : 'A team of biomedical engineers', body: isAr ? 'مهندسو المعدات الطبية هم أعضاء في فريقنا ويشاركون في التحقق من الجودة والدعم الفني. يساعدون على مراجعة متطلبات المعدات وشرح استخدامها وتنسيق الدعم بعد التسليم.' : 'Biomedical engineers are part of our team and actively handle quality checks and technical support. They help review equipment requirements, explain product operation and coordinate support after delivery, so you have access to people who understand the equipment.' }
-            ].map(reason => <article key={reason.number} className="fm-equipment-reason"><span className="fm-equipment-reason-icon" aria-hidden="true">{reason.number === '01' ? <BadgeCheck size={26} /> : reason.number === '02' ? <ShieldCheck size={26} /> : <UserRoundCog size={26} />}</span><h4>{reason.title}</h4><p>{reason.body}</p></article>)}
-          </div>
-        </div>
-      </section>
-
-      <section className="fm-biomedical-types">
-        <div className="container">
-          <div className="fm-biomedical-summary">
-            <h2>What is Biomedical Equipment?</h2>
-            <p>Biomedical equipment supports diagnosis, monitoring, treatment and patient care—from ECG machines and patient monitors to ventilators and laboratory systems. Correct installation, calibration and preventive maintenance help keep equipment reliable. <Link href={localizeUrl('/contact')}>Our biomedical team</Link> can help you choose equipment and discuss support for your facility.</p>
-          </div>
-          <div className="fm-biomedical-heading"><h2>Types of Biomedical Equipment</h2></div>
-          <p className="fm-equipment-intro">Explore equipment, key features and where each type is used.</p>
-          <div className="fm-biomedical-type-grid" ref={biomedicalScrollRef} role="region" aria-label="Biomedical equipment types" tabIndex={0} onScroll={() => {
-            const track = biomedicalScrollRef.current;
-            const card = track?.firstElementChild as HTMLElement | null;
-            if (track && card) setBiomedicalSlide(Math.round(Math.abs(track.scrollLeft) / (card.offsetWidth + 20)));
-          }}>
-            {[
-              { title: 'Diagnostic Equipment', description: 'Helps healthcare professionals assess symptoms and measure clinical parameters.', features: 'ECG machines, blood pressure monitors, spirometers and otoscopes.', used: 'Clinics, outpatient departments and diagnostic centres.' },
-              { title: 'Patient Monitoring Equipment', description: 'Tracks patient measurements over time to support clinical observation.', features: 'Multi-parameter monitors, pulse oximeters and telemetry systems; alarms and trend displays vary by model.', used: 'ICUs, emergency departments, operating theatres and hospital wards.' },
-              { title: 'Therapeutic Equipment', description: 'Delivers a treatment or supports a prescribed therapy.', features: 'Infusion pumps, nebulizers and electrotherapy units with model-specific treatment settings.', used: 'Hospitals, respiratory clinics and physiotherapy departments.' },
-              { title: 'Life Support Equipment', description: 'Supports essential functions such as breathing in critical care.', features: 'Ventilators, defibrillators and oxygen delivery systems with monitoring and safety functions appropriate to each device.', used: 'ICUs, emergency departments, ambulances and operating theatres.' },
-              { title: 'Laboratory Equipment', description: 'Processes and analyses samples to support clinical testing.', features: 'Centrifuges, microscopes, analysers and laboratory refrigerators.', used: 'Clinical laboratories, hospitals and research facilities.' },
-              { title: 'Surgical Equipment', description: 'Supports surgical procedures, instrument handling and the operating environment.', features: 'Electrosurgical units, surgical lights, operating tables and suction systems.', used: 'Operating theatres, day-surgery centres and procedure rooms.' },
-              { title: 'Imaging Equipment', description: 'Produces images used to examine internal structures and guide assessment.', features: 'Ultrasound, X-ray, CT and MRI systems; image modes and software depend on the system.', used: 'Radiology departments, imaging centres and specialist clinics.' },
-              { title: 'Rehabilitation Equipment', description: 'Supports movement training, recovery and functional rehabilitation.', features: 'Therapy tables, exercise systems, gait-training aids and rehabilitation devices.', used: 'Physiotherapy clinics, rehabilitation centres and supervised home-care programmes.' },
-              { title: 'Hospital & Clinical Equipment', description: 'Supports everyday patient care and the practical needs of healthcare facilities.', features: 'Hospital beds, examination couches, medical scales and patient-transfer equipment.', used: 'Hospital wards, clinics, nursing facilities and examination rooms.' },
-              { title: 'Dermatology & Aesthetic Equipment', description: 'Supports skin assessment and selected dermatological or aesthetic treatments.', features: 'Dermatoscopes, treatment lasers, IPL systems and other skin-treatment devices, selected for the intended procedure.', used: 'Dermatology clinics, licensed aesthetic centres and specialist treatment rooms.' }
-            ].map((type, index) => <article className="fm-biomedical-type" key={type.title}>
-              <div className="fm-biomedical-card-top"><span className="fm-biomedical-icon">{React.createElement([Stethoscope, HeartPulse, Zap, Activity, FlaskConical, Wrench, Radio, Accessibility, Hospital, Sparkles][index], { size: 28, 'aria-hidden': true })}</span><span className="fm-equipment-number">{String(index + 1).padStart(2, '0')}</span></div>
-              <h3><Link href={localizeUrl(['/product-category/diagnostic-equipment', '/product-category/patient-monitoring', '/equipment-for/physiotherapy', '/equipment-for/icu-emergency', '/equipment-for/laboratories', '/equipment-for/hospitals', '/equipment-for/radiology', '/equipment-for/physiotherapy', '/product-category/hospital-furniture', '/product-category/dermatology-equipment'][index])}>{type.title}</Link></h3>
-              <p>{type.description}</p>
-              <h4>Common equipment & features</h4><p>{type.features}</p>
-              <h4>Where it is used</h4><p>{type.used}</p>
-            </article>)}
-          </div>
-          <div className="fm-biomedical-controls">
-            <div><button type="button" aria-label="Previous equipment types" disabled={biomedicalSlide === 0} onClick={() => biomedicalScrollRef.current?.scrollBy({ left: -((biomedicalScrollRef.current.firstElementChild as HTMLElement).offsetWidth + 20), behavior: 'smooth' })}><ChevronLeft size={21} /></button>
-            <button type="button" aria-label="Next equipment types" disabled={biomedicalSlide >= 10 - Math.round((biomedicalScrollRef.current?.clientWidth || 1) / (((biomedicalScrollRef.current?.firstElementChild as HTMLElement)?.offsetWidth || 1) + 20))} onClick={() => biomedicalScrollRef.current?.scrollBy({ left: (biomedicalScrollRef.current.firstElementChild as HTMLElement).offsetWidth + 20, behavior: 'smooth' })}><ChevronRight size={21} /></button></div>
-          </div>
-        </div>
-      </section>
-
       {/* SECTION 4: OUR PRODUCTS / MEDICAL EQUIPMENT SPECIALTIES */}
       <section style={{ backgroundColor: '#fafcfa', padding: '80px 0 90px', borderTop: '1px solid #f1f5f9', fontFamily: 'Arial, Helvetica, sans-serif' }}>
         <div className="container" style={{ maxWidth: '1240px', margin: '0 auto', padding: '0 20px' }}>
@@ -2618,468 +2361,6 @@ export default function HomePage() {
             #therapeutic-cards-grid {
               grid-template-columns: repeat(2, 1fr) !important;
               gap: 8px !important;
-            }
-          }
-        `}</style>
-      </section>
-
-      {/* SECTION 5: BRAND GREEN METRICS COUNTER RIBBON (Full Bleed in Arial) */}
-      <section
-        style={{
-          background: 'linear-gradient(135deg, #00875a 0%, #006040 100%)',
-          color: '#ffffff',
-          padding: '48px 0',
-          fontFamily: 'Arial, Helvetica, sans-serif'
-        }}
-      >
-        <div className="container" style={{ maxWidth: '1240px', margin: '0 auto', padding: '0 20px' }}>
-          <div
-            id="metrics-ribbon-grid"
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(4, 1fr)',
-              gap: '20px',
-              textAlign: 'center'
-            }}
-          >
-            {/* Stat 1 */}
-            <div className="metric-stat-box">
-              <div className="metric-stat-icon">
-                <Globe size={24} color="#ffffff" />
-              </div>
-              <div className="metric-stat-number">7</div>
-              <div className="metric-stat-label">{isAr ? 'إمارات نغطيها بالكامل' : 'Emirates Covered'}</div>
-            </div>
-
-            {/* Stat 2 */}
-            <div className="metric-stat-box">
-              <div className="metric-stat-icon">
-                <Package size={24} color="#ffffff" />
-              </div>
-              <div className="metric-stat-number">2,700+</div>
-              <div className="metric-stat-label">{isAr ? 'منتج ومعدة طبية بالكتالوج' : 'Catalog Medical Products'}</div>
-            </div>
-
-            {/* Stat 3 */}
-            <div className="metric-stat-box">
-              <div className="metric-stat-icon">
-                <Users size={24} color="#ffffff" />
-              </div>
-              <div className="metric-stat-number">300+</div>
-              <div className="metric-stat-label">{isAr ? 'مستشفى وعيادة نخدمها' : 'Hospitals & Clinics'}</div>
-            </div>
-
-            {/* Stat 4 */}
-            <div className="metric-stat-box">
-              <div className="metric-stat-icon">
-                <Award size={24} color="#ffffff" />
-              </div>
-              <div className="metric-stat-number">2025</div>
-              <div className="metric-stat-label">{isAr ? 'تأسست لخدمة القطاع الصحي' : 'Since Established in UAE'}</div>
-            </div>
-          </div>
-        </div>
-
-        <style>{`
-          .metric-stat-box {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justifyContent: center;
-            text-align: center;
-            background: rgba(255, 255, 255, 0.12);
-            border: 1px solid rgba(255, 255, 255, 0.22);
-            border-radius: 16px;
-            padding: 24px 18px;
-            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            transition: transform 0.2s ease, background 0.2s ease;
-          }
-          .metric-stat-box:hover {
-            background: rgba(255, 255, 255, 0.18);
-            transform: translateY(-3px);
-          }
-          .metric-stat-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.16);
-            display: grid;
-            place-items: center;
-            line-height: 0;
-            margin: 0 auto 12px auto;
-          }
-          .metric-stat-icon svg {
-            display: block;
-            margin: auto;
-          }
-          .metric-stat-number {
-            font-size: 2.2rem;
-            font-weight: 800;
-            line-height: 1.1;
-            color: #ffffff;
-            font-family: Arial, Helvetica, sans-serif;
-            letter-spacing: -0.02em;
-            text-align: center;
-            width: 100%;
-          }
-          .metric-stat-label {
-            font-size: 0.85rem;
-            color: #f1fdf8;
-            font-weight: 600;
-            margin-top: 6px;
-            font-family: Arial, Helvetica, sans-serif;
-            letter-spacing: 0.01em;
-            text-align: center;
-            width: 100%;
-          }
-          @media (max-width: 768px) {
-            #metrics-ribbon-grid {
-              grid-template-columns: repeat(2, 1fr) !important;
-              gap: 12px !important;
-            }
-            .metric-stat-box {
-              display: flex !important;
-              flex-direction: column !important;
-              align-items: center !important;
-              justify-content: center !important;
-              text-align: center !important;
-              padding: 18px 12px !important;
-              border-radius: 14px !important;
-              background: rgba(255, 255, 255, 0.14) !important;
-              border: 1px solid rgba(255, 255, 255, 0.25) !important;
-            }
-            .metric-stat-icon {
-              width: 42px !important;
-              height: 42px !important;
-              margin: 0 auto 8px auto !important;
-              border-radius: 10px !important;
-              display: grid !important;
-              place-items: center !important;
-              line-height: 0 !important;
-            }
-            .metric-stat-icon svg {
-              display: block !important;
-              margin: auto !important;
-              width: 22px !important;
-              height: 22px !important;
-            }
-            .metric-stat-number {
-              font-size: 1.75rem !important;
-              text-align: center !important;
-            }
-            .metric-stat-label {
-              font-size: 0.78rem !important;
-              margin-top: 4px !important;
-              opacity: 0.95 !important;
-              text-align: center !important;
-            }
-          }
-        `}</style>
-      </section>
-
-      {/* SECTION 6: HEALTHCARE FACILITIES & FIRMS WE EQUIP */}
-      <section id="facilities-section" style={{ backgroundColor: '#ffffff', padding: '84px 0 90px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-        <div className="container" style={{ maxWidth: '1240px', margin: '0 auto', padding: '0 20px' }}>
-          {/* Header */}
-          <div style={{ marginBottom: '38px', maxWidth: '820px' }}>
-            <div
-              style={{
-                display: 'inline-block',
-                backgroundColor: '#e6f7f0',
-                color: '#00875a',
-                padding: '5px 14px',
-                borderRadius: '999px',
-                fontSize: '0.76rem',
-                fontWeight: 800,
-                textTransform: 'uppercase',
-                letterSpacing: '0.04em',
-                marginBottom: '12px',
-                fontFamily: 'Arial, Helvetica, sans-serif'
-              }}
-            >
-              {isAr ? 'القطاعات والمنشآت التي نورد لها' : 'WHO WE SUPPLY & DELIVER TO'}
-            </div>
-            <h2
-              id="facilities-heading"
-              style={{
-                fontSize: '2.3rem',
-                fontWeight: 800,
-                color: '#0f172a',
-                letterSpacing: '-0.02em',
-                margin: '0 0 10px',
-                fontFamily: 'Arial, Helvetica, sans-serif'
-              }}
-            >
-              {isAr ? 'المنشآت الصحية والمستشفيات التي نخدمها في الإمارات' : 'Healthcare Facilities & Sectors We Deliver To'}
-            </h2>
-            <p
-              id="facilities-subtext"
-              style={{
-                fontSize: '0.94rem',
-                color: '#64748b',
-                lineHeight: 1.5,
-                margin: 0,
-                fontFamily: 'Arial, Helvetica, sans-serif'
-              }}
-            >
-              {isAr
-                ? 'أفضل مورد معدات طبية يوفر أجهزة معتمدة ودعماً سريرياً ومستهلكات طبية لكافة المنشآت الصحية في الإمارات.'
-                : 'Best medical equipment supplier delivering genuine certified biomedical technology, clinical support, and healthcare consumables across the UAE.'}
-            </p>
-          </div>
-
-          {/* 8 Healthcare Delivery Facilities Cards Grid / Mobile Touch Slider */}
-          <div
-            id="facilities-cards-grid"
-            ref={facilitiesScrollRef}
-            onScroll={handleFacilitiesScroll}
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(4, 1fr)',
-              gap: '20px'
-            }}
-          >
-            {healthcareFacilitiesServed.map(facility => (
-              <Link
-                key={facility.id}
-                href={isAr ? `/ar${facility.href}` : facility.href}
-                style={{
-                  backgroundColor: '#ffffff',
-                  borderRadius: '16px',
-                  border: '1px solid #e2e8f0',
-                  overflow: 'hidden',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  textDecoration: 'none',
-                  boxShadow: '0 2px 10px rgba(0, 0, 0, 0.03)',
-                  transition: 'all 0.25s ease',
-                  fontFamily: 'Arial, Helvetica, sans-serif'
-                }}
-                className="facility-card-hover"
-              >
-                {/* Real Facility Photograph Header */}
-                <div
-                  style={{
-                    position: 'relative',
-                    width: '100%',
-                    height: '160px',
-                    overflow: 'hidden',
-                    backgroundColor: '#f1f5f9'
-                  }}
-                >
-                  <Image
-                    src={facility.image}
-                    alt={isAr && (facility as any).titleAr ? (facility as any).titleAr : facility.title}
-                    fill
-                    sizes="(max-width: 640px) 80vw, (max-width: 1024px) 50vw, 25vw"
-                    style={{
-                      objectFit: 'cover',
-                      transition: 'transform 0.4s ease'
-                    }}
-                    className="facility-image-zoom"
-                  />
-                </div>
-
-                {/* Card Content Body */}
-                <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', flex: 1 }}>
-                  <h3
-                    style={{
-                      fontSize: '1.02rem',
-                      fontWeight: 800,
-                      color: '#0f172a',
-                      lineHeight: 1.35,
-                      margin: '0 0 8px',
-                      fontFamily: 'Arial, Helvetica, sans-serif'
-                    }}
-                  >
-                    {isAr && (facility as any).titleAr ? (facility as any).titleAr : facility.title}
-                  </h3>
-
-                  <p
-                    style={{
-                      fontSize: '0.78rem',
-                      color: '#64748b',
-                      lineHeight: 1.45,
-                      margin: '0 0 16px',
-                      fontFamily: 'Arial, Helvetica, sans-serif'
-                    }}
-                  >
-                    {isAr && (facility as any).descAr ? (facility as any).descAr : facility.desc}
-                  </p>
-
-                  {/* View Supplies Link */}
-                  <div
-                    style={{
-                      marginTop: 'auto',
-                      paddingTop: '12px',
-                      fontSize: '0.82rem',
-                      fontWeight: 700,
-                      color: '#00875a',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '6px',
-                      fontFamily: 'Arial, Helvetica, sans-serif'
-                    }}
-                  >
-                    <span>{isAr ? 'استكشف المعدات' : 'Explore Equipment'}</span>
-                    <ArrowRight size={14} style={isAr ? { transform: 'scaleX(-1)' } : undefined} />
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-
-          {/* Mobile Slider Controls & Indicators */}
-          <div
-            id="facilities-mobile-controls"
-            style={{
-              display: 'none',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              marginTop: '16px',
-              padding: '0 4px'
-            }}
-          >
-            {/* Dots */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-              {healthcareFacilitiesServed.map((_, dotIdx) => (
-                <button
-                  key={dotIdx}
-                  type="button"
-                  onClick={() => {
-                    if (facilitiesScrollRef.current) {
-                      const card = facilitiesScrollRef.current.children[dotIdx] as HTMLElement;
-                      if (card) {
-                        facilitiesScrollRef.current.scrollTo({
-                          left: card.offsetLeft - 20,
-                          behavior: 'smooth'
-                        });
-                      }
-                    }
-                  }}
-                  aria-label={`Go to sector ${dotIdx + 1}`}
-                  style={{
-                    width: activeFacilityIndex === dotIdx ? '22px' : '6px',
-                    height: '6px',
-                    borderRadius: '999px',
-                    backgroundColor: activeFacilityIndex === dotIdx ? '#00875a' : '#cbd5e1',
-                    border: 'none',
-                    padding: 0,
-                    cursor: 'pointer',
-                    transition: 'all 0.25s ease'
-                  }}
-                />
-              ))}
-            </div>
-
-            {/* Left / Right Nav Arrows */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#64748b', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                {activeFacilityIndex + 1} / {healthcareFacilitiesServed.length}
-              </span>
-              <button
-                type="button"
-                onClick={() => scrollFacilities('left')}
-                aria-label="Previous sector"
-                disabled={activeFacilityIndex === 0}
-                style={{
-                  width: '32px',
-                  height: '32px',
-                  borderRadius: '50%',
-                  border: '1px solid #e2e8f0',
-                  backgroundColor: '#ffffff',
-                  color: activeFacilityIndex === 0 ? '#cbd5e1' : '#0f172a',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  cursor: activeFacilityIndex === 0 ? 'not-allowed' : 'pointer',
-                  boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
-                  transition: 'all 0.2s ease'
-                }}
-              >
-                <ChevronLeft size={16} />
-              </button>
-              <button
-                type="button"
-                onClick={() => scrollFacilities('right')}
-                aria-label="Next sector"
-                disabled={activeFacilityIndex === healthcareFacilitiesServed.length - 1}
-                style={{
-                  width: '32px',
-                  height: '32px',
-                  borderRadius: '50%',
-                  border: '1px solid #e2e8f0',
-                  backgroundColor: '#ffffff',
-                  color: activeFacilityIndex === healthcareFacilitiesServed.length - 1 ? '#cbd5e1' : '#0f172a',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  cursor: activeFacilityIndex === healthcareFacilitiesServed.length - 1 ? 'not-allowed' : 'pointer',
-                  boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
-                  transition: 'all 0.2s ease'
-                }}
-              >
-                <ChevronRight size={16} />
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <style>{`
-          .facility-card-hover:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 14px 28px -6px rgba(0, 135, 90, 0.14) !important;
-            border-color: #00875a !important;
-          }
-          .facility-card-hover:hover .facility-image-zoom {
-            transform: scale(1.06);
-          }
-          @media (max-width: 1024px) {
-            #facilities-cards-grid {
-              grid-template-columns: repeat(2, 1fr) !important;
-            }
-          }
-          @media (max-width: 768px) {
-            #facilities-section {
-              padding: 44px 0 50px !important;
-            }
-            #facilities-heading {
-              font-size: 1.38rem !important;
-              line-height: 1.25 !important;
-              margin-bottom: 8px !important;
-            }
-            #facilities-subtext {
-              font-size: 0.84rem !important;
-              line-height: 1.45 !important;
-            }
-            #facilities-cards-grid {
-              display: flex !important;
-              flex-direction: row !important;
-              overflow-x: auto !important;
-              scroll-snap-type: x mandatory !important;
-              -webkit-overflow-scrolling: touch !important;
-              gap: 14px !important;
-              padding: 6px 20px 18px !important;
-              margin: 0 -20px !important;
-              width: calc(100% + 40px) !important;
-              scrollbar-width: none !important;
-              -ms-overflow-style: none !important;
-            }
-            #facilities-cards-grid::-webkit-scrollbar {
-              display: none !important;
-            }
-            .facility-card-hover {
-              flex: 0 0 82vw !important;
-              max-width: 310px !important;
-              min-width: 260px !important;
-              scroll-snap-align: start !important;
-              scroll-snap-stop: normal !important;
-              border-radius: 14px !important;
-            }
-            #facilities-mobile-controls {
-              display: flex !important;
             }
           }
         `}</style>
@@ -3511,6 +2792,690 @@ export default function HomePage() {
         `}</style>
       </section>
 
+      <AssociatedBrands />
+
+      {/* SECTION 6: HEALTHCARE FACILITIES & FIRMS WE EQUIP */}
+      <section id="facilities-section" style={{ backgroundColor: '#ffffff', padding: '84px 0 90px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+        <div className="container" style={{ maxWidth: '1240px', margin: '0 auto', padding: '0 20px' }}>
+          {/* Header */}
+          <div style={{ marginBottom: '38px', maxWidth: '820px' }}>
+            <div
+              style={{
+                display: 'inline-block',
+                backgroundColor: '#e6f7f0',
+                color: '#00875a',
+                padding: '5px 14px',
+                borderRadius: '999px',
+                fontSize: '0.76rem',
+                fontWeight: 800,
+                textTransform: 'uppercase',
+                letterSpacing: '0.04em',
+                marginBottom: '12px',
+                fontFamily: 'Arial, Helvetica, sans-serif'
+              }}
+            >
+              {isAr ? 'القطاعات والمنشآت التي نورد لها' : 'WHO WE SUPPLY & DELIVER TO'}
+            </div>
+            <h2
+              id="facilities-heading"
+              style={{
+                fontSize: '2.3rem',
+                fontWeight: 800,
+                color: '#0f172a',
+                letterSpacing: '-0.02em',
+                margin: '0 0 10px',
+                fontFamily: 'Arial, Helvetica, sans-serif'
+              }}
+            >
+              {isAr ? 'المنشآت الصحية والمستشفيات التي نخدمها في الإمارات' : 'Healthcare Facilities & Sectors We Deliver To'}
+            </h2>
+            <p
+              id="facilities-subtext"
+              style={{
+                fontSize: '0.94rem',
+                color: '#64748b',
+                lineHeight: 1.5,
+                margin: 0,
+                fontFamily: 'Arial, Helvetica, sans-serif'
+              }}
+            >
+              {isAr
+                ? 'أفضل مورد معدات طبية يوفر أجهزة معتمدة ودعماً سريرياً ومستهلكات طبية لكافة المنشآت الصحية في الإمارات.'
+                : 'Best medical equipment supplier delivering genuine certified biomedical technology, clinical support, and healthcare consumables across the UAE.'}
+            </p>
+          </div>
+
+          {/* 8 Healthcare Delivery Facilities Cards Grid / Mobile Touch Slider */}
+          <div
+            id="facilities-cards-grid"
+            ref={facilitiesScrollRef}
+            onScroll={handleFacilitiesScroll}
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(4, 1fr)',
+              gap: '20px'
+            }}
+          >
+            {healthcareFacilitiesServed.map(facility => (
+              <Link
+                key={facility.id}
+                href={isAr ? `/ar${facility.href}` : facility.href}
+                style={{
+                  backgroundColor: '#ffffff',
+                  borderRadius: '16px',
+                  border: '1px solid #e2e8f0',
+                  overflow: 'hidden',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  textDecoration: 'none',
+                  boxShadow: '0 2px 10px rgba(0, 0, 0, 0.03)',
+                  transition: 'all 0.25s ease',
+                  fontFamily: 'Arial, Helvetica, sans-serif'
+                }}
+                className="facility-card-hover"
+              >
+                {/* Real Facility Photograph Header */}
+                <div
+                  style={{
+                    position: 'relative',
+                    width: '100%',
+                    height: '160px',
+                    overflow: 'hidden',
+                    backgroundColor: '#f1f5f9'
+                  }}
+                >
+                  <Image
+                    src={facility.image}
+                    alt={isAr && (facility as any).titleAr ? (facility as any).titleAr : facility.title}
+                    fill
+                    sizes="(max-width: 640px) 80vw, (max-width: 1024px) 50vw, 25vw"
+                    style={{
+                      objectFit: 'cover',
+                      transition: 'transform 0.4s ease'
+                    }}
+                    className="facility-image-zoom"
+                  />
+                </div>
+
+                {/* Card Content Body */}
+                <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', flex: 1 }}>
+                  <h3
+                    style={{
+                      fontSize: '1.02rem',
+                      fontWeight: 800,
+                      color: '#0f172a',
+                      lineHeight: 1.35,
+                      margin: '0 0 8px',
+                      fontFamily: 'Arial, Helvetica, sans-serif'
+                    }}
+                  >
+                    {isAr && (facility as any).titleAr ? (facility as any).titleAr : facility.title}
+                  </h3>
+
+                  <p
+                    style={{
+                      fontSize: '0.78rem',
+                      color: '#64748b',
+                      lineHeight: 1.45,
+                      margin: '0 0 16px',
+                      fontFamily: 'Arial, Helvetica, sans-serif'
+                    }}
+                  >
+                    {isAr && (facility as any).descAr ? (facility as any).descAr : facility.desc}
+                  </p>
+
+                  {/* View Supplies Link */}
+                  <div
+                    style={{
+                      marginTop: 'auto',
+                      paddingTop: '12px',
+                      fontSize: '0.82rem',
+                      fontWeight: 700,
+                      color: '#00875a',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                      fontFamily: 'Arial, Helvetica, sans-serif'
+                    }}
+                  >
+                    <span>{isAr ? 'استكشف المعدات' : 'Explore Equipment'}</span>
+                    <ArrowRight size={14} style={isAr ? { transform: 'scaleX(-1)' } : undefined} />
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          {/* Mobile Slider Controls & Indicators */}
+          <div
+            id="facilities-mobile-controls"
+            style={{
+              display: 'none',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              marginTop: '16px',
+              padding: '0 4px'
+            }}
+          >
+            {/* Dots */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+              {healthcareFacilitiesServed.map((_, dotIdx) => (
+                <button
+                  key={dotIdx}
+                  type="button"
+                  onClick={() => {
+                    if (facilitiesScrollRef.current) {
+                      const card = facilitiesScrollRef.current.children[dotIdx] as HTMLElement;
+                      if (card) {
+                        facilitiesScrollRef.current.scrollTo({
+                          left: card.offsetLeft - 20,
+                          behavior: 'smooth'
+                        });
+                      }
+                    }
+                  }}
+                  aria-label={`Go to sector ${dotIdx + 1}`}
+                  style={{
+                    width: activeFacilityIndex === dotIdx ? '22px' : '6px',
+                    height: '6px',
+                    borderRadius: '999px',
+                    backgroundColor: activeFacilityIndex === dotIdx ? '#00875a' : '#cbd5e1',
+                    border: 'none',
+                    padding: 0,
+                    cursor: 'pointer',
+                    transition: 'all 0.25s ease'
+                  }}
+                />
+              ))}
+            </div>
+
+            {/* Left / Right Nav Arrows */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#64748b', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                {activeFacilityIndex + 1} / {healthcareFacilitiesServed.length}
+              </span>
+              <button
+                type="button"
+                onClick={() => scrollFacilities('left')}
+                aria-label="Previous sector"
+                disabled={activeFacilityIndex === 0}
+                style={{
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '50%',
+                  border: '1px solid #e2e8f0',
+                  backgroundColor: '#ffffff',
+                  color: activeFacilityIndex === 0 ? '#cbd5e1' : '#0f172a',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: activeFacilityIndex === 0 ? 'not-allowed' : 'pointer',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+                  transition: 'all 0.2s ease'
+                }}
+              >
+                <ChevronLeft size={16} />
+              </button>
+              <button
+                type="button"
+                onClick={() => scrollFacilities('right')}
+                aria-label="Next sector"
+                disabled={activeFacilityIndex === healthcareFacilitiesServed.length - 1}
+                style={{
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '50%',
+                  border: '1px solid #e2e8f0',
+                  backgroundColor: '#ffffff',
+                  color: activeFacilityIndex === healthcareFacilitiesServed.length - 1 ? '#cbd5e1' : '#0f172a',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: activeFacilityIndex === healthcareFacilitiesServed.length - 1 ? 'not-allowed' : 'pointer',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+                  transition: 'all 0.2s ease'
+                }}
+              >
+                <ChevronRight size={16} />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <style>{`
+          .facility-card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 14px 28px -6px rgba(0, 135, 90, 0.14) !important;
+            border-color: #00875a !important;
+          }
+          .facility-card-hover:hover .facility-image-zoom {
+            transform: scale(1.06);
+          }
+          @media (max-width: 1024px) {
+            #facilities-cards-grid {
+              grid-template-columns: repeat(2, 1fr) !important;
+            }
+          }
+          @media (max-width: 768px) {
+            #facilities-section {
+              padding: 44px 0 50px !important;
+            }
+            #facilities-heading {
+              font-size: 1.38rem !important;
+              line-height: 1.25 !important;
+              margin-bottom: 8px !important;
+            }
+            #facilities-subtext {
+              font-size: 0.84rem !important;
+              line-height: 1.45 !important;
+            }
+            #facilities-cards-grid {
+              display: flex !important;
+              flex-direction: row !important;
+              overflow-x: auto !important;
+              scroll-snap-type: x mandatory !important;
+              -webkit-overflow-scrolling: touch !important;
+              gap: 14px !important;
+              padding: 6px 20px 18px !important;
+              margin: 0 -20px !important;
+              width: calc(100% + 40px) !important;
+              scrollbar-width: none !important;
+              -ms-overflow-style: none !important;
+            }
+            #facilities-cards-grid::-webkit-scrollbar {
+              display: none !important;
+            }
+            .facility-card-hover {
+              flex: 0 0 82vw !important;
+              max-width: 310px !important;
+              min-width: 260px !important;
+              scroll-snap-align: start !important;
+              scroll-snap-stop: normal !important;
+              border-radius: 14px !important;
+            }
+            #facilities-mobile-controls {
+              display: flex !important;
+            }
+          }
+        `}</style>
+      </section>
+
+      <section className="fm-equipment-explainer">
+        <div className="container">
+          <h2>{isAr ? 'ما هي المعدات الطبية؟' : 'What is'} <span>{isAr ? '' : 'Medical Equipment?'}</span></h2>
+          <p className="fm-equipment-intro">{isAr ? 'المعدات الطبية هي الأجهزة والأدوات والأنظمة التي تدعم التشخيص والمراقبة والعلاج ورعاية المرضى. من أجهزة مراقبة المرضى إلى معدات المختبرات وأثاث المستشفيات، يساعد اختيار المعدات المناسبة فرق الرعاية الصحية على تقديم الرعاية.' : 'Medical equipment includes the devices, instruments and systems used to support diagnosis, monitoring, treatment and patient care. From patient monitors and diagnostic devices to laboratory equipment and hospital furniture, choosing the right equipment helps healthcare teams meet the needs of their patients and facilities.'}</p>
+          <h3>{isAr ? 'لماذا تشتري المعدات الطبية من فاستونميد؟' : 'Why purchase medical equipment from Fastonmed?'}</h3>
+          <div className="fm-equipment-reasons">
+            {[
+              { number: '01', title: isAr ? 'شركة ذات مسؤولية محدودة مرخصة في الإمارات' : 'A UAE-licensed LLC', body: isAr ? 'تعامل مع شركة ذات مسؤولية محدودة مرخصة في الإمارات. يدعم فريقنا اختيار المعدات وعروض الأسعار وتنسيق التسليم وخدمة ما بعد البيع.' : 'Purchase from a UAE-licensed limited liability company. Our team supports equipment selection, quotations, delivery coordination and after-sales enquiries, giving your facility a local point of contact.' },
+              { number: '02', title: isAr ? 'خمس مراحل للتحقق من الجودة' : 'Five-layer quality assurance', body: isAr ? 'نطبق خمس مراحل للتحقق من الجودة قبل تسليم المنتج إلى المستخدم النهائي. يشرف فريق الهندسة الطبية على الفحوصات ويتابع أي ملاحظات قبل التسليم.' : 'We apply five layers of quality checks before a product reaches the end user. Our biomedical engineering team oversees these checks and follows up on any issues before delivery, with quality assurance built into the handover process.' },
+              { number: '03', title: isAr ? 'فريق من مهندسي المعدات الطبية' : 'A team of biomedical engineers', body: isAr ? 'مهندسو المعدات الطبية هم أعضاء في فريقنا ويشاركون في التحقق من الجودة والدعم الفني. يساعدون على مراجعة متطلبات المعدات وشرح استخدامها وتنسيق الدعم بعد التسليم.' : 'Biomedical engineers are part of our team and actively handle quality checks and technical support. They help review equipment requirements, explain product operation and coordinate support after delivery, so you have access to people who understand the equipment.' }
+            ].map(reason => <article key={reason.number} className="fm-equipment-reason"><span className="fm-equipment-reason-icon" aria-hidden="true">{reason.number === '01' ? <BadgeCheck size={26} /> : reason.number === '02' ? <ShieldCheck size={26} /> : <UserRoundCog size={26} />}</span><h4>{reason.title}</h4><p>{reason.body}</p></article>)}
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 3: ABOUT US / A LEGACY OF TRUST (ENCLOSED IN STYLISH SUITABLE MINT CARD BOX) */}
+      <section style={{ backgroundColor: '#ffffff', padding: '90px 0 80px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+        <div className="container" style={{ maxWidth: '1240px', margin: '0 auto', padding: '0 20px' }}>
+          {/* THE SUITABLE COLORED CARD BOX */}
+          <div
+            id="about-us-card-box"
+            style={{
+              background: 'linear-gradient(135deg, #f2faf6 0%, #eaf7f1 100%)',
+              border: '1.5px solid #bbf2dc',
+              borderRadius: '24px',
+              padding: '52px 48px',
+              boxShadow: '0 16px 40px -10px rgba(0, 135, 90, 0.08)'
+            }}
+          >
+            <div
+              id="about-two-col-grid"
+              style={{
+                display: 'grid',
+                gridTemplateColumns: '1.05fr 1fr',
+                gap: '48px',
+                alignItems: 'center'
+              }}
+            >
+              {/* Left Column: Content */}
+              <div>
+                <div
+                  style={{
+                    display: 'inline-block',
+                    backgroundColor: '#ffffff',
+                    color: '#00875a',
+                    border: '1px solid #a7f3d0',
+                    padding: '5px 14px',
+                    borderRadius: '999px',
+                    fontSize: '0.76rem',
+                    fontWeight: 800,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.04em',
+                    marginBottom: '16px',
+                    fontFamily: 'Arial, Helvetica, sans-serif'
+                  }}
+                >
+                  {isAr ? 'عن فاستونميد' : 'ABOUT FASTONMED'}
+                </div>
+
+                <h2
+                  id="about-headline"
+                  style={{
+                    fontSize: '2.5rem',
+                    fontWeight: 800,
+                    color: '#0f172a',
+                    lineHeight: 1.2,
+                    letterSpacing: '-0.02em',
+                    margin: '0 0 18px',
+                    fontFamily: 'Arial, Helvetica, sans-serif'
+                  }}
+                >
+                  {isAr ? (
+                    <>شريك موثوق ومسيرة تميز<br />في الرعاية الصحية بالإمارات</>
+                  ) : (
+                    <>A Legacy of Trust<br />in UAE Healthcare</>
+                  )}
+                </h2>
+
+                <p
+                  style={{
+                    fontSize: '0.96rem',
+                    color: '#475569',
+                    lineHeight: 1.65,
+                    margin: '0 0 24px',
+                    fontFamily: 'Arial, Helvetica, sans-serif'
+                  }}
+                >
+                  {isAr
+                    ? 'بفضل منشآت الهندسة الطبية الحيوية المتقدمة وفريق الدعم السريري المتخصص، تلتزم فاستونميد بتمكين المستشفيات ومراكز جراحة اليوم الواحد والعيادات في الإمارات بأحدث التقنيات الطبية الموثوقة والدعم السريع الفوري.'
+                    : 'With professional biomedical engineering facilities and a dedicated clinical support team, FastonMed is dedicated to empowering UAE hospitals, day surgery centers, and clinics with dependable medical technologies and responsive support.'}
+                </p>
+
+                {/* 4 Checkpoint Items */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '30px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <CheckCircle2 size={18} color="#00875a" />
+                    <span style={{ fontSize: '0.9rem', fontWeight: 600, color: '#1e293b', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                      {isAr ? 'مورد معتمد للرعاية الصحية والأجهزة الطبية الحيوية في الإمارات' : 'UAE Registered Healthcare & Biomedical Supplier'}
+                    </span>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <CheckCircle2 size={18} color="#00875a" />
+                    <span style={{ fontSize: '0.9rem', fontWeight: 600, color: '#1e293b', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                      {isAr ? 'مجموعة متكاملة من أجهزة العناية المركزة والمعدات الطبية' : 'Comprehensive Range of Biomedical & ICU Products'}
+                    </span>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <CheckCircle2 size={18} color="#00875a" />
+                    <span style={{ fontSize: '0.9rem', fontWeight: 600, color: '#1e293b', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                      {isAr ? 'فريق هندسة طبية حيوية داخلي وعقود صيانة ومعايرة معتمدة' : 'In-House Biomedical Engineering & Calibration AMC'}
+                    </span>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <CheckCircle2 size={18} color="#00875a" />
+                    <span style={{ fontSize: '0.9rem', fontWeight: 600, color: '#1e293b', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                      {isAr ? 'توريد وتسليم مباشر للمستشفيات في جميع الإمارات السبع' : 'Direct Hospital Supply Across All 7 Emirates'}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Learn More Button */}
+                <Link
+                  href={isAr ? '/ar/about-us' : '/about-us'}
+                  style={{
+                    backgroundColor: '#00875a',
+                    color: '#ffffff',
+                    padding: '12px 26px',
+                    borderRadius: '8px',
+                    fontWeight: 700,
+                    fontSize: '0.9rem',
+                    textDecoration: 'none',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    boxShadow: '0 4px 14px rgba(0, 135, 90, 0.22)',
+                    transition: 'all 0.2s ease',
+                    fontFamily: 'Arial, Helvetica, sans-serif'
+                  }}
+                >
+                  <span>{isAr ? 'تعرف على المزيد' : 'Learn More'}</span>
+                  <ArrowRight size={16} style={isAr ? { transform: 'scaleX(-1)' } : undefined} />
+                </Link>
+              </div>
+
+              {/* Right Column: Medical Equipment Showcase with Signature Arched Corner & Badge */}
+              <div style={{ position: 'relative' }}>
+                <div
+                  style={{
+                    borderRadius: '40px 16px 16px 16px',
+                    overflow: 'hidden',
+                    boxShadow: '0 20px 40px -10px rgba(0, 0, 0, 0.15)',
+                    position: 'relative',
+                    border: '3px solid #ffffff',
+                    backgroundColor: '#ffffff',
+                    padding: '8px'
+                  }}
+                >
+                  <img
+                    src="/images/hero-medical-equipment.jpg"
+                    alt="FastonMed Medical Equipment & Biomedical Technologies Range"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      display: 'block',
+                      borderRadius: '32px 12px 12px 12px',
+                      objectFit: 'contain'
+                    }}
+                  />
+                </div>
+
+                {/* Floating Since 2025 Badge */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    bottom: '-18px',
+                    left: '20px',
+                    backgroundColor: '#ffffff',
+                    borderRadius: '12px',
+                    padding: '14px 22px',
+                    boxShadow: '0 10px 30px rgba(0, 0, 0, 0.12)',
+                    border: '1.5px solid #d1fae5',
+                    textAlign: 'center',
+                    zIndex: 2
+                  }}
+                >
+                  <div style={{ fontSize: '1.85rem', fontWeight: 800, color: '#00875a', lineHeight: 1, fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                    {isAr ? 'منذ 2025' : 'Since 2025'}
+                  </div>
+                  <div style={{ fontSize: '0.78rem', fontWeight: 600, color: '#64748b', marginTop: '4px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+                    {isAr ? 'ريادة الرعاية الصحية بالإمارات' : 'Pioneering UAE Healthcare'}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <style>{`
+          @media (max-width: 900px) {
+            #about-us-card-box {
+              padding: 22px 16px !important;
+              border-radius: 16px !important;
+            }
+            #about-two-col-grid {
+              grid-template-columns: 1fr !important;
+              gap: 22px !important;
+            }
+            #about-headline {
+              font-size: 1.38rem !important;
+              line-height: 1.25 !important;
+              margin-bottom: 10px !important;
+            }
+          }
+        `}</style>
+      </section>
+
+      {/* SECTION 5: BRAND GREEN METRICS COUNTER RIBBON (Full Bleed in Arial) */}
+      <section
+        style={{
+          background: 'linear-gradient(135deg, #00875a 0%, #006040 100%)',
+          color: '#ffffff',
+          padding: '48px 0',
+          fontFamily: 'Arial, Helvetica, sans-serif'
+        }}
+      >
+        <div className="container" style={{ maxWidth: '1240px', margin: '0 auto', padding: '0 20px' }}>
+          <div
+            id="metrics-ribbon-grid"
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(4, 1fr)',
+              gap: '20px',
+              textAlign: 'center'
+            }}
+          >
+            {/* Stat 1 */}
+            <div className="metric-stat-box">
+              <div className="metric-stat-icon">
+                <Globe size={24} color="#ffffff" />
+              </div>
+              <div className="metric-stat-number">7</div>
+              <div className="metric-stat-label">{isAr ? 'إمارات نغطيها بالكامل' : 'Emirates Covered'}</div>
+            </div>
+
+            {/* Stat 2 */}
+            <div className="metric-stat-box">
+              <div className="metric-stat-icon">
+                <Package size={24} color="#ffffff" />
+              </div>
+              <div className="metric-stat-number">2,700+</div>
+              <div className="metric-stat-label">{isAr ? 'منتج ومعدة طبية بالكتالوج' : 'Catalog Medical Products'}</div>
+            </div>
+
+            {/* Stat 3 */}
+            <div className="metric-stat-box">
+              <div className="metric-stat-icon">
+                <Users size={24} color="#ffffff" />
+              </div>
+              <div className="metric-stat-number">300+</div>
+              <div className="metric-stat-label">{isAr ? 'مستشفى وعيادة نخدمها' : 'Hospitals & Clinics'}</div>
+            </div>
+
+            {/* Stat 4 */}
+            <div className="metric-stat-box">
+              <div className="metric-stat-icon">
+                <Award size={24} color="#ffffff" />
+              </div>
+              <div className="metric-stat-number">2025</div>
+              <div className="metric-stat-label">{isAr ? 'تأسست لخدمة القطاع الصحي' : 'Since Established in UAE'}</div>
+            </div>
+          </div>
+        </div>
+
+        <style>{`
+          .metric-stat-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justifyContent: center;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            border-radius: 16px;
+            padding: 24px 18px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: transform 0.2s ease, background 0.2s ease;
+          }
+          .metric-stat-box:hover {
+            background: rgba(255, 255, 255, 0.18);
+            transform: translateY(-3px);
+          }
+          .metric-stat-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.16);
+            display: grid;
+            place-items: center;
+            line-height: 0;
+            margin: 0 auto 12px auto;
+          }
+          .metric-stat-icon svg {
+            display: block;
+            margin: auto;
+          }
+          .metric-stat-number {
+            font-size: 2.2rem;
+            font-weight: 800;
+            line-height: 1.1;
+            color: #ffffff;
+            font-family: Arial, Helvetica, sans-serif;
+            letter-spacing: -0.02em;
+            text-align: center;
+            width: 100%;
+          }
+          .metric-stat-label {
+            font-size: 0.85rem;
+            color: #f1fdf8;
+            font-weight: 600;
+            margin-top: 6px;
+            font-family: Arial, Helvetica, sans-serif;
+            letter-spacing: 0.01em;
+            text-align: center;
+            width: 100%;
+          }
+          @media (max-width: 768px) {
+            #metrics-ribbon-grid {
+              grid-template-columns: repeat(2, 1fr) !important;
+              gap: 12px !important;
+            }
+            .metric-stat-box {
+              display: flex !important;
+              flex-direction: column !important;
+              align-items: center !important;
+              justify-content: center !important;
+              text-align: center !important;
+              padding: 18px 12px !important;
+              border-radius: 14px !important;
+              background: rgba(255, 255, 255, 0.14) !important;
+              border: 1px solid rgba(255, 255, 255, 0.25) !important;
+            }
+            .metric-stat-icon {
+              width: 42px !important;
+              height: 42px !important;
+              margin: 0 auto 8px auto !important;
+              border-radius: 10px !important;
+              display: grid !important;
+              place-items: center !important;
+              line-height: 0 !important;
+            }
+            .metric-stat-icon svg {
+              display: block !important;
+              margin: auto !important;
+              width: 22px !important;
+              height: 22px !important;
+            }
+            .metric-stat-number {
+              font-size: 1.75rem !important;
+              text-align: center !important;
+            }
+            .metric-stat-label {
+              font-size: 0.78rem !important;
+              margin-top: 4px !important;
+              opacity: 0.95 !important;
+              text-align: center !important;
+            }
+          }
+        `}</style>
+      </section>
+
+      {/* SECTION 9: GOOGLE REVIEWS & CLINICAL CLIENT ACCREDITATIONS */}
+      <GoogleReviewsSection />
+      <PurchaseGuide onEnquire={type => { setEnquiryType(type); setShowEnquiryPopup(true); }} />
+      <SwitchProviderGuide onEnquire={() => { setEnquiryType('Service'); setShowEnquiryPopup(true); }} />
       {/* SECTION 8: FAST CRM LEAD GENERATION & EQUIPMENT RFQ FORM */}
       {showEnquiryPopup ? createPortal(
         <div className="rfq-popup-backdrop" role="dialog" aria-modal="true" aria-label="Sales and service enquiry" onClick={event => { if (event.target === event.currentTarget) setShowEnquiryPopup(false); }}>
@@ -3518,10 +3483,45 @@ export default function HomePage() {
         </div>, document.body
       ) : enquirySection}
 
-      {/* SECTION 9: GOOGLE REVIEWS & CLINICAL CLIENT ACCREDITATIONS */}
-      <GoogleReviewsSection />
-      <PurchaseGuide onEnquire={type => { setEnquiryType(type); setShowEnquiryPopup(true); }} />
-      <SwitchProviderGuide onEnquire={() => { setEnquiryType('Service'); setShowEnquiryPopup(true); }} />
+      <section className="fm-biomedical-types">
+        <div className="container">
+          <div className="fm-biomedical-summary">
+            <h2>What is Biomedical Equipment?</h2>
+            <p>Biomedical equipment supports diagnosis, monitoring, treatment and patient care—from ECG machines and patient monitors to ventilators and laboratory systems. Correct installation, calibration and preventive maintenance help keep equipment reliable. <Link href={localizeUrl('/contact')}>Our biomedical team</Link> can help you choose equipment and discuss support for your facility.</p>
+          </div>
+          <div className="fm-biomedical-heading"><h2>Types of Biomedical Equipment</h2></div>
+          <p className="fm-equipment-intro">Explore equipment, key features and where each type is used.</p>
+          <div className="fm-biomedical-type-grid" ref={biomedicalScrollRef} role="region" aria-label="Biomedical equipment types" tabIndex={0} onScroll={() => {
+            const track = biomedicalScrollRef.current;
+            const card = track?.firstElementChild as HTMLElement | null;
+            if (track && card) setBiomedicalSlide(Math.round(Math.abs(track.scrollLeft) / (card.offsetWidth + 20)));
+          }}>
+            {[
+              { title: 'Diagnostic Equipment', description: 'Helps healthcare professionals assess symptoms and measure clinical parameters.', features: 'ECG machines, blood pressure monitors, spirometers and otoscopes.', used: 'Clinics, outpatient departments and diagnostic centres.' },
+              { title: 'Patient Monitoring Equipment', description: 'Tracks patient measurements over time to support clinical observation.', features: 'Multi-parameter monitors, pulse oximeters and telemetry systems; alarms and trend displays vary by model.', used: 'ICUs, emergency departments, operating theatres and hospital wards.' },
+              { title: 'Therapeutic Equipment', description: 'Delivers a treatment or supports a prescribed therapy.', features: 'Infusion pumps, nebulizers and electrotherapy units with model-specific treatment settings.', used: 'Hospitals, respiratory clinics and physiotherapy departments.' },
+              { title: 'Life Support Equipment', description: 'Supports essential functions such as breathing in critical care.', features: 'Ventilators, defibrillators and oxygen delivery systems with monitoring and safety functions appropriate to each device.', used: 'ICUs, emergency departments, ambulances and operating theatres.' },
+              { title: 'Laboratory Equipment', description: 'Processes and analyses samples to support clinical testing.', features: 'Centrifuges, microscopes, analysers and laboratory refrigerators.', used: 'Clinical laboratories, hospitals and research facilities.' },
+              { title: 'Surgical Equipment', description: 'Supports surgical procedures, instrument handling and the operating environment.', features: 'Electrosurgical units, surgical lights, operating tables and suction systems.', used: 'Operating theatres, day-surgery centres and procedure rooms.' },
+              { title: 'Imaging Equipment', description: 'Produces images used to examine internal structures and guide assessment.', features: 'Ultrasound, X-ray, CT and MRI systems; image modes and software depend on the system.', used: 'Radiology departments, imaging centres and specialist clinics.' },
+              { title: 'Rehabilitation Equipment', description: 'Supports movement training, recovery and functional rehabilitation.', features: 'Therapy tables, exercise systems, gait-training aids and rehabilitation devices.', used: 'Physiotherapy clinics, rehabilitation centres and supervised home-care programmes.' },
+              { title: 'Hospital & Clinical Equipment', description: 'Supports everyday patient care and the practical needs of healthcare facilities.', features: 'Hospital beds, examination couches, medical scales and patient-transfer equipment.', used: 'Hospital wards, clinics, nursing facilities and examination rooms.' },
+              { title: 'Dermatology & Aesthetic Equipment', description: 'Supports skin assessment and selected dermatological or aesthetic treatments.', features: 'Dermatoscopes, treatment lasers, IPL systems and other skin-treatment devices, selected for the intended procedure.', used: 'Dermatology clinics, licensed aesthetic centres and specialist treatment rooms.' }
+            ].map((type, index) => <article className="fm-biomedical-type" key={type.title}>
+              <div className="fm-biomedical-card-top"><span className="fm-biomedical-icon">{React.createElement([Stethoscope, HeartPulse, Zap, Activity, FlaskConical, Wrench, Radio, Accessibility, Hospital, Sparkles][index], { size: 28, 'aria-hidden': true })}</span><span className="fm-equipment-number">{String(index + 1).padStart(2, '0')}</span></div>
+              <h3><Link href={localizeUrl(['/product-category/diagnostic-equipment', '/product-category/patient-monitoring', '/equipment-for/physiotherapy', '/equipment-for/icu-emergency', '/equipment-for/laboratories', '/equipment-for/hospitals', '/equipment-for/radiology', '/equipment-for/physiotherapy', '/product-category/hospital-furniture', '/product-category/dermatology-equipment'][index])}>{type.title}</Link></h3>
+              <p>{type.description}</p>
+              <h4>Common equipment & features</h4><p>{type.features}</p>
+              <h4>Where it is used</h4><p>{type.used}</p>
+            </article>)}
+          </div>
+          <div className="fm-biomedical-controls">
+            <div><button type="button" aria-label="Previous equipment types" disabled={biomedicalSlide === 0} onClick={() => biomedicalScrollRef.current?.scrollBy({ left: -((biomedicalScrollRef.current.firstElementChild as HTMLElement).offsetWidth + 20), behavior: 'smooth' })}><ChevronLeft size={21} /></button>
+            <button type="button" aria-label="Next equipment types" disabled={biomedicalSlide >= 10 - Math.round((biomedicalScrollRef.current?.clientWidth || 1) / (((biomedicalScrollRef.current?.firstElementChild as HTMLElement)?.offsetWidth || 1) + 20))} onClick={() => biomedicalScrollRef.current?.scrollBy({ left: (biomedicalScrollRef.current.firstElementChild as HTMLElement).offsetWidth + 20, behavior: 'smooth' })}><ChevronRight size={21} /></button></div>
+          </div>
+        </div>
+      </section>
+
       <HomeFAQs />
     </div>
   );
