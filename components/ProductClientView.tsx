@@ -1,6 +1,7 @@
 'use client';
 
 import sanitizeHtml from 'sanitize-html';
+import { productDescriptionHtml } from '@/lib/product-description';
 import { brandName, brandSlug } from '@/lib/brand-utils';
 
 import React, { useEffect, useRef, useState } from 'react';
@@ -347,7 +348,7 @@ export default function ProductClientView({ product, similarProducts }: ProductC
                 ref={descriptionRef}
                 className="fm-product-rich-desc"
                 style={{ color: '#475569', fontSize: '0.98rem', lineHeight: 1.65, whiteSpace: /<[a-z][\s\S]*>/i.test(product.shortDescription || product.fullDescription || '') ? 'normal' : 'pre-line', maxHeight: descriptionExpanded ? undefined : descriptionLimit, overflow: 'hidden' }}
-                dangerouslySetInnerHTML={{ __html: sanitizeHtml(product.shortDescription || product.fullDescription || '') }}
+                dangerouslySetInnerHTML={{ __html: productDescriptionHtml(product.shortDescription || product.fullDescription || '') }}
               />
               {descriptionOverflows && <button
                 type="button"
@@ -617,7 +618,7 @@ export default function ProductClientView({ product, similarProducts }: ProductC
                 <div
                   className="fm-product-rich-desc"
                   style={{ color: '#334155', lineHeight: 1.8, fontSize: '0.98rem', marginBottom: '24px', maxWidth: '850px' }}
-                  dangerouslySetInnerHTML={{ __html: sanitizeHtml(product.fullDescription || '') }}
+                  dangerouslySetInnerHTML={{ __html: productDescriptionHtml(product.fullDescription || '') }}
                 />
               ) : (
                 <p style={{ color: '#334155', lineHeight: 1.7, fontSize: '0.98rem', marginBottom: '24px', maxWidth: '850px', whiteSpace: 'pre-line' }}>
