@@ -3,7 +3,7 @@ import { Quote, ExternalLink, PenLine } from 'lucide-react';
 const profile = 'https://www.linkedin.com/in/hashim-vp-ab7491221/';
 function Profile({ author = false }: { author?: boolean }) {
   return <a className="fm-hashim-profile" href={profile} target="_blank" rel="noopener noreferrer">
-    <span className="fm-hashim-avatar" aria-hidden="true">HV</span>
+    <img className="fm-hashim-avatar" src="/images/team/hashim-vp.png" alt="Hashim VP" width={48} height={48} loading="lazy" />
     <span>{author && <span className="fm-hashim-credit"><PenLine size={14} /> Written by</span>}<strong>Hashim VP</strong><small>Biomedical Engineer · Fastonmed</small></span>
     <ExternalLink size={18} aria-hidden="true" />
   </a>;
