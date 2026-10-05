@@ -203,18 +203,6 @@ export default function ProductClientView({ product, similarProducts }: ProductC
                 >
                   {product.brand || 'FastonMed Partner'}
                 </span>
-                <span
-                  style={{
-                    backgroundColor: '#f1f5f9',
-                    color: '#475569',
-                    fontSize: '0.72rem',
-                    fontWeight: 700,
-                    padding: '4px 8px',
-                    borderRadius: '6px'
-                  }}
-                >
-                  SKU: {product.sku}
-                </span>
               </div>
             </div>
 
