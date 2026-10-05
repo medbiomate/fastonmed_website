@@ -74,6 +74,10 @@ export default function ProductClientView({ product, similarProducts }: ProductC
 
   const { addToCart, isInWishlist, toggleWishlist } = useApp();
 
+  const categoryName = (product.category || 'Medical Equipment')
+    .replace(/&amp;/gi, '&').replace(/&quot;/gi, '"').replace(/&#0*39;|&apos;/gi, "'").replace(/&lt;/gi, '<').replace(/&gt;/gi, '>').replace(/&nbsp;/gi, ' ');
+  const categoryUrl = localizeUrl(`/product-category/${categoryName.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`);
+
   const price = product.salePrice && product.salePrice > 0 ? product.salePrice : product.regularPrice;
   const isFavorited = isInWishlist(product.id);
 
@@ -155,10 +159,10 @@ export default function ProductClientView({ product, similarProducts }: ProductC
           </Link>
           <ChevronRight size={10} color="#cbd5e1" className="rtl-flip" />
           <Link
-            href={localizeUrl(`/product-category/${(product.category || 'medical-equipment').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`)}
+            href={categoryUrl}
             style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500 }}
           >
-            {product.category}
+            {categoryName}
           </Link>
           <ChevronRight size={10} color="#cbd5e1" className="rtl-flip" />
           <span style={{ color: '#64748b', fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '300px' }}>
@@ -273,9 +277,9 @@ export default function ProductClientView({ product, similarProducts }: ProductC
           {/* Right Column: Title, Pricing, Actions */}
           <div>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', marginBottom: '8px' }}>
-              <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#51b291', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                {product.category}
-              </span>
+              <Link href={categoryUrl} style={{ fontSize: '0.82rem', fontWeight: 700, color: '#51b291', textTransform: 'uppercase', letterSpacing: '0.05em', textDecoration: 'none' }}>
+                {categoryName}
+              </Link>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <button
                   type="button"
