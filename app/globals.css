@@ -2350,7 +2350,7 @@ html:has(.fm-product-gallery-sticky), body:has(.fm-product-gallery-sticky) {
 .fm-biomedical-type h3 { font-size: 18px; line-height: 1.35; color: #193c30; margin: 0 0 10px; }
 .fm-biomedical-type h4 { font-size: 13px; color: #287d63; margin: 12px 0 4px; }
 .fm-biomedical-type p { color: #52635d; font-size: 14px; line-height: 1.55; margin: 0; }
-.fm-biomedical-controls { display: flex; justify-content: space-between; align-items: center; gap: 16px; color: #60756b; font-size: 13px; margin-top: 8px; }
+.fm-biomedical-controls { display: flex; justify-content: flex-end; align-items: center; gap: 16px; color: #60756b; font-size: 13px; margin-top: 8px; }
 .fm-biomedical-controls > div { display: flex; gap: 10px; }
 .fm-biomedical-controls button { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: #00865f; color: white; border: 0; cursor: pointer; }
 .fm-biomedical-controls button:disabled { background: #e1eae5; color: #8a9e94; cursor: default; }
