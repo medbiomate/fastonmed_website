@@ -457,7 +457,7 @@ const healthcareFacilitiesServed = [
     equipment: ['Hospital Ward Beds', 'OT Lights & Tables', 'Patient Monitors', 'Infusion Pumps'],
     icon: Hospital,
     image: '/images/facilities/hospitals.jpg',
-    href: '/equipment-for/hospitals'
+    href: '/facilities/hospitals'
   },
   {
     id: 'clinics',
@@ -470,7 +470,7 @@ const healthcareFacilitiesServed = [
     equipment: ['Examination Couches', 'Sterilizers & Autoclaves', 'Vital Signs Monitors', 'Diagnostic Sets'],
     icon: Building2,
     image: '/images/facilities/polyclinics.jpg',
-    href: '/equipment-for/clinics'
+    href: '/facilities/clinics'
   },
   {
     id: 'laboratories',
@@ -483,7 +483,7 @@ const healthcareFacilitiesServed = [
     equipment: ['Biosafety Cabinets', 'Lab Centrifuges', 'Specimen Transport Boxes', 'Laboratory Fridges'],
     icon: FlaskConical,
     image: '/images/facilities/laboratories.jpg',
-    href: '/equipment-for/laboratories'
+    href: '/facilities/laboratories'
   },
   {
     id: 'icu-emergency',
@@ -496,7 +496,7 @@ const healthcareFacilitiesServed = [
     equipment: ['ICU Ventilators', 'Defibrillators (AED)', 'Emergency Spill Kits', 'Syringe Pumps'],
     icon: HeartPulse,
     image: '/images/facilities/icu-emergency.jpg',
-    href: '/equipment-for/icu-emergency'
+    href: '/facilities/icu-emergency'
   },
   {
     id: 'radiology',
@@ -509,7 +509,7 @@ const healthcareFacilitiesServed = [
     equipment: ['Color Doppler Ultrasound', 'Ultrasound Probes', 'Ultrasound Carts', 'Radiation PPE'],
     icon: Radio,
     image: '/images/facilities/radiology.jpg',
-    href: '/equipment-for/radiology'
+    href: '/facilities/radiology'
   },
   {
     id: 'dental',
@@ -522,7 +522,7 @@ const healthcareFacilitiesServed = [
     equipment: ['Dental Treatment Chairs', 'Sterilization Reels', 'Ultrasonic Scalers', 'Autoclave Pouches'],
     icon: Smile,
     image: '/images/facilities/dental.jpg',
-    href: '/equipment-for/dental'
+    href: '/facilities/dental'
   },
   {
     id: 'physiotherapy',
@@ -535,7 +535,7 @@ const healthcareFacilitiesServed = [
     equipment: ['Shockwave Therapy Units', 'Combo Electrotherapy', 'Foldable Wheelchairs', 'Transfer Chairs'],
     icon: Accessibility,
     image: '/images/facilities/physiotherapy.jpg',
-    href: '/equipment-for/physiotherapy'
+    href: '/facilities/physiotherapy'
   },
   {
     id: 'pharmacy',
@@ -548,7 +548,7 @@ const healthcareFacilitiesServed = [
     equipment: ['Pharmacy Refrigerators', 'Vaccine Freezers', 'Temperature Loggers', 'Dispensing Trolleys'],
     icon: Activity,
     image: '/images/facilities/pharmacies.jpg',
-    href: '/equipment-for/pharmacy'
+    href: '/facilities/pharmacy'
   }
 ];
 
@@ -3509,7 +3509,7 @@ export default function HomePage() {
               { title: 'Dermatology & Aesthetic Equipment', description: 'Supports skin assessment and selected dermatological or aesthetic treatments.', features: 'Dermatoscopes, treatment lasers, IPL systems and other skin-treatment devices, selected for the intended procedure.', used: 'Dermatology clinics, licensed aesthetic centres and specialist treatment rooms.' }
             ].map((type, index) => <article className="fm-biomedical-type" key={type.title}>
               <div className="fm-biomedical-card-top"><span className="fm-biomedical-icon">{React.createElement([Stethoscope, HeartPulse, Zap, Activity, FlaskConical, Wrench, Radio, Accessibility, Hospital, Sparkles][index], { size: 28, 'aria-hidden': true })}</span><span className="fm-equipment-number">{String(index + 1).padStart(2, '0')}</span></div>
-              <h3><Link href={localizeUrl(['/product-category/diagnostic-equipment', '/product-category/patient-monitoring', '/equipment-for/physiotherapy', '/equipment-for/icu-emergency', '/equipment-for/laboratories', '/equipment-for/hospitals', '/equipment-for/radiology', '/equipment-for/physiotherapy', '/product-category/hospital-furniture', '/product-category/dermatology-equipment'][index])}>{type.title}</Link></h3>
+              <h3><Link href={localizeUrl(['/product-category/diagnostic-equipment', '/product-category/patient-monitoring', '/facilities/physiotherapy', '/facilities/icu-emergency', '/facilities/laboratories', '/facilities/hospitals', '/facilities/radiology', '/facilities/physiotherapy', '/product-category/hospital-furniture', '/product-category/dermatology-equipment'][index])}>{type.title}</Link></h3>
               <p>{type.description}</p>
               <h4>Common equipment & features</h4><p>{type.features}</p>
               <h4>Where it is used</h4><p>{type.used}</p>

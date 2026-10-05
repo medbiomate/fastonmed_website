@@ -13,6 +13,8 @@ const nextConfig = {
   },
   async redirects() {
     return [
+      { source: '/equipment-for/:slug', destination: '/facilities/:slug', permanent: true },
+      { source: '/ar/equipment-for/:slug', destination: '/ar/facilities/:slug', permanent: true },
       { source: '/home', destination: '/', permanent: true },
       { source: '/compare-2', destination: '/compare', permanent: true },
       { source: '/wishlist-2', destination: '/wishlist', permanent: true },

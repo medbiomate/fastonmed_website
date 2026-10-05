@@ -13,14 +13,14 @@ export async function GET() {
     ['/contact', 'monthly', 0.8],
     ['/blog', 'weekly', 0.8],
     ['/brands', 'weekly', 0.8],
-    ['/equipment-for/hospitals', 'weekly', 0.8],
-    ['/equipment-for/clinics', 'weekly', 0.8],
-    ['/equipment-for/laboratories', 'weekly', 0.8],
-    ['/equipment-for/icu-emergency', 'weekly', 0.8],
-    ['/equipment-for/radiology', 'weekly', 0.8],
-    ['/equipment-for/dental', 'weekly', 0.8],
-    ['/equipment-for/physiotherapy', 'weekly', 0.8],
-    ['/equipment-for/pharmacy', 'weekly', 0.8],
+    ['/facilities/hospitals', 'weekly', 0.8],
+    ['/facilities/clinics', 'weekly', 0.8],
+    ['/facilities/laboratories', 'weekly', 0.8],
+    ['/facilities/icu-emergency', 'weekly', 0.8],
+    ['/facilities/radiology', 'weekly', 0.8],
+    ['/facilities/dental', 'weekly', 0.8],
+    ['/facilities/physiotherapy', 'weekly', 0.8],
+    ['/facilities/pharmacy', 'weekly', 0.8],
 
   ] as const;
 
