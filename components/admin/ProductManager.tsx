@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import SpecificationFields from './SpecificationFields';
+import ProductSectionEditor from './ProductSectionEditor';
 import { useEffect, useMemo, useRef, useState, ChangeEvent } from 'react';
 import {
   Edit3,
@@ -1706,6 +1706,10 @@ export default function ProductManager({
               )}
             </div>
 
+            <ProductSectionEditor title="Technical specifications" value={product.technicalDescription ?? Object.entries(product.specifications || {}).map(([key, value]) => `<p>${key.replace(/&/g, '&amp;').replace(/</g, '&lt;')}: ${String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;')}</p>`).join('')} onChange={value => setProduct(prev => ({ ...prev, technicalDescription: value }))} />
+            <ProductSectionEditor title="Clinical Features & Indications" value={product.clinicalDescription || ''} onChange={value => setProduct(prev => ({ ...prev, clinicalDescription: value }))} />
+            <ProductSectionEditor title="UAE Compliance & FAQs" value={product.complianceDescription || ''} onChange={value => setProduct(prev => ({ ...prev, complianceDescription: value }))} />
+
             <h3>Product data</h3>
             <div className="tk-two-fields">
               <label>
@@ -1751,7 +1755,7 @@ export default function ProductManager({
               </label>
             </div>
 
-            <SpecificationFields value={specText} onChange={setSpecText} />
+
           </section>
 
           {/* Sidebar */}

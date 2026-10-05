@@ -9,6 +9,9 @@ type RawCrmProduct = {
   id?: string;
   name?: string;
   category?: string;
+  technicalDescription?: string;
+  clinicalDescription?: string;
+  complianceDescription?: string;
   brand?: string;
   model?: string;
   sellingPrice?: number;
@@ -78,6 +81,9 @@ function mapRawProduct(item: RawCrmProduct, index: number): Product {
     stockStatus: item.stockStatus === 'outofstock' ? 'out_of_stock' : item.stockStatus === 'onbackorder' ? 'on_backorder' : 'in_stock',
     warrantyPeriod: item.warrantyPeriod || '1 Year Official UAE Warranty',
     technicalSpecs: item.specifications || {},
+    technicalDescription: item.technicalDescription,
+    clinicalDescription: item.clinicalDescription,
+    complianceDescription: item.complianceDescription,
     features: [
       'Engineered to meet international clinical safety and biomedical performance standards',
       'Engineered for hospital wards, day surgery centers, and homecare',

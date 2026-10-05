@@ -575,7 +575,8 @@ export default function ProductClientView({ product, similarProducts }: ProductC
           </div>
 
           {/* Tab 1: Specifications */}
-          {activeTab === 'specs' && (
+          {activeTab === 'specs' && product.technicalDescription != null && <div className="fm-product-rich-desc" style={{ color: '#334155', lineHeight: 1.8, maxWidth: 850, whiteSpace: /<[a-z][\s\S]*>/i.test(product.technicalDescription || '') ? 'normal' : 'pre-line' }} dangerouslySetInnerHTML={{ __html: sanitizeHtml(product.technicalDescription || '') }} />}
+          {activeTab === 'specs' && product.technicalDescription == null && (
             <div>
               <h2 style={{ fontSize: '1.3rem', fontWeight: 800, color: '#0f172a', marginBottom: '20px' }}>
                 Technical & Engineering Specifications
@@ -608,7 +609,8 @@ export default function ProductClientView({ product, similarProducts }: ProductC
           )}
 
           {/* Tab 2: Clinical Features & Indications */}
-          {activeTab === 'features' && (
+          {activeTab === 'features' && product.clinicalDescription != null && <div className="fm-product-rich-desc" style={{ color: '#334155', lineHeight: 1.8, maxWidth: 850, whiteSpace: /<[a-z][\s\S]*>/i.test(product.clinicalDescription || '') ? 'normal' : 'pre-line' }} dangerouslySetInnerHTML={{ __html: sanitizeHtml(product.clinicalDescription || '') }} />}
+          {activeTab === 'features' && product.clinicalDescription == null && (
             <div>
               <h2 style={{ fontSize: '1.3rem', fontWeight: 800, color: '#0f172a', marginBottom: '16px' }}>
                 Clinical Performance & Indications
@@ -658,7 +660,8 @@ export default function ProductClientView({ product, similarProducts }: ProductC
           )}
 
           {/* Tab 3: FAQs Accordion */}
-          {activeTab === 'faq' && (
+          {activeTab === 'faq' && product.complianceDescription != null && <div className="fm-product-rich-desc" style={{ color: '#334155', lineHeight: 1.8, maxWidth: 850, whiteSpace: /<[a-z][\s\S]*>/i.test(product.complianceDescription || '') ? 'normal' : 'pre-line' }} dangerouslySetInnerHTML={{ __html: sanitizeHtml(product.complianceDescription || '') }} />}
+          {activeTab === 'faq' && product.complianceDescription == null && (
             <div style={{ maxWidth: '850px' }}>
               <h2 style={{ fontSize: '1.3rem', fontWeight: 800, color: '#0f172a', marginBottom: '20px' }}>
                 Frequently Asked Procurement Questions

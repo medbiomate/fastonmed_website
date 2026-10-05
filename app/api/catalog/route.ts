@@ -13,6 +13,9 @@ type CrmProduct = {
   id?: string;
   name?: string;
   category?: string;
+  technicalDescription?: string;
+  clinicalDescription?: string;
+  complianceDescription?: string;
   brand?: string;
   model?: string;
   sellingPrice?: number;
@@ -73,6 +76,9 @@ function mapCrmProduct(item: CrmProduct, index: number): Product {
     stockStatus: item.stockStatus === 'outofstock' ? 'out_of_stock' : item.stockStatus === 'onbackorder' ? 'on_backorder' : 'in_stock',
     warrantyPeriod: item.warrantyPeriod,
     technicalSpecs: item.specifications || {},
+    technicalDescription: item.technicalDescription,
+    clinicalDescription: item.clinicalDescription,
+    complianceDescription: item.complianceDescription,
     features: [],
     applications: [],
     documents: [],

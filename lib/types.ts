@@ -39,6 +39,9 @@ export interface Product {
   stockStatus: StockStatus;
   warrantyPeriod?: string;
   technicalSpecs: Record<string, string>;
+  technicalDescription?: string;
+  clinicalDescription?: string;
+  complianceDescription?: string;
   features: string[];
   applications: string[];
   documents: { title: string; url: string; size?: string }[];
