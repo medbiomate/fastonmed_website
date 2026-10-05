@@ -11,7 +11,17 @@ export async function GET() {
     ['/shop', 'daily', 0.9],
     ['/about-us', 'monthly', 0.7],
     ['/contact', 'monthly', 0.8],
-    ['/blog', 'weekly', 0.8]
+    ['/blog', 'weekly', 0.8],
+    ['/brands', 'weekly', 0.8],
+    ['/equipment-for/hospitals', 'weekly', 0.8],
+    ['/equipment-for/clinics', 'weekly', 0.8],
+    ['/equipment-for/laboratories', 'weekly', 0.8],
+    ['/equipment-for/icu-emergency', 'weekly', 0.8],
+    ['/equipment-for/radiology', 'weekly', 0.8],
+    ['/equipment-for/dental', 'weekly', 0.8],
+    ['/equipment-for/physiotherapy', 'weekly', 0.8],
+    ['/equipment-for/pharmacy', 'weekly', 0.8],
+
   ] as const;
 
   const arabicCorePages = [

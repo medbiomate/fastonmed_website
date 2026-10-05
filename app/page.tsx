@@ -595,7 +595,7 @@ const heroFeaturedProducts = [
 ];
 
 export default function HomePage() {
-  const { locale, isArabic } = useLocale();
+  const { locale, isArabic, localizeUrl } = useLocale();
   const isAr = isArabic || locale === 'ar';
   const { addToCart, isInWishlist, toggleWishlist } = useApp();
   const [products, setProducts] = useState<Product[]>(initialBentoProducts);
@@ -2421,6 +2421,8 @@ export default function HomePage() {
 
       <section className="fm-biomedical-types">
         <div className="container">
+          <h2 style={{ fontSize: '24px', color: '#193c30', marginBottom: '12px' }}>What is Biomedical Equipment?</h2>
+          <p className="fm-equipment-intro">Biomedical equipment brings engineering and clinical practice together to support diagnosis, patient monitoring, treatment, life support and everyday clinical care. It ranges from ECG machines and laboratory analysers to ventilators, infusion pumps, imaging systems and rehabilitation devices. Equipment selection depends on the clinical task, patient group, required accuracy and compatibility with a facility’s existing systems. Reliable operation also depends on correct installation and commissioning, appropriate user training, and the checks specified by the manufacturer. Calibration helps confirm measurement accuracy where applicable, while preventive maintenance and equipment inspection help identify wear or faults. Biomedical engineering support connects these practical requirements with procurement and after-sales care. <Link href={localizeUrl('/contact')}>Contact our biomedical team</Link> to discuss your equipment requirements and confirm the support available for your model.</p>
           <div className="fm-biomedical-heading"><span>EXPLORE EQUIPMENT TYPES</span><h2>Types of Biomedical Equipment</h2></div>
           <p className="fm-equipment-intro">Biomedical equipment supports diagnosis, patient monitoring, treatment and everyday clinical care. The categories below explain what each type does, common equipment and features, and where it is typically used. Some devices serve more than one purpose.</p>
           <div className="fm-biomedical-type-grid" ref={biomedicalScrollRef} role="region" aria-label="Biomedical equipment types" tabIndex={0} onScroll={() => {
@@ -2441,7 +2443,7 @@ export default function HomePage() {
               { title: 'Dermatology & Aesthetic Equipment', description: 'Supports skin assessment and selected dermatological or aesthetic treatments.', features: 'Dermatoscopes, treatment lasers, IPL systems and other skin-treatment devices, selected for the intended procedure.', used: 'Dermatology clinics, licensed aesthetic centres and specialist treatment rooms.' }
             ].map((type, index) => <article className="fm-biomedical-type" key={type.title}>
               <div className="fm-biomedical-card-top"><span className="fm-biomedical-icon">{React.createElement([Stethoscope, HeartPulse, Zap, Activity, FlaskConical, Wrench, Radio, Accessibility, Hospital, Sparkles][index], { size: 28, 'aria-hidden': true })}</span><span className="fm-equipment-number">{String(index + 1).padStart(2, '0')}</span></div>
-              <h3>{type.title}</h3>
+              <h3><Link href={localizeUrl(['/product-category/diagnostic-equipment', '/product-category/patient-monitoring', '/equipment-for/physiotherapy', '/equipment-for/icu-emergency', '/equipment-for/laboratories', '/equipment-for/hospitals', '/equipment-for/radiology', '/equipment-for/physiotherapy', '/product-category/hospital-furniture', '/product-category/dermatology-equipment'][index])}>{type.title}</Link></h3>
               <p>{type.description}</p>
               <h4>Common equipment & features</h4><p>{type.features}</p>
               <h4>Where it is used</h4><p>{type.used}</p>

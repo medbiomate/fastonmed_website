@@ -12,7 +12,6 @@ const brands = [
   ['Amplivox', 'amplivox', 'amplivox.svg'],
   ['Aquarius', 'aquarius', ''],
   ['Aveus', 'aveus', 'aveus.png'],
-  ['Aveus Instruments', 'aveus-instruments', 'aveus.png'],
   ['Beurer', 'beurer', 'beurer.svg'],
   ['BIOBASE', 'biobase', 'biobase.png'],
   ['Bionet', 'bionet', 'bionet.svg'],

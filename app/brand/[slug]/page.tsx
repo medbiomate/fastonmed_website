@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import { redirect, notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import ProductCard from '@/components/ProductCard';
 import { getAllProducts } from '@/lib/server-catalog';
@@ -18,6 +18,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 export default async function BrandPage({ params, searchParams }: Props) {
   const { slug } = await params;
+  if (slug === 'aveus-instruments') redirect('/brand/aveus');
   const products = await brandProducts(slug);
   if (!products.length) notFound();
   const name = brandName(products[0].brand);
