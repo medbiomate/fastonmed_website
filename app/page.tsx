@@ -456,7 +456,7 @@ const healthcareFacilitiesServed = [
     equipment: ['Hospital Ward Beds', 'OT Lights & Tables', 'Patient Monitors', 'Infusion Pumps'],
     icon: Hospital,
     image: '/images/facilities/hospitals.jpg',
-    href: '/shop?category=hospital-furniture'
+    href: '/equipment-for/hospitals'
   },
   {
     id: 'clinics',
@@ -469,7 +469,7 @@ const healthcareFacilitiesServed = [
     equipment: ['Examination Couches', 'Sterilizers & Autoclaves', 'Vital Signs Monitors', 'Diagnostic Sets'],
     icon: Building2,
     image: '/images/facilities/polyclinics.jpg',
-    href: '/shop?category=patient-monitoring'
+    href: '/equipment-for/clinics'
   },
   {
     id: 'laboratories',
@@ -482,7 +482,7 @@ const healthcareFacilitiesServed = [
     equipment: ['Biosafety Cabinets', 'Lab Centrifuges', 'Specimen Transport Boxes', 'Laboratory Fridges'],
     icon: FlaskConical,
     image: '/images/facilities/laboratories.jpg',
-    href: '/shop?category=laboratory-equipment'
+    href: '/equipment-for/laboratories'
   },
   {
     id: 'icu-emergency',
@@ -495,7 +495,7 @@ const healthcareFacilitiesServed = [
     equipment: ['ICU Ventilators', 'Defibrillators (AED)', 'Emergency Spill Kits', 'Syringe Pumps'],
     icon: HeartPulse,
     image: '/images/facilities/icu-emergency.jpg',
-    href: '/shop?category=icu-equipment'
+    href: '/equipment-for/icu-emergency'
   },
   {
     id: 'radiology',
@@ -508,7 +508,7 @@ const healthcareFacilitiesServed = [
     equipment: ['Color Doppler Ultrasound', 'Ultrasound Probes', 'Ultrasound Carts', 'Radiation PPE'],
     icon: Radio,
     image: '/images/facilities/radiology.jpg',
-    href: '/shop?category=radiology-equipments'
+    href: '/equipment-for/radiology'
   },
   {
     id: 'dental',
@@ -521,7 +521,7 @@ const healthcareFacilitiesServed = [
     equipment: ['Dental Treatment Chairs', 'Sterilization Reels', 'Ultrasonic Scalers', 'Autoclave Pouches'],
     icon: Smile,
     image: '/images/facilities/dental.jpg',
-    href: '/shop?category=consumables'
+    href: '/equipment-for/dental'
   },
   {
     id: 'physiotherapy',
@@ -534,7 +534,7 @@ const healthcareFacilitiesServed = [
     equipment: ['Shockwave Therapy Units', 'Combo Electrotherapy', 'Foldable Wheelchairs', 'Transfer Chairs'],
     icon: Accessibility,
     image: '/images/facilities/physiotherapy.jpg',
-    href: '/shop?category=hospital-furniture'
+    href: '/equipment-for/physiotherapy'
   },
   {
     id: 'pharmacy',
@@ -547,7 +547,7 @@ const healthcareFacilitiesServed = [
     equipment: ['Pharmacy Refrigerators', 'Vaccine Freezers', 'Temperature Loggers', 'Dispensing Trolleys'],
     icon: Activity,
     image: '/images/facilities/pharmacies.jpg',
-    href: '/shop?category=pharmacy-refrigerators'
+    href: '/equipment-for/pharmacy'
   }
 ];
 

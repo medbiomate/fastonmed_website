@@ -2403,3 +2403,18 @@ html:has(.fm-product-gallery-sticky), body:has(.fm-product-gallery-sticky) {
 .fm-faq-contact a { color: #00865f; font-weight: 600; }
 .fm-faq-filters button:focus-visible, .fm-faq-item summary:focus-visible { outline: 3px solid #53b497; outline-offset: 3px; }
 @media(max-width: 640px) { .fm-home-faq { padding: 28px 0; } .fm-faq-filters { justify-content: flex-start; flex-wrap: nowrap; overflow-x: auto; padding-bottom: 6px; } .fm-faq-filters button { white-space: nowrap; } .fm-faq-item summary { font-size: 14px; padding: 14px; } .fm-faq-item > div { padding: 0 14px 14px; } }
+
+.fm-facility-page { background: #f8faf9; padding: 28px 0 48px; }
+.fm-facility-page nav { font-size: 13px; color: #60756b; }
+.fm-facility-hero { display: grid; grid-template-columns: 1.4fr 1fr; align-items: center; gap: 24px; margin: 24px 0; background: white; border: 1px solid #e0eae4; border-radius: 16px; overflow: hidden; }
+.fm-facility-hero > div { padding: 24px; }
+.fm-facility-hero h1 { font-size: clamp(24px, 3vw, 34px); color: #193c30; line-height: 1.25; margin-bottom: 12px; }
+.fm-facility-hero p { font-size: 15px; color: #60756b; margin-bottom: 12px; }
+.fm-facility-hero span { font-size: 13px; color: #00865f; }
+.fm-facility-hero img { width: 100%; height: 220px; object-fit: cover; }
+.fm-facility-links { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+.fm-facility-links a { padding: 8px 12px; border: 1px solid #dce8e2; border-radius: 20px; background: #fff; }
+.fm-facility-links a[aria-current] { background: #00865f; color: #fff; }
+.fm-facility-products { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
+.fm-facility-pagination { display: flex; justify-content: center; gap: 24px; margin-top: 28px; }
+@media(max-width: 640px) { .fm-facility-hero { grid-template-columns: 1fr; gap: 0; } .fm-facility-hero img { height: 160px; } .fm-facility-products { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; } }
