@@ -48,6 +48,7 @@ import { useApp } from '@/lib/context';
 import { useLocale } from '@/lib/locale-context';
 import type { Product } from '@/lib/types';
 import EnquirySelect from '@/components/EnquirySelect';
+import AssociatedBrands from '@/components/AssociatedBrands';
 import GoogleReviewsSection from '@/components/GoogleReviewsSection';
 
 const baseDate = '2026-01-01T00:00:00.000Z';
@@ -2399,6 +2400,8 @@ export default function HomePage() {
           }
         `}</style>
       </section>
+
+      <AssociatedBrands />
 
       <section className="fm-equipment-explainer">
         <div className="container">
