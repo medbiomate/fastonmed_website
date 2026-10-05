@@ -18,12 +18,14 @@
     "next": "^15.2.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "recharts": "^2.15.1"
+    "recharts": "^2.15.1",
+    "sanitize-html": "^2.18.0"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "@types/sanitize-html": "^2.16.2",
     "eslint": "^9.0.0",
     "eslint-config-next": "^15.2.1",
     "typescript": "^5.7.0"

@@ -1,5 +1,7 @@
 'use client';
 
+import sanitizeHtml from 'sanitize-html';
+
 import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -313,9 +315,11 @@ export default function ProductClientView({ product, similarProducts }: ProductC
             )}
 
             {/* Short Description */}
-            <p style={{ color: '#475569', fontSize: '0.98rem', lineHeight: 1.65, marginBottom: '28px' }}>
-              {product.shortDescription || product.fullDescription}
-            </p>
+            <div
+              className="fm-product-rich-desc"
+              style={{ color: '#475569', fontSize: '0.98rem', lineHeight: 1.65, marginBottom: '28px', whiteSpace: 'pre-line' }}
+              dangerouslySetInnerHTML={{ __html: sanitizeHtml(product.shortDescription || product.fullDescription || '') }}
+            />
 
             {/* Quantity Selector & CTAs */}
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', alignItems: 'center', marginBottom: '32px' }}>
@@ -562,7 +566,7 @@ export default function ProductClientView({ product, similarProducts }: ProductC
                 <div
                   className="fm-product-rich-desc"
                   style={{ color: '#334155', lineHeight: 1.8, fontSize: '0.98rem', marginBottom: '24px', maxWidth: '850px' }}
-                  dangerouslySetInnerHTML={{ __html: product.fullDescription || '' }}
+                  dangerouslySetInnerHTML={{ __html: sanitizeHtml(product.fullDescription || '') }}
                 />
               ) : (
                 <p style={{ color: '#334155', lineHeight: 1.7, fontSize: '0.98rem', marginBottom: '24px', maxWidth: '850px', whiteSpace: 'pre-line' }}>
