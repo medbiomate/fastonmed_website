@@ -189,6 +189,7 @@ export async function GET(request: Request) {
   const products = durable ?? getCachedProducts();
   return NextResponse.json(
     { success: true, products: responseProducts(products, listView), count: products.length,
+      parentCategories: [...new Set<string>(products.flatMap((product: any) => (product.wordpressSource?.categories || []).filter((category: any) => !category.parentId && category.name && category.name.toLowerCase() !== 'uncategorized').map((category: any) => category.name)))].sort((a, b) => a.localeCompare(b)),
       source: durable === null ? 'cache' : 'database',
       ...(durable === null ? { warning: 'Database unavailable; showing cached products' } : {}) },
     { headers: { 'Cache-Control': 'no-store' } }

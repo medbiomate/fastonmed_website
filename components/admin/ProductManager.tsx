@@ -286,6 +286,7 @@ function SearchableCombobox({
   allowCustom = true,
   entityLabel,
   onCreate,
+  parentOptions = [],
 }: {
   value: string;
   onChange: (val: string) => void;
@@ -295,6 +296,7 @@ function SearchableCombobox({
   allowCustom?: boolean;
   entityLabel?: string;
   onCreate?: (name: string, parent: string) => void;
+  parentOptions?: string[];
 }) {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState('');
@@ -381,7 +383,7 @@ function SearchableCombobox({
               <label htmlFor="new-category-parent" style={{ fontSize: 12, fontWeight: 600 }}>Parent category</label>
               <select id="new-category-parent" value={parentCategory} onChange={event => setParentCategory(event.target.value)} style={{ width: '100%', marginTop: 6 }}>
                 <option value="">None (top-level category)</option>
-                {options.filter(option => option.toLowerCase() !== search.trim().toLowerCase()).map(option => <option key={option} value={option}>{option}</option>)}
+                {parentOptions.filter(option => option.toLowerCase() !== search.trim().toLowerCase()).map(option => <option key={option} value={option}>{option}</option>)}
               </select>
             </div>}
             <button type="button" className="tk-combobox-create-new" style={{ width: '100%', border: '1px solid #99dace', borderRadius: 7, textAlign: 'left' }} disabled={creating && !search.trim()} onClick={() => {
@@ -444,6 +446,7 @@ export default function ProductManager({
   initialStatus?: 'all' | 'published' | 'draft' | 'trash';
 }) {
   const [products, setProducts] = useState<Product[]>([]);
+  const [parentCategories, setParentCategories] = useState<string[]>([]);
   const [product, setProduct] = useState<Product>(blank());
   const [query, setQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -499,6 +502,7 @@ export default function ProductManager({
         if (!active) return;
         const all = x.products || [];
         setProducts(all);
+        setParentCategories((x.parentCategories || []).map(decodeHtml));
         if (id) {
           const p = all.find((v: Product) => v.id === id || v.slug === id);
           if (p) {
@@ -1816,6 +1820,7 @@ export default function ProductManager({
                   onCreate={(cat, parent) => setProduct({ ...product, category: cat, parentCategory: parent })}
                   options={categories}
                   entityLabel="category"
+                  parentOptions={parentCategories}
                   counts={categoryCounts}
                   placeholder="Select category"
                 />
