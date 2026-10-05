@@ -49,6 +49,7 @@ import { useLocale } from '@/lib/locale-context';
 import type { Product } from '@/lib/types';
 import EnquirySelect from '@/components/EnquirySelect';
 import AssociatedBrands from '@/components/AssociatedBrands';
+import HomeFAQs from '@/components/HomeFAQs';
 import GoogleReviewsSection from '@/components/GoogleReviewsSection';
 
 const baseDate = '2026-01-01T00:00:00.000Z';
@@ -3514,6 +3515,7 @@ export default function HomePage() {
 
       {/* SECTION 9: GOOGLE REVIEWS & CLINICAL CLIENT ACCREDITATIONS */}
       <GoogleReviewsSection />
+      <HomeFAQs />
     </div>
   );
 }
