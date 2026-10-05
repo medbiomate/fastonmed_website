@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'standalone',
+  // Keep native worker pools small on shared hosting.
+  experimental: { cpus: 2, imgOptConcurrency: 1 },
   images: {
     // Product images should open in the browser, not download on navigation.
     contentDispositionType: 'inline',
