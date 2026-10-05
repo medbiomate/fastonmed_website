@@ -1414,16 +1414,6 @@ export default function ProductManager({
               </label>
             </div>
 
-            <label>
-              Short description (Storefront excerpt & Quick View summary)
-              <textarea
-                rows={3}
-                value={product.shortDescription || ''}
-                onChange={(e) => setProduct({ ...product, shortDescription: e.target.value })}
-                placeholder="Brief summary for catalog cards and search..."
-              />
-            </label>
-
             {/* Rich Unified Single-Canvas Product Description */}
             <div className="tk-desc-card">
               <div className="tk-desc-card-header">
