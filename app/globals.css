@@ -2317,43 +2317,43 @@ html:has(.fm-product-gallery-sticky), body:has(.fm-product-gallery-sticky) {
   .fm-product-trust-panel span { font-size: 14px !important; line-height: 1.4; }
 }
 
-.fm-equipment-explainer { padding: 64px 0; background: #fff; }
-.fm-equipment-explainer h2 { text-align: center; color: #263c35; font-size: clamp(28px, 3vw, 42px); font-weight: 800; margin: 0 0 28px; }
+.fm-equipment-explainer { padding: 36px 0; background: #fff; }
+.fm-equipment-explainer h2 { text-align: center; color: #263c35; font-size: clamp(24px, 2.2vw, 30px); font-weight: 800; margin: 0 0 16px; }
 .fm-equipment-explainer h2 span { color: #00875a; }
-.fm-equipment-intro { color: #52635d; font-size: 17px; line-height: 1.8; margin-bottom: 32px; }
-.fm-equipment-explainer h3 { color: #193c30; font-size: 24px; margin-bottom: 24px; }
-.fm-equipment-reasons { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
-.fm-equipment-reason { padding: 28px; border-radius: 24px; background: #f4f8f5; border: 1px solid #e9f0eb; }
-.fm-equipment-reason:last-child { grid-column: 1 / -1; }
-.fm-equipment-number { color: #00875a; font-size: 22px; font-weight: 800; }
-.fm-equipment-reason h4 { color: #233d32; font-size: 21px; margin: 16px 0 12px; }
-.fm-equipment-reason p { color: #52635d; font-size: 16px; line-height: 1.8; margin: 0; }
+.fm-equipment-intro { color: #52635d; font-size: 15px; line-height: 1.6; margin-bottom: 22px; }
+.fm-equipment-explainer h3 { color: #193c30; font-size: 20px; margin-bottom: 16px; }
+.fm-equipment-reasons { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.fm-equipment-reason { padding: 20px; border-radius: 14px; background: #f4f8f5; border: 1px solid #e9f0eb; }
+
+.fm-equipment-number { color: #00875a; font-size: 17px; font-weight: 800; }
+.fm-equipment-reason h4 { color: #233d32; font-size: 17px; margin: 10px 0 8px; }
+.fm-equipment-reason p { color: #52635d; font-size: 14px; line-height: 1.6; margin: 0; }
 @media (max-width: 640px) {
-  .fm-equipment-explainer { padding: 40px 0; }
+  .fm-equipment-explainer { padding: 28px 0; }
   .fm-equipment-reasons { grid-template-columns: 1fr; gap: 16px; }
-  .fm-equipment-reason { padding: 24px; }
+  .fm-equipment-reason { padding: 18px; }
   .fm-equipment-explainer h3 { font-size: 22px; }
 }
 
 /* Biomedical equipment carousel */
-.fm-biomedical-types { padding: 64px 0; background: #f6faf8; }
+.fm-biomedical-types { padding: 36px 0; background: #f6faf8; }
 .fm-biomedical-heading { text-align: center; }
 .fm-biomedical-heading > span { color: #00865f; font-size: 12px; font-weight: 700; letter-spacing: .14em; }
-.fm-biomedical-types h2 { font-size: clamp(28px, 3vw, 38px); color: #193c30; margin: 12px 0 18px; }
-.fm-biomedical-types .fm-equipment-intro { max-width: 850px; margin: 0 auto 32px; text-align: center; }
+.fm-biomedical-types h2 { font-size: clamp(24px, 2.2vw, 30px); color: #193c30; margin: 8px 0 12px; }
+.fm-biomedical-types .fm-equipment-intro { max-width: 850px; margin: 0 auto 20px; text-align: center; }
 .fm-biomedical-type-grid { display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding: 4px 2px 16px; }
 .fm-biomedical-type-grid::-webkit-scrollbar { display: none; }
-.fm-biomedical-type { flex: 0 0 calc((100% - 40px) / 3); min-width: 0; scroll-snap-align: start; background: #fff; border: 1px solid #dce8e2; border-radius: 16px; padding: 26px; box-shadow: 0 5px 18px #193c3005; }
-.fm-biomedical-card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; }
-.fm-biomedical-icon { display: grid; place-items: center; width: 54px; height: 54px; border-radius: 14px; color: #00865f; background: #e6f6ee; }
+.fm-biomedical-type { flex: 0 0 calc((100% - 40px) / 3); min-width: 0; scroll-snap-align: start; background: #fff; border: 1px solid #dce8e2; border-radius: 14px; padding: 20px; box-shadow: 0 5px 18px #193c3005; }
+.fm-biomedical-card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.fm-biomedical-icon { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 10px; color: #00865f; background: #e6f6ee; }
 .fm-biomedical-card-top .fm-equipment-number { font-size: 15px; color: #729687; }
-.fm-biomedical-type h3 { font-size: 21px; line-height: 1.35; color: #193c30; margin: 0 0 14px; }
-.fm-biomedical-type h4 { font-size: 13px; color: #287d63; margin: 20px 0 6px; }
-.fm-biomedical-type p { color: #52635d; font-size: 15px; line-height: 1.65; margin: 0; }
+.fm-biomedical-type h3 { font-size: 18px; line-height: 1.35; color: #193c30; margin: 0 0 10px; }
+.fm-biomedical-type h4 { font-size: 13px; color: #287d63; margin: 12px 0 4px; }
+.fm-biomedical-type p { color: #52635d; font-size: 14px; line-height: 1.55; margin: 0; }
 .fm-biomedical-controls { display: flex; justify-content: space-between; align-items: center; gap: 16px; color: #60756b; font-size: 13px; margin-top: 8px; }
 .fm-biomedical-controls > div { display: flex; gap: 10px; }
 .fm-biomedical-controls button { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: #00865f; color: white; border: 0; cursor: pointer; }
 .fm-biomedical-controls button:disabled { background: #e1eae5; color: #8a9e94; cursor: default; }
 .fm-biomedical-controls button:focus-visible, .fm-biomedical-type-grid:focus-visible { outline: 3px solid #53b497; outline-offset: 4px; }
 @media (max-width: 1000px) { .fm-biomedical-type { flex-basis: calc((100% - 20px) / 2); } }
-@media (max-width: 640px) { .fm-biomedical-type { flex-basis: 88%; padding: 22px; } .fm-biomedical-types { padding: 40px 0; } .fm-biomedical-controls > span { max-width: 190px; } }
+@media (max-width: 640px) { .fm-biomedical-type { flex-basis: 88%; padding: 22px; } .fm-biomedical-types { padding: 28px 0; } .fm-biomedical-controls > span { max-width: 190px; } }
