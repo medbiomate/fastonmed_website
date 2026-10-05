@@ -1,5 +1,5 @@
 'use client';
-const labels = ['Product Category', 'Brand / Manufacturer', 'SKU / Catalog ID', 'Regulatory Compliance', 'Warranty', 'Supply Voltage / Power', 'Clinical Application', 'After-Sales Service'];
+const labels = ['Brand / Manufacturer', 'SKU / Catalog ID', 'Regulatory Compliance', 'Warranty', 'Supply Voltage / Power', 'Clinical Application', 'After-Sales Service'];
 export default function SpecificationFields({ value, onChange }: { value: string; onChange: (value: string) => void }) {
   const entries = value.split('\n').filter(line => line.includes(':')).map(line => {
     const index = line.indexOf(':');
@@ -18,7 +18,7 @@ export default function SpecificationFields({ value, onChange }: { value: string
       {labels.map(label => <label key={label}>{label}<input value={values[label] || ''} onChange={event => update(label, event.target.value)} placeholder="Leave blank to hide" /></label>)}
     </div>
     <label style={{ display: 'block', marginTop: 20 }}>Additional specifications <small>One per line: Label: Value</small>
-      <textarea rows={4} value={entries.filter(([key]) => !labels.includes(key)).map(([key, val]) => `${key}: ${val}`).join('\n')} onChange={event => onChange([...entries.filter(([key]) => labels.includes(key)).map(([key, val]) => `${key}: ${val}`), event.target.value].filter(Boolean).join('\n'))} />
+      <textarea rows={4} value={entries.filter(([key]) => !labels.includes(key) && key !== 'Product Category').map(([key, val]) => `${key}: ${val}`).join('\n')} onChange={event => onChange([...entries.filter(([key]) => (labels.includes(key) || key === 'Product Category')).map(([key, val]) => `${key}: ${val}`), event.target.value].filter(Boolean).join('\n'))} />
     </label>
   </fieldset>;
 }

@@ -766,7 +766,7 @@ export default function ProductManager({
   const openSeoModal = () => {
     setDraftSeoTitle(product.seoTitle || product.name || '');
     setDraftSeoSlug(product.slug || slugify(product.name) || '');
-    setDraftSeoDesc(product.seoDescription || product.shortDescription || '');
+    setDraftSeoDesc(product.seoDescription || (product.shortDescription || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim());
     setSeoModalOpen(true);
   };
 
@@ -1320,7 +1320,7 @@ export default function ProductManager({
       <Title
         title={id ? 'Edit Product' : 'Add Product'}
         action={
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 10 }}>
             <button
               type="button"
               onClick={() => {
@@ -1343,6 +1343,9 @@ export default function ProductManager({
               }}
             >
               <Eye size={15} /> Preview Storefront
+            </button>
+            <button type="button" className="tk-page-action" onClick={openSeoModal}>
+              <Globe size={15} /> SEO
             </button>
             <button
               className="tk-page-action"
@@ -2808,6 +2811,42 @@ export default function ProductManager({
       })()}
 
       {/* Website Media Library & Upload Modal */}
+      {seoModalOpen && (
+        <div className="fm-modal-backdrop" onClick={() => setSeoModalOpen(false)} onKeyDown={(event) => { if (event.key === 'Escape') setSeoModalOpen(false); }}>
+          <div className="fm-seo-modal" role="dialog" aria-modal="true" aria-labelledby="product-seo-title" onClick={(event) => event.stopPropagation()}>
+            <div className="fm-seo-header">
+              <h2 id="product-seo-title">Product SEO</h2>
+              <button type="button" className="fm-seo-close" aria-label="Close SEO editor" onClick={() => setSeoModalOpen(false)}><X size={18} /></button>
+            </div>
+            <div className="fm-seo-body">
+              {message && <p role="status">{message}</p>}
+              <div className="fm-seo-preview-card">
+                <h4>Search preview</h4>
+                <div className="fm-seo-preview-url">https://www.fastonmed.com/product/{draftSeoSlug || slugify(product.name)}</div>
+                <h3 className="fm-seo-preview-title">{draftSeoTitle || product.name || 'Product title'}</h3>
+                <p className="fm-seo-preview-desc">{draftSeoDesc || 'Add a description for search results.'}</p>
+              </div>
+              <label className="fm-seo-field-box" style={{ display: 'block' }}>
+                <span className="fm-seo-field-header">SEO title <span className="fm-seo-counter">{draftSeoTitle.length} / 60 recommended</span></span>
+                <input autoFocus className="fm-seo-input" value={draftSeoTitle} onChange={(event) => setDraftSeoTitle(event.target.value)} placeholder="SEO title" />
+              </label>
+              <label className="fm-seo-field-box" style={{ display: 'block' }}>
+                <span className="fm-seo-field-header">URL slug</span>
+                <input className="fm-seo-input" value={draftSeoSlug} onChange={(event) => setDraftSeoSlug(slugify(event.target.value))} placeholder="product-url" />
+              </label>
+              <label className="fm-seo-field-box" style={{ display: 'block' }}>
+                <span className="fm-seo-field-header">Meta description <span className="fm-seo-counter">{draftSeoDesc.length} / 160 recommended</span></span>
+                <textarea className="fm-seo-textarea" rows={3} value={draftSeoDesc} onChange={(event) => setDraftSeoDesc(event.target.value)} placeholder="Meta description" />
+              </label>
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 10 }}>
+                <button type="button" className="fm-seo-cancel-btn" onClick={() => setSeoModalOpen(false)}>Cancel</button>
+                <button type="button" className="fm-seo-apply-btn" disabled={isSaving || isUploading} onClick={applySeoChanges}>{isSaving ? 'Saving...' : 'Save SEO & Product'}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {mediaModalOpen && (
         <div className="fm-media-modal-backdrop" onClick={() => setMediaModalOpen(false)}>
           <div className="fm-media-modal" onClick={(e) => e.stopPropagation()}>
