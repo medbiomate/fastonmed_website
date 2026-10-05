@@ -348,7 +348,7 @@ export default function ProductClientView({ product, similarProducts }: ProductC
                 id="product-summary-description"
                 ref={descriptionRef}
                 className="fm-product-rich-desc"
-                style={{ color: '#475569', fontSize: '0.98rem', lineHeight: 1.65, whiteSpace: 'pre-line', maxHeight: descriptionExpanded ? undefined : descriptionLimit, overflow: 'hidden' }}
+                style={{ color: '#475569', fontSize: '0.98rem', lineHeight: 1.65, whiteSpace: /<[a-z][\s\S]*>/i.test(product.shortDescription || product.fullDescription || '') ? 'normal' : 'pre-line', maxHeight: descriptionExpanded ? undefined : descriptionLimit, overflow: 'hidden' }}
                 dangerouslySetInnerHTML={{ __html: sanitizeHtml(product.shortDescription || product.fullDescription || '') }}
               />
               {descriptionOverflows && <button

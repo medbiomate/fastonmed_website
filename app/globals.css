@@ -2266,3 +2266,26 @@ html:has(.fm-product-gallery-sticky), body:has(.fm-product-gallery-sticky) {
     height: 60px !important;
   }
 }
+
+/* Restore editor list formatting inside sanitized product descriptions. */
+.fm-product-rich-desc ul, .fm-product-rich-desc ol {
+  display: block;
+  margin: 12px 0 18px;
+  padding-inline-start: 24px;
+  list-style-position: outside;
+  white-space: normal;
+}
+.fm-product-rich-desc ul { list-style-type: disc; }
+.fm-product-rich-desc ol { list-style-type: decimal; }
+.fm-product-rich-desc li {
+  display: list-item;
+  margin: 5px 0;
+  padding: 0;
+  white-space: normal;
+}
+.fm-product-rich-desc li p { margin: 0; }
+.fm-product-rich-desc p { margin: 0 0 14px; }
+.fm-product-rich-desc h2, .fm-product-rich-desc h3, .fm-product-rich-desc h4 {
+  margin: 20px 0 10px;
+  line-height: 1.35;
+}
