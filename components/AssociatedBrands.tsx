@@ -26,7 +26,7 @@ const brands = [
   ['GIMA S.p.A', 'gima-s-p-a', 'gima.jpg'],
   ['Haier Biomedical', 'haier-biomedical', 'haier.png'],
   ['IcanClave', 'icanclave', 'icanclave.svg'],
-  ['KellyMed', 'kellymed', 'kellymed.png'],
+  ['KellyMed', 'kellymed', ''],
   ['Laufer Schneller', 'laufer-schneller', 'laufer.webp'],
   ['medfit', 'medfit', 'medfit.png'],
   ['MIR', 'mir', 'mir.png'],
