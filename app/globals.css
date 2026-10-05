@@ -2289,3 +2289,30 @@ html:has(.fm-product-gallery-sticky), body:has(.fm-product-gallery-sticky) {
   margin: 20px 0 10px;
   line-height: 1.35;
 }
+
+@media (max-width: 600px) {
+  .fm-product-trust-panel {
+    grid-template-columns: 1fr !important;
+    gap: 0 !important;
+    padding: 4px 16px !important;
+    border-color: #e0eae5 !important;
+    border-radius: 16px !important;
+    box-shadow: none !important;
+  }
+  .fm-product-trust-panel > div {
+    min-height: 56px;
+    gap: 12px !important;
+    padding: 12px 0;
+  }
+  .fm-product-trust-panel > div + div { border-top: 1px solid #edf2ef; }
+  .fm-product-trust-panel svg {
+    box-sizing: content-box;
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    padding: 8px;
+    background: #eef8f3;
+    border-radius: 10px;
+  }
+  .fm-product-trust-panel span { font-size: 14px !important; line-height: 1.4; }
+}

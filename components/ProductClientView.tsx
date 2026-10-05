@@ -482,6 +482,7 @@ export default function ProductClientView({ product, similarProducts }: ProductC
 
             {/* UAE Biomedical Trust Bar */}
             <div
+              className="fm-product-trust-panel"
               style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
