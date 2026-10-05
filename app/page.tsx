@@ -2421,10 +2421,12 @@ export default function HomePage() {
 
       <section className="fm-biomedical-types">
         <div className="container">
-          <h2 style={{ fontSize: '24px', color: '#193c30', marginBottom: '12px' }}>What is Biomedical Equipment?</h2>
-          <p className="fm-equipment-intro">Biomedical equipment brings engineering and clinical practice together to support diagnosis, patient monitoring, treatment, life support and everyday clinical care. It ranges from ECG machines and laboratory analysers to ventilators, infusion pumps, imaging systems and rehabilitation devices. Equipment selection depends on the clinical task, patient group, required accuracy and compatibility with a facility’s existing systems. Reliable operation also depends on correct installation and commissioning, appropriate user training, and the checks specified by the manufacturer. Calibration helps confirm measurement accuracy where applicable, while preventive maintenance and equipment inspection help identify wear or faults. Biomedical engineering support connects these practical requirements with procurement and after-sales care. <Link href={localizeUrl('/contact')}>Contact our biomedical team</Link> to discuss your equipment requirements and confirm the support available for your model.</p>
-          <div className="fm-biomedical-heading"><span>EXPLORE EQUIPMENT TYPES</span><h2>Types of Biomedical Equipment</h2></div>
-          <p className="fm-equipment-intro">Biomedical equipment supports diagnosis, patient monitoring, treatment and everyday clinical care. The categories below explain what each type does, common equipment and features, and where it is typically used. Some devices serve more than one purpose.</p>
+          <div className="fm-biomedical-summary">
+            <h2>What is Biomedical Equipment?</h2>
+            <p>Biomedical equipment supports diagnosis, monitoring, treatment and patient care—from ECG machines and patient monitors to ventilators and laboratory systems. Correct installation, calibration and preventive maintenance help keep equipment reliable. <Link href={localizeUrl('/contact')}>Our biomedical team</Link> can help you choose equipment and discuss support for your facility.</p>
+          </div>
+          <div className="fm-biomedical-heading"><h2>Types of Biomedical Equipment</h2></div>
+          <p className="fm-equipment-intro">Explore equipment, key features and where each type is used.</p>
           <div className="fm-biomedical-type-grid" ref={biomedicalScrollRef} role="region" aria-label="Biomedical equipment types" tabIndex={0} onScroll={() => {
             const track = biomedicalScrollRef.current;
             const card = track?.firstElementChild as HTMLElement | null;

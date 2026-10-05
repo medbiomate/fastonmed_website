@@ -2337,10 +2337,14 @@ html:has(.fm-product-gallery-sticky), body:has(.fm-product-gallery-sticky) {
 
 /* Biomedical equipment carousel */
 .fm-biomedical-types { padding: 36px 0; background: #f6faf8; }
-.fm-biomedical-heading { text-align: center; }
+.fm-biomedical-summary { margin-bottom: 22px; }
+.fm-biomedical-summary h2 { font-size: 22px !important; margin: 0 0 8px !important; }
+.fm-biomedical-summary p { color: #52635d; font-size: 15px; line-height: 1.6; margin: 0; max-width: 980px; }
+.fm-biomedical-summary a { color: #00865f; text-decoration: underline; text-underline-offset: 3px; }
+.fm-biomedical-heading { text-align: start; }
 .fm-biomedical-heading > span { color: #00865f; font-size: 12px; font-weight: 700; letter-spacing: .14em; }
 .fm-biomedical-types h2 { font-size: clamp(24px, 2.2vw, 30px); color: #193c30; margin: 8px 0 12px; }
-.fm-biomedical-types .fm-equipment-intro { max-width: 850px; margin: 0 auto 20px; text-align: center; }
+.fm-biomedical-types .fm-equipment-intro { max-width: 850px; margin: 0 0 16px; text-align: start; }
 .fm-biomedical-type-grid { display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding: 4px 2px 16px; }
 .fm-biomedical-type-grid::-webkit-scrollbar { display: none; }
 .fm-biomedical-type { flex: 0 0 calc((100% - 40px) / 3); min-width: 0; scroll-snap-align: start; background: #fff; border: 1px solid #dce8e2; border-radius: 14px; padding: 20px; box-shadow: 0 5px 18px #193c3005; }
