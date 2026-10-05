@@ -338,9 +338,6 @@ export default function ProductClientView({ product, similarProducts }: ProductC
                 <span style={{ fontSize: '2rem', fontWeight: 800, color: '#51b291' }}>
                   {isArabic ? `${price.toLocaleString()} درهم` : `AED ${price.toLocaleString()}`}
                 </span>
-                <span style={{ color: '#64748b', fontSize: '0.9rem', fontWeight: 500 }}>
-                  {isArabic ? 'غير شامل 5% ضريبة القيمة المضافة' : 'Excl. 5% UAE VAT'}
-                </span>
               </div>
             )}
 
