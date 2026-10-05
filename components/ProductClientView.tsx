@@ -497,7 +497,7 @@ export default function ProductClientView({ product, similarProducts }: ProductC
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <ShieldCheck size={20} color="#51b291" />
                 <span style={{ fontSize: '0.84rem', fontWeight: 600, color: '#1e293b' }}>
-                  {isArabic ? 'ضمان رسمي لمدة عام' : '1 Year Official Warranty'}
+                  {isArabic ? 'ضمان رسمي' : 'Official Warranty'}
                 </span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
