@@ -77,11 +77,7 @@ export default function ProductClientView({ product, similarProducts }: ProductC
   const price = product.salePrice && product.salePrice > 0 ? product.salePrice : product.regularPrice;
   const isFavorited = isInWishlist(product.id);
 
-  const images = (product.galleryImages && product.galleryImages.length > 0)
-    ? product.galleryImages
-    : product.mainImage
-    ? [product.mainImage]
-    : [];
+  const images = [...new Set([product.mainImage, ...(product.galleryImages || [])].filter((image): image is string => Boolean(image)))];
 
   const handleAddToCart = () => {
     addToCart(product, quantity);
