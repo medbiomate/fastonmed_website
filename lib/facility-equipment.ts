@@ -14,6 +14,6 @@ export function getFacilityProducts(products: Product[], slug: keyof typeof faci
   const terms = facilityEquipment[slug].terms;
   return products.filter(product => {
     const text = `${product.category} ${product.name}`.toLowerCase().replace(/&amp;/g, '&');
-    return terms.some(term => text.includes(term));
+    return terms.some(term => term === 'tens' ? /\btens\b/.test(text) : text.includes(term));
   });
 }
