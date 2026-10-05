@@ -2396,6 +2396,21 @@ export default function HomePage() {
         `}</style>
       </section>
 
+      <section className="fm-equipment-explainer">
+        <div className="container">
+          <h2>{isAr ? 'ما هي المعدات الطبية؟' : 'What is'} <span>{isAr ? '' : 'Medical Equipment?'}</span></h2>
+          <p className="fm-equipment-intro">{isAr ? 'المعدات الطبية هي الأجهزة والأدوات والأنظمة التي تدعم التشخيص والمراقبة والعلاج ورعاية المرضى. من أجهزة مراقبة المرضى إلى معدات المختبرات وأثاث المستشفيات، يساعد اختيار المعدات المناسبة فرق الرعاية الصحية على تقديم الرعاية.' : 'Medical equipment includes the devices, instruments and systems used to support diagnosis, monitoring, treatment and patient care. From patient monitors and diagnostic devices to laboratory equipment and hospital furniture, choosing the right equipment helps healthcare teams meet the needs of their patients and facilities.'}</p>
+          <h3>{isAr ? 'لماذا تشتري المعدات الطبية من فاستونميد؟' : 'Why purchase medical equipment from Fastonmed?'}</h3>
+          <div className="fm-equipment-reasons">
+            {[
+              { number: '01', title: isAr ? 'شركة ذات مسؤولية محدودة مرخصة في الإمارات' : 'A UAE-licensed LLC', body: isAr ? 'تعامل مع شركة ذات مسؤولية محدودة مرخصة في الإمارات. يدعم فريقنا اختيار المعدات وعروض الأسعار وتنسيق التسليم وخدمة ما بعد البيع.' : 'Purchase from a UAE-licensed limited liability company. Our team supports equipment selection, quotations, delivery coordination and after-sales enquiries, giving your facility a local point of contact.' },
+              { number: '02', title: isAr ? 'خمس مراحل للتحقق من الجودة' : 'Five-layer quality assurance', body: isAr ? 'نطبق خمس مراحل للتحقق من الجودة قبل تسليم المنتج إلى المستخدم النهائي. يشرف فريق الهندسة الطبية على الفحوصات ويتابع أي ملاحظات قبل التسليم.' : 'We apply five layers of quality checks before a product reaches the end user. Our biomedical engineering team oversees these checks and follows up on any issues before delivery, with quality assurance built into the handover process.' },
+              { number: '03', title: isAr ? 'فريق من مهندسي المعدات الطبية' : 'A team of biomedical engineers', body: isAr ? 'مهندسو المعدات الطبية هم أعضاء في فريقنا ويشاركون في التحقق من الجودة والدعم الفني. يساعدون على مراجعة متطلبات المعدات وشرح استخدامها وتنسيق الدعم بعد التسليم.' : 'Biomedical engineers are part of our team and actively handle quality checks and technical support. They help review equipment requirements, explain product operation and coordinate support after delivery, so you have access to people who understand the equipment.' }
+            ].map(reason => <article key={reason.number} className="fm-equipment-reason"><span className="fm-equipment-number">{reason.number}.</span><h4>{reason.title}</h4><p>{reason.body}</p></article>)}
+          </div>
+        </div>
+      </section>
+
       {/* SECTION 4: OUR PRODUCTS / MEDICAL EQUIPMENT SPECIALTIES */}
       <section style={{ backgroundColor: '#fafcfa', padding: '80px 0 90px', borderTop: '1px solid #f1f5f9', fontFamily: 'Arial, Helvetica, sans-serif' }}>
         <div className="container" style={{ maxWidth: '1240px', margin: '0 auto', padding: '0 20px' }}>

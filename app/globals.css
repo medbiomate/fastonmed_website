@@ -2316,3 +2316,21 @@ html:has(.fm-product-gallery-sticky), body:has(.fm-product-gallery-sticky) {
   }
   .fm-product-trust-panel span { font-size: 14px !important; line-height: 1.4; }
 }
+
+.fm-equipment-explainer { padding: 64px 0; background: #fff; }
+.fm-equipment-explainer h2 { text-align: center; color: #263c35; font-size: clamp(28px, 3vw, 42px); font-weight: 800; margin: 0 0 28px; }
+.fm-equipment-explainer h2 span { color: #00875a; }
+.fm-equipment-intro { color: #52635d; font-size: 17px; line-height: 1.8; margin-bottom: 32px; }
+.fm-equipment-explainer h3 { color: #193c30; font-size: 24px; margin-bottom: 24px; }
+.fm-equipment-reasons { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.fm-equipment-reason { padding: 28px; border-radius: 24px; background: #f4f8f5; border: 1px solid #e9f0eb; }
+.fm-equipment-reason:last-child { grid-column: 1 / -1; }
+.fm-equipment-number { color: #00875a; font-size: 22px; font-weight: 800; }
+.fm-equipment-reason h4 { color: #233d32; font-size: 21px; margin: 16px 0 12px; }
+.fm-equipment-reason p { color: #52635d; font-size: 16px; line-height: 1.8; margin: 0; }
+@media (max-width: 640px) {
+  .fm-equipment-explainer { padding: 40px 0; }
+  .fm-equipment-reasons { grid-template-columns: 1fr; gap: 16px; }
+  .fm-equipment-reason { padding: 24px; }
+  .fm-equipment-explainer h3 { font-size: 22px; }
+}
