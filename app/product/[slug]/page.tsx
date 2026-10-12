@@ -60,13 +60,17 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
   if (isAr) {
     const arFields = await translateEntityFields('product', product.id || product.slug, {
       name: product.name,
-      shortDescription: cleanDescription,
+      shortDescription: product.shortDescription || product.fullDescription || '',
       seoTitle: defaultEnSeoTitle,
       seoDescription: defaultEnSeoDescription,
     }, 'ar');
 
-    finalTitle = arFields.seoTitle || `${arFields.name} في الإمارات | فاستونميد`;
-    finalDescription = arFields.seoDescription || defaultEnSeoDescription;
+    finalTitle = arFields.seoTitle !== defaultEnSeoTitle
+      ? arFields.seoTitle
+      : `${arFields.name} في الإمارات | فاستونميد`;
+    finalDescription = arFields.seoDescription !== defaultEnSeoDescription
+      ? arFields.seoDescription
+      : arFields.shortDescription.replace(/<[^>]*>?/gm, '').slice(0, 160);
   }
 
   return {
