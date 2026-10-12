@@ -48,7 +48,7 @@ export function SwitchProviderGuide({ onEnquire }: { onEnquire: () => void }) {
     <p className="fm-purchase-subtitle">{ar("Already working with another provider? Discuss a planned handover for your medical equipment support.")}</p>
     <div className="fm-purchase-panel">
       <img src="/images/illustrations/switch-provider.svg" alt={ar("Illustration of transferring equipment support records to a new provider")} width={640} height={400} loading="lazy" />
-      <div><ol className="fm-purchase-steps">{steps.map(([title, body], index) => <li key={title}><span aria-hidden="true">{index + 1}</span><div><h3>{title}</h3><p>{body}</p></div></li>)}</ol>
+      <div><ol className="fm-purchase-steps">{steps.map(([title, body], index) => <li key={title}><span aria-hidden="true">{index + 1}</span><div><h3>{ar(title)}</h3><p>{ar(body)}</p></div></li>)}</ol>
       <div className="fm-purchase-actions"><button type="button" onClick={onEnquire}>{ar("Discuss switching to Fastonmed")}<ArrowRight size={16} /></button></div></div>
     </div>
   </div></section>;
