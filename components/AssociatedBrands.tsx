@@ -1,4 +1,5 @@
 'use client';
+import { publicArabic } from '@/lib/public-arabic';
 
 import { useRef, useState } from 'react';
 import Link from 'next/link';
@@ -36,12 +37,13 @@ const brands = [
 export default function AssociatedBrands() {
   const track = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState({ start: true, end: false });
-  const { localizeUrl } = useLocale();
+  const { localizeUrl, isArabic } = useLocale();
+  const ar = (text: string) => isArabic ? publicArabic(text) : text;
   const scroll = (direction: number) => track.current?.scrollBy({ left: direction * track.current.clientWidth, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
   return <section className="fm-associated-brands" aria-labelledby="associated-brands-title">
     <div className="container">
-      <div className="fm-associated-header"><div><h2 id="associated-brands-title">Associated Brands</h2><p>We are associated with these medical equipment brands. Explore their products at Fastonmed.</p></div><div className="fm-associated-arrows"><button aria-label="Previous brands" disabled={position.start} onClick={() => scroll(-1)}><ChevronLeft size={20} /></button><button aria-label="Next brands" disabled={position.end} onClick={() => scroll(1)}><ChevronRight size={20} /></button></div></div>
-      <div className="fm-associated-track" ref={track} tabIndex={0} aria-label="Associated medical equipment brands" onScroll={() => { const el = track.current; if (el) setPosition({ start: el.scrollLeft <= 2, end: el.scrollLeft + el.clientWidth >= el.scrollWidth - 2 }); }}>
+      <div className="fm-associated-header"><div><h2 id="associated-brands-title">{ar("Associated Brands")}</h2><p>{ar("We are associated with these medical equipment brands. Explore their products at Fastonmed.")}</p></div><div className="fm-associated-arrows"><button aria-label={ar("Previous brands")} disabled={position.start} onClick={() => scroll(-1)}><ChevronLeft size={20} /></button><button aria-label={ar("Next brands")} disabled={position.end} onClick={() => scroll(1)}><ChevronRight size={20} /></button></div></div>
+      <div className="fm-associated-track" ref={track} tabIndex={0} aria-label={ar("Associated medical equipment brands")} onScroll={() => { const el = track.current; if (el) setPosition({ start: el.scrollLeft <= 2, end: el.scrollLeft + el.clientWidth >= el.scrollWidth - 2 }); }}>
         {brands.map(([name, slug, logo]) => <Link key={slug} href={localizeUrl(`/brand/${slug}`)} className={`fm-associated-card ${['haier.png', 'icanclave.svg', 'laufer.webp'].includes(logo) ? 'fm-associated-dark' : ''}`}>
           {logo ? <img src={`/images/brands/${logo}`} alt={`${name} logo`} loading="lazy" width={160} height={60} /> : <strong>{name}</strong>}
           <span>{name}</span>

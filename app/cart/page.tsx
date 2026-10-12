@@ -1,4 +1,6 @@
 'use client';
+import { useLocale } from '@/lib/locale-context';
+import { publicArabic } from '@/lib/public-arabic';
 
 import React from 'react';
 import Link from 'next/link';
@@ -7,6 +9,7 @@ import { useApp } from '@/lib/context';
 import { Trash2, Plus, Minus, ArrowRight, ShieldCheck, ShoppingBag, MessageCircle } from 'lucide-react';
 
 export default function CartPage() {
+ const { isArabic, localizeUrl } = useLocale(); const ar = (text: string) => isArabic ? publicArabic(text) : text;
   const { cart, updateCartQuantity, removeFromCart, cartSubtotal, cartTax, cartGrandTotal } = useApp();
 
   const waCartText = encodeURIComponent(
@@ -23,14 +26,10 @@ export default function CartPage() {
           <div style={{ width: '64px', height: '64px', borderRadius: '50%', backgroundColor: '#eaf7f2', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px' }}>
             <ShoppingBag size={32} color="#51b291" />
           </div>
-          <h1 style={{ fontSize: '1.8rem', fontWeight: 800, color: '#0f172a', marginBottom: '8px' }}>
-            Your Cart is Currently Empty
-          </h1>
-          <p style={{ color: '#64748b', fontSize: '0.95rem', marginBottom: '24px' }}>
-            Explore our certified hospital equipment and medical consumables.
-          </p>
+          <h1 style={{ fontSize: '1.8rem', fontWeight: 800, color: '#0f172a', marginBottom: '8px' }}>{ar("Your Cart is Currently Empty")}</h1>
+          <p style={{ color: '#64748b', fontSize: '0.95rem', marginBottom: '24px' }}>{ar("Explore our certified hospital equipment and medical consumables.")}</p>
           <Link
-            href="/shop"
+            href={localizeUrl("/shop")}
             style={{
               backgroundColor: '#51b291',
               color: '#ffffff',
@@ -43,7 +42,7 @@ export default function CartPage() {
               textDecoration: 'none'
             }}
           >
-            <span>Browse Medical Catalog</span>
+            <span>{ar("Browse Medical Catalog")}</span>
             <ArrowRight size={16} />
           </Link>
         </div>
@@ -55,15 +54,13 @@ export default function CartPage() {
     <div style={{ backgroundColor: '#f8fafc', padding: '48px 0 80px' }}>
       <div className="container">
         <h1 style={{ fontSize: '2.2rem', fontWeight: 800, color: '#0f172a', marginBottom: '32px' }}>
-          Shopping Cart ({cart.length} items)
+          {isArabic ? `سلة التسوق (${cart.length} منتج)` : `Shopping Cart (${cart.length} items)`}
         </h1>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '32px', alignItems: 'start' }}>
           {/* Cart Table */}
           <div style={{ backgroundColor: '#ffffff', borderRadius: '16px', border: '1px solid #e2e8f0', overflow: 'hidden' }}>
-            <div style={{ padding: '20px 24px', borderBottom: '1px solid #e2e8f0', fontWeight: 700, color: '#0f172a', fontSize: '0.95rem' }}>
-              Order Items
-            </div>
+            <div style={{ padding: '20px 24px', borderBottom: '1px solid #e2e8f0', fontWeight: 700, color: '#0f172a', fontSize: '0.95rem' }}>{ar("Order Items")}</div>
 
             <div style={{ display: 'flex', flexDirection: 'column' }}>
               {cart.map(item => (
@@ -89,10 +86,9 @@ export default function CartPage() {
                     </div>
                     <div>
                       <div style={{ fontSize: '0.95rem', fontWeight: 700, color: '#0f172a' }}>{item.name}</div>
-                      <div style={{ fontSize: '0.8rem', color: '#64748b' }}>SKU: {item.sku}</div>
+                      <div style={{ fontSize: '0.8rem', color: '#64748b' }}>{ar("SKU:")}{item.sku}</div>
                       <div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#51b291', marginTop: '2px' }}>
-                        AED {item.price.toLocaleString()} each
-                      </div>
+                        AED {item.price.toLocaleString()}{ar("each")}</div>
                     </div>
                   </div>
 
@@ -133,27 +129,25 @@ export default function CartPage() {
 
           {/* Summary Box */}
           <div style={{ backgroundColor: '#ffffff', borderRadius: '16px', border: '1px solid #e2e8f0', padding: '28px' }}>
-            <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0f172a', marginBottom: '20px' }}>
-              Order Summary
-            </h2>
+            <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0f172a', marginBottom: '20px' }}>{ar("Order Summary")}</h2>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '20px', borderBottom: '1px solid #e2e8f0', paddingBottom: '20px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', color: '#64748b', fontSize: '0.92rem' }}>
-                <span>Subtotal (Excl. VAT)</span>
+                <span>{ar("Subtotal (Excl. VAT)")}</span>
                 <span style={{ fontWeight: 600, color: '#0f172a' }}>AED {cartSubtotal.toLocaleString()}</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', color: '#64748b', fontSize: '0.92rem' }}>
-                <span>UAE VAT (5%)</span>
+                <span>{ar("UAE VAT (5%)")}</span>
                 <span style={{ fontWeight: 600, color: '#0f172a' }}>AED {cartTax.toLocaleString()}</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', color: '#64748b', fontSize: '0.92rem' }}>
-                <span>UAE Delivery (All 7 Emirates)</span>
-                <span style={{ fontWeight: 600, color: '#10b981' }}>FREE</span>
+                <span>{ar("UAE Delivery (All 7 Emirates)")}</span>
+                <span style={{ fontWeight: 600, color: '#10b981' }}>{ar("FREE")}</span>
               </div>
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.2rem', fontWeight: 800, color: '#0f172a', marginBottom: '24px' }}>
-              <span>Total Amount</span>
+              <span>{ar("Total Amount")}</span>
               <span style={{ color: '#51b291' }}>AED {cartGrandTotal.toLocaleString()}</span>
             </div>
 
@@ -178,11 +172,11 @@ export default function CartPage() {
                 }}
               >
                 <MessageCircle size={20} />
-                <span>Confirm Order via WhatsApp</span>
+                <span>{ar("Confirm Order via WhatsApp")}</span>
               </a>
 
               <Link
-                href="/shop"
+                href={localizeUrl("/shop")}
                 style={{
                   textAlign: 'center',
                   color: '#64748b',
@@ -191,9 +185,7 @@ export default function CartPage() {
                   textDecoration: 'none',
                   padding: '8px'
                 }}
-              >
-                ← Continue Shopping
-              </Link>
+              >{ar("← Continue Shopping")}</Link>
             </div>
           </div>
         </div>

@@ -1,4 +1,5 @@
 'use client';
+import { publicArabic } from '@/lib/public-arabic';
 
 import React, { useState } from 'react';
 import Image from 'next/image';
@@ -61,6 +62,7 @@ export default function EditorialPageClient({
   faqs,
 }: EditorialPageClientProps) {
   const { isArabic, t } = useLocale();
+  const ar = (text: string) => isArabic ? publicArabic(text) : text;
   const localizeHref = (href: string) => {
     if (!isArabic) return href;
     if (href.startsWith('/ar')) return href;
@@ -166,12 +168,8 @@ export default function EditorialPageClient({
                     margin: 0,
                     letterSpacing: '-0.02em',
                   }}
-                >
-                  Product Categories
-                </h2>
-                <p style={{ margin: '4px 0 0', color: '#64748b', fontSize: '0.9rem' }}>
-                  Explore comprehensive medical, surgical, and dental equipment solutions
-                </p>
+                >{ar("Product Categories")}</h2>
+                <p style={{ margin: '4px 0 0', color: '#64748b', fontSize: '0.9rem' }}>{ar("Explore comprehensive medical, surgical, and dental equipment solutions")}</p>
               </div>
 
               {/* Navigation arrows for categories */}
@@ -233,7 +231,7 @@ export default function EditorialPageClient({
             >
               {categories.map((cat) => (
                 <Link
-                  key={cat.name}
+                  key={ar(cat.name)}
                   href={localizeHref(`/shop?category=${encodeURIComponent(cat.name)}`)}
                   className="group"
                   style={{
@@ -256,7 +254,7 @@ export default function EditorialPageClient({
                   >
                     <Image
                       src={cat.image}
-                      alt={cat.name}
+                      alt={ar(cat.name)}
                       fill
                       sizes="160px"
                       style={{
@@ -278,7 +276,7 @@ export default function EditorialPageClient({
                       justifyContent: 'center',
                     }}
                   >
-                    {cat.name}
+                    {ar(cat.name)}
                   </div>
                 </Link>
               ))}
@@ -312,9 +310,7 @@ export default function EditorialPageClient({
                   letterSpacing: '0.08em',
                   marginBottom: 8,
                 }}
-              >
-                In-Stock Across UAE
-              </span>
+              >{ar("In-Stock Across UAE")}</span>
               <h2
                 style={{
                   fontSize: 'clamp(1.6rem, 3vw, 2.25rem)',
@@ -326,9 +322,7 @@ export default function EditorialPageClient({
               >
                 {slug.includes('dental') ? 'Featured Dental Equipment' : `Featured ${title} Solutions`}
               </h2>
-              <p style={{ color: '#475569', fontSize: '0.95rem', lineHeight: 1.6, margin: 0 }}>
-                High-grade clinical instruments, certified consumables, and equipment available with immediate UAE-wide delivery and warranty support.
-              </p>
+              <p style={{ color: '#475569', fontSize: '0.95rem', lineHeight: 1.6, margin: 0 }}>{ar("High-grade clinical instruments, certified consumables, and equipment available with immediate UAE-wide delivery and warranty support.")}</p>
             </div>
 
             {/* Products Grid */}
@@ -351,7 +345,7 @@ export default function EditorialPageClient({
 
                 // Prefilled WhatsApp link
                 const waMessage = encodeURIComponent(
-                  `Hello FastonMed Sales Team,\nI would like to inquire/purchase:\n*${product.name}*\nPrice: ${
+                  `Hello FastonMed Sales Team,\nI would like to inquire/purchase:\n*${ar(product.name)}*\nPrice: ${
                     price && price > 0 ? `AED ${price.toLocaleString()}` : 'Contact for Price'
                   }\nURL: https://www.fastonmed.com/product/${product.slug}\n\nThank you!`
                 );
@@ -384,7 +378,7 @@ export default function EditorialPageClient({
                       <Link href={localizeHref(`/product/${product.slug}`)}>
                         <Image
                           src={product.mainImage || '/products/dental-chair.jpg'}
-                          alt={product.name}
+                          alt={ar(product.name)}
                           fill
                           sizes="(max-width: 768px) 100vw, 280px"
                           style={{ objectFit: 'contain', padding: 12 }}
@@ -403,9 +397,7 @@ export default function EditorialPageClient({
                             padding: '3px 8px',
                             borderRadius: 6,
                           }}
-                        >
-                          Sale
-                        </span>
+                        >{ar("Sale")}</span>
                       )}
                     </div>
 
@@ -458,7 +450,7 @@ export default function EditorialPageClient({
                             textDecoration: 'none',
                           }}
                         >
-                          {product.name}
+                          {ar(product.name)}
                         </Link>
                       </h3>
 
@@ -480,7 +472,7 @@ export default function EditorialPageClient({
                                 color: '#134e4a',
                               }}
                             >
-                              {price.toLocaleString()} <span style={{ fontSize: '0.75rem' }}>AED</span>
+                              {price.toLocaleString()} <span style={{ fontSize: '0.75rem' }}>{ar("AED")}</span>
                             </span>
                             {hasDiscount && (
                               <span
@@ -490,8 +482,7 @@ export default function EditorialPageClient({
                                   textDecoration: 'line-through',
                                 }}
                               >
-                                {product.regularPrice.toLocaleString()} AED
-                              </span>
+                                {product.regularPrice.toLocaleString()}{ar("AED")}</span>
                             )}
                           </>
                         ) : (
@@ -501,9 +492,7 @@ export default function EditorialPageClient({
                               fontWeight: 700,
                               color: '#2563eb',
                             }}
-                          >
-                            Price on Request
-                          </span>
+                          >{ar("Price on Request")}</span>
                         )}
                       </div>
 
@@ -596,9 +585,7 @@ export default function EditorialPageClient({
                   textDecoration: 'none',
                   transition: 'background-color 0.2s',
                 }}
-              >
-                Browse All Products in Shop
-                <ExternalLink size={16} />
+              >{ar("Browse All Products in Shop")}<ExternalLink size={16} />
               </Link>
             </div>
           </div>
@@ -626,9 +613,7 @@ export default function EditorialPageClient({
                   letterSpacing: '0.12em',
                   marginBottom: 6,
                 }}
-              >
-                Who We Serve
-              </span>
+              >{ar("Who We Serve")}</span>
               <h2
                 style={{
                   fontSize: 'clamp(1.6rem, 3vw, 2.25rem)',
@@ -637,12 +622,8 @@ export default function EditorialPageClient({
                   margin: '0 0 10px',
                   letterSpacing: '-0.02em',
                 }}
-              >
-                Healthcare Industries We Support
-              </h2>
-              <p style={{ color: '#475569', fontSize: '0.95rem', lineHeight: 1.6, margin: 0 }}>
-                From large multi-specialty hospitals to home healthcare providers, our equipment solutions are tailored for every healthcare setting.
-              </p>
+              >{ar("Healthcare Industries We Support")}</h2>
+              <p style={{ color: '#475569', fontSize: '0.95rem', lineHeight: 1.6, margin: 0 }}>{ar("From large multi-specialty hospitals to home healthcare providers, our equipment solutions are tailored for every healthcare setting.")}</p>
             </div>
 
             {/* 6 Industry Cards */}
@@ -655,7 +636,7 @@ export default function EditorialPageClient({
             >
               {industries.map((ind) => (
                 <div
-                  key={ind.title}
+                  key={ar(ind.title)}
                   style={{
                     backgroundColor: '#ffffff',
                     borderRadius: 14,
@@ -668,7 +649,7 @@ export default function EditorialPageClient({
                   <div style={{ position: 'relative', width: '100%', height: 180, backgroundColor: '#f1f5f9' }}>
                     <Image
                       src={ind.image}
-                      alt={ind.title}
+                      alt={ar(ind.title)}
                       fill
                       sizes="(max-width: 768px) 100vw, 360px"
                       style={{ objectFit: 'cover' }}
@@ -683,10 +664,10 @@ export default function EditorialPageClient({
                         margin: '0 0 4px',
                       }}
                     >
-                      {ind.title}
+                      {ar(ind.title)}
                     </h3>
                     <p style={{ margin: 0, color: '#64748b', fontSize: '0.88rem' }}>
-                      {ind.subtitle}
+                      {ar(ind.subtitle)}
                     </p>
                   </div>
                 </div>
@@ -714,12 +695,8 @@ export default function EditorialPageClient({
                   color: '#0f2923',
                   margin: '0 0 8px',
                 }}
-              >
-                Reliable Partner in Healthcare Infrastructure
-              </h2>
-              <p style={{ color: '#64748b', fontSize: '0.88rem', margin: 0 }}>
-                Authorized distribution and service partner for certified global healthcare manufacturers
-              </p>
+              >{ar("Reliable Partner in Healthcare Infrastructure")}</h2>
+              <p style={{ color: '#64748b', fontSize: '0.88rem', margin: 0 }}>{ar("Authorized distribution and service partner for certified global healthcare manufacturers")}</p>
             </div>
 
             <div
@@ -782,9 +759,7 @@ export default function EditorialPageClient({
                   letterSpacing: '0.1em',
                   marginBottom: 6,
                 }}
-              >
-                Answers & Insights
-              </span>
+              >{ar("Answers & Insights")}</span>
               <h2
                 style={{
                   fontSize: 'clamp(1.6rem, 3vw, 2.25rem)',
@@ -793,12 +768,8 @@ export default function EditorialPageClient({
                   margin: '0 0 8px',
                   letterSpacing: '-0.02em',
                 }}
-              >
-                Frequently Asked Questions
-              </h2>
-              <p style={{ color: '#64748b', fontSize: '0.92rem', margin: 0 }}>
-                Find answers regarding procurement, clinical certification, installation, and after-sales support across Dubai and the UAE.
-              </p>
+              >{ar("Frequently Asked Questions")}</h2>
+              <p style={{ color: '#64748b', fontSize: '0.92rem', margin: 0 }}>{ar("Find answers regarding procurement, clinical certification, installation, and after-sales support across Dubai and the UAE.")}</p>
             </div>
 
             {/* Accordion list */}
@@ -913,9 +884,7 @@ export default function EditorialPageClient({
                   letterSpacing: '0.1em',
                   marginBottom: 6,
                 }}
-              >
-                Dubai Location & Support
-              </span>
+              >{ar("Dubai Location & Support")}</span>
               <h3
                 style={{
                   fontSize: '1.65rem',
@@ -923,12 +892,8 @@ export default function EditorialPageClient({
                   color: '#0f2923',
                   margin: '0 0 16px',
                 }}
-              >
-                Our Dubai Office
-              </h3>
-              <p style={{ color: '#475569', fontSize: '0.92rem', lineHeight: 1.6, marginBottom: 24 }}>
-                FastonMed supplies and maintains medical & dental installations across all seven Emirates with on-site biomedical technical support.
-              </p>
+              >{ar("Our Dubai Office")}</h3>
+              <p style={{ color: '#475569', fontSize: '0.92rem', lineHeight: 1.6, marginBottom: 24 }}>{ar("FastonMed supplies and maintains medical & dental installations across all seven Emirates with on-site biomedical technical support.")}</p>
 
               {/* Map embed */}
               <div
@@ -972,10 +937,8 @@ export default function EditorialPageClient({
                     <MapPin size={18} />
                   </div>
                   <div>
-                    <div style={{ fontSize: '0.78rem', color: '#64748b', fontWeight: 600 }}>Address</div>
-                    <div style={{ fontSize: '0.92rem', color: '#0f2923', fontWeight: 700 }}>
-                      Dubai, United Arab Emirates
-                    </div>
+                    <div style={{ fontSize: '0.78rem', color: '#64748b', fontWeight: 600 }}>{ar("Address")}</div>
+                    <div style={{ fontSize: '0.92rem', color: '#0f2923', fontWeight: 700 }}>{ar("Dubai, United Arab Emirates")}</div>
                   </div>
                 </div>
 
@@ -996,7 +959,7 @@ export default function EditorialPageClient({
                     <Phone size={18} />
                   </div>
                   <div>
-                    <div style={{ fontSize: '0.78rem', color: '#64748b', fontWeight: 600 }}>Direct Call / WhatsApp</div>
+                    <div style={{ fontSize: '0.78rem', color: '#64748b', fontWeight: 600 }}>{ar("Direct Call / WhatsApp")}</div>
                     <div style={{ fontSize: '0.92rem', color: '#0f2923', fontWeight: 700 }}>
                       +971 50 889 3586 / +971 50 889 3589
                     </div>
@@ -1020,7 +983,7 @@ export default function EditorialPageClient({
                     <Mail size={18} />
                   </div>
                   <div>
-                    <div style={{ fontSize: '0.78rem', color: '#64748b', fontWeight: 600 }}>Email</div>
+                    <div style={{ fontSize: '0.78rem', color: '#64748b', fontWeight: 600 }}>{ar("Email")}</div>
                     <div style={{ fontSize: '0.92rem', color: '#0f2923', fontWeight: 700 }}>
                       sales@fastonmed.com
                     </div>
@@ -1049,9 +1012,7 @@ export default function EditorialPageClient({
                   letterSpacing: '0.1em',
                   marginBottom: 6,
                 }}
-              >
-                Inquiry & Consultation
-              </span>
+              >{ar("Inquiry & Consultation")}</span>
               <h3
                 style={{
                   fontSize: '1.65rem',
@@ -1059,12 +1020,8 @@ export default function EditorialPageClient({
                   color: '#0f2923',
                   margin: '0 0 10px',
                 }}
-              >
-                Get in Touch
-              </h3>
-              <p style={{ color: '#475569', fontSize: '0.92rem', lineHeight: 1.6, marginBottom: 24 }}>
-                Looking for reliable dental or medical equipment or expert guidance? Complete the form below, and our biomedical specialist team will assist you promptly.
-              </p>
+              >{ar("Get in Touch")}</h3>
+              <p style={{ color: '#475569', fontSize: '0.92rem', lineHeight: 1.6, marginBottom: 24 }}>{ar("Looking for reliable dental or medical equipment or expert guidance? Complete the form below, and our biomedical specialist team will assist you promptly.")}</p>
 
               {submitStatus === 'success' ? (
                 <div
@@ -1077,12 +1034,8 @@ export default function EditorialPageClient({
                   }}
                 >
                   <CheckCircle2 size={36} color="#059669" style={{ margin: '0 auto 12px' }} />
-                  <h4 style={{ margin: '0 0 6px', color: '#065f46', fontSize: '1.1rem' }}>
-                    Thank you! We received your enquiry.
-                  </h4>
-                  <p style={{ margin: '0 0 16px', color: '#047857', fontSize: '0.88rem' }}>
-                    A FastonMed healthcare equipment specialist will get back to you within 2 business hours.
-                  </p>
+                  <h4 style={{ margin: '0 0 6px', color: '#065f46', fontSize: '1.1rem' }}>{ar("Thank you! We received your enquiry.")}</h4>
+                  <p style={{ margin: '0 0 16px', color: '#047857', fontSize: '0.88rem' }}>{ar("A FastonMed healthcare equipment specialist will get back to you within 2 business hours.")}</p>
                   <button
                     type="button"
                     onClick={() => setSubmitStatus('idle')}
@@ -1096,9 +1049,7 @@ export default function EditorialPageClient({
                       fontWeight: 700,
                       cursor: 'pointer',
                     }}
-                  >
-                    Send Another Message
-                  </button>
+                  >{ar("Send Another Message")}</button>
                 </div>
               ) : (
                 <form onSubmit={handleFormSubmit} style={{ display: 'grid', gap: 16 }}>
@@ -1131,15 +1082,13 @@ export default function EditorialPageClient({
                           color: '#334155',
                           marginBottom: 4,
                         }}
-                      >
-                        Your Name *
-                      </label>
+                      >{ar("Your Name *")}</label>
                       <input
                         type="text"
                         required
                         value={formName}
                         onChange={(e) => setFormName(e.target.value)}
-                        placeholder="Dr. / Mr. / Ms."
+                        placeholder={ar("Dr. / Mr. / Ms.")}
                         style={{
                           width: '100%',
                           padding: '10px 14px',
@@ -1160,9 +1109,7 @@ export default function EditorialPageClient({
                           color: '#334155',
                           marginBottom: 4,
                         }}
-                      >
-                        Phone / WhatsApp *
-                      </label>
+                      >{ar("Phone / WhatsApp *")}</label>
                       <input
                         type="tel"
                         required
@@ -1191,9 +1138,7 @@ export default function EditorialPageClient({
                           color: '#334155',
                           marginBottom: 4,
                         }}
-                      >
-                        Email Address *
-                      </label>
+                      >{ar("Email Address *")}</label>
                       <input
                         type="email"
                         required
@@ -1220,14 +1165,12 @@ export default function EditorialPageClient({
                           color: '#334155',
                           marginBottom: 4,
                         }}
-                      >
-                        Clinic / Healthcare Facility
-                      </label>
+                      >{ar("Clinic / Healthcare Facility")}</label>
                       <input
                         type="text"
                         value={formClinic}
                         onChange={(e) => setFormClinic(e.target.value)}
-                        placeholder="Facility or Hospital Name"
+                        placeholder={ar("Facility or Hospital Name")}
                         style={{
                           width: '100%',
                           padding: '10px 14px',
@@ -1249,15 +1192,13 @@ export default function EditorialPageClient({
                         color: '#334155',
                         marginBottom: 4,
                       }}
-                    >
-                      Equipment Requirements / Message *
-                    </label>
+                    >{ar("Equipment Requirements / Message *")}</label>
                     <textarea
                       required
                       rows={4}
                       value={formMessage}
                       onChange={(e) => setFormMessage(e.target.value)}
-                      placeholder="Please mention the equipment, model, or setup service you require..."
+                      placeholder={ar("Please mention the equipment, model, or setup service you require...")}
                       style={{
                         width: '100%',
                         padding: '10px 14px',
@@ -1293,7 +1234,7 @@ export default function EditorialPageClient({
                       }}
                     >
                       <Send size={16} />
-                      {isSubmitting ? 'Sending Request...' : 'Send Consultation Request'}
+                      {isSubmitting ? ar("Sending Request...") : ar("Send Consultation Request")}
                     </button>
 
                     <a

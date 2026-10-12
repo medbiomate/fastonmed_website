@@ -1,4 +1,5 @@
 'use client';
+import { publicArabic } from '@/lib/public-arabic';
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
@@ -599,6 +600,7 @@ const heroFeaturedProducts = [
 export default function HomePage() {
   const { locale, isArabic, localizeUrl } = useLocale();
   const isAr = isArabic || locale === 'ar';
+  const ar = (text: string) => isAr ? publicArabic(text) : text;
   const { addToCart, isInWishlist, toggleWishlist } = useApp();
   const [products, setProducts] = useState<Product[]>(initialBentoProducts);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -732,7 +734,7 @@ export default function HomePage() {
 
   const handleAddToCart = (product: Product) => {
     addToCart(product, 1);
-    setToastMessage(`Added "${product.name}" to enquiry list`);
+    setToastMessage(`Added "${ar(product.name)}" to enquiry list`);
     setTimeout(() => setToastMessage(null), 3000);
   };
 
@@ -1304,7 +1306,7 @@ export default function HomePage() {
 
                     <div>
                       <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 600, color: '#475569', marginBottom: '6px', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                        {isAr ? 'الهاتف / واتساب *' : 'Phone / WhatsApp *'}
+                        {isAr ? 'الهاتف / واتساب *' : ar("Phone / WhatsApp *")}
                       </label>
                       <input
                         type="tel"
@@ -2560,7 +2562,7 @@ export default function HomePage() {
                   >
                     <img
                       src={product.mainImage || (product as any).image || '/products/patient-monitor.jpg'}
-                      alt={product.name}
+                      alt={ar(product.name)}
                       style={{
                         maxHeight: '100%',
                         maxWidth: '100%',
@@ -2593,7 +2595,7 @@ export default function HomePage() {
                         fontFamily: 'Arial, Helvetica, sans-serif'
                       }}
                     >
-                      {product.category || (isAr ? 'مستلزمات طبية' : 'Medical Supplies')}
+                      {ar(product.category || (isAr ? 'مستلزمات طبية' : 'Medical Supplies'))}
                     </span>
 
                     <Link
@@ -2614,7 +2616,7 @@ export default function HomePage() {
                         fontFamily: 'Arial, Helvetica, sans-serif'
                       }}
                     >
-                      {product.name}
+                      {ar(product.name)}
                     </Link>
 
                     {/* Action Button: Single Full-Width Enquiry */}
@@ -2627,12 +2629,10 @@ export default function HomePage() {
                     >
                       {price > 0 && (
                         <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px', marginBottom: '8px' }}>
-                          <span style={{ fontSize: '0.98rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                            AED {price.toLocaleString()}
+                          <span style={{ fontSize: '0.98rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Arial, Helvetica, sans-serif' }}>{ar("AED")}{price.toLocaleString()}
                           </span>
                           {hasDiscount && (
-                            <span style={{ fontSize: '0.72rem', color: '#94a3b8', textDecoration: 'line-through', fontFamily: 'Arial, Helvetica, sans-serif' }}>
-                              AED {product.regularPrice.toLocaleString()}
+                            <span style={{ fontSize: '0.72rem', color: '#94a3b8', textDecoration: 'line-through', fontFamily: 'Arial, Helvetica, sans-serif' }}>{ar("AED")}{product.regularPrice.toLocaleString()}
                             </span>
                           )}
                         </div>
@@ -3488,38 +3488,38 @@ export default function HomePage() {
       <section className="fm-biomedical-types">
         <div className="container">
           <div className="fm-biomedical-summary">
-            <h2>What is Biomedical Equipment?</h2>
-            <p>Biomedical equipment supports diagnosis, monitoring, treatment and patient care—from ECG machines and patient monitors to ventilators and laboratory systems. Correct installation, calibration and preventive maintenance help keep equipment reliable. <Link href={localizeUrl('/contact')}>Our biomedical team</Link> can help you choose equipment and discuss support for your facility.</p>
+            <h2>{ar("What is Biomedical Equipment?")}</h2>
+            <p>{ar("Biomedical equipment supports diagnosis, monitoring, treatment and patient care—from ECG machines and patient monitors to ventilators and laboratory systems. Correct installation, calibration and preventive maintenance help keep equipment reliable.")}<Link href={localizeUrl('/contact')}>{ar("Our biomedical team")}</Link>{ar("can help you choose equipment and discuss support for your facility.")}</p>
           </div>
-          <div className="fm-biomedical-heading"><h2>Types of Biomedical Equipment</h2></div>
-          <p className="fm-equipment-intro">Explore equipment, key features and where each type is used.</p>
-          <div className="fm-biomedical-type-grid" ref={biomedicalScrollRef} role="region" aria-label="Biomedical equipment types" tabIndex={0} onScroll={() => {
+          <div className="fm-biomedical-heading"><h2>{ar("Types of Biomedical Equipment")}</h2></div>
+          <p className="fm-equipment-intro">{ar("Explore equipment, key features and where each type is used.")}</p>
+          <div className="fm-biomedical-type-grid" ref={biomedicalScrollRef} role="region" aria-label={ar("Biomedical equipment types")} tabIndex={0} onScroll={() => {
             const track = biomedicalScrollRef.current;
             const card = track?.firstElementChild as HTMLElement | null;
             if (track && card) setBiomedicalSlide(Math.round(Math.abs(track.scrollLeft) / (card.offsetWidth + 20)));
           }}>
             {[
-              { title: 'Diagnostic Equipment', description: 'Helps healthcare professionals assess symptoms and measure clinical parameters.', features: 'ECG machines, blood pressure monitors, spirometers and otoscopes.', used: 'Clinics, outpatient departments and diagnostic centres.' },
-              { title: 'Patient Monitoring Equipment', description: 'Tracks patient measurements over time to support clinical observation.', features: 'Multi-parameter monitors, pulse oximeters and telemetry systems; alarms and trend displays vary by model.', used: 'ICUs, emergency departments, operating theatres and hospital wards.' },
-              { title: 'Therapeutic Equipment', description: 'Delivers a treatment or supports a prescribed therapy.', features: 'Infusion pumps, nebulizers and electrotherapy units with model-specific treatment settings.', used: 'Hospitals, respiratory clinics and physiotherapy departments.' },
-              { title: 'Life Support Equipment', description: 'Supports essential functions such as breathing in critical care.', features: 'Ventilators, defibrillators and oxygen delivery systems with monitoring and safety functions appropriate to each device.', used: 'ICUs, emergency departments, ambulances and operating theatres.' },
-              { title: 'Laboratory Equipment', description: 'Processes and analyses samples to support clinical testing.', features: 'Centrifuges, microscopes, analysers and laboratory refrigerators.', used: 'Clinical laboratories, hospitals and research facilities.' },
-              { title: 'Surgical Equipment', description: 'Supports surgical procedures, instrument handling and the operating environment.', features: 'Electrosurgical units, surgical lights, operating tables and suction systems.', used: 'Operating theatres, day-surgery centres and procedure rooms.' },
-              { title: 'Imaging Equipment', description: 'Produces images used to examine internal structures and guide assessment.', features: 'Ultrasound, X-ray, CT and MRI systems; image modes and software depend on the system.', used: 'Radiology departments, imaging centres and specialist clinics.' },
-              { title: 'Rehabilitation Equipment', description: 'Supports movement training, recovery and functional rehabilitation.', features: 'Therapy tables, exercise systems, gait-training aids and rehabilitation devices.', used: 'Physiotherapy clinics, rehabilitation centres and supervised home-care programmes.' },
-              { title: 'Hospital & Clinical Equipment', description: 'Supports everyday patient care and the practical needs of healthcare facilities.', features: 'Hospital beds, examination couches, medical scales and patient-transfer equipment.', used: 'Hospital wards, clinics, nursing facilities and examination rooms.' },
-              { title: 'Dermatology & Aesthetic Equipment', description: 'Supports skin assessment and selected dermatological or aesthetic treatments.', features: 'Dermatoscopes, treatment lasers, IPL systems and other skin-treatment devices, selected for the intended procedure.', used: 'Dermatology clinics, licensed aesthetic centres and specialist treatment rooms.' }
-            ].map((type, index) => <article className="fm-biomedical-type" key={type.title}>
+              { title: 'Diagnostic Equipment', description: ar("Helps healthcare professionals assess symptoms and measure clinical parameters."), features: ar("ECG machines, blood pressure monitors, spirometers and otoscopes."), used: ar("Clinics, outpatient departments and diagnostic centres.") },
+              { title: 'Patient Monitoring Equipment', description: ar("Tracks patient measurements over time to support clinical observation."), features: ar("Multi-parameter monitors, pulse oximeters and telemetry systems; alarms and trend displays vary by model."), used: ar("ICUs, emergency departments, operating theatres and hospital wards.") },
+              { title: ar("Therapeutic Equipment"), description: ar("Delivers a treatment or supports a prescribed therapy."), features: ar("Infusion pumps, nebulizers and electrotherapy units with model-specific treatment settings."), used: ar("Hospitals, respiratory clinics and physiotherapy departments.") },
+              { title: ar("Life Support Equipment"), description: ar("Supports essential functions such as breathing in critical care."), features: ar("Ventilators, defibrillators and oxygen delivery systems with monitoring and safety functions appropriate to each device."), used: ar("ICUs, emergency departments, ambulances and operating theatres.") },
+              { title: 'Laboratory Equipment', description: ar("Processes and analyses samples to support clinical testing."), features: ar("Centrifuges, microscopes, analysers and laboratory refrigerators."), used: ar("Clinical laboratories, hospitals and research facilities.") },
+              { title: ar("Surgical Equipment"), description: ar("Supports surgical procedures, instrument handling and the operating environment."), features: ar("Electrosurgical units, surgical lights, operating tables and suction systems."), used: ar("Operating theatres, day-surgery centres and procedure rooms.") },
+              { title: ar("Imaging Equipment"), description: ar("Produces images used to examine internal structures and guide assessment."), features: ar("Ultrasound, X-ray, CT and MRI systems; image modes and software depend on the system."), used: ar("Radiology departments, imaging centres and specialist clinics.") },
+              { title: ar("Rehabilitation Equipment"), description: ar("Supports movement training, recovery and functional rehabilitation."), features: ar("Therapy tables, exercise systems, gait-training aids and rehabilitation devices."), used: ar("Physiotherapy clinics, rehabilitation centres and supervised home-care programmes.") },
+              { title: ar("Hospital & Clinical Equipment"), description: ar("Supports everyday patient care and the practical needs of healthcare facilities."), features: ar("Hospital beds, examination couches, medical scales and patient-transfer equipment."), used: ar("Hospital wards, clinics, nursing facilities and examination rooms.") },
+              { title: ar("Dermatology & Aesthetic Equipment"), description: ar("Supports skin assessment and selected dermatological or aesthetic treatments."), features: ar("Dermatoscopes, treatment lasers, IPL systems and other skin-treatment devices, selected for the intended procedure."), used: ar("Dermatology clinics, licensed aesthetic centres and specialist treatment rooms.") }
+            ].map((type, index) => <article className="fm-biomedical-type" key={ar(type.title)}>
               <div className="fm-biomedical-card-top"><span className="fm-biomedical-icon">{React.createElement([Stethoscope, HeartPulse, Zap, Activity, FlaskConical, Wrench, Radio, Accessibility, Hospital, Sparkles][index], { size: 28, 'aria-hidden': true })}</span><span className="fm-equipment-number">{String(index + 1).padStart(2, '0')}</span></div>
-              <h3><Link href={localizeUrl(['/product-category/diagnostic-equipment', '/product-category/patient-monitoring', '/facilities/physiotherapy', '/facilities/icu-emergency', '/facilities/laboratories', '/facilities/hospitals', '/facilities/radiology', '/facilities/physiotherapy', '/product-category/hospital-furniture', '/product-category/dermatology-equipment'][index])}>{type.title}</Link></h3>
-              <p>{type.description}</p>
-              <h4>Common equipment & features</h4><p>{type.features}</p>
-              <h4>Where it is used</h4><p>{type.used}</p>
+              <h3><Link href={localizeUrl(['/product-category/diagnostic-equipment', '/product-category/patient-monitoring', '/facilities/physiotherapy', '/facilities/icu-emergency', '/facilities/laboratories', '/facilities/hospitals', '/facilities/radiology', '/facilities/physiotherapy', '/product-category/hospital-furniture', '/product-category/dermatology-equipment'][index])}>{ar(type.title)}</Link></h3>
+              <p>{ar(type.description)}</p>
+              <h4>{ar("Common equipment & features")}</h4><p>{ar(type.features)}</p>
+              <h4>{ar("Where it is used")}</h4><p>{ar(type.used)}</p>
             </article>)}
           </div>
           <div className="fm-biomedical-controls">
-            <div><button type="button" aria-label="Previous equipment types" disabled={biomedicalSlide === 0} onClick={() => biomedicalScrollRef.current?.scrollBy({ left: -((biomedicalScrollRef.current.firstElementChild as HTMLElement).offsetWidth + 20), behavior: 'smooth' })}><ChevronLeft size={21} /></button>
-            <button type="button" aria-label="Next equipment types" disabled={biomedicalSlide >= 10 - Math.round((biomedicalScrollRef.current?.clientWidth || 1) / (((biomedicalScrollRef.current?.firstElementChild as HTMLElement)?.offsetWidth || 1) + 20))} onClick={() => biomedicalScrollRef.current?.scrollBy({ left: (biomedicalScrollRef.current.firstElementChild as HTMLElement).offsetWidth + 20, behavior: 'smooth' })}><ChevronRight size={21} /></button></div>
+            <div><button type="button" aria-label={ar("Previous equipment types")} disabled={biomedicalSlide === 0} onClick={() => biomedicalScrollRef.current?.scrollBy({ left: -((biomedicalScrollRef.current.firstElementChild as HTMLElement).offsetWidth + 20), behavior: 'smooth' })}><ChevronLeft size={21} /></button>
+            <button type="button" aria-label={ar("Next equipment types")} disabled={biomedicalSlide >= 10 - Math.round((biomedicalScrollRef.current?.clientWidth || 1) / (((biomedicalScrollRef.current?.firstElementChild as HTMLElement)?.offsetWidth || 1) + 20))} onClick={() => biomedicalScrollRef.current?.scrollBy({ left: (biomedicalScrollRef.current.firstElementChild as HTMLElement).offsetWidth + 20, behavior: 'smooth' })}><ChevronRight size={21} /></button></div>
           </div>
         </div>
       </section>

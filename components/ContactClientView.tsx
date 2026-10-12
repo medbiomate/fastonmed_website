@@ -1,4 +1,5 @@
 'use client';
+import { publicArabic } from '@/lib/public-arabic';
 
 import React, { useState } from 'react';
 import { MapPin, Phone, Mail, Clock, Send, CheckCircle2, MessageCircle } from 'lucide-react';
@@ -8,6 +9,7 @@ import { useLocale } from '@/lib/locale-context';
 export default function ContactClientView({ isAr: propIsAr }: { isAr?: boolean }) {
   const { isArabic: ctxIsArabic } = useLocale();
   const isAr = typeof propIsAr === 'boolean' ? propIsAr : ctxIsArabic;
+ const ar = (text: string) => isAr ? publicArabic(text) : text;
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
@@ -65,10 +67,7 @@ export default function ContactClientView({ isAr: propIsAr }: { isAr?: boolean }
                         مجمع دبي للاستثمار 1 (DIP-1)، دبي، الإمارات العربية المتحدة
                       </>
                     ) : (
-                      <>
-                        OFF215 - Arjumand Building, Green Community Village<br />
-                        DIP-1, Dubai, United Arab Emirates
-                      </>
+                      <>{ar("OFF215 - Arjumand Building, Green Community Village")}<br />{ar("DIP-1, Dubai, United Arab Emirates")}</>
                     )}
                   </div>
                 </div>
@@ -139,11 +138,7 @@ export default function ContactClientView({ isAr: propIsAr }: { isAr?: boolean }
                         استجابة طوارئ هندسية طبية متوفرة 24/7
                       </>
                     ) : (
-                      <>
-                        Monday – Friday: 8:30 AM – 6:00 PM<br />
-                        Saturday: 9:00 AM – 2:00 PM<br />
-                        24/7 Emergency Biomedical Callout Available
-                      </>
+                      <>{ar("Monday – Friday: 8:30 AM – 6:00 PM")}<br />{ar("Saturday: 9:00 AM – 2:00 PM")}<br />{ar("24/7 Emergency Biomedical Callout Available")}</>
                     )}
                   </div>
                 </div>
@@ -187,7 +182,7 @@ export default function ContactClientView({ isAr: propIsAr }: { isAr?: boolean }
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                   <div>
                     <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: '#334155', marginBottom: '6px' }}>
-                      {isAr ? 'البريد الإلكتروني *' : 'Email Address *'}
+                      {isAr ? 'البريد الإلكتروني *' : ar("Email Address *")}
                     </label>
                     <input
                       type="email"

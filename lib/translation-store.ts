@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import crypto from 'crypto';
 import authoredArabic from '../locales/arabic-content.json';
+import authoredPages from '../locales/arabic-page-content.json';
 
 export type TranslationStatus = 'missing' | 'translated' | 'outdated' | 'manually_edited' | 'failed';
 export type TranslationProvider = 'google' | 'manual' | 'static';
@@ -82,7 +83,7 @@ class TranslationStore {
 
     try {
       // Bundled authored translations survive builds and are shared by every app instance.
-      for (const item of authoredArabic as TranslationRecord[]) {
+      for (const item of [...authoredArabic, ...authoredPages] as TranslationRecord[]) {
         const key = this.makeKey(item.entity_type, item.entity_id, item.field_name, item.target_language);
         this.records.set(key, item);
         this.hashIndex.set(`${item.target_language}:${item.source_hash}`, item);

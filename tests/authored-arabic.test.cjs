@@ -15,6 +15,7 @@ function store(runtime = []) {
    if (name === 'path') return path;
    if (name === 'crypto') return crypto;
    if (name.endsWith('arabic-content.json')) return bundled;
+   if (name.endsWith('arabic-page-content.json')) return require('../locales/arabic-page-content.json');
    throw new Error(name);
   },
  };

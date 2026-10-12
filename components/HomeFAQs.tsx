@@ -1,4 +1,6 @@
 'use client';
+import arabicFaqs from '@/locales/home-faqs-ar.json';
+import { publicArabic } from '@/lib/public-arabic';
 
 import { useState } from 'react';
 import Link from 'next/link';
@@ -44,16 +46,18 @@ const categories = ['All', 'General', 'Choosing Equipment', 'Orders & Pricing', 
 export default function HomeFAQs() {
   const [category, setCategory] = useState('All');
   const [search, setSearch] = useState('');
-  const { localizeUrl } = useLocale();
-  const filtered = faqs.filter(([group, question, answer]) => (category === 'All' || category === group) && `${question} ${answer}`.toLowerCase().includes(search.toLowerCase()));
+  const { localizeUrl, isArabic } = useLocale();
+  const ar = (text: string) => isArabic ? publicArabic(text) : text;
+  const localizedFaqs = faqs.map(([group, question, answer], index) => [group, isArabic ? arabicFaqs[index][0] : question, isArabic ? arabicFaqs[index][1] : answer]);
+  const filtered = localizedFaqs.filter(([group, question, answer]) => (category === 'All' || category === group) && `${question} ${answer}`.toLowerCase().includes(search.toLowerCase()));
   return <section className="fm-home-faq" aria-labelledby="home-faq-title">
     <div className="container">
-      <div className="fm-faq-heading"><h2 id="home-faq-title">Frequently Asked Questions</h2><p>Answers to common questions about medical equipment, procurement and support.</p></div>
-      <div className="fm-faq-filters" role="group" aria-label="Filter FAQ topics">{categories.map(group => <button key={group} type="button" aria-pressed={category === group} onClick={() => setCategory(group)}>{group}</button>)}</div>
-      <label className="fm-faq-search"><Search size={18} aria-hidden="true" /><input type="search" aria-label="Search frequently asked questions" placeholder="Search a question…" value={search} onChange={event => setSearch(event.target.value)} /></label>
-      <div className="fm-faq-list">{filtered.map(([group, question, answer]) => <details key={question} className="fm-faq-item"><summary><span>{question}</span><ChevronDown size={18} aria-hidden="true" /></summary><div><span className="fm-faq-topic">{group}</span><p>{answer}</p></div></details>)}</div>
-      {!filtered.length && <p className="fm-faq-empty">No matching questions. Try another keyword or topic.</p>}
-      <p className="fm-faq-contact">Need help with a specific product? <Link href={localizeUrl('/contact')}>Contact our team →</Link></p>
+      <div className="fm-faq-heading"><h2 id="home-faq-title">{ar("Frequently Asked Questions")}</h2><p>{ar("Answers to common questions about medical equipment, procurement and support.")}</p></div>
+      <div className="fm-faq-filters" role="group" aria-label={ar("Filter FAQ topics")}>{categories.map(group => <button key={group} type="button" aria-pressed={category === group} onClick={() => setCategory(group)}>{ar(group)}</button>)}</div>
+      <label className="fm-faq-search"><Search size={18} aria-hidden="true" /><input type="search" aria-label={ar("Search frequently asked questions")} placeholder={ar("Search a question…")} value={search} onChange={event => setSearch(event.target.value)} /></label>
+      <div className="fm-faq-list">{filtered.map(([group, question, answer]) => <details key={question} className="fm-faq-item"><summary><span>{question}</span><ChevronDown size={18} aria-hidden="true" /></summary><div><span className="fm-faq-topic">{ar(group)}</span><p>{answer}</p></div></details>)}</div>
+      {!filtered.length && <p className="fm-faq-empty">{ar("No matching questions. Try another keyword or topic.")}</p>}
+      <p className="fm-faq-contact">{ar("Need help with a specific product?")}<Link href={localizeUrl('/contact')}>{ar("Contact our team →")}</Link></p>
     </div>
   </section>;
 }
