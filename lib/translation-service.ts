@@ -13,6 +13,15 @@ interface TranslateFieldOptions {
 }
 
 const inFlightMap = new Map<string, Promise<string>>();
+const apiInFlight = new Map<string, Promise<string[]>>();
+const FAILED_RETRY_MS = 15 * 60 * 1000;
+let apiRetryAfter = 0;
+let activeApiRequests = 0;
+
+function recentlyFailed(record: TranslationRecord | undefined, hash: string): boolean {
+  return record?.translation_status === 'failed' && record.source_hash === hash &&
+    Date.now() - Date.parse(record.updated_at) < FAILED_RETRY_MS;
+}
 
 /**
  * Execute raw translation request to Google Cloud Translation API (v2)
@@ -22,6 +31,26 @@ async function callGoogleTranslateApi(
   sourceLang = 'en',
   targetLang = 'ar',
   format: 'text' | 'html' = 'html'
+): Promise<string[]> {
+  if (strings.length === 0 || sourceLang === targetLang) return strings;
+  const requestKey = JSON.stringify([strings, sourceLang, targetLang, format]);
+  const pending = apiInFlight.get(requestKey);
+  if (pending) return pending;
+  // Do not queue unbounded work behind an unavailable translation provider.
+  if (Date.now() < apiRetryAfter || activeApiRequests >= 2) return strings;
+  activeApiRequests++;
+  const request = executeGoogleTranslateApi(strings, sourceLang, targetLang, format);
+  apiInFlight.set(requestKey, request);
+  try {
+    return await request;
+  } finally {
+    activeApiRequests--;
+    apiInFlight.delete(requestKey);
+  }
+}
+
+async function executeGoogleTranslateApi(
+  strings: string[], sourceLang: string, targetLang: string, format: 'text' | 'html'
 ): Promise<string[]> {
   const apiKey = process.env.GOOGLE_TRANSLATE_API_KEY;
   if (!apiKey) {
@@ -42,6 +71,7 @@ async function callGoogleTranslateApi(
   try {
     const response = await fetch(`https://translation.googleapis.com/language/translate/v2?key=${apiKey}`, {
       method: 'POST',
+      signal: AbortSignal.timeout(10_000),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -55,7 +85,9 @@ async function callGoogleTranslateApi(
 
     if (!response.ok) {
       const errText = await response.text();
-      console.error(`[TranslationService] Google API Error (${response.status}):`, errText);
+      const quotaFailure = response.status === 403 || response.status === 429;
+      apiRetryAfter = Date.now() + (quotaFailure ? FAILED_RETRY_MS : 60_000);
+      console.error(`[TranslationService] Google API Error (${response.status}); requests paused until ${new Date(apiRetryAfter).toISOString()}:`, errText);
       translationStore.recordApiUsage(totalChars, false);
       return strings; // graceful fallback to original English
     }
@@ -79,6 +111,7 @@ async function callGoogleTranslateApi(
       return raw;
     });
   } catch (error) {
+    apiRetryAfter = Date.now() + 60_000;
     console.error('[TranslationService] Network error calling Google Translate API:', error);
     translationStore.recordApiUsage(totalChars, false);
     return strings; // graceful fallback to English
@@ -135,6 +168,7 @@ export async function getOrTranslateField(options: TranslateFieldOptions): Promi
       translationStore.recordCacheHit();
       return existing.translated_text;
     }
+    if (!forceRetranslate && recentlyFailed(existing, currentHash)) return cleanSource;
   }
 
   // 2. STEP 2: CHECK REUSABLE TRANSLATION CACHE (same phrase used across different entities)
@@ -231,6 +265,10 @@ export async function translateEntityFields<T extends Record<string, string>>(
       if (!forceRetranslate && existing.translation_status === 'translated' && existing.source_hash === hash) {
         result[fieldName] = existing.translated_text;
         translationStore.recordCacheHit();
+        continue;
+      }
+      if (!forceRetranslate && recentlyFailed(existing, hash)) {
+        result[fieldName] = sourceText;
         continue;
       }
     }
