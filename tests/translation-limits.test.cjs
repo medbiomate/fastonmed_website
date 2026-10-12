@@ -4,7 +4,7 @@ const fs = require('node:fs');
 const vm = require('node:vm');
 const ts = require('typescript');
 
-function service(fetch) {
+function service(fetch, provider = 'google') {
   let now = 1_000_000;
   const records = new Map();
   const key = (type, id, field, lang) => [type, id, field, lang].join(':');
@@ -20,7 +20,7 @@ function service(fetch) {
   };
   const scope = {
     exports: {}, Map, Date: class extends Date { static now() { return now; } },
-    process: { env: { GOOGLE_TRANSLATE_API_KEY: 'test' } },
+    process: { env: { GOOGLE_TRANSLATE_API_KEY: 'test', TRANSLATION_PROVIDER: provider } },
     AbortSignal, fetch, console: { error() {}, warn() {} },
     require: name => name === './translation-store' ? { translationStore: store, computeSourceHash: text => text } : {
       protectContent: text => ({ protectedText: text }), cleanProtectedHtml: text => text,
@@ -33,6 +33,15 @@ function service(fetch) {
 }
 const field = (id, text = id) => ({ entity_type: 'product', entity_id: id, field_name: 'name', source_text: text });
 const success = () => ({ ok: true, json: async () => ({ data: { translations: [{ translatedText: 'Arabic' }] } }) });
+
+test('authored mode never calls Google for missing content, even with a configured API key', async () => {
+  let calls = 0;
+  const app = service(async () => { calls++; return success(); }, '');
+  assert.equal(await app.getOrTranslateField(field('missing')), 'missing');
+  const batch = await app.translateEntityFields('product', 'another', { name: 'Untranslated' }, 'ar', true);
+  assert.equal(batch.name, 'Untranslated');
+  assert.equal(calls, 0);
+});
 
 test('quota errors pause all translations and recover after cooldown', async () => {
   let calls = 0;

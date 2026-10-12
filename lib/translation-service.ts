@@ -33,6 +33,8 @@ async function callGoogleTranslateApi(
   format: 'text' | 'html' = 'html'
 ): Promise<string[]> {
   if (strings.length === 0 || sourceLang === targetLang) return strings;
+  // Authored/cached translations are the default. Provider calls require explicit configuration.
+  if (process.env.TRANSLATION_PROVIDER !== 'google') return strings;
   const requestKey = JSON.stringify([strings, sourceLang, targetLang, format]);
   const pending = apiInFlight.get(requestKey);
   if (pending) return pending;
@@ -194,6 +196,7 @@ export async function getOrTranslateField(options: TranslateFieldOptions): Promi
   }
 
   // 3. STEP 3: DEDUPLICATION LOCK (prevent 100 concurrent requests from triggering 100 API calls)
+  if (process.env.TRANSLATION_PROVIDER !== 'google') return cleanSource;
   const mutexKey = `${entity_type}:${entity_id}:${field_name}:${target_language}:${currentHash}`.toLowerCase();
   const inFlight = inFlightMap.get(mutexKey);
   if (inFlight) {
@@ -305,6 +308,7 @@ export async function translateEntityFields<T extends Record<string, string>>(
   if (missingFieldNames.length === 0) {
     return result as T;
   }
+  if (process.env.TRANSLATION_PROVIDER !== 'google') return result as T;
 
   // Batch translate only the missing fields
   const translatedValues = await callGoogleTranslateApi(missingFieldSources, 'en', target_language, 'html');
