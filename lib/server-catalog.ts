@@ -1,3 +1,4 @@
+import { createSnapshotMapper } from './catalog-snapshot-cache';
 import { getDurableCatalog, invalidateDurableCatalog } from './durable-catalog';
 import fs from 'fs';
 import path from 'path';
@@ -120,12 +121,16 @@ export function invalidateServerCatalogCache() {
   lastCacheMtime = 0;
 }
 
+const mapDurableSnapshot = createSnapshotMapper<any[], Product[]>(durable =>
+  durable.filter(item => item.sourcePostType !== 'product_variation' && item.name !== 'AUTO-DRAFT' &&
+    (!item.status || item.status === 'publish' || item.status === 'published'))
+    .map(mapRawProduct).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+);
+
 export async function getAllProducts(): Promise<Product[]> {
   const durable = await getDurableCatalog();
   if (durable !== null) {
-    return durable.filter(item => item.sourcePostType !== 'product_variation' && item.name !== 'AUTO-DRAFT' &&
-      (!item.status || item.status === 'publish' || item.status === 'published'))
-      .map(mapRawProduct).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    return mapDurableSnapshot(durable);
   }
   // 1. Instant check: If cache is valid and file has not been modified, return cached in <0.05ms
   let currentMtime = 0;
