@@ -21,6 +21,7 @@ import { Product } from '@/lib/types';
 import ProductCard from '@/components/ProductCard';
 import { resolveSpecialtyConfig, OTHER_SPECIALTIES_LIST } from '@/lib/category-definitions';
 import { useLocale } from '@/lib/locale-context';
+import { arabicCategoryName } from '@/lib/authored-arabic';
 
 interface CategoryClientViewProps {
   categoryTitle: string;
@@ -126,12 +127,12 @@ export default function CategoryClientView({
     (item) => item.slug !== categorySlug && !specialtyConfig?.aliases.includes(item.slug)
   );
 
-  const currentTitle = (isArabic && specialtyConfig?.titleAr) ? specialtyConfig.titleAr : categoryTitle;
+  const currentTitle = isArabic ? (specialtyConfig?.titleAr || arabicCategoryName(categoryTitle)) : categoryTitle;
   const currentSubtitle = (isArabic && specialtyConfig?.subtitleAr) ? specialtyConfig.subtitleAr : specialtyConfig?.subtitle;
   const currentDescription = (isArabic && specialtyConfig?.descriptionAr)
     ? specialtyConfig.descriptionAr
     : (specialtyConfig?.description || (isArabic
-        ? `معدات ${categoryTitle} معتمدة وموردة من قبل فاستونميد في دبي وأبوظبي والإمارات الشمالية مع ضمان رسمي معتمد ودعم فني طبي حيوي.`
+        ? `معدات ${currentTitle} معتمدة وموردة من قبل فاستونميد في دبي وأبوظبي والإمارات الشمالية مع ضمان رسمي معتمد ودعم فني طبي حيوي.`
         : `Certified ${categoryTitle} supplied by FastonMed across Dubai, Abu Dhabi, and Northern Emirates with official manufacturer warranty and biomedical support.`));
   const currentBadge = (isArabic && specialtyConfig?.badgeAr)
     ? specialtyConfig.badgeAr

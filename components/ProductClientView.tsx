@@ -30,6 +30,7 @@ import { useApp } from '@/lib/context';
 import ProductCard from '@/components/ProductCard';
 import { useLocale } from '@/lib/locale-context';
 import { getEquivalentPath } from '@/lib/i18n';
+import { arabicCategoryName } from '@/lib/authored-arabic';
 
 interface ProductClientViewProps {
   product: Product;
@@ -79,6 +80,7 @@ export default function ProductClientView({ product, similarProducts }: ProductC
   const categoryName = (product.category || 'Medical Equipment')
     .replace(/&amp;/gi, '&').replace(/&quot;/gi, '"').replace(/&#0*39;|&apos;/gi, "'").replace(/&lt;/gi, '<').replace(/&gt;/gi, '>').replace(/&nbsp;/gi, ' ');
   const categoryUrl = localizeUrl(`/product-category/${categoryName.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`);
+  const categoryLabel = isArabic ? arabicCategoryName(categoryName) : categoryName;
 
   const price = product.salePrice && product.salePrice > 0 ? product.salePrice : product.regularPrice;
   const isFavorited = isInWishlist(product.id);
@@ -164,7 +166,7 @@ export default function ProductClientView({ product, similarProducts }: ProductC
             href={categoryUrl}
             style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500 }}
           >
-            {categoryName}
+            {categoryLabel}
           </Link>
           <ChevronRight size={10} color="#cbd5e1" className="rtl-flip" />
           <span style={{ color: '#64748b', fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '300px' }}>
@@ -280,7 +282,7 @@ export default function ProductClientView({ product, similarProducts }: ProductC
           <div>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', marginBottom: '8px' }}>
               <Link href={categoryUrl} style={{ fontSize: '0.82rem', fontWeight: 700, color: '#51b291', textTransform: 'uppercase', letterSpacing: '0.05em', textDecoration: 'none' }}>
-                {categoryName}
+                {categoryLabel}
               </Link>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <button
@@ -579,7 +581,7 @@ export default function ProductClientView({ product, similarProducts }: ProductC
           {activeTab === 'specs' && product.technicalDescription == null && (
             <div>
               <h2 style={{ fontSize: '1.3rem', fontWeight: 800, color: '#0f172a', marginBottom: '20px' }}>
-                Technical & Engineering Specifications
+                {isArabic ? 'المواصفات الفنية والهندسية' : 'Technical & Engineering Specifications'}
               </h2>
               <div
                 style={{
@@ -613,7 +615,7 @@ export default function ProductClientView({ product, similarProducts }: ProductC
           {activeTab === 'features' && product.clinicalDescription == null && (
             <div>
               <h2 style={{ fontSize: '1.3rem', fontWeight: 800, color: '#0f172a', marginBottom: '16px' }}>
-                Clinical Performance & Indications
+                {isArabic ? 'الأداء السريري ودواعي الاستخدام' : 'Clinical Performance & Indications'}
               </h2>
               {/<[a-z][\s\S]*>/i.test(product.fullDescription || '') ? (
                 <div
@@ -629,7 +631,7 @@ export default function ProductClientView({ product, similarProducts }: ProductC
 
               <div style={{ maxWidth: '850px', marginTop: '20px' }}>
                 <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#0f172a', marginBottom: '14px' }}>
-                  Standard Clinical Features
+                  {isArabic ? 'المميزات السريرية القياسية' : 'Standard Clinical Features'}
                 </h3>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '12px' }}>
                   {(product.features && product.features.length > 0 ? product.features : [
@@ -664,10 +666,15 @@ export default function ProductClientView({ product, similarProducts }: ProductC
           {activeTab === 'faq' && product.complianceDescription == null && (
             <div style={{ maxWidth: '850px' }}>
               <h2 style={{ fontSize: '1.3rem', fontWeight: 800, color: '#0f172a', marginBottom: '20px' }}>
-                Frequently Asked Procurement Questions
+                {isArabic ? 'الأسئلة الشائعة حول التوريد' : 'Frequently Asked Procurement Questions'}
               </h2>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                {[
+                {(isArabic ? [
+                  { q: `هل يتضمن ${product.name} ضمانًا رسميًا ودعمًا فنيًا في الإمارات؟`, a: 'نعم. تتضمن جميع المعدات الطبية التي توزعها فاستونميد ضمانًا رسميًا من الشركة المصنعة وفحصًا هندسيًا طبيًا ودعمًا فنيًا مخصصًا في دبي وأبوظبي وسائر الإمارات.' },
+                  { q: 'كيف تتعامل فاستونميد مع الضمان والصيانة والمعايرة؟', a: 'توفر فاستونميد ضمانًا رسميًا لمدة سنة على المعدات. ويقدم مهندسو المعدات الطبية لدينا في مجمع دبي للاستثمار DIP-1 الصيانة الوقائية وشهادات المعايرة والدعم الفني في الموقع خلال 24–48 ساعة.' },
+                  { q: 'ما مدة توصيل الطلبات داخل الإمارات؟', a: 'تُسلّم المستلزمات الطبية المتوفرة في المخزون خلال 24–48 ساعة في دبي وأبوظبي والشارقة وعجمان وجميع الإمارات الشمالية، مع خدمات لوجستية مخصصة للمستلزمات الطبية.' },
+                  { q: 'هل يمكن للمؤسسات الطبية طلب فواتير ضريبية تتضمن ضريبة القيمة المضافة بنسبة 5%؟', a: 'نعم، تُصدر تلقائيًا فواتير ضريبة قيمة مضافة كاملة للشركات، وفق إرشادات الهيئة الاتحادية للضرائب في الإمارات، وتتضمن رقم التسجيل الضريبي TRN الخاص بنا.' },
+                ] : [
                   {
                     q: `Does ${product.name} include official warranty and technical support in UAE?`,
                     a: 'Yes. All medical equipment distributed by FastonMed includes official manufacturer warranty, biomedical inspection, and dedicated technical support across Dubai, Abu Dhabi, and the UAE.'
@@ -684,7 +691,7 @@ export default function ProductClientView({ product, similarProducts }: ProductC
                     q: 'Can medical institutions request corporate tax invoices with 5% VAT?',
                     a: 'Yes, full corporate VAT invoices conforming to UAE Federal Tax Authority (FTA) guidelines are automatically issued with our registered TRN tax number.'
                   }
-                ].map((faq, idx) => (
+                ]).map((faq, idx) => (
                   <div
                     key={idx}
                     style={{

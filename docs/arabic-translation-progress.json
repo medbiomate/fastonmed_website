@@ -1,23 +1,9 @@
 {
   "source": "Repository catalog snapshot; live catalog may contain additional or edited products",
   "publicProducts": 2639,
-  "productsWithAuthoredTranslations": 80,
-  "translatedRecords": 101,
+  "productsWithAuthoredTranslations": 180,
+  "translatedRecords": 211,
   "pendingProducts": [
-    {
-      "id": "woo-17039",
-      "name": "Sanrai OxyPure Oxygen Concentrator ZY 5AC",
-      "missingFields": [
-        "description"
-      ]
-    },
-    {
-      "id": "woo-17037",
-      "name": "Philips Respironics Oxygenate 5L Oxygen Concentrator",
-      "missingFields": [
-        "description"
-      ]
-    },
     {
       "id": "woo-17034",
       "name": "Therma TECAR Therapy Unit 150W",
@@ -35,27 +21,6 @@
     {
       "id": "wp-product-17029",
       "name": "YoutecarX Base Unit – Capacitive & Resistive Electrotherapy System",
-      "missingFields": [
-        "description"
-      ]
-    },
-    {
-      "id": "woo-17028",
-      "name": "Blue Dot HSE Medium Dressing – Flow Wrapped | 30FMD120",
-      "missingFields": [
-        "description"
-      ]
-    },
-    {
-      "id": "woo-17025",
-      "name": "Astroplast No.7 Finger Dressing | 1401003",
-      "missingFields": [
-        "description"
-      ]
-    },
-    {
-      "id": "woo-17020",
-      "name": "Blue Dot No.16 Flow Wrapped Eye Pad Dressing | 30FBDT16",
       "missingFields": [
         "description"
       ]
@@ -520,7 +485,6 @@
       "id": "wp-product-16819",
       "name": "GIMA 10&#8243; Emergency Medical Rucksack – Complete Emergency Kit | 34164",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -529,7 +493,6 @@
       "id": "wp-product-16814",
       "name": "GIMA Professional Emergency Medical Bag – PVC-Coated | Red | 27166",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -538,7 +501,6 @@
       "id": "woo-16809",
       "name": "GIMA Smart Emergency Medical Bag – Large | Red | 27153",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -547,7 +509,6 @@
       "id": "woo-16805",
       "name": "GIMA Professional Emergency Medical Bag | 27165",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -556,7 +517,6 @@
       "id": "woo-16801",
       "name": "Electra 2 &#038; 4 Channel Electrotherapy Unit with 7-Inch Touch Screen",
       "missingFields": [
-        "name",
         "description"
       ]
     },
@@ -564,7 +524,6 @@
       "id": "woo-16800",
       "name": "Chattanooga Intelect Mobile 2 Vacuum Module with Rubber Electrode | 6 × 8 cm",
       "missingFields": [
-        "name",
         "description"
       ]
     },
@@ -572,7 +531,6 @@
       "id": "woo-16799",
       "name": "Chattanooga Intelect Mobile 2 Stim Electrotherapy Unit | 2-Channel",
       "missingFields": [
-        "name",
         "description"
       ]
     },
@@ -580,7 +538,6 @@
       "id": "woo-16796",
       "name": "Chattanooga Intellect Mobile Ultrasound Therapy Unit | 1 &#038; 3 MHz",
       "missingFields": [
-        "name",
         "description"
       ]
     },
@@ -588,7 +545,6 @@
       "id": "woo-16794",
       "name": "Sonora SNR 001 Programmable Ultrasound Therapy Unit | 1–3 MHz",
       "missingFields": [
-        "name",
         "description"
       ]
     },
@@ -596,7 +552,6 @@
       "id": "woo-16791",
       "name": "Intelect Mobile 2 System Cart – CHA 15-1136",
       "missingFields": [
-        "name",
         "description"
       ]
     },
@@ -604,7 +559,6 @@
       "id": "woo-16788",
       "name": "Intelect Mobile 2 Ultrasound Therapy Unit – CHA 15-1201",
       "missingFields": [
-        "name",
         "description"
       ]
     },
@@ -612,7 +566,6 @@
       "id": "woo-16786",
       "name": "Ergonomic Saddle Stool with Backrest – CHA 106",
       "missingFields": [
-        "name",
         "description"
       ]
     },
@@ -620,7 +573,6 @@
       "id": "wp-product-16784",
       "name": "Ergonomic Saddle Medical Stool – CHA 105",
       "missingFields": [
-        "name",
         "description"
       ]
     },
@@ -628,7 +580,6 @@
       "id": "wp-product-16782",
       "name": "Height Adjustable Medical Stool with Stainless Steel Frame – CHA 109",
       "missingFields": [
-        "name",
         "description"
       ]
     },
@@ -636,7 +587,6 @@
       "id": "wp-product-16779",
       "name": "GIMA E2 Rectangular Bag with Window – Red | 27184",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -645,7 +595,6 @@
       "id": "wp-product-16777",
       "name": "GIMA “Kansas Skay” Medical Bag – Black | 27095",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -654,7 +603,6 @@
       "id": "wp-product-16772",
       "name": "GIMA Logic 2 Trolley Rucksack PVC-Coated | 27173",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -663,7 +611,6 @@
       "id": "wp-product-16768",
       "name": "GIMA Thermal Bag – Yellow Nylon | 27209",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -672,7 +619,6 @@
       "id": "wp-product-16759",
       "name": "GIMA MedInsuline Cool Bag – Beige/Grey | 27203",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -681,7 +627,6 @@
       "id": "wp-product-16749",
       "name": "GIMA Maxi Vials Bag – Nylon | Red | 27129",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -690,7 +635,6 @@
       "id": "wp-product-16745",
       "name": "GIMA Smart Bag – Medium | Red | 27151",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -699,7 +643,6 @@
       "id": "wp-product-16741",
       "name": "GIMA Smart Bag PVC-Coated – Medium | Black | 27158",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -708,7 +651,6 @@
       "id": "wp-product-16738",
       "name": "SmartFlow Wireless Uroflowmetry System",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -717,7 +659,6 @@
       "id": "wp-product-16736",
       "name": "Therapist Medical Chair with Backrest – CHA 101",
       "missingFields": [
-        "name",
         "description"
       ]
     },
@@ -725,7 +666,6 @@
       "id": "wp-product-16733",
       "name": "Surgeon Medical Stool with Backrest – CHA 103",
       "missingFields": [
-        "name",
         "description"
       ]
     },
@@ -733,7 +673,6 @@
       "id": "wp-product-16728",
       "name": "Medical Chair with Backrest and Side Armrest – CHA 104",
       "missingFields": [
-        "name",
         "description"
       ]
     },
@@ -741,7 +680,6 @@
       "id": "wp-product-16726",
       "name": "Medical Chair with Backrest and Side Armrest – CHA 111",
       "missingFields": [
-        "name",
         "description"
       ]
     },
@@ -749,7 +687,6 @@
       "id": "wp-product-16724",
       "name": "ET500T Electric Operating Table with C-Arm Access",
       "missingFields": [
-        "name",
         "description"
       ]
     },
@@ -757,7 +694,6 @@
       "id": "wp-product-16722",
       "name": "CustoMed Custo Guard Holter ECG – Wireless 3-Channel Holter Monitor",
       "missingFields": [
-        "name",
         "description"
       ]
     },
@@ -765,7 +701,6 @@
       "id": "wp-product-16720",
       "name": "Custo Flash 500/510 Holter Monitor",
       "missingFields": [
-        "name",
         "description"
       ]
     },
@@ -773,7 +708,6 @@
       "id": "wp-product-16716",
       "name": "Cederroth Eye &#038; Wound Cleansing Spray – 150ml | Model 726000",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -782,7 +716,6 @@
       "id": "wp-product-16713",
       "name": "Stericlens Sterile Saline Wound Wash Spray – 100ml | Model 300721",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -791,7 +724,6 @@
       "id": "wp-product-16710",
       "name": "Blue Dot Eye Wash Solution – 250ml | Model 2144",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -800,7 +732,6 @@
       "id": "wp-product-16706",
       "name": "Cederroth Pocket Eye Wash – 235ml | Model 7221",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -809,7 +740,6 @@
       "id": "wp-product-16703",
       "name": "Cederroth Portable Eye Wash Bottle – 500ml",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -818,7 +748,6 @@
       "id": "wp-product-16700",
       "name": "Cederroth Wall Bracket for Eye Wash – 7200",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -827,7 +756,6 @@
       "id": "wp-product-16694",
       "name": "Blue Dot 20ml Sterile Eye Wash Pods – Box of 25 | 7912",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -836,7 +764,6 @@
       "id": "wp-product-16692",
       "name": "Blue Dot Standard Eye Wash Station – 51016",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -845,7 +772,6 @@
       "id": "wp-product-16689",
       "name": "Blue Dot Emergency Eye Wash Station with Mirror – CM-30EWST21",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -854,7 +780,6 @@
       "id": "wp-product-16687",
       "name": "ET800 Electro-Hydraulic Operating Table – 350 kg Capacity",
       "missingFields": [
-        "name",
         "description"
       ]
     },
@@ -862,7 +787,6 @@
       "id": "wp-product-16685",
       "name": "2 Section Fixed Height Medical Couch with Side Rail – TAB 200 FHS/SR",
       "missingFields": [
-        "name",
         "description"
       ]
     },
@@ -870,7 +794,6 @@
       "id": "wp-product-16683",
       "name": "2 Section Height Adjustable Wooden Treatment Couch – TAB 200W/HA",
       "missingFields": [
-        "name",
         "description"
       ]
     },
@@ -878,7 +801,6 @@
       "id": "wp-product-16681",
       "name": "Fixed Height Wooden Mat Therapy Table – TAB 100 FHSW/M",
       "missingFields": [
-        "name",
         "description"
       ]
     },
@@ -886,7 +808,6 @@
       "id": "wp-product-16679",
       "name": "2 Section Fixed Height Wooden Treatment Couch – TAB 200 FHW",
       "missingFields": [
-        "name",
         "description"
       ]
     },
@@ -894,7 +815,6 @@
       "id": "wp-product-16673",
       "name": "Digital TENS/EMS Combo Stimulator – Everyway EV-806P",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -903,7 +823,6 @@
       "id": "wp-product-16670",
       "name": "Med-Fit 3 Digital Dual Channel TENS Machine",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -912,7 +831,6 @@
       "id": "wp-product-16666",
       "name": "VISBODY Creator600 Smart Commercial 3D Intelligent Treadmill",
       "missingFields": [
-        "name",
         "description"
       ]
     },
@@ -920,7 +838,6 @@
       "id": "woo-16664",
       "name": "AVEUS AVLI3X4I001B Lithium Battery for AV-360D Defibrillator",
       "missingFields": [
-        "name",
         "description"
       ]
     },
@@ -928,7 +845,6 @@
       "id": "woo-16660",
       "name": "Astroplast Mezzo Eye Wash Kit – 1005005",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -937,7 +853,6 @@
       "id": "woo-16657",
       "name": "Blue Dot Emergency Eye Wash Solution Sterile 500ml – 2143",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -946,7 +861,6 @@
       "id": "woo-16654",
       "name": "Abimed Head Immobilizer – AM 555",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -955,7 +869,6 @@
       "id": "woo-16650",
       "name": "Philips HeartStart HS1 Adult SMART Pads Cartridge – M5071A",
       "missingFields": [
-        "name",
         "description"
       ]
     },
@@ -963,7 +876,6 @@
       "id": "woo-16649",
       "name": "GIMA First Aid Air Cushion Splints – Set of 4 Pieces | 34106",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -972,7 +884,6 @@
       "id": "woo-16642",
       "name": "CU Medical Systems – iPAD NF1200 Adult Electrode Pad",
       "missingFields": [
-        "name",
         "description"
       ]
     },
@@ -980,7 +891,6 @@
       "id": "woo-16643",
       "name": "Disposable Adult Electrode Pads for HD1/ER Range – 1 Pair",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -989,7 +899,6 @@
       "id": "woo-16626",
       "name": "GIMA GIMASPLINT Limb Immobilization Splint Set – 5 Pieces with Bag | 34685",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -998,7 +907,6 @@
       "id": "woo-16623",
       "name": "My Life Cervical Collar – TD+2",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -1007,7 +915,6 @@
       "id": "woo-16620",
       "name": "My Life Traction Splint Set – TD+3",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -1016,7 +923,6 @@
       "id": "woo-16616",
       "name": "Philips M3713A Adult/Child Plus Multifunction Defibrillation Pads",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -1025,7 +931,6 @@
       "id": "woo-16612",
       "name": "Philips HeartStart FRx SMART Pads II",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -1034,7 +939,6 @@
       "id": "woo-16609",
       "name": "Periodmed E15 Multiparameter Patient Monitor",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -1043,7 +947,6 @@
       "id": "woo-16604",
       "name": "Abimed Air Splint Set – AM 444",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -1052,7 +955,6 @@
       "id": "wp-product-16600",
       "name": "My Life KED Body Splint for Head &#038; Spinal Stabilization – TD+9",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -1061,7 +963,6 @@
       "id": "woo-16597",
       "name": "GIMA Immobilization Belt with Plastic Snap-Lock – 34010",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -1070,7 +971,6 @@
       "id": "woo-16593",
       "name": "Quick Release Patient Securing Belt",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -1079,7 +979,6 @@
       "id": "woo-16590",
       "name": "Rescue Bridle – TD+8A",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -1088,7 +987,6 @@
       "id": "woo-16585",
       "name": "TAB 200 FHS 2 Section Fixed Height Treatment Couch",
       "missingFields": [
-        "name",
         "description"
       ]
     },
@@ -1096,7 +994,6 @@
       "id": "woo-16582",
       "name": "Abimed Spider Strap – AM333",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -1105,7 +1002,6 @@
       "id": "woo-16583",
       "name": "POR WT221B Portable Wooden Massage Couch with 5 cm Foam",
       "missingFields": [
-        "name",
         "description"
       ]
     },
@@ -1113,7 +1009,6 @@
       "id": "woo-16577",
       "name": "POR WT304 Portable Wooden Massage Couch with Adjustable Height",
       "missingFields": [
-        "name",
         "description"
       ]
     },
@@ -1121,7 +1016,6 @@
       "id": "woo-16574",
       "name": "My Life Spinal Board with Straps – TD 010162",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -1130,7 +1024,6 @@
       "id": "woo-16575",
       "name": "POR AT304 Portable Aluminum Massage Couch with Adjustable Height",
       "missingFields": [
-        "name",
         "description"
       ]
     },
@@ -1138,7 +1031,6 @@
       "id": "woo-16572",
       "name": "POR 263B Portable Aluminum Massage Couch with Adjustable Height",
       "missingFields": [
-        "name",
         "description"
       ]
     },
@@ -1146,7 +1038,6 @@
       "id": "woo-16569",
       "name": "POR AT 204 Portable Aluminum Massage Couch with Adjustable Height",
       "missingFields": [
-        "name",
         "description"
       ]
     },
@@ -1154,7 +1045,6 @@
       "id": "wp-product-16567",
       "name": "MAT 240032 Fixed Height Mat Table for Therapy &#038; Rehabilitation",
       "missingFields": [
-        "name",
         "description"
       ]
     },
@@ -1162,7 +1052,6 @@
       "id": "woo-16565",
       "name": "Mat Bobath Pro Power Treatment Table | Electric Height Adjustable",
       "missingFields": [
-        "name",
         "description"
       ]
     },
@@ -1170,7 +1059,6 @@
       "id": "woo-16562",
       "name": "MAT 240029D Mat Table Gran Comfort – Electric Therapy Table",
       "missingFields": [
-        "name",
         "description"
       ]
     },
@@ -1178,7 +1066,6 @@
       "id": "wp-product-16560",
       "name": "DER-D201 3 Motor Electric Dermatology &#038; Spa Treatment Couch",
       "missingFields": [
-        "name",
         "description"
       ]
     },
@@ -1186,7 +1073,6 @@
       "id": "woo-16557",
       "name": "Evacuation Chair Excel – Evacusafe TD010113",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -1195,7 +1081,6 @@
       "id": "woo-16554",
       "name": "Abimed Straight Basket Stretcher – AM222",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -1204,7 +1089,6 @@
       "id": "woo-16550",
       "name": "Abimed Split Basket Stretcher – AM 111",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -1213,7 +1097,6 @@
       "id": "woo-16533",
       "name": "My Life High-Quality Aluminum Alloy Stair Stretcher – MLF999A2 (TD010113A)",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -1222,7 +1105,6 @@
       "id": "woo-16528",
       "name": "My Life Scoop Stretcher – MLF999E (TD01016)",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -1231,7 +1113,6 @@
       "id": "woo-16522",
       "name": "My Life Folding Stretcher with Carry Bag – TD 10151 / TD 10152",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -1240,7 +1121,6 @@
       "id": "wp-product-16524",
       "name": "DER 222B 4 Motor Electric Dermatology &#038; Facial Treatment Couch",
       "missingFields": [
-        "name",
         "description"
       ]
     },
@@ -1248,7 +1128,6 @@
       "id": "wp-product-16520",
       "name": "DER259/4M 4 Motor Electric Dermatology &#038; Spa Treatment Couch",
       "missingFields": [
-        "name",
         "description"
       ]
     },
@@ -1256,7 +1135,6 @@
       "id": "wp-product-16515",
       "name": "DER 221D 3 Motor Electric Dermatology &#038; Spa Treatment Couch",
       "missingFields": [
-        "name",
         "description"
       ]
     },
@@ -1264,7 +1142,6 @@
       "id": "woo-16517",
       "name": "My Life 2-Fold Metal Folding Stretcher with Wheels – TD 010112",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -1273,7 +1150,6 @@
       "id": "woo-16510",
       "name": "DER 275 3 Motor Electric Spa Treatment Table – Double Column",
       "missingFields": [
-        "name",
         "description"
       ]
     },
@@ -1281,7 +1157,6 @@
       "id": "woo-16508",
       "name": "My Life Wheelchair Stretcher with Varied Positions – MLF999C2 (TD010132)",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -1290,7 +1165,6 @@
       "id": "woo-16505",
       "name": "DER 265 3 Motor Electric Spa Treatment Table – Single Column",
       "missingFields": [
-        "name",
         "description"
       ]
     },
@@ -1298,7 +1172,6 @@
       "id": "woo-16504",
       "name": "My Life Auto-Loading Ambulance Stretcher – TD01013-A",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -1307,7 +1180,6 @@
       "id": "wp-product-16502",
       "name": "DER 224 A 3 Motor Electric Facial &#038; Dermatology Treatment Chair",
       "missingFields": [
-        "name",
         "description"
       ]
     },
@@ -1315,7 +1187,6 @@
       "id": "wp-product-16500",
       "name": "DER-19 Dermatology &#038; Spa Treatment Couch",
       "missingFields": [
-        "name",
         "description"
       ]
     },
@@ -1323,7 +1194,6 @@
       "id": "wp-product-16498",
       "name": "Electric Dermatology & Spa Treatment Couch – DER-19",
       "missingFields": [
-        "name",
         "description"
       ]
     },
@@ -1331,7 +1201,6 @@
       "id": "woo-16495",
       "name": "4 Motor Electric Dermatology Examination Chair – DER 246EB/4M",
       "missingFields": [
-        "name",
         "description"
       ]
     },
@@ -1339,7 +1208,6 @@
       "id": "woo-16494",
       "name": "3 Motor Electric Dermatology Chair – DER 220B",
       "missingFields": [
-        "name",
         "description"
       ]
     },
@@ -1347,7 +1215,6 @@
       "id": "woo-16475",
       "name": "Mylife Fully Automatic Loading Stretcher – TD 010131H",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -1356,7 +1223,6 @@
       "id": "woo-16472",
       "name": "Automatic Loading Ambulance Stretcher – MLF999-C (TD01013B)",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -1365,7 +1231,6 @@
       "id": "woo-16469",
       "name": "High Vacuum Tips – AM 221 | Standard Size",
       "missingFields": [
-        "name",
         "shortDescription",
         "description"
       ]
@@ -21390,7 +21255,7 @@
       ]
     }
   ],
-  "fullyTranslatedProducts": 10,
+  "fullyTranslatedProducts": 15,
   "pagesAndBlogs": "Not yet translated in this batch",
   "providerCalls": 0
 }
