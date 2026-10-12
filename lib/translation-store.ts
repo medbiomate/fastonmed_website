@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import crypto from 'crypto';
+import authoredArabic from '../locales/arabic-content.json';
 
 export type TranslationStatus = 'missing' | 'translated' | 'outdated' | 'manually_edited' | 'failed';
 export type TranslationProvider = 'google' | 'manual' | 'static';
@@ -80,6 +81,12 @@ class TranslationStore {
     this.isLoaded = true;
 
     try {
+      // Bundled authored translations survive builds and are shared by every app instance.
+      for (const item of authoredArabic as TranslationRecord[]) {
+        const key = this.makeKey(item.entity_type, item.entity_id, item.field_name, item.target_language);
+        this.records.set(key, item);
+        this.hashIndex.set(`${item.target_language}:${item.source_hash}`, item);
+      }
       if (!fs.existsSync(DATA_DIR)) {
         fs.mkdirSync(DATA_DIR, { recursive: true });
       }
@@ -90,6 +97,8 @@ class TranslationStore {
         if (Array.isArray(list)) {
           for (const item of list) {
             const key = this.makeKey(item.entity_type, item.entity_id, item.field_name, item.target_language);
+            const bundled = this.records.get(key);
+            if (bundled?.translation_provider === 'static' && bundled.source_hash === item.source_hash && item.translation_status !== 'manually_edited') continue;
             this.records.set(key, item);
             if (item.source_hash && item.translated_text && item.translation_status !== 'failed') {
               this.hashIndex.set(`${item.target_language}:${item.source_hash}`, item);

@@ -7,15 +7,18 @@ import { ShoppingBag, Heart, Eye, MessageCircle, Star, ImageOff } from 'lucide-r
 import { Product } from '@/lib/types';
 import { useApp } from '@/lib/context';
 import { useLocale } from '@/lib/locale-context';
+import authoredNames from '@/locales/arabic-product-names.json';
 
 interface ProductCardProps {
   product: Product;
   showActions?: boolean;
 }
 
-export default function ProductCard({ product, showActions = false }: ProductCardProps) {
+export default function ProductCard({ product: sourceProduct, showActions = false }: ProductCardProps) {
   const { addToCart, isInWishlist, toggleWishlist, openQuickView } = useApp();
   const { isArabic, localizeUrl } = useLocale();
+  const translatedName = (authoredNames as Record<string, string>)[sourceProduct.name.trim()];
+  const product = isArabic && translatedName ? { ...sourceProduct, name: translatedName } : sourceProduct;
 
   const isFavorited = isInWishlist(product.id);
   const price = product.salePrice && product.salePrice > 0 ? product.salePrice : product.regularPrice;
