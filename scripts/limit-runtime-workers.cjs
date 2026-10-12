@@ -6,7 +6,7 @@ const server = path.join(process.cwd(), '.next', 'standalone', 'server.js');
 const marker = '// FastonMed native worker limits';
 const content = fs.readFileSync(server, 'utf8');
 if (!content.includes(marker)) {
-  const prefix = `${marker}\nprocess.env.RAYON_NUM_THREADS ||= '1';\nprocess.env.TOKIO_WORKER_THREADS ||= '2';\nprocess.env.UV_THREADPOOL_SIZE ||= '2';\nprocess.env.VIPS_CONCURRENCY ||= '1';\n`;
+  const prefix = `${marker}\nprocess.env.RAYON_NUM_THREADS ||= '1';\nprocess.env.TOKIO_WORKER_THREADS ||= '2';\nprocess.env.UV_THREADPOOL_SIZE ||= '2';\nprocess.env.VIPS_CONCURRENCY ||= '1';\nconst sharp = require('sharp');\nsharp.cache({ memory: 16, files: 0, items: 32 });\nsharp.concurrency(1);\n`;
   fs.writeFileSync(server, prefix + content);
 }
 console.log('Standalone native worker limits applied');

@@ -1,6 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'standalone',
+  // Bound per-process response cache on the shared 3 GB hosting plan.
+  cacheMaxMemorySize: 10 * 1024 * 1024,
   // Keep native worker pools small on shared hosting.
   experimental: { cpus: 2, imgOptConcurrency: 1 },
   images: {
