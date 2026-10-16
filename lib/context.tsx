@@ -60,6 +60,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
   const [quoteProduct, setQuoteProduct] = useState<Product | null>(null);
 
+  const [storageLoaded, setStorageLoaded] = useState(false);
+
   // Load from localStorage on mount
   useEffect(() => {
     try {
@@ -70,21 +72,25 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       if (savedWishlist) setWishlist(JSON.parse(savedWishlist));
     } catch {
       // Ignore storage errors
+    } finally {
+      setStorageLoaded(true);
     }
   }, []);
 
   // Save to localStorage on change
   useEffect(() => {
     try {
+      if (!storageLoaded) return;
       localStorage.setItem('fastonmed_cart', JSON.stringify(cart));
     } catch {}
-  }, [cart]);
+  }, [cart, storageLoaded]);
 
   useEffect(() => {
     try {
+      if (!storageLoaded) return;
       localStorage.setItem('fastonmed_wishlist', JSON.stringify(wishlist));
     } catch {}
-  }, [wishlist]);
+  }, [wishlist, storageLoaded]);
 
   // Cart operations
   const addToCart = (product: Product, quantity = 1, selectedAttributes?: Record<string, string>, variationId?: string) => {

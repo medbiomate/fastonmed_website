@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ShoppingBag, Heart, Eye, MessageCircle, Star, ImageOff } from 'lucide-react';
@@ -20,6 +20,7 @@ export default function ProductCard({ product: sourceProduct, showActions = fals
   const translatedName = (authoredNames as Record<string, string>)[sourceProduct.name.trim()];
   const product = isArabic && translatedName ? { ...sourceProduct, name: translatedName } : sourceProduct;
 
+  const [failedImage, setFailedImage] = useState<string | null>(null);
   const isFavorited = isInWishlist(product.id);
   const price = product.salePrice && product.salePrice > 0 ? product.salePrice : product.regularPrice;
   const hasDiscount = product.salePrice && product.salePrice > 0 && product.salePrice < product.regularPrice;
@@ -125,9 +126,10 @@ export default function ProductCard({ product: sourceProduct, showActions = fals
           href={productHref}
           style={{ position: 'relative', width: '100%', height: '100%', display: 'block' }}
         >
-          {product.mainImage ? (
+          {product.mainImage && failedImage !== product.mainImage ? (
             <Image
               src={product.mainImage}
+              onError={() => setFailedImage(product.mainImage)}
               alt={product.name}
               fill
               className="product-img"

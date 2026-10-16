@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { productDescriptionHtml } from '@/lib/product-description';
 import Image from 'next/image';
 import Link from 'next/link';
 import { X, ShoppingBag, MessageCircle, FileText, Check } from 'lucide-react';
@@ -8,7 +9,26 @@ import { useApp } from '@/lib/context';
 
 export default function QuickViewModal() {
   const { quickViewProduct, closeQuickView, addToCart } = useApp();
-  const [selectedVariationId, setSelectedVariationId] = useState<string | null>(null);
+  const [failedImage, setFailedImage] = useState<string | null>(null);
+  useEffect(() => {
+    if (!quickViewProduct) return;
+    const previous = document.activeElement as HTMLElement | null;
+    const overflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const dialog = document.querySelector<HTMLElement>('[data-quick-view]');
+    dialog?.querySelector<HTMLElement>('button')?.focus();
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') closeQuickView();
+      if (event.key === 'Tab' && dialog) {
+        const items = Array.from(dialog.querySelectorAll<HTMLElement>('button, a[href]'));
+        const first = items[0], last = items[items.length - 1];
+        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+      }
+    };
+    document.addEventListener('keydown', onKey);
+    return () => { document.body.style.overflow = overflow; document.removeEventListener('keydown', onKey); previous?.focus(); };
+  }, [quickViewProduct, closeQuickView]);
 
   if (!quickViewProduct) return null;
 
@@ -27,30 +47,38 @@ export default function QuickViewModal() {
 
   return (
     <div className="modal-overlay" onClick={closeQuickView}>
-      <div className="modal-content" onClick={e => e.stopPropagation()} style={{ maxWidth: '820px', padding: '0', overflow: 'hidden' }}>
+      <div data-quick-view role="dialog" aria-modal="true" aria-labelledby="quick-view-title" className="modal-content quick-view" onClick={e => e.stopPropagation()} style={{ maxWidth: '820px', padding: '0', overflow: 'auto', maxHeight: '90dvh', position: 'relative' }}>
         <div style={{ position: 'absolute', top: 16, right: 16, zIndex: 10 }}>
           <button
+            aria-label="Close product preview"
             onClick={closeQuickView}
-            style={{ width: '36px', height: '36px', borderRadius: '50%', background: '#ffffff', border: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', boxShadow: 'var(--shadow-sm)' }}
+            style={{ width: '44px', height: '44px', borderRadius: '50%', background: '#ffffff', border: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', boxShadow: 'var(--shadow-sm)' }}
           >
             <X size={20} />
           </button>
         </div>
 
-        <div className="grid grid-cols-2" style={{ gap: 0 }}>
+        <style>{`.quick-view-layout { display:grid; grid-template-columns:1fr 1fr; align-items:start; }
+.quick-view-description { max-height:220px; overflow:auto; line-height:1.65; color:var(--text-muted); font-size:14px; margin-bottom:20px; }
+.quick-view-description p { margin:0 0 12px; } .quick-view-description ul,.quick-view-description ol { padding-left:20px; margin-bottom:12px; }
+.quick-view-description h2,.quick-view-description h3 { font-size:16px; margin:16px 0 8px; }
+@media(max-width:640px) { .quick-view-layout {grid-template-columns:1fr;} .quick-view-image {min-height:200px!important;padding:24px!important;} .quick-view-image img {max-height:200px!important;} }
+`}</style>
+        <div className="quick-view-layout">
           {/* Image Pane */}
-          <div style={{ backgroundColor: '#ffffff', padding: '30px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRight: '1px solid var(--border-color)' }}>
-            {product.mainImage ? (
+          <div className="quick-view-image" style={{ minHeight: 360, backgroundColor: '#ffffff', padding: '30px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRight: '1px solid var(--border-color)' }}>
+            {product.mainImage && failedImage !== product.mainImage ? (
               <Image
                 src={product.mainImage}
                 alt={product.name}
                 width={360}
                 height={360}
                 style={{ objectFit: 'contain', width: '100%', maxHeight: '360px' }}
+                onError={() => setFailedImage(product.mainImage)}
                 unoptimized
               />
             ) : (
-              <div>No Image Available</div>
+              <div style={{ color: "var(--text-muted)", textAlign: "center" }}>Product image unavailable</div>
             )}
           </div>
 
@@ -60,7 +88,7 @@ export default function QuickViewModal() {
               {product.brand} | {product.category}
             </span>
 
-            <h3 style={{ fontSize: '1.25rem', fontWeight: 800, lineHeight: 1.3, marginBottom: '12px' }}>
+            <h3 id="quick-view-title" style={{ fontSize: '1.25rem', fontWeight: 800, lineHeight: 1.3, marginBottom: '12px' }}>
               {product.name}
             </h3>
 
@@ -83,12 +111,10 @@ export default function QuickViewModal() {
               )}
             </div>
 
-            <p style={{ fontSize: '0.88rem', color: 'var(--text-muted)', lineHeight: 1.5, marginBottom: '20px' }}>
-              {product.shortDescription}
-            </p>
+            <div className="quick-view-description" dangerouslySetInnerHTML={{ __html: productDescriptionHtml(product.shortDescription || product.fullDescription || '') }} />
 
             {/* Quick Specs */}
-            {product.technicalSpecs && (
+            {product.technicalSpecs && Object.keys(product.technicalSpecs).length > 0 && (
               <div style={{ backgroundColor: 'var(--bg-subtle)', borderRadius: 'var(--radius-sm)', padding: '12px', fontSize: '0.8rem', marginBottom: '20px' }}>
                 {Object.entries(product.technicalSpecs).slice(0, 3).map(([key, val]) => (
                   <div key={key} style={{ display: 'flex', justifyContent: 'space-between', padding: '3px 0' }}>
@@ -101,9 +127,9 @@ export default function QuickViewModal() {
 
             {/* Actions */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: 'auto' }}>
-              <button onClick={handleAddToCart} className="btn btn-primary" style={{ width: '100%' }}>
+              <button disabled={price <= 0} onClick={handleAddToCart} className="btn btn-primary" style={{ width: '100%' }}>
                 <ShoppingBag size={18} />
-                <span>Add to Cart</span>
+                <span>{price > 0 ? "Add to Cart" : "Price available on enquiry"}</span>
               </button>
 
               <a

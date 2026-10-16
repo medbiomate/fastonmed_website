@@ -17,10 +17,24 @@ function ShopContent() {
 
   const [products, setProducts] = useState<Product[]>(() => initialProducts.slice(0, 20));
   const [categories, setCategories] = useState<ProductCategory[]>(initialCategories);
-  const [selectedCategory, setSelectedCategory] = useState<string>(initialCategory);
-  const [searchQuery, setSearchQuery] = useState<string>(initialSearch);
-  const [sortBy, setSortBy] = useState<string>('recent');
-  const [page, setPage] = useState(1);
+  // Keep browsing state in the URL so product navigation, Back and refresh restore it.
+  const selectedCategory = initialCategory;
+  const searchQuery = initialSearch;
+  const sortBy = searchParams.get('sortBy') || 'recent';
+  const page = Math.max(1, Number(searchParams.get('page')) || 1);
+  const updateQuery = (key: string, value: string) => {
+    const url = new URL(window.location.href);
+    if (value) url.searchParams.set(key, value);
+    else url.searchParams.delete(key);
+    window.history.replaceState(null, '', url.pathname + url.search + url.hash);
+  };
+  const setSelectedCategory = (value: string) => updateQuery('category', value);
+  const setSearchQuery = (value: string) => updateQuery('search', value);
+  const setSortBy = (value: string) => updateQuery('sortBy', value === 'recent' ? '' : value);
+  const setPage = (value: number | ((current: number) => number)) => {
+    const next = typeof value === 'function' ? value(page) : value;
+    updateQuery('page', next === 1 ? '' : String(next));
+  };
   const [totalProducts, setTotalProducts] = useState(2720);
   const [totalPages, setTotalPages] = useState(136);
   const [loading, setLoading] = useState(false);
@@ -32,7 +46,7 @@ function ShopContent() {
       fetchCatalog({ page, limit: 20, search: searchQuery, category: selectedCategory, sortBy })
         .then(({ products: sharedProducts, categories: sharedCategories, total, totalPages: pages }) => {
           if (!active) return;
-          if (Array.isArray(sharedProducts) && sharedProducts.length > 0) {
+          if (Array.isArray(sharedProducts)) {
             setProducts(sharedProducts);
             setTotalProducts(total);
             setTotalPages(pages);
@@ -54,10 +68,6 @@ function ShopContent() {
     };
   }, [page, searchQuery, selectedCategory, sortBy]);
 
-  useEffect(() => {
-    if (initialCategory) setSelectedCategory(initialCategory);
-    if (initialSearch) setSearchQuery(initialSearch);
-  }, [initialCategory, initialSearch]);
 
   return (
     <div style={{ backgroundColor: '#f8fafc', padding: '36px 0 80px' }}>
