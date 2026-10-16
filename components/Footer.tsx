@@ -315,6 +315,10 @@ export default function Footer() {
                     {isAr ? 'تشخيص أمراض القلب' : 'Cardiology Diagnostics'}
                   </Link>
                 </li>
+                {!isAr && <>
+                  <li><Link href="/cardiotrack-tmt-machine" className="fm-footer-link">CARDIO-TRACK Medical Treadmills</Link></li>
+                  <li><Link href="/custo-cardio-300" className="fm-footer-link">custo cardio 300 ECG</Link></li>
+                </>}
                 <li>
                   <Link href={getHref('/shop')} className="fm-footer-link" style={{ fontWeight: 700, color: '#00875a' }}>
                     {isAr ? 'عرض جميع المنتجات (2,700+ صنف) ←' : 'View All Products →'}

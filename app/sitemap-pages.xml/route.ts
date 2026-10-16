@@ -13,6 +13,8 @@ export async function GET() {
     ['/contact', 'monthly', 0.8],
     ['/blog', 'weekly', 0.8],
     ['/brands', 'weekly', 0.8],
+    ['/cardiotrack-tmt-machine', 'monthly', 0.8],
+    ['/custo-cardio-300', 'monthly', 0.8],
     ['/facilities/hospitals', 'weekly', 0.8],
     ['/facilities/clinics', 'weekly', 0.8],
     ['/facilities/laboratories', 'weekly', 0.8],
