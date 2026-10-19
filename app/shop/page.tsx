@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect, useRef, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { ArrowUpDown, X } from 'lucide-react';
 import { Product, ProductCategory } from '@/lib/types';
@@ -12,32 +12,39 @@ import { initialCategories, initialProducts } from '@/lib/mock-data';
 
 function ShopContent() {
   const searchParams = useSearchParams();
-  const initialCategory = searchParams.get('category') || '';
-  const initialSearch = searchParams.get('search') || '';
+  const selectedCategory = searchParams.get('category') || '';
+  const searchQuery = searchParams.get('search') || '';
+  const requestedSort = searchParams.get('sortBy') || 'recent';
+  const sortBy = ['recent', 'price-low', 'price-high', 'name'].includes(requestedSort) ? requestedSort : 'recent';
+  const requestedPage = Number(searchParams.get('page') || 1);
+  const page = Number.isSafeInteger(requestedPage) && requestedPage > 0 ? requestedPage : 1;
+  const pendingScroll = useRef<number | null>(null);
+
+  // Keep this history entry current so browser Back restores the exact catalog.
+  const updateFilters = (changes: Record<string, string>) => {
+    const params = new URLSearchParams(searchParams.toString());
+    for (const [key, value] of Object.entries(changes)) {
+      if (!value || (key === 'page' && value === '1') || (key === 'sortBy' && value === 'recent')) params.delete(key);
+      else params.set(key, value);
+    }
+    const query = params.toString();
+    window.history.replaceState(null, '', `${window.location.pathname}${query ? `?${query}` : ''}${window.location.hash}`);
+  };
+
+  useEffect(() => {
+    try {
+      const key = `shop-scroll:${window.location.pathname}${window.location.search}`;
+      const saved = sessionStorage.getItem(key);
+      sessionStorage.removeItem(key);
+      if (saved !== null && Number.isFinite(Number(saved))) pendingScroll.current = Number(saved);
+    } catch { /* Browsing can continue when storage is unavailable. */ }
+  }, []);
 
   const [products, setProducts] = useState<Product[]>(() => initialProducts.slice(0, 20));
   const [categories, setCategories] = useState<ProductCategory[]>(initialCategories);
-  // Keep browsing state in the URL so product navigation, Back and refresh restore it.
-  const selectedCategory = initialCategory;
-  const searchQuery = initialSearch;
-  const sortBy = searchParams.get('sortBy') || 'recent';
-  const page = Math.max(1, Number(searchParams.get('page')) || 1);
-  const updateQuery = (key: string, value: string) => {
-    const url = new URL(window.location.href);
-    if (value) url.searchParams.set(key, value);
-    else url.searchParams.delete(key);
-    window.history.replaceState(null, '', url.pathname + url.search + url.hash);
-  };
-  const setSelectedCategory = (value: string) => updateQuery('category', value);
-  const setSearchQuery = (value: string) => updateQuery('search', value);
-  const setSortBy = (value: string) => updateQuery('sortBy', value === 'recent' ? '' : value);
-  const setPage = (value: number | ((current: number) => number)) => {
-    const next = typeof value === 'function' ? value(page) : value;
-    updateQuery('page', next === 1 ? '' : String(next));
-  };
   const [totalProducts, setTotalProducts] = useState(2720);
   const [totalPages, setTotalPages] = useState(136);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let active = true;
@@ -68,6 +75,14 @@ function ShopContent() {
     };
   }, [page, searchQuery, selectedCategory, sortBy]);
 
+  useEffect(() => {
+    if (loading || pendingScroll.current === null) return;
+    const frame = requestAnimationFrame(() => {
+      window.scrollTo({ top: pendingScroll.current!, behavior: 'instant' });
+      pendingScroll.current = null;
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [loading]);
 
   return (
     <div style={{ backgroundColor: '#f8fafc', padding: '36px 0 80px' }}>
@@ -76,8 +91,7 @@ function ShopContent() {
         <CatalogSearchHeader
           searchQuery={searchQuery}
           onSearchChange={(query) => {
-            setSearchQuery(query);
-            setPage(1);
+            updateFilters({ search: query, page: '1' });
           }}
         />
 
@@ -86,8 +100,7 @@ function ShopContent() {
           categories={categories}
           selectedCategory={selectedCategory}
           onSelectCategory={(catName) => {
-            setSelectedCategory(catName);
-            setPage(1);
+            updateFilters({ category: catName, page: '1' });
           }}
           totalProducts={totalProducts}
         />
@@ -103,7 +116,7 @@ function ShopContent() {
 
                 {selectedCategory && (
                   <button
-                    onClick={() => { setSelectedCategory(''); setPage(1); }}
+                    onClick={() => { updateFilters({ category: '', page: '1' }); }}
                     style={{
                       display: 'inline-flex',
                       alignItems: 'center',
@@ -125,7 +138,7 @@ function ShopContent() {
 
                 {searchQuery && (
                   <button
-                    onClick={() => { setSearchQuery(''); setPage(1); }}
+                    onClick={() => { updateFilters({ search: '', page: '1' }); }}
                     style={{
                       display: 'inline-flex',
                       alignItems: 'center',
@@ -157,8 +170,7 @@ function ShopContent() {
               <select
                 value={sortBy}
                 onChange={e => {
-                  setSortBy(e.target.value);
-                  setPage(1);
+                  updateFilters({ sortBy: e.target.value, page: '1' });
                 }}
                 style={{
                   padding: '7px 12px',
@@ -193,7 +205,7 @@ function ShopContent() {
               Try adjusting your search criteria or category filter.
             </p>
             <button
-              onClick={() => { setSelectedCategory(''); setSearchQuery(''); setPage(1); }}
+              onClick={() => { updateFilters({ category: '', search: '', page: '1' }); }}
               style={{
                 backgroundColor: '#51b291',
                 color: '#ffffff',
@@ -210,6 +222,12 @@ function ShopContent() {
         ) : (
           <div
             className="shop-product-grid"
+            onClickCapture={(event) => {
+              if (!(event.target instanceof Element) || !event.target.closest('a[href*="/product/"]')) return;
+              try {
+                sessionStorage.setItem(`shop-scroll:${window.location.pathname}${window.location.search}`, String(window.scrollY));
+              } catch { /* URL still preserves filters when storage is unavailable. */ }
+            }}
             style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
@@ -234,7 +252,7 @@ function ShopContent() {
             <button
               type="button"
               disabled={page <= 1}
-              onClick={() => { setPage(current => Math.max(1, current - 1)); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              onClick={() => { updateFilters({ page: String(Math.max(1, page - 1)) }); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
               style={{ padding: '10px 18px', borderRadius: '8px', border: '1px solid #cbd5e1', background: '#fff', cursor: page <= 1 ? 'not-allowed' : 'pointer', opacity: page <= 1 ? 0.5 : 1 }}
             >
               Previous
@@ -245,7 +263,7 @@ function ShopContent() {
             <button
               type="button"
               disabled={page >= totalPages}
-              onClick={() => { setPage(current => Math.min(totalPages, current + 1)); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              onClick={() => { updateFilters({ page: String(Math.min(totalPages, page + 1)) }); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
               style={{ padding: '10px 18px', borderRadius: '8px', border: 'none', background: '#51b291', color: '#fff', cursor: page >= totalPages ? 'not-allowed' : 'pointer', opacity: page >= totalPages ? 0.5 : 1 }}
             >
               Next
